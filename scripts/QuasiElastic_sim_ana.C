@@ -24,7 +24,7 @@
 #include "TTreeFormula.h"
 #include "TLorentzVector.h"
 
-#include "../../include/gen-ana.h"
+#include "../include/gen-ana.h"
 
 int QuasiElastic_sim_ana(const std::string configfilename, std::string filebase="../outfiles/QE_sim")
 {
