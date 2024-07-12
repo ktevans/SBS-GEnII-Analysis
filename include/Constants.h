@@ -38,4 +38,3 @@ namespace constant {
 }
 
 #endif
-
