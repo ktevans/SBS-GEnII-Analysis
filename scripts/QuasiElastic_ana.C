@@ -23,7 +23,7 @@
 #include "TTreeFormula.h"
 #include "TLorentzVector.h"
 
-#include "../../include/gen-ana.h"
+#include "../include/gen-ana.h"
 
 
 DBparse::DBInfo DBInfo;
