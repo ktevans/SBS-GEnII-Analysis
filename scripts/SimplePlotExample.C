@@ -8,6 +8,9 @@
 //
 // Note: you must have a directory called "plots" created in order to save
 // the canvas to a PDF properly.
+//
+// Kate Evans
+// Last modified: July 12 2024
 
 
 #include <TF1.h>
