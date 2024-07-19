@@ -1,0 +1,61 @@
+// This example script will read in a chain of root files and make a 1D
+// histogram of W^2 and PreShower Energy. It will then save these plots to
+// a PDF. To execute, do the following:
+
+
+#include <TF1.h>
+
+void SimplePlotExample()
+{
+
+ //Add root files to the chain Tout, can add as many files as you want
+ TChain* Tout = new TChain("Tout");
+ Tout->Add("hist/GEN4_he3_set1_prepass0_bbcal_eng_calib_test.root");
+
+ //Set the branch address for variables you want to use
+ Double_t W2;           Tout->SetBranchAddress("W2", &W2);
+ Double_t psE;          Tout->SetBranchAddress("bb.ps.e", &psE);
+
+ //Scan through all the entries in the TChain Tout
+ //If the rootfiles are empty or don't exist, there will be 0 entries
+ //If there are entries, then print out how many
+ if(Tout->GetEntries()==0)
+ {
+   std::cerr << "\n --- No ROOT file found!! --- \n\n";
+   throw;
+ }
+ else std::cout << "\nFound " << Tout->GetEntries() << " events. Starting analysis.. \n";
+
+ //Define 1D histogram to plot W2
+ TH1D* h_W = new TH1D("h_W",";W",150,0.0,3.0);
+ h_W->GetXaxis()->SetTitle("W^2 [GeV^2]");
+
+ //Define 1D histogram to plot ps_e
+ TH1D* h_ps_e = new TH1D("h_ps_e",";ps_e",100,0.0,2.0);
+ h_ps_e->GetXaxis()->SetTitle("PreShower Energy [GeV^2]");
+
+ //Loop over all events to fill the histogram
+ for (size_t iev = 0; iev < Tout->GetEntries(); iev++)
+ {
+
+   Tout->GetEntry(iev);
+
+   h_W->Fill(W2);
+   h_ps_e->Fill(psE);
+
+ }//end process over events
+
+ //Draw canvas, divide into two plots and draw on each one
+ TCanvas *c1 = new TCanvas("c1","W Comparison",100,100,700,700);
+ c1->Divide(1,2);
+ c1->cd(1);
+ h_W->Draw();
+ c1->cd(2);
+ h_ps_e->Draw();
+
+ printf("You've completed the script!");
+
+ //Save the canvas to a pdf
+ c1->Print("SimplePlotExample.pdf");
+
+}
