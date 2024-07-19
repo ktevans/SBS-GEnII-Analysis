@@ -4,7 +4,7 @@
 
 namespace DBparse {
 
-  TString DB_dir = "/w/halla-scshelf2102/sbs/ktevans/GEN_ANALYSIS/SBS-GEnII-Analysis/DB";
+  TString DB_dir = "/w/halla-scshelf2102/sbs/ktevans/GEN_ANALYSIS/SBS-GEnII-Analysis/DB/";
   TString DB_corr_dir = "/w/halla-scshelf2102/sbs/ktevans/GEN_ANALYSIS/SBS-GEnII-Analysis/DB/corrections/";
   
   std::map<TString, TString> DBFileMap {
