@@ -55,7 +55,7 @@ void getDB(TString cfg){
 int QuasiElastic_ana(const std::string configfilename, std::string filebase="../outfiles/QE_data")
 {
 
-  string configdir = "../../config/";
+  string configdir = "../config/";
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
