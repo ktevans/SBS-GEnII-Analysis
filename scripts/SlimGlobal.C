@@ -1,4 +1,4 @@
-x// This script will read in a config file with a list of root files and a simple
+// This script will read in a config file with a list of root files and a simple
 // global cut. It will apply the global cut to the events in the root files and
 // output a new root file with only events which passed the cut.
 // This simple version only considers W2 and ps energy.
