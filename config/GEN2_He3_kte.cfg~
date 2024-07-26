@@ -1,0 +1,8 @@
+/cache/halla/sbs/prod/GEnII/pass1/GEN2/He3/rootfiles/*2033*
+/cache/halla/sbs/prod/GEnII/pass1/GEN2/He3/rootfiles/*2034*
+#/cache/halla/sbs/prod/GEnII/pass1/GEN2/He3/rootfiles/*2035*
+#/cache/halla/sbs/prod/GEnII/pass1/GEN2/He3/rootfiles/*2036*
+#/cache/halla/sbs/prod/GEnII/pass1/GEN2/He3/rootfiles/*2037*
+endlist
+bb.tr.n==1 && abs(bb.tr.vz[0])<0.27 && bb.ps.e>0.2
+endcut
