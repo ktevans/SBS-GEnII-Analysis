@@ -201,7 +201,7 @@ void ElectronArmCuts(const std::string cutType)
   gPad->Update();
 
   TPad *pad1 = new TPad("pad1","title",0.0,0.85,1.0,1.0);
-  TPad *pad2 = new TPad("pad2","plots",0.0,0.0,1.0,0.84);
+  TPad *pad2 = new TPad("pad2","plots",0.0,0.0,1.0,0.82);
   pad1->Draw();
   pad2->Draw();
 
@@ -244,29 +244,34 @@ void ElectronArmCuts(const std::string cutType)
 
   pad1->cd();
 
-  TText *t1 = new TText(0.01,0.01,cutLabel1);
+  TText *t1 = new TText(0.5,0.9,cutLabel1);
   t1->SetTextColor(2);
-  t1->SetTextSize(0.19);
+  t1->SetTextSize(0.2);
+  t1->SetTextAlign(22);
   t1->Draw();
 
-  TText *t2 = new TText(0.2,0.2,cutLabel2);
+  TText *t2 = new TText(0.5,0.7,cutLabel2);
   t2->SetTextColor(3);
-  t2->SetTextSize(0.19);
+  t2->SetTextSize(0.2);
+  t2->SetTextAlign(22);
   t2->Draw();
 
-  TText *t3 = new TText(0.4,0.4,cutLabel3);
+  TText *t3 = new TText(0.5,0.5,cutLabel3);
   t3->SetTextColor(4);
-  t3->SetTextSize(0.19);
+  t3->SetTextSize(0.2);
+  t3->SetTextAlign(22);
   t3->Draw();
 
-  TText *t4 = new TText(0.6,0.6,cutLabel4);
+  TText *t4 = new TText(0.5,0.3,cutLabel4);
   t4->SetTextColor(7);
-  t4->SetTextSize(0.19);
+  t4->SetTextSize(0.2);
+  t4->SetTextAlign(22);
   t4->Draw();
 
-  TText *t5 = new TText(0.8,0.8,cutLabel5);
+  TText *t5 = new TText(0.5,0.1,cutLabel5);
   t5->SetTextColor(6);
-  t5->SetTextSize(0.19);
+  t5->SetTextSize(0.2);
+  t5->SetTextAlign(22);
   t5->Draw();
   
   
