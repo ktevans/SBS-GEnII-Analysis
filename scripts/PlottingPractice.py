@@ -1,5 +1,5 @@
 #This script uses uproot to read in a root file and create a pandas dataframe from it. It then makes some simple plots to test the script.
-#To execute: "python3 PlottingPractice.py <input file>"
+#To execute: "python3 scripts/PlottingPractice.py <input file>"
 #Kate Evans - August 2nd 2024
 
 import math

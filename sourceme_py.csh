@@ -1,2 +1,2 @@
 source venv/bin/activate.csh
-alias python venv/bin/python
+alias python3 venv/bin/python3
