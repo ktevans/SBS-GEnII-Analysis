@@ -36,6 +36,16 @@ outFileName = "/volatile/halla/sbs/ktevans/" + str(kin) + "_" + str(target) + "_
 
 print("Reading from " + str(inFileName) + " and writing to " + str(outFileName))
 
+## Physics constants:
+
+PI = numpy.pi
+c = 299792458 # m/s -> speed of light
+q_e = 1.602176634e^-19 # C -> charge of electron
+M_e = 0.510998950e^-3 # GeV/c^2 -> mass of electron
+M_p = 0.93827208816 # GeV/c^2 -> mass of proton
+M_n = 0.93956542052 # GeV/c^2 -> mass of neutron
+alpha = 0.00729927 # unitless -> fine structure constant
+
 ## Next we define some methods that will help us.
 
 def ListBranches(fileName):
@@ -47,9 +57,6 @@ def ListBranches(fileName):
     for branch in t.GetListOfBranches():
         if "Ndata" not in branch.GetName():
             print("\"%s\", " %branch.GetName(), end="")
-
-
-
             
 class dxdy:
 
@@ -71,6 +78,12 @@ class dxdy:
 
         plt.scatter(df["bb.ps.e"],df["bb.sh.e"])
         plt.show()
+
+    def ExpectedValuesMethod3(self):
+        df = pd.DataFrame()
+        df = self.treeData
+
+        
 
 if __name__ == '__main__':
 
