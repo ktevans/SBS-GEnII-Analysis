@@ -4,6 +4,7 @@ import sys
 import math
 import uproot
 import numpy as np
+#from Scientific.Geometry import Vector
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -17,15 +18,53 @@ inFileName = "/cache/halla/sbs/prod/GEnII/pass1/" + str(ConfigName) + ".root"
 
 kin = ""
 target = ""
+Q2_kin = 0.0 #Q2 expected from kinematic in GeV2
+p_electron = 0.0 #electron momentum in GeV
+p_nucleon = 0.0 #nucleon momentum in GeV
+energy_beam = 0.0 #beam energy expected from kinematic
+bb_angle = 0.0 #bigbite magnet angle (what angle?) in degrees
+bb_dist = 1.63 #distance from center of target to bb magnet in meters
+sbs_angle = 0.0 #super bigbite magnet angle (what angle?) in degrees
+sbs_dist = 2.8 #distance from center of target to sbs magnet in meters
+hcal_angle = 0.0 #hcal angle (what angle?) in degrees
+hcal_dist = 17.0 #distance from center of target to hcal in meters
 
 if "GEN2" in ConfigName:
     kin = "GEN2"
+    Q2_kin = 3.00
+    p_electron = 2.69
+    p_nucleon = 2.37
+    energy_beam = 4.291
+    bb_angle = 29.5
+    sbs_angle = 34.7
+    hcal_angle = 34.7
 if "GEN3" in ConfigName:
     kin = "GEN3"
+    Q2_kin = 6.83
+    p_electron = 2.73
+    p_nucleon = 4.51
+    energy_beam = 6.373
+    bb_angle = 36.5
+    sbs_angle = 22.1
+    hcal_angle = 21.6
 if "GEN4a" in ConfigName:
     kin = "GEN4a"
+    Q2_kin = 9.82
+    p_electron = 3.21
+    p_nucleon = 6.11
+    energy_beam = 8.448
+    bb_angle = 35.0
+    sbs_angle = 18.0
+    hcal_angle = 18.0
 if "GEN4b" in ConfigName:
     kin = "GEN4b"
+    Q2_kin = 9.82
+    p_electron = 3.21
+    p_nucleon = 6.11
+    energy_beam = 8.448
+    bb_angle = 35.0
+    sbs_angle = 18.0
+    hcal_angle = 18.0
 
 if "He3" in ConfigName:
     target = "He3"
@@ -38,10 +77,10 @@ print("Reading from " + str(inFileName) + " and writing to " + str(outFileName))
 
 ## Physics constants:
 
-PI = numpy.pi
+PI = np.pi
 c = 299792458 # m/s -> speed of light
-q_e = 1.602176634e^-19 # C -> charge of electron
-M_e = 0.510998950e^-3 # GeV/c^2 -> mass of electron
+q_e = 0.0000000000000000001602176634 #1.602176634e^-19 C -> charge of electron
+M_e = 0.000510998950 # GeV/c^2 -> mass of electron
 M_p = 0.93827208816 # GeV/c^2 -> mass of proton
 M_n = 0.93956542052 # GeV/c^2 -> mass of neutron
 alpha = 0.00729927 # unitless -> fine structure constant
@@ -57,12 +96,12 @@ def ListBranches(fileName):
     for branch in t.GetListOfBranches():
         if "Ndata" not in branch.GetName():
             print("\"%s\", " %branch.GetName(), end="")
-            
+
 class dxdy:
 
     def __init__(self):
         self.treeData = pd.DataFrame()
-    
+
     def GetNumpyArray(self,fileName):
     ## This method will make an array out of the TTree of a standard SBS root file.
         file = uproot.open(fileName)
@@ -83,10 +122,38 @@ class dxdy:
         df = pd.DataFrame()
         df = self.treeData
 
-        
+        hcal_xaxis = np.array([0, -1, 0])
+        hcal_zaxis = np.array([np.sin(np.radians(-hcal_angle)), 0, np.cos(np.radians(-hcal_angle))])
+        hcal_yaxis = np.cross(hcal_zaxis, hcal_xaxis)
+
+        hcal_offset = 0.1 #change later
+        hcal_origin = (hcal_dist * hcal_zaxis) + (hcal_offset * hcal_xaxis)
+
+        #print(hcal_xaxis)
+        #print(hcal_zaxis)
+        #print(hcal_yaxis)
+        #print(hcal_origin)
+
+        vertex = np.array([0, 0, df["bb.tr.vz"]])
+
+        p_beam = np.array([0, 0, energy_beam, energy_beam])
+        p_eprime = np.array([df["bb.tr.px"], df["bb.tr.py"], df["bb.tr.pz"], df["bb.tr.p"]])
+
+        p_targ = np.array([0, 0, 0, 0.5*(M_n+M_p)])
+
+        q = p_beam - p_eprime
+
+        e_theta = p_eprime[2]/p_eprime[3]
+
+        Nmass = 0.5 * (M_p + M_n)
+        p_central = energy_beam / (1.0 + (energy_beam / Nmass) * (1.0 - np.cos(e_theta)))
+
+        print(p_central)
+
 
 if __name__ == '__main__':
 
     calculation = dxdy()
     calculation.GetNumpyArray(str(inFileName))
-    calculation.DrawTestHisto()
+#    calculation.DrawTestHisto()
+    calculation.ExpectedValuesMethod3()

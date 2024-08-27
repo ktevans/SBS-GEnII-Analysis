@@ -1,0 +1,53 @@
+import math
+import uproot3
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+class PlottingPractice:
+
+    def __init__(self):
+        self.orig = pd.DataFrame()
+
+    def GenNumpyArray(self,filename):
+
+        file = uproot3.open(filename)
+        T=file["P"]
+
+        cutData = T.arrays(["bb_etot_over_p","bb_gr_size","bb_gr_tot","bb_gr_x","bb_gr_y","bb_ps_e","bb_ps_x","bb_ps_y","bb_sh_e","bb_sh_x","bb_sh_y","bb_tr_n","bb_tr_ph","bb_tr_th","bb_tr_x","bb_tr_y","e_kine_W2"],library="pd")  # panda dictionary
+        #geo = geo.loc[geo["gem1_r"]>300]
+
+        #geo["tg_ph"] = [i+2*math.pi if i<0 else i for i in geo.tg_ph]
+        #geo["gem1_ph"] = [i+2*math.pi if i<0 else i for i in geo.gem1_ph]
+
+        self.orig = cutData
+
+    def DrawHistograms(self):
+
+        df = pd.DataFrame()
+        df = self.orig
+
+        fig, axs = plt.subplots(2, 2, figsize=(20,20))
+
+        axs[0,0].hist2d(df.bb_sh_e, df.bb_gr_size, ([df.bb_sh_e.min(), df.bb_sh_e.max()], [df.bb_gr_size.min(), df.bb_gr_size.max()]))
+        axs[0,0].set_title('Shower Energy [GeV] vs GRINCH Cluster Size')
+
+        axs[0,1].hist(df.bb_ps_e, (df.bb_ps_e.min(), df.bb_ps_e.max()))
+        axs[0,1].set_title('Preshower Energy [GeV]')
+
+        axs[1,0].hist(df.bb_sh_e, (df.bb_sh_e.min(), df.bb_sh_e.max()))
+        axs[1,0].set_title('Shower Energy [GeV]')
+
+        axs[1,1].hist(df.bb_etot_over_p, (df.bb_etot_over_p.min(), df.bb_etot_over_p.max()))
+        axs[1,1].set_title('Total BBCal Energy over Momentum')
+
+        plt.show()
+
+if __name__=='__main__':
+
+    inputFile = "../outfiles/GEN2_He3_run2321.root"
+
+    cls = PlottingPractice()
+
+    cls.GenNumpyArray(str(inputFile))
+    cls.DrawHistograms()

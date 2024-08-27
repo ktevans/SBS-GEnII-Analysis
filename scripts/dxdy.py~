@@ -1,0 +1,30 @@
+import ROOT
+import sys
+
+ConfigName = sys.argv[1]
+#/cache/halla/sbs/prod/GEnII/pass1/GEN2/He3/rootfiles/
+#GEN2/He3/rootfiles/e1209016_fullreplay_2321_stream0_2_seg3_3
+#.root
+
+inFileName = "/cache/halla/sbs/prod/GEnII/pass1/" + str(ConfigName) + ".root"
+
+kin = ""
+target = ""
+
+if "GEN2" in ConfigName:
+    kin = "GEN2"
+if "GEN3" in ConfigName:
+    kin = "GEN3"
+if "GEN4a" in ConfigName:
+    kin = "GEN4a"
+if "GEN4b" in ConfigName:
+    kin = "GEN4b"
+
+if "He3" in ConfigName:
+    target = "He3"
+if "H2" in ConfigName:
+    target = "H2"
+
+outFileName = "/volatile/halla/sbs/ktevans/" + str(kin) + "_" + str(target) + "_dxdy.root"
+
+print("Reading from " + str(inFileName) + " and writing to " + str(outFileName))
