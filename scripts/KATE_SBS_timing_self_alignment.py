@@ -25,7 +25,7 @@ import PathOffset
 
 #______________Add include directory__________________
 current_dir = os.getcwd()
-include_dir = os.path.join(current_dir, '../include')
+include_dir = os.path.join(current_dir, '../include/pyth')
 sys.path.insert(0, include_dir)
 #_____________________________________________________
 
