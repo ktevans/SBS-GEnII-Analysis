@@ -21,6 +21,7 @@ from ROOT import gStyle, TChain, TH1F, TCanvas, TLegend
 
 import ORGANIZATION
 import PathFinding
+import PathOffset
 
 #______________Add include directory__________________
 current_dir = os.getcwd()
