@@ -134,21 +134,33 @@ class dxdy:
         #print(hcal_yaxis)
         #print(hcal_origin)
 
-        vertex = np.array([0, 0, df["bb.tr.vz"]])
+        df["bb.tr.vz"] = df["bb.tr.vz"].apply(lambda x: x[0])
+        df["vertex_0"] = 0.0
+        df["vertex_1"] = 0.0
+        df["vertex"] = df[["vertex_0", "vertex_1", "bb.tr.vz"]].values.tolist()
 
-        p_beam = np.array([0, 0, energy_beam, energy_beam])
-        p_eprime = np.array([df["bb.tr.px"], df["bb.tr.py"], df["bb.tr.pz"], df["bb.tr.p"]])
+        df.drop("vertex_0", axis=1, inplace=True)
+        df.drop("vertex_1", axis=1, inplace=True)
 
-        p_targ = np.array([0, 0, 0, 0.5*(M_n+M_p)])
+        p_beam_array = np.array([0, 0, energy_beam, energy_beam])
+        df["p_beam"] = [p_beam_array] * len(df)
 
-        q = p_beam - p_eprime
+        df["bb.tr.px"] = df["bb.tr.px"].apply(lambda x: x[0])
+        df["bb.tr.py"] = df["bb.tr.py"].apply(lambda x: x[0])
+        df["bb.tr.pz"] = df["bb.tr.pz"].apply(lambda x: x[0])
+        df["bb.tr.p"] = df["bb.tr.p"].apply(lambda x: x[0])
 
-        e_theta = p_eprime[2]/p_eprime[3]
+        df["p_eprime"] = df[["bb.tr.px","bb.tr.py","bb.tr.pz","bb.tr.p"]].values.tolist()
+        
+        p_targ_array = np.array([0, 0, 0, 0.5*(M_n+M_p)])
+        df["p_targ"] = [p_targ_array] * len(df)
+
+        df["q"] = df["p_beam"] - df["p_eprime"]
+
+        df["e_theta"] = df["bb.tr.pz"] / df["bb.tr.p"]
 
         Nmass = 0.5 * (M_p + M_n)
-        p_central = energy_beam / (1.0 + (energy_beam / Nmass) * (1.0 - np.cos(e_theta)))
-
-        print(p_central)
+        df["p_central"] = energy_beam / (1.0 + (energy_beam / Nmass) * (1.0 - np.cos(df["e_theta"])))
 
 
 if __name__ == '__main__':
