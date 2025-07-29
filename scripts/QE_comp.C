@@ -26,7 +26,7 @@
 void QE_comp(const char *kinematic)
 {
   TString inputfile = Form("/volatile/halla/sbs/ktevans/KateJackSBSAnalysis/KJ_parsed_GEn_pass2_%s_He3_100.root",kinematic);
-  TChain* T = new TChain("T");
+  TChain* T = new TChain("Parse");
   T->Add(inputfile);
 
   double bb_tr_r_x;         T->SetBranchAddress("b.tr.r_x", &bb_tr_r_x);
