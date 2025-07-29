@@ -27,6 +27,15 @@ void QE_comp(const char *kinematic)
 {
   TString inputfile = Form("/volatile/halla/sbs/ktevans/KateJackSBSAnalysis/KJ_parsed_GEn_pass2_%s_He3_100.root",kinematic);
   TString outputfile = Form("plots/parsed_GEn_pass2_%s_He3_dxdy.pdf",kinematic);
+  TString outfile = Form("outfiles/parsed_GEn_pass2_%s_He3_dxdy.root",kinematic);
+  TFile *fout = new TFile(outfile,"RECREATE");
+
+  TTree *T_data = new TTree("T_data", "Analysis Data Tree");
+
+  double dx_out, dy_out;
+  T_data->Branch("dx", &dx_out, "dx/D");
+  T_data->Branch("dy", &dy_out, "dy/D");
+
   TChain* T = new TChain("Parse");
   T->Add(inputfile);
 
@@ -110,7 +119,12 @@ void QE_comp(const char *kinematic)
     {
       h_dx->Fill(dx_hcal);
       h_dy->Fill(dy_hcal);
+
+      dx_out = dx_hcal;
+      dy_out = dy_hcal;
     }
+
+    T_data->Fill();
 
   }//end event loop
 
@@ -125,4 +139,6 @@ void QE_comp(const char *kinematic)
 
   //Save the canvas to a pdf
   c1->Print(outputfile);
+
+  fout->Write();
 }
