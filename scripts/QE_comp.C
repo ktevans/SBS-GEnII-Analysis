@@ -26,6 +26,7 @@
 void QE_comp(const char *kinematic)
 {
   TString inputfile = Form("/volatile/halla/sbs/ktevans/KateJackSBSAnalysis/KJ_parsed_GEn_pass2_%s_He3_100.root",kinematic);
+  TString outputfile = Form("/plots/parsed_GEn_pass2_%s_He3_dxdy.pdf",kinematic);
   TChain* T = new TChain("Parse");
   T->Add(inputfile);
 
@@ -121,5 +122,5 @@ void QE_comp(const char *kinematic)
   printf("You've completed the script!\n");
 
   //Save the canvas to a pdf
-  c1->Print("plots/SimplePlotExample.pdf");
+  c1->Print(outputfile);
 }
