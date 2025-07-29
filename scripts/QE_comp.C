@@ -95,9 +95,11 @@ void QE_comp(const char *kinematic)
 
   TH1D* h_dx = new TH1D("h_dx", ";dx", 70.0, -4.0, 3.0);
   h_dx->GetXaxis()->SetTitle("dx [m]");
+  h_dx->SetTitle("dx with Global Cuts and QE Cuts");
 
   TH1D* h_dy = new TH1D("h_dy", ";dy", 60.0, -3.0, 3.0);
   h_dy->GetXaxis()->SetTitle("dy [m]");
+  h_dy->SetTitle("dy with Global Cuts and QE Cuts");
 
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
@@ -112,7 +114,7 @@ void QE_comp(const char *kinematic)
 
   }//end event loop
 
-  TCanvas *c1 = new TCanvas("c1","Example Plots",100,100,700,700);
+  TCanvas *c1 = new TCanvas("c1","1D dx and dy Plots",100,100,700,700);
   c1->Divide(1,2);
   c1->cd(1);
   h_dx->Draw();
