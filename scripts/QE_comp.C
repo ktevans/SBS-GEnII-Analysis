@@ -23,7 +23,7 @@
 #include <math.h>
 #include <stack>
 
-void QE_comp(const std::string kinematic)
+void QE_comp(const char *kinematic)
 {
   TChain* T = new TChain("T");
   T->Add("/volatile/halla/sbs/ktevans/KateJackSBSAnalysis/KJ_parsed_GEn_pass2_" + kinematic + "_He3_100.root");
