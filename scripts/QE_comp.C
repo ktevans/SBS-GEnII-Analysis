@@ -29,13 +29,13 @@ void QE_comp(const char *kinematic)
   TChain* T = new TChain("Parse");
   T->Add(inputfile);
 
-  double bb_tr_r_x;         T->SetBranchAddress("b.tr.r_x", &bb_tr_r_x);
-  double bb_tr_r_th;        T->SetBranchAddress("b.tr.r_th", &bb_tr_r_th);
+  double bb_tr_r_x;         T->SetBranchAddress("bb.tr.r_x", &bb_tr_r_x);
+  double bb_tr_r_th;        T->SetBranchAddress("bb.tr.r_th", &bb_tr_r_th);
   double e_kine_W2;         T->SetBranchAddress("e.kine.W2", &e_kine_W2);
   double adc_coin;          T->SetBranchAddress("adc.coin", &adc_coin);
-  double bb_ps_e;           T->SetBranchAddress("b.ps.e", &bb_ps_e);
-  double bb_sh_e;           T->SetBranchAddress("b.sh.e", &bb_sh_e);
-  double bb_tr_p;           T->SetBranchAddress("b.tr.p", &bb_tr_p);
+  double bb_ps_e;           T->SetBranchAddress("bb.ps.e", &bb_ps_e);
+  double bb_sh_e;           T->SetBranchAddress("bb.sh.e", &bb_sh_e);
+  double bb_tr_p;           T->SetBranchAddress("bb.tr.p", &bb_tr_p);
   double bb_gr_clus_size;   T->SetBranchAddress("bb.grinch_tdc.clus.size", &bb_gr_clus_size);
   int pass_global;          T->SetBranchAddress("passGlobal", &pass_global);
   double dx_hcal;           T->SetBranchAddress("dx", &dx_hcal);
