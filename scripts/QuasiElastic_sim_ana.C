@@ -29,7 +29,7 @@
 int QuasiElastic_sim_ana(const std::string configfilename, std::string filebase="../outfiles/QE_sim")
 {
 
-  string configdir = "../../config/";
+  string configdir = "../config/";
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
   
   // Define a clock to get macro processing time
