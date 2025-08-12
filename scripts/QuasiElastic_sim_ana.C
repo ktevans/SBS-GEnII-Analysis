@@ -144,7 +144,7 @@ int QuasiElastic_sim_ana(const std::string configfilename, std::string filebase=
 
   //MC variables
   double mc_sigma, mc_omega, mc_fnucl, mc_simc_weight;
-  std::vector<std::string> mc = {"mc_sigma","mc_omega","mc_fnucl","simc_Weight"};
+  std::vector<std::string> mc = {"mc_sigmaold","mc_omega","mc_fnucl","simc_Weight"};
   std::vector<void*> mc_mem = {&mc_sigma,&mc_omega,&mc_fnucl,&mc_simc_weight};
   setrootvar::setbranch(C,"MC",mc,mc_mem);
 
