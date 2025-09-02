@@ -35,9 +35,10 @@ void QE_comp(const char *kinematic)
 
   TTree *T_data = new TTree("T_data", "Analysis Data Tree");
 
-  double dx_out, dy_out;
+  double dx_out, dy_out, W2_out;
   T_data->Branch("dx", &dx_out, "dx/D");
   T_data->Branch("dy", &dy_out, "dy/D");
+  T_data->Branch("W2", &W2_out, "W2/D");
 
   TChain* T = new TChain("Parse");
   T->Add(inputfile);
@@ -118,13 +119,19 @@ void QE_comp(const char *kinematic)
   {
     T->GetEntry(iev);
 
-    if(pass_global==1 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(e_kine_W2-1.0)<0.5 && abs(adc_coin-coin_mean)<coin_sigma && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>2.0)
+    if(pass_global==1 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<coin_sigma && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>2.0)
     {
-      h_dx->Fill(dx_hcal);
-      h_dy->Fill(dy_hcal);
+      
+      if(abs(e_kine_W2-1.0)<0.5)
+      {
+	h_dx->Fill(dx_hcal);
+        h_dy->Fill(dy_hcal);
 
-      dx_out = dx_hcal;
-      dy_out = dy_hcal;
+        dx_out = dx_hcal;
+        dy_out = dy_hcal;
+      }
+      
+      W2_out = e_kine_W2;
     }
 
     T_data->Fill();
