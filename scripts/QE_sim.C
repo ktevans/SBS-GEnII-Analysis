@@ -49,6 +49,7 @@ void QE_sim(const char *kinematic)
   double bb_sh_e;           T->SetBranchAddress("eSH", &bb_sh_e);
   double bb_tr_p;           T->SetBranchAddress("trP", &bb_tr_p);
   double bb_tr_vz;          T->SetBranchAddress("vz", &bb_tr_vz);
+  double sbs_hcal_e;        T->SetBranchAddress("eHCAL", &sbs_hcal_e);
   double bb_gr_clus_size;   T->SetBranchAddress("grinch_clus_size", &bb_gr_clus_size);
   double bb_gr_clus_track;  T->SetBranchAddress("grinch_track", &bb_gr_clus_track);
   double dx_hcal;           T->SetBranchAddress("dx", &dx_hcal);
@@ -79,7 +80,7 @@ void QE_sim(const char *kinematic)
   {
     T->GetEntry(iev);
 
-    if(abs(e_kine_W2-1.0)<0.5 && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && abs(bb_tr_vz)<0.27)
+    if(abs(e_kine_W2-1.0)<0.5 && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && abs(bb_tr_vz)<0.27 && sbs_hcal_e>0.025)
     {
       h_dx->Fill(dx_hcal);
       h_dy->Fill(dy_hcal);
