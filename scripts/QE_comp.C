@@ -36,9 +36,11 @@ void QE_comp(const char *kinematic)
   TTree *T_data = new TTree("T_data", "Analysis Data Tree");
 
   double dx_out, dy_out, W2_out;
+  int helicity_out;
   T_data->Branch("dx", &dx_out, "dx/D");
   T_data->Branch("dy", &dy_out, "dy/D");
   T_data->Branch("W2", &W2_out, "W2/D");
+  T_data->Branch("helicity", &helicity_out, "helicity/I");
 
   TChain* T = new TChain("Parse");
   T->Add(inputfile);
@@ -47,6 +49,7 @@ void QE_comp(const char *kinematic)
   double bb_tr_r_th;        T->SetBranchAddress("bb.tr.r_th", &bb_tr_r_th);
   double e_kine_W2;         T->SetBranchAddress("e.kine.W2", &e_kine_W2);
   double adc_coin;          T->SetBranchAddress("adc.coin", &adc_coin);
+  int helicity;             T->SetBranchAddress("helicity", &helicity);
   double bb_ps_e;           T->SetBranchAddress("bb.ps.e", &bb_ps_e);
   double bb_sh_e;           T->SetBranchAddress("bb.sh.e", &bb_sh_e);
   double bb_tr_p;           T->SetBranchAddress("bb.tr.p", &bb_tr_p);
@@ -133,6 +136,7 @@ void QE_comp(const char *kinematic)
       }
       
       W2_out = e_kine_W2;
+      helicity_out = helicity;
     }
 
     T_data->Fill();
