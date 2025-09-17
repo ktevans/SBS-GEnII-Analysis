@@ -58,6 +58,7 @@ void QE_comp(const char *kinematic)
   int pass_global;          T->SetBranchAddress("passGlobal", &pass_global);
   double dx_hcal;           T->SetBranchAddress("dx", &dx_hcal);
   double dy_hcal;           T->SetBranchAddress("dy", &dy_hcal);
+  double IHWP;              T->SetBranchAddress("IHWP", &IHWP);
 
   double optics_valid_min;
   double optics_valid_max;
@@ -136,7 +137,7 @@ void QE_comp(const char *kinematic)
       }
       
       W2_out = e_kine_W2;
-      helicity_out = helicity;
+      helicity_out = IHWP * helicity;
     }
 
     T_data->Fill();
