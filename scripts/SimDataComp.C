@@ -114,6 +114,8 @@ void SimDataComp()
 
   gErrorIgnoreLevel = kError;
 
+  int numberBins = 250;
+
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
 
@@ -127,16 +129,30 @@ void SimDataComp()
   }
   else std::cout << "\nFound " << T_data->GetEntries() << " events. \n";
 
-  h_data_dx = new TH1D("h_data_dx", ";dx", 500, -6.0, 4.0);
+  h_data_dx = new TH1D("h_data_dx", ";dx", numberBins, -6.0, 4.0);
   h_data_dx->GetXaxis()->SetTitle("dx [m]");
+  h_data_dx->Sumw2();
 
-  TH1D* h_neg_hel_dx = new TH1D("h_neg_hel_dx",";-hel", 500, -6.0, 4.0);
+  TH1D* h_neg_hel_dx = new TH1D("h_neg_hel_dx",";-hel", numberBins, -6.0, 4.0);
   h_neg_hel_dx->GetXaxis()->SetTitle("dx [m]");
   h_neg_hel_dx->SetLineColor(kRed);
+  h_neg_hel_dx->Sumw2();
 
-  TH1D* h_pos_hel_dx = new TH1D("h_pos_hel_dx",";+hel", 500, -6.0, 4.0);
+  TH1D* h_pos_hel_dx = new TH1D("h_pos_hel_dx",";+hel", numberBins, -6.0, 4.0);
   h_pos_hel_dx->GetXaxis()->SetTitle("dx [m]");
   h_pos_hel_dx->SetLineColor(kBlue);
+  h_pos_hel_dx->Sumw2();
+
+  int helPosArray[numberBins];
+  int helNegArray[numberBins];
+
+  double binSize = 10.0 / numberBins;
+
+  for(int j = 0; j < numberBins; j++)
+  {
+    helPosArray[j] = 0;
+    helNegArray[j] = 0;
+  }
 
   for (size_t iev = 0; iev < T_data->GetEntries(); iev++)
   {
@@ -144,9 +160,20 @@ void SimDataComp()
 
     h_data_dx->Fill(dx);
 
-    if(helicity==1)   h_pos_hel_dx->Fill(dx);
+    int binAt = (int) ((dx + 6.0) / binSize);
 
-    if(helicity==-1)  h_neg_hel_dx->Fill(dx);
+    if(helicity==1)  //h_pos_hel_dx->Fill(dx);
+    {
+      h_pos_hel_dx->Fill(dx);
+      helPosArray[binAt]++;
+    }
+
+    if(helicity==-1)  //h_neg_hel_dx->Fill(dx);
+    {
+      h_neg_hel_dx->Fill(dx);
+      helNegArray[binAt]++;
+    }
+
   }//end loop over events
 
   TChain* T_sim = new TChain("T_sim");
@@ -163,11 +190,11 @@ void SimDataComp()
   }
   else std::cout << "\nFound " << T_sim->GetEntries() << " events. \n";
 
-  h_sim_proton_dx = new TH1D("h_sim_proton_dx", ";dx_sim_p", 500, -6.0, 4.0);
+  h_sim_proton_dx = new TH1D("h_sim_proton_dx", ";dx_sim_p", numberBins, -6.0, 4.0);
   h_sim_proton_dx->GetXaxis()->SetTitle("dx [m]");
   h_sim_proton_dx->SetLineColor(kGreen);
 
-  h_sim_neutron_dx = new TH1D("h_sim_neutron_dx", ";dx_sim_n", 500, -6.0, 4.0);
+  h_sim_neutron_dx = new TH1D("h_sim_neutron_dx", ";dx_sim_n", numberBins, -6.0, 4.0);
   h_sim_neutron_dx->GetXaxis()->SetTitle("dx [m]");
   h_sim_neutron_dx->SetLineColor(kRed);
 
@@ -201,7 +228,7 @@ void SimDataComp()
   }
   else std::cout << "\nFound " << T_simIN->GetEntries() << " events. \n";
 
-  h_simIN_dx = new TH1D("h_simIN_dx", ";dxIN", 500, -6.0, 4.0);
+  h_simIN_dx = new TH1D("h_simIN_dx", ";dxIN", numberBins, -6.0, 4.0);
   h_simIN_dx->GetXaxis()->SetTitle("dx [m]");
   h_simIN_dx->SetLineColor(kBlue);
 
@@ -234,12 +261,12 @@ void SimDataComp()
 
   TF1 *FitFunc = new TF1("FitFunc",&fitsim,-6,4,6);
 
-  FitFunc->SetNpx(500);
+  FitFunc->SetNpx(numberBins);
   double startpar[] = {0.5,-0.2,0.5,0.0,1.0,-1.0};
   FitFunc->SetParameters(startpar);
   FitFunc->SetParLimits(0,0.1,100); // proton scale
   FitFunc->SetParLimits(1,-1.0,1.0); // proton shift
-  FitFunc->SetParLimits(2,0.1,100); // neutron scale
+  FitFunc->SetParLimits(2,0.0,100); // neutron scale
   FitFunc->SetParLimits(3,-1.0,1.0); // neutron shift
   FitFunc->SetParLimits(4,0.0,10.0); // background scale
   FitFunc->SetParLimits(5,-3.0,3.0); // background shift
@@ -330,6 +357,10 @@ void SimDataComp()
   TH1D* h_asym = new TH1D("h_asym",";Raw Asymmetry",h_Nbins,h_minX,h_maxX);
   h_asym->GetXaxis()->SetTitle("dx [m]");
   h_asym->SetTitle("Raw Asymmetry (N+ - N-)/(N+ + N-)");
+  h_asym->Sumw2();
+
+  double A_array[numberBins];
+  double A_err_array[numberBins];
 
   for (int bin = 0; bin < h_Nbins; bin++)
   {
@@ -383,6 +414,10 @@ void SimDataComp()
     double c_neg      = h_neg_hel_dx->GetBinContent(bin);
     double c_neg_err  = h_neg_hel_dx->GetBinError(bin);
 
+    A_array[bin] = (helNegArray[bin] - helPosArray[bin])*1.0 / (helPosArray[bin] + helNegArray[bin]);
+    A_err_array[bin] = std::sqrt(std::max(0.0,(4.0*helPosArray[bin]*helNegArray[bin])/std::pow((helPosArray[bin] + helNegArray[bin]),3)));
+    //TMath::Sqrt((1 - A_array[bin]*A_array[bin])/(helPosArray[bin]+helNegArray[bin]));
+
     double Asym_tot = c_pos + c_neg;
     double Asym_diff = c_pos - c_neg;
 
@@ -394,10 +429,15 @@ void SimDataComp()
     {
       Asym_raw = Asym_diff / Asym_tot;
       Asym_raw_err = 2 * TMath::Sqrt( c_neg*c_neg*c_pos_err*c_pos_err + c_pos*c_pos*c_neg_err*c_neg_err ) / ( (c_pos+c_neg)*(c_pos+c_neg) );
+      //std::sqrt(std::max(0.0,(4.0*c_pos*c_neg)/std::pow(Asym_tot,3)));
+      //^^method from JAck's code
+
     }
 
     h_asym->SetBinContent(bin, Asym_raw);
+    //h_asym->SetBinContent(bin, A_array[bin]);
     h_asym->SetBinError(bin, Asym_raw_err);
+    //h_asym->SetBinError(bin, A_err_array[bin]);
 
   }//end loop over bins
 
@@ -409,7 +449,7 @@ void SimDataComp()
 
   TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,-6,3,3);
 
-  AsymFitFunc->SetNpx(500);
+  AsymFitFunc->SetNpx(numberBins);
   double Asymstartpar[] = {0.0,0.08,0.0};
   AsymFitFunc->SetParameters(Asymstartpar);
   AsymFitFunc->SetParLimits(0,-0.2,0.2); // proton asymmetry
@@ -547,7 +587,7 @@ void SimDataComp()
 
   TCanvas *c4 = new TCanvas("c4","Asymmetry",100,100,1000,1000);
   c4->cd();
-  h_asym->GetYaxis()->SetRangeUser(-0.4,0.6);
+  //h_asym->GetYaxis()->SetRangeUser(-0.4,0.6);
   h_asym->Draw("E");
   c4->SetGrid();
   c4->Update();
