@@ -71,7 +71,6 @@ void SimDataComp()
   auto title_words = "null";
 
   int npar = 6;
-  //double startpar[] = {1.0,-3.0,1.0,0.0,1.0,-1.0};
 
   if(kin == 2)
   {
@@ -316,18 +315,21 @@ void SimDataComp()
   h_prob_proton_dx = new TH1D("h_prob_proton_dx:",";prob dx proton",h_Nbins,h_minX,h_maxX);
   h_prob_proton_dx->GetXaxis()->SetTitle("dx [m]");
   h_prob_proton_dx->GetYaxis()->SetTitle("Proton Probability");
+  h_prob_proton_dx->GetYaxis()->SetRangeUser(0.0,1.0);
 
   h_prob_neutron_dx = new TH1D("h_prob_neutron_dx:",";prob dx neutron",h_Nbins,h_minX,h_maxX);
   h_prob_neutron_dx->GetXaxis()->SetTitle("dx [m]");
   h_prob_neutron_dx->GetYaxis()->SetTitle("Neutron Probability");
+  h_prob_neutron_dx->GetYaxis()->SetRangeUser(0.0,1.0);
 
   h_prob_bckgrnd_dx = new TH1D("h_prob_bckgrnd_dx:",";prob dx background",h_Nbins,h_minX,h_maxX);
   h_prob_bckgrnd_dx->GetXaxis()->SetTitle("dx [m]");
   h_prob_bckgrnd_dx->GetYaxis()->SetTitle("Background Probability");
+  h_prob_bckgrnd_dx->GetYaxis()->SetRangeUser(0.0,1.0);
 
   TH1D* h_asym = new TH1D("h_asym",";Raw Asymmetry",h_Nbins,h_minX,h_maxX);
   h_asym->GetXaxis()->SetTitle("dx [m]");
-  h_asym->SetTitle("Raw Asymmetry |N+ - N-|/(N+ + N-)");
+  h_asym->SetTitle("Raw Asymmetry (N+ - N-)/(N+ + N-)");
 
   for (int bin = 0; bin < h_Nbins; bin++)
   {
@@ -340,42 +342,62 @@ void SimDataComp()
     h_resid->SetBinContent(bin,new_val);
     h_resid->SetBinError(bin,hist_error);
 
-    double c_p = shifted_h_sim_proton_dx->GetBinContent(bin);
-    double c_p_err = shifted_h_sim_proton_dx->GetBinError(bin);
-    double c_n = shifted_h_sim_neutron_dx->GetBinContent(bin);
-    double c_bg = shifted_h_simIN_dx->GetBinContent(bin);
+    double c_p       = shifted_h_sim_proton_dx->GetBinContent(bin);
+    double c_p_err   = shifted_h_sim_proton_dx->GetBinError(bin);
+    double c_n       = shifted_h_sim_neutron_dx->GetBinContent(bin);
+    double c_n_err   = shifted_h_sim_neutron_dx->GetBinError(bin);
+    double c_bg      = shifted_h_simIN_dx->GetBinContent(bin);
+    double c_bg_err  = shifted_h_simIN_dx->GetBinError(bin);
 
     double P_tot = c_p + c_n + c_bg;
 
-    double P_p = 0.0;
-    double P_n = 0.0;
-    double P_bg = 0.0;
+    double P_p       = 0.0;
+    double P_p_err   = 10.0;
+    double P_n       = 0.0;
+    double P_n_err   = 10.0;
+    double P_bg      = 0.0;
+    double P_bg_err  = 10.0;
 
     if (P_tot != 0.0)
     {
 
-      P_p = c_p / P_tot;
-      P_n = c_n / P_tot;
-      P_bg = c_bg / P_tot;
+      P_p       = c_p / P_tot;
+      P_n       = c_n / P_tot;
+      P_bg      = c_bg / P_tot;
+      P_p_err   = TMath::Sqrt( (c_n+c_bg)*(c_n+c_bg)*c_p_err*c_p_err + c_p*c_p*c_n_err*c_n_err + c_p*c_p*c_bg_err*c_bg_err ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
+      P_n_err   = TMath::Sqrt( (c_bg+c_p)*(c_bg+c_p)*c_n_err*c_n_err + c_n*c_n*c_p_err*c_p_err + c_n*c_n*c_bg_err*c_bg_err ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
+      P_bg_err  = TMath::Sqrt( (c_n+c_p)*(c_n+c_p)*c_bg_err*c_bg_err + c_bg*c_bg*c_p_err*c_p_err + c_bg*c_bg*c_p_err*c_p_err ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
 
     }
 
     //std::cout << "Proton probability: " << P_p << std::endl;
     h_prob_proton_dx->SetBinContent(bin,P_p);
+    h_prob_proton_dx->SetBinError(bin,P_p_err);
     h_prob_neutron_dx->SetBinContent(bin,P_n);
+    h_prob_neutron_dx->SetBinError(bin,P_n_err);
     h_prob_bckgrnd_dx->SetBinContent(bin,P_bg);
+    h_prob_bckgrnd_dx->SetBinError(bin,P_bg_err);
 
-    double c_pos = h_pos_hel_dx->GetBinContent(bin);
-    double c_neg = h_neg_hel_dx->GetBinContent(bin);
+    double c_pos      = h_pos_hel_dx->GetBinContent(bin);
+    double c_pos_err  = h_pos_hel_dx->GetBinError(bin);
+    double c_neg      = h_neg_hel_dx->GetBinContent(bin);
+    double c_neg_err  = h_neg_hel_dx->GetBinError(bin);
 
     double Asym_tot = c_pos + c_neg;
-    double Asym_diff = TMath::Abs(c_pos - c_neg);
+    double Asym_diff = c_pos - c_neg;
 
     double Asym_raw = 0.0;
+    double Asym_raw_err = 1.0;
+    //if counts add up to zero then the stat error should be infinity, but in order to avoid the code exploding, i'll just make the error really large if we dont have any counts in that bin. this is just for safety. every bin should have counts.
 
-    if (Asym_tot != 0.0) Asym_raw = Asym_diff / Asym_tot;
+    if (Asym_tot != 0.0)
+    {
+      Asym_raw = Asym_diff / Asym_tot;
+      Asym_raw_err = 2 * TMath::Sqrt( c_neg*c_neg*c_pos_err*c_pos_err + c_pos*c_pos*c_neg_err*c_neg_err ) / ( (c_pos+c_neg)*(c_pos+c_neg) );
+    }
 
     h_asym->SetBinContent(bin, Asym_raw);
+    h_asym->SetBinError(bin, Asym_raw_err);
 
   }//end loop over bins
 
@@ -385,16 +407,16 @@ void SimDataComp()
   h_prob_bckgrnd_dx->SetEntries(totalentries);
   h_asym->SetEntries(totalentries);
 
-  TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,-6,4,3);
+  TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,-6,3,3);
 
   AsymFitFunc->SetNpx(500);
-  double Asymstartpar[] = {0.0001,0.05,0.0001};
+  double Asymstartpar[] = {0.0,0.08,0.0};
   AsymFitFunc->SetParameters(Asymstartpar);
-  AsymFitFunc->SetParLimits(0,0.0,0.5); // proton asymmetry
-  AsymFitFunc->SetParLimits(1,0.0,0.5); // neutron asymmetry
-  AsymFitFunc->SetParLimits(2,0.0,0.5); // background asymmetry
+  AsymFitFunc->SetParLimits(0,-0.2,0.2); // proton asymmetry
+  AsymFitFunc->SetParLimits(1,-0.2,0.2); // neutron asymmetry
+  AsymFitFunc->SetParLimits(2,-0.2,0.2); // background asymmetry
 
-  h_asym->Fit(AsymFitFunc,"P","",h_minX,h_maxX);
+  h_asym->Fit(AsymFitFunc,"0","",h_minX,h_maxX);
 
   TH1D* scaled_proton_prob  = (TH1D*)h_prob_proton_dx->Clone("scaled_proton_prob");
   TH1D* scaled_neutron_prob = (TH1D*)h_prob_neutron_dx->Clone("scaled_neutron_prob");
@@ -408,14 +430,14 @@ void SimDataComp()
   std::cout << "Neutron Asymmetry: " << AsymFitFunc->GetParameter(1) << std::endl;
   std::cout << "Background Asymmetry: " << AsymFitFunc->GetParameter(2) << std::endl;
 
-  TH1F* h_Asym_dx = new TH1F("h_Asym_dx","",h_Nbins,h_minX,h_maxX);
+  //TH1F* h_Asym_dx = new TH1F("h_Asym_dx","",h_Nbins,h_minX,h_maxX);
 
-  for(int ibin = 0; ibin < h_Nbins; ibin++)
-  {
-    h_Asym_dx->SetBinContent(ibin, scaled_proton_prob->GetBinContent(ibin) + scaled_neutron_prob->GetBinContent(ibin) + scaled_bckgrnd_prob->GetBinContent(ibin));
-  }
+  //for(int ibin = 0; ibin < h_Nbins; ibin++)
+  //{
+    //h_Asym_dx->SetBinContent(ibin, scaled_proton_prob->GetBinContent(ibin) + scaled_neutron_prob->GetBinContent(ibin) + scaled_bckgrnd_prob->GetBinContent(ibin));
+  //}
 
-  h_Asym_dx->Scale(scale);
+  //h_Asym_dx->Scale(scale);
 
   //Create canvas and draw all the histograms
 
@@ -433,24 +455,27 @@ void SimDataComp()
 
   pad1->cd();
   pad1->SetTitle(title_words);
-  h_total_dx->Draw("HIST");
+  h_total_dx->Draw("E");
   shifted_h_simIN_dx->Draw("HIST SAMES");
   shifted_h_sim_proton_dx->Draw("HIST SAMES");
   shifted_h_sim_neutron_dx->Draw("HIST SAMES");
   h_data_dx->Draw("E SAMES");
+  h_data_dx->GetXaxis()->SetTitle("dx [m]");
 
   auto legend = new TLegend(0.55,0.8,0.99,0.99);
   legend->SetTextSize(0.03);
   legend->SetHeader("Fitting","C");
   legend->AddEntry(h_data_dx,"Data","lep");
-  legend->AddEntry(shifted_h_sim_proton_dx,Form("Rp=%.3g, sh_p=%.3g m",FitFunc->GetParameter(0),FitFunc->GetParameter(0)*FitFunc->GetParameter(1)),"l");
-  legend->AddEntry(shifted_h_sim_neutron_dx,Form("Rn=%.3g, sh_n=%.3g m",FitFunc->GetParameter(2),FitFunc->GetParameter(2)*FitFunc->GetParameter(3)),"l");
-  legend->AddEntry(shifted_h_simIN_dx,Form("Rbg=%.3g, sh_bg=%.3g m",FitFunc->GetParameter(4),FitFunc->GetParameter(4)*FitFunc->GetParameter(5)),"l");
+  legend->AddEntry(shifted_h_sim_proton_dx,Form("Rp=%.3g, sh_p=%.3g m",FitFunc->GetParameter(0),FitFunc->GetParameter(0)*FitFunc->GetParameter(1)),"le");
+  legend->AddEntry(shifted_h_sim_neutron_dx,Form("Rn=%.3g, sh_n=%.3g m",FitFunc->GetParameter(2),FitFunc->GetParameter(2)*FitFunc->GetParameter(3)),"le");
+  legend->AddEntry(shifted_h_simIN_dx,Form("Rbg=%.3g, sh_bg=%.3g m",FitFunc->GetParameter(4),FitFunc->GetParameter(4)*FitFunc->GetParameter(5)),"le");
   legend->AddEntry(h_total_dx,"Total Fit: (Rp*h_p+sh_p)+(Rn*h_n+sh_n)+(Rbg*h_bg+sh_bg)","l");
   legend->Draw();
 
   pad2->cd();
-  h_resid->Draw();
+  h_resid->Draw("E");
+  h_resid->GetXaxis()->SetTitle("dx [m]");
+  h_resid->GetYaxis()->SetTitle("Residuals (Data - Fit)");
 
   c1->cd();  // c1 is the TCanvas
   TPad *pad5 = new TPad("all","all",0,0,1,1);
@@ -465,13 +490,13 @@ void SimDataComp()
   c2->Divide(3,1);
 
   c2->cd(1);
-  h_prob_proton_dx->Draw();
+  h_prob_proton_dx->Draw("E");
 
   c2->cd(2);
-  h_prob_neutron_dx->Draw();
+  h_prob_neutron_dx->Draw("E");
 
   c2->cd(3);
-  h_prob_bckgrnd_dx->Draw();
+  h_prob_bckgrnd_dx->Draw("E");
 
   TCanvas *c3 = new TCanvas("c3","Asymmetry",100,100,1500,500);
   c3->Divide(3,1);
@@ -479,8 +504,8 @@ void SimDataComp()
   gStyle->SetOptStat(0);
 
   c3->cd(1);
-  h_pos_hel_dx->Draw("HIST");
-  h_neg_hel_dx->Draw("HIST SAMES");
+  h_pos_hel_dx->Draw("E");
+  h_neg_hel_dx->Draw("E SAMES");
 
   auto legendHEL = new TLegend(0.7,0.8,0.99,0.99);
   legendHEL->SetTextSize(0.03);
@@ -489,7 +514,7 @@ void SimDataComp()
   legendHEL->Draw();
 
   c3->cd(2);
-  h_asym->Draw();
+  h_asym->Draw("E");
   //h_Asym_dx->Draw("SAMES");
   AsymFitFunc->Draw("SAMES");
 
@@ -498,20 +523,20 @@ void SimDataComp()
   legendA->AddEntry(h_asym,"Data","lep");
   //legendA->AddEntry(h_Asym_dx,"Scaled Fit","l");
   //legendA->AddEntry(AsymFitFunc,"Fit","l");
-  legendA->AddEntry(AsymFitFunc,Form("A(dx) = %.3gPp(dx) + %.3gPn(dx) + %.3gPbg(dx)",AsymFitFunc->GetParameter(0),AsymFitFunc->GetParameter(1),AsymFitFunc->GetParameter(2)),"l");
+  legendA->AddEntry(AsymFitFunc,Form("A(dx) = %.4gPp(dx) + %.4gPn(dx) + %.4gPbg(dx)",AsymFitFunc->GetParameter(0),AsymFitFunc->GetParameter(1),AsymFitFunc->GetParameter(2)),"l");
   legendA->Draw();
 
   c3->cd(3);
   scaled_proton_prob->SetTitle("Scaled Probabilities");
 
   scaled_proton_prob->SetLineColor(kRed);
-  scaled_proton_prob->Draw();
+  scaled_proton_prob->Draw("E");
 
   scaled_neutron_prob->SetLineColor(kBlue);
-  scaled_neutron_prob->Draw("SAMES");
+  scaled_neutron_prob->Draw("E SAMES");
 
   scaled_bckgrnd_prob->SetLineColor(kGreen);
-  scaled_bckgrnd_prob->Draw("SAMES");
+  scaled_bckgrnd_prob->Draw("E SAMES");
 
   auto legendProb = new TLegend(0.7,0.8,0.9,0.9);
   legendProb->SetTextSize(0.02);
@@ -519,5 +544,12 @@ void SimDataComp()
   legendProb->AddEntry(scaled_neutron_prob, "Neutron", "l");
   legendProb->AddEntry(scaled_bckgrnd_prob, "Background", "l");
   legendProb->Draw();
+
+  TCanvas *c4 = new TCanvas("c4","Asymmetry",100,100,1000,1000);
+  c4->cd();
+  h_asym->GetYaxis()->SetRangeUser(-0.4,0.6);
+  h_asym->Draw("E");
+  c4->SetGrid();
+  c4->Update();
 
 }//end main

@@ -65,12 +65,15 @@ void QE_comp(const char *kinematic)
   double coin_mean;
   double coin_sigma;
 
+  int IHWP_flip = 1;
+
   if(kinematic=="GEN2")
   {
     optics_valid_min = -0.35;
     optics_valid_max = 0.34;
     coin_mean = 129.1;
     coin_sigma = 5.6;
+    IHWP_flip = -1;
   }
   else if(kinematic=="GEN3")
   {
@@ -124,7 +127,7 @@ void QE_comp(const char *kinematic)
   {
     T->GetEntry(iev);
 
-    if(pass_global==1 && (IHWP==1.0||IHWP==-1.0) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<coin_sigma && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>2.0 && abs(bb_tr_vz)<0.27)
+    if(pass_global==1 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<coin_sigma && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>2.0 && abs(bb_tr_vz)<0.27)
     {
       
       if(abs(e_kine_W2-1.0)<0.5)
@@ -137,7 +140,7 @@ void QE_comp(const char *kinematic)
       }
       
       W2_out = e_kine_W2;
-      helicity_out = IHWP * helicity;
+      helicity_out = -1* IHWP * helicity * IHWP_flip;
     }
 
     T_data->Fill();
