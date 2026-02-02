@@ -13,21 +13,21 @@ import numpy as np
 from scipy.optimize import curve_fit
 from scipy.stats import norm
 
+#______________Add include directory__________________
+current_dir = os.getcwd()
+include_dir = os.path.join(current_dir, 'include/pyth')
+sys.path.insert(0, include_dir)
+#_____________________________________________________
+
 import CONFIG
 import DBPARSE
 from UTILITIES import *
-from SIMFITS2D import DistributionFits2D
+#from SIMFITS2D import DistributionFits2D
 from ROOT import gStyle, TChain, TH1F, TCanvas, TLegend
 
 import ORGANIZATION
 import PathFinding
 import PathOffset
-
-#______________Add include directory__________________
-current_dir = os.getcwd()
-include_dir = os.path.join(current_dir, '../include/pyth')
-sys.path.insert(0, include_dir)
-#_____________________________________________________
 
 pas = input("Which mass replay pass are you looking at?")
 config = input("Which kinematic configuration are you looking at? 2, 3, or 4?")
@@ -44,22 +44,6 @@ dybgmin=CONFIG.Function_JSON("dybgmin",f"../config/cuts{config}.cfg")
 dybgmax=CONFIG.Function_JSON("dybgmax",f"../config/cuts{config}.cfg")
 coinmin=CONFIG.Function_JSON("coinmin",f"../config/cuts{config}.cfg")
 coinmax=CONFIG.Function_JSON("coinmax",f"../config/cuts{config}.cfg")
-#dymin=-.984
-#dymax=.9
-#W2max=1.75
-#dybgmin=-1.2
-#dybgmax=1.2
-#dxmin=-2
-#dxmax=1
-#print(f'W2min: {W2min}')
-#print(f'W2max: {W2max}')
-#print(f'dxmin: {dxmin}')
-#print(f'dxmax: {dxmax}')
-#print(f'dymin: {dymin}')
-#print(f'dymax: {dymax}')
-#print(f'dybgmin: {dybgmin}')
-#print(f'dybgmax: {dybgmax}')
-#print(f'Coin Min: {coinmin} Coin Max: {coinmax}')
 
 def main():
 

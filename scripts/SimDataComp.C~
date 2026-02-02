@@ -1,0 +1,33 @@
+#include <TF1.h>
+
+void SimDataComp()
+{
+
+  TChain* T_data = new TChain("T_data");
+  T_data->Add("outfiles/parsed_GEn_pass2_GEN2_He3_dxdy.root");
+
+  Double_t dx;       T_data->SetBranchAddress("dx", &dx);
+  Double_t dy;       T_data->SetBranchAddress("dy", &dy);
+
+  if(T_data->GetEntries()==0)
+  {
+    std::cerr << "\n --- No ROOT file found!! --- \n\n";
+    throw;
+  }
+  else std::cout << "\nFound " << T_data->GetEntries() << " events. Starting analysis.. \n";
+
+  TH1D* h_data_dx = new TH1D("h_data_dx", ";dx", 500, -6.0, 4.0);
+  h_data_dx->GetXaxis()->SetTitle("dx [m]");
+
+  for (size_t iev = 0; iev < T_data->GetEntries(); iev++)
+  {
+    T_data->GetEntry(iev);
+
+    h_data_dx->Fill(dx);
+  }//end loop over events
+
+  TCanvas *c1 = new TCanvas("c1", "dx", 100,100,800,800);
+  c1->cd();
+  h_data_dx->Draw();
+  
+}

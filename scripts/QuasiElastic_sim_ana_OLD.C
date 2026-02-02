@@ -26,7 +26,7 @@
 
 #include "../include/gen-ana.h"
 
-int QuasiElastic_sim_ana(const std::string configfilename, std::string filebase="/volatile/halla/sbs/ktevans/QE_sim/QE_sim")
+int QuasiElastic_sim_ana(const std::string configfilename, std::string filebase="/volatile/halla/sbs/ktevans/QE_sim")
 {
 
   string configdir = "../config/";
@@ -143,9 +143,9 @@ int QuasiElastic_sim_ana(const std::string configfilename, std::string filebase=
   std::vector<void*> mc_mem = {&mc_sigma,&mc_omega,&mc_fnucl,&mc_simc_weight};
   setrootvar::setbranch(C,"MC",mc,mc_mem);
 
-  double mc_epx, mc_epy, mc_epz, mc_npx, mc_npy, mc_npz;
+  double mc_ev_epx, mc_ev_epy, mc_ev_epz, mc_ev_npx, mc_ev_npy, mc_ev_npz;
   std::vector<std::string> mc_ev_p = {"mc_epx", "mc_epy", "mc_epz", "mc_npx", "mc_npy", "mc_npz"};
-  std::vector<void*> mc_p = {&mc_epx,&mc_epy,&mc_epz,&mc_npx,&mc_npy,&mc_npz};
+  std::vector<void*> mc_p = {&mc_epx,&mc_epy,&mc_epz,&mc_npx,&mc_npy,&mc_npz;
   setrootvar::setbranch(C,"MC",mc_ev_p,mc_p);
 
   double mc_vx[maxNtr], mc_vy[maxNtr], mc_px[maxNtr], mc_py[maxNtr], mc_pz[maxNtr];
@@ -174,7 +174,7 @@ int QuasiElastic_sim_ana(const std::string configfilename, std::string filebase=
   vector<double> hdy_lim = kin_info.hdy_lim;
   TH1F *h_dxHCAL = new TH1F("h_dxHCAL","; x_{HCAL} - x_{exp} (m);",int(hdx_lim[0]),hdx_lim[1],hdx_lim[2]);
   TH1F *h_dyHCAL = new TH1F("h_dyHCAL","; y_{HCAL} - y_{exp} (m);",int(hdy_lim[0]),hdy_lim[1],hdy_lim[2]);
-  //TH1F *h_coin_time = new TH1F("h_coin_time", "Coincidence time (ns)", 200, 380, 660);
+  TH1F *h_coin_time = new TH1F("h_coin_time", "Coincidence time (ns)", 200, 380, 660);
 
   TH2F *h2_rcHCAL = Utilities::TH2FHCALface_rc("h2_rcHCAL");
   TH2F *h2_dxdyHCAL = Utilities::TH2FdxdyHCAL("h2_dxdyHCAL");
@@ -192,7 +192,7 @@ int QuasiElastic_sim_ana(const std::string configfilename, std::string filebase=
   double T_mc_omega;	Tout->Branch("mc_omega", &T_mc_omega, "mc_omega/D");
   double T_fnucl;         Tout->Branch("fnucl", &T_fnucl, "fnucl/D");
   bool fiduCut;         Tout->Branch("fiduCut", &fiduCut, "fiduCut/B");
-  //bool coinCut;         Tout->Branch("coinCut", &coinCut, "coinCut/B");
+  bool coinCut;         Tout->Branch("coinCut", &coinCut, "coinCut/B");
   //
   double T_ebeam;       Tout->Branch("ebeam", &T_ebeam, "ebeam/D");
   //kine
@@ -251,8 +251,8 @@ int QuasiElastic_sim_ana(const std::string configfilename, std::string filebase=
   vector<double> dy_n = kin_info.dy_n;
   double Nsigma_cut_dx_n = kin_info.Nsigma_dx_n;
   double Nsigma_cut_dy_n = kin_info.Nsigma_dy_n;
-  //vector<double> coin_time_cut = kin_info.coin_time_cut;
-  //double Nsigma_coin_time = kin_info.Nsigma_coin_time;
+  vector<double> coin_time_cut = kin_info.coin_time_cut;
+  double Nsigma_coin_time = kin_info.Nsigma_coin_time;
   vector<double> hcal_active_area = cut::hcal_active_area_data(); // Exc. 1 blk from all 4 sides
   vector<double> hcal_safety_margin = cut::hcal_safety_margin(dx_p[1], dx_n[1], dy_p[1], hcal_active_area);
 
@@ -436,7 +436,7 @@ int QuasiElastic_sim_ana(const std::string configfilename, std::string filebase=
     WCut = W2recon > W2min && W2recon < W2max;
 
     // W cut and coincidence cut
-    if (WCut) {
+    if (WCut && coinCut) {
       // fiducial cut
       //if (fiduCut) { //No fiducial cut for GEN?
       h_dxHCAL->Fill(dx,weight);

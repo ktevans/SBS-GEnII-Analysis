@@ -131,17 +131,17 @@ void SimDataComp()
 
   h_data_dx = new TH1D("h_data_dx", ";dx", numberBins, -6.0, 4.0);
   h_data_dx->GetXaxis()->SetTitle("dx [m]");
-  h_data_dx->Sumw2();
+  //h_data_dx->Sumw2();
 
   TH1D* h_neg_hel_dx = new TH1D("h_neg_hel_dx",";-hel", numberBins, -6.0, 4.0);
   h_neg_hel_dx->GetXaxis()->SetTitle("dx [m]");
   h_neg_hel_dx->SetLineColor(kRed);
-  h_neg_hel_dx->Sumw2();
+  //h_neg_hel_dx->Sumw2();
 
   TH1D* h_pos_hel_dx = new TH1D("h_pos_hel_dx",";+hel", numberBins, -6.0, 4.0);
   h_pos_hel_dx->GetXaxis()->SetTitle("dx [m]");
   h_pos_hel_dx->SetLineColor(kBlue);
-  h_pos_hel_dx->Sumw2();
+  //h_pos_hel_dx->Sumw2();
 
   int helPosArray[numberBins];
   int helNegArray[numberBins];
@@ -257,19 +257,17 @@ void SimDataComp()
   double xmin = h_data_dx->GetXaxis()->GetBinLowEdge(1);
   double xmax = h_data_dx->GetXaxis()->GetBinUpEdge(nbins);
 
-  //int npar = 6;
-
   TF1 *FitFunc = new TF1("FitFunc",&fitsim,-6,4,6);
 
   FitFunc->SetNpx(numberBins);
   double startpar[] = {0.5,-0.2,0.5,0.0,1.0,-1.0};
   FitFunc->SetParameters(startpar);
-  FitFunc->SetParLimits(0,0.1,100); // proton scale
-  FitFunc->SetParLimits(1,-1.0,1.0); // proton shift
-  FitFunc->SetParLimits(2,0.0,100); // neutron scale
-  FitFunc->SetParLimits(3,-1.0,1.0); // neutron shift
-  FitFunc->SetParLimits(4,0.0,10.0); // background scale
-  FitFunc->SetParLimits(5,-3.0,3.0); // background shift
+  FitFunc->SetParLimits(0,0.1,100);   // proton scale
+  FitFunc->SetParLimits(1,-1.0,1.0);  // proton shift
+  FitFunc->SetParLimits(2,0.0,100);   // neutron scale
+  FitFunc->SetParLimits(3,-1.0,1.0);  // neutron shift
+  FitFunc->SetParLimits(4,0.0,10.0);  // background scale
+  FitFunc->SetParLimits(5,-3.0,3.0);  // background shift
 
   h_data_dx->Fit(FitFunc,"0","",xmin,xmax);
 
@@ -279,15 +277,15 @@ void SimDataComp()
 
   TH1D* shifted_h_sim_proton_dx = (TH1D*)h_sim_proton_dx->Clone("shifted_h_sim_proton_dx");
   shifted_h_sim_proton_dx->Reset("ICES");
-  shifted_h_sim_proton_dx->Sumw2();
+  //shifted_h_sim_proton_dx->Sumw2();
 
   TH1D* shifted_h_sim_neutron_dx = (TH1D*)h_sim_neutron_dx->Clone("shifted_h_sim_neutron_dx");
   shifted_h_sim_neutron_dx->Reset("ICES");
-  shifted_h_sim_neutron_dx->Sumw2();
+  //shifted_h_sim_neutron_dx->Sumw2();
 
   TH1D* shifted_h_simIN_dx = (TH1D*)h_simIN_dx->Clone("shifted_h_simIN_dx");
   shifted_h_simIN_dx->Reset("ICES");
-  shifted_h_simIN_dx->Sumw2();
+  //shifted_h_simIN_dx->Sumw2();
 
   for(int i =1; i <= nbins; i++)
   {
@@ -323,11 +321,11 @@ void SimDataComp()
     h_total_dx->SetBinContent(ibin, shifted_h_sim_neutron_dx->GetBinContent(ibin) + shifted_h_sim_proton_dx->GetBinContent(ibin) + shifted_h_simIN_dx->GetBinContent(ibin));
   }
 
-  h_data_dx->Scale(scale);
-  shifted_h_sim_proton_dx->Scale(scale);
-  shifted_h_sim_neutron_dx->Scale(scale);
-  shifted_h_simIN_dx->Scale(scale);
-  h_total_dx->Scale(scale);
+  h_data_dx                ->Scale(scale);
+  shifted_h_sim_proton_dx  ->Scale(scale);
+  shifted_h_sim_neutron_dx ->Scale(scale);
+  shifted_h_simIN_dx       ->Scale(scale);
+  h_total_dx               ->Scale(scale);
 
   //Create residual and probability plots
 
@@ -357,7 +355,7 @@ void SimDataComp()
   TH1D* h_asym = new TH1D("h_asym",";Raw Asymmetry",h_Nbins,h_minX,h_maxX);
   h_asym->GetXaxis()->SetTitle("dx [m]");
   h_asym->SetTitle("Raw Asymmetry (N+ - N-)/(N+ + N-)");
-  h_asym->Sumw2();
+  //h_asym->Sumw2();
 
   double A_array[numberBins];
   double A_err_array[numberBins];
@@ -365,9 +363,9 @@ void SimDataComp()
   for (int bin = 0; bin < h_Nbins; bin++)
   {
 
-    double hist_val = h_data_dx->GetBinContent(bin);
-    double hist_error = h_data_dx->GetBinError(bin);
-    double fit_val = h_total_dx->GetBinContent(bin);
+    double hist_val    = h_data_dx->GetBinContent(bin);
+    double hist_error  = h_data_dx->GetBinError(bin);
+    double fit_val     = h_total_dx->GetBinContent(bin);
 
     double new_val = (hist_val - fit_val);
     h_resid->SetBinContent(bin,new_val);
@@ -383,23 +381,24 @@ void SimDataComp()
     double P_tot = c_p + c_n + c_bg;
 
     double P_p       = 0.0;
-    double P_p_err   = 10.0;
+    double P_p_err   = 1.0;
     double P_n       = 0.0;
-    double P_n_err   = 10.0;
+    double P_n_err   = 1.0;
     double P_bg      = 0.0;
-    double P_bg_err  = 10.0;
+    double P_bg_err  = 1.0;
 
     if (P_tot != 0.0)
     {
 
-      P_p       = c_p / P_tot;
-      P_n       = c_n / P_tot;
-      P_bg      = c_bg / P_tot;
-      P_p_err   = TMath::Sqrt( (c_n+c_bg)*(c_n+c_bg)*c_p_err*c_p_err + c_p*c_p*c_n_err*c_n_err + c_p*c_p*c_bg_err*c_bg_err ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
-      P_n_err   = TMath::Sqrt( (c_bg+c_p)*(c_bg+c_p)*c_n_err*c_n_err + c_n*c_n*c_p_err*c_p_err + c_n*c_n*c_bg_err*c_bg_err ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
-      P_bg_err  = TMath::Sqrt( (c_n+c_p)*(c_n+c_p)*c_bg_err*c_bg_err + c_bg*c_bg*c_p_err*c_p_err + c_bg*c_bg*c_p_err*c_p_err ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
+      P_p  = c_p / P_tot;
+      P_n  = c_n / P_tot;
+      P_bg = c_bg / P_tot;
 
-    }
+      P_p_err  = TMath::Sqrt( (c_n+c_bg)*(c_n+c_bg)*c_p_err*c_p_err + c_p*c_p*c_n_err*c_n_err + c_p*c_p*c_bg_err*c_bg_err ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
+      P_n_err  = TMath::Sqrt( (c_bg+c_p)*(c_bg+c_p)*c_n_err*c_n_err + c_n*c_n*c_p_err*c_p_err + c_n*c_n*c_bg_err*c_bg_err ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
+      P_bg_err = TMath::Sqrt( (c_n+c_p)*(c_n+c_p)*c_bg_err*c_bg_err + c_bg*c_bg*c_p_err*c_p_err + c_bg*c_bg*c_p_err*c_p_err ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
+
+    }//end if total probability is nonzero
 
     //std::cout << "Proton probability: " << P_p << std::endl;
     h_prob_proton_dx->SetBinContent(bin,P_p);
@@ -431,8 +430,7 @@ void SimDataComp()
       Asym_raw_err = 2 * TMath::Sqrt( c_neg*c_neg*c_pos_err*c_pos_err + c_pos*c_pos*c_neg_err*c_neg_err ) / ( (c_pos+c_neg)*(c_pos+c_neg) );
       //std::sqrt(std::max(0.0,(4.0*c_pos*c_neg)/std::pow(Asym_tot,3)));
       //^^method from JAck's code
-
-    }
+    }//end if the total asym is nonzero
 
     h_asym->SetBinContent(bin, Asym_raw);
     //h_asym->SetBinContent(bin, A_array[bin]);
@@ -441,11 +439,11 @@ void SimDataComp()
 
   }//end loop over bins
 
-  h_resid->SetEntries(totalentries);
-  h_prob_proton_dx->SetEntries(totalentries);
-  h_prob_neutron_dx->SetEntries(totalentries);
-  h_prob_bckgrnd_dx->SetEntries(totalentries);
-  h_asym->SetEntries(totalentries);
+  h_resid           -> SetEntries(totalentries);
+  h_prob_proton_dx  -> SetEntries(totalentries);
+  h_prob_neutron_dx -> SetEntries(totalentries);
+  h_prob_bckgrnd_dx -> SetEntries(totalentries);
+  h_asym            -> SetEntries(totalentries);
 
   TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,-6,3,3);
 
@@ -502,7 +500,7 @@ void SimDataComp()
   h_data_dx->Draw("E SAMES");
   h_data_dx->GetXaxis()->SetTitle("dx [m]");
 
-  auto legend = new TLegend(0.55,0.8,0.99,0.99);
+  auto legend = new TLegend(0.55,0.75,0.99,0.99);
   legend->SetTextSize(0.03);
   legend->SetHeader("Fitting","C");
   legend->AddEntry(h_data_dx,"Data","lep");
@@ -530,13 +528,11 @@ void SimDataComp()
   c2->Divide(3,1);
 
   c2->cd(1);
-  h_prob_proton_dx->Draw("E");
-
+  h_prob_proton_dx->Draw();
   c2->cd(2);
-  h_prob_neutron_dx->Draw("E");
-
+  h_prob_neutron_dx->Draw();
   c2->cd(3);
-  h_prob_bckgrnd_dx->Draw("E");
+  h_prob_bckgrnd_dx->Draw();
 
   TCanvas *c3 = new TCanvas("c3","Asymmetry",100,100,1500,500);
   c3->Divide(3,1);

@@ -1,0 +1,121 @@
+import ROOT
+from ROOT import RDataFrame
+import sys
+import math
+import uproot
+import numpy as np
+#from Scientific.Geometry import Vector
+import pandas as pd
+import matplotlib.pyplot as plt
+
+## First we get the file names sorted
+beforeConfigName = sys.argv[1]
+afterConfigName = sys.argv[2]
+#/cache/halla/sbs/prod/GEnII/pass1/GEN2/He3/rootfiles/
+#GEN2/He3/rootfiles/e1209016_fullreplay_2321_stream0_2_seg3_3
+#.root
+
+beforeFileName = str(beforeConfigName) + ".root"
+afterFileName = str(afterConfigName) + ".root"
+
+kin = ""
+target = ""
+Q2_kin = 0.0 #Q2 expected from kinematic in GeV2
+p_electron = 0.0 #electron momentum in GeV
+p_nucleon = 0.0 #nucleon momentum in GeV
+energy_beam = 0.0 #beam energy expected from kinematic
+bb_angle = 0.0 #bigbite magnet angle (what angle?) in degrees
+bb_dist = 1.63 #distance from center of target to bb magnet in meters
+sbs_angle = 0.0 #super bigbite magnet angle (what angle?) in degrees
+sbs_dist = 2.8 #distance from center of target to sbs magnet in meters
+hcal_angle = 0.0 #hcal angle (what angle?) in degrees
+hcal_dist = 17.0 #distance from center of target to hcal in meters
+
+if "GEN2" in beforeConfigName:
+    kin = "GEN2"
+    Q2_kin = 3.00
+    p_electron = 2.69
+    p_nucleon = 2.37
+    energy_beam = 4.291
+    bb_angle = 29.5
+    sbs_angle = 34.7
+    hcal_angle = 34.7
+if "GEN3" in beforeConfigName:
+    kin = "GEN3"
+    Q2_kin = 6.83
+    p_electron = 2.73
+    p_nucleon = 4.51
+    energy_beam = 6.373
+    bb_angle = 36.5
+    sbs_angle = 22.1
+    hcal_angle = 21.6
+if "GEN4a" in beforeConfigName:
+    kin = "GEN4a"
+    Q2_kin = 9.82
+    p_electron = 3.21
+    p_nucleon = 6.11
+    energy_beam = 8.448
+    bb_angle = 35.0
+    sbs_angle = 18.0
+    hcal_angle = 18.0
+if "GEN4b" in beforeConfigName:
+    kin = "GEN4b"
+    Q2_kin = 9.82
+    p_electron = 3.21
+    p_nucleon = 6.11
+    energy_beam = 8.448
+    bb_angle = 35.0
+    sbs_angle = 18.0
+    hcal_angle = 18.0
+
+if "He3" in beforeConfigName:
+    target = "He3"
+if "H2" in beforeConfigName:
+    target = "H2"
+
+## Next we define some methods that will help us.
+
+def ListBranches(fileName):
+    ## This method will list out all the branch names in a root file. It's typically useful initially, but not needed often.
+
+    inFile = ROOT.TFile(fileName)
+    t = inFile.T
+
+    for branch in t.GetListOfBranches():
+        if "Ndata" not in branch.GetName():
+            print("\"%s\", " %branch.GetName(), end="")
+
+class CompareCoin:
+
+    def __init__(self):
+        self.treeData = pd.DataFrame()
+
+    def GetNumpyArray(self,fileName):
+    ## This method will make an array out of the TTree of a standard SBS root file.
+        file = uproot.open(fileName)
+        T = file["T"]
+
+        data = T.arrays(["g.runnum", "bb.ps.e", "bb.sh.clus.atime", "sbs.hcal.clus.atime", "e.kine.W2"], library="pd")
+
+        self.treeData = data
+
+    def PlotCoin(self):
+        df = pd.DataFrame()
+        df = self.treeData
+
+        df["bb.sh.clus.atime"] = df["bb.sh.clus.atime"].apply(lambda x: x[0])
+        df["sbs.hcal.clus.atime"] = df["sbs.hcal.clus.atime"].apply(lambda x: x[0])
+
+        df = df[~(df["e.kine.W2"]<1.8)] #drop rows for W^2>1.8
+        df = df[~(df["bb.ps.e"]>0.2)] #drop rows for ps_e<0.2
+
+        df["coin"] = df["sbs.hcal.clus.atime"]-df["bb.sh.clus.atime"]
+
+        df["coin"].plot(kind='hist')
+        plt.show()
+
+if __name__ == '__main__':
+
+    comp = CompareCoin()
+    comp.GetNumpyArray(str(beforeFileName))
+    comp.PlotCoin(str(beforeFileName))
