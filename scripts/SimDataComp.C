@@ -14,7 +14,7 @@
 #include <iostream>
 #include <TMath.h>
 
-TH1::SetDefaultSumw2();
+//TH1::SetDefaultSumw2();
 
 TH1D *h_data_dx;
 TH1D *h_simIN_dx;
