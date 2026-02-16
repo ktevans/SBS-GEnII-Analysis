@@ -65,19 +65,6 @@ void MissingMom(const char *kinematic)
   double dx_n_shift = 0.0;
   double beam_e = 4.291;
 
-  if (kinematic == "GEN2")
-  {
-    beam_e = 4.291;
-  }
-  if (kinematic == "GEN3")
-  {
-    beam_e = 6.373;
-  }
-  if (kinematic == "GEN4")
-  {
-    beam_e = 8.448;
-  }
-
   //Scan through all the entries in the TChain T
   //If the rootfiles are empty or don't exist, there will be 0 entries
   //If there are entries, then print out how many
@@ -88,30 +75,30 @@ void MissingMom(const char *kinematic)
   }
   else std::cout << "\nFound " << T->GetEntries() << " events. Starting analysis.. \n";
 
-  TH1D* h_dx_p = new TH1D("h_dx_p", ";dx_p", 70.0, -4.0, 3.0);
+  TH1D* h_dx_p = new TH1D("h_dx_p", ";dx_p", 140.0, -4.0, 3.0);
   h_dx_p->GetXaxis()->SetTitle("dx [m]");
   h_dx_p->SetTitle("dx for Protons");
 
-  TH1D* h_dx_n = new TH1D("h_dx_n", ";dx_n", 70.0, -4.0, 3.0);
+  TH1D* h_dx_n = new TH1D("h_dx_n", ";dx_n", 140.0, -4.0, 3.0);
   h_dx_n->GetXaxis()->SetTitle("dx [m]");
   h_dx_n->SetTitle("dx for Neutrons");
 
-  TH2D* h_dx_missing_mom_p = new TH2D("h_dx_missing_mom_p", ";h_dx_missing_mom_p", 70.0, -4.0, 3.0, 40.0, 0.0, 0.4);
+  TH2D* h_dx_missing_mom_p = new TH2D("h_dx_missing_mom_p", ";h_dx_missing_mom_p", 140.0, -4.0, 3.0, 80.0, 0.0, 0.4);
   h_dx_missing_mom_p->GetXaxis()->SetTitle("dx [m]");
   h_dx_missing_mom_p->GetYaxis()->SetTitle("Missing Momentum [GeV]");
   h_dx_missing_mom_p->SetTitle("dx for Protons");
 
-  TH2D* h_dx_missing_mom_n = new TH2D("h_dx_missing_mom_n", ";h_dx_missing_mom_n", 70.0, -4.0, 3.0, 40.0, 0.0, 0.4);
+  TH2D* h_dx_missing_mom_n = new TH2D("h_dx_missing_mom_n", ";h_dx_missing_mom_n", 140.0, -4.0, 3.0, 80.0, 0.0, 0.4);
   h_dx_missing_mom_n->GetXaxis()->SetTitle("dx [m]");
   h_dx_missing_mom_n->GetYaxis()->SetTitle("Missing Momentum [GeV]");
   h_dx_missing_mom_n->SetTitle("dx for Neutrons");
 
-  TH2D* h_dx_pol_p = new TH2D("h_dx_pol_p", ";h_dx_pol_p", 70.0, -4.0, 3.0, 20.0, -0.5, 1.5);
+  TH2D* h_dx_pol_p = new TH2D("h_dx_pol_p", ";h_dx_pol_p", 140.0, -4.0, 3.0, 40.0, -0.5, 1.5);
   h_dx_pol_p->GetXaxis()->SetTitle("dx [m]");
   h_dx_pol_p->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_p->SetTitle("dx for Protons");
 
-  TH2D* h_dx_pol_n = new TH2D("h_dx_pol_n", ";h_dx_pol_n", 70.0, -4.0, 3.0, 20.0, -0.5, 1.5);
+  TH2D* h_dx_pol_n = new TH2D("h_dx_pol_n", ";h_dx_pol_n", 140.0, -4.0, 3.0, 40.0, -0.5, 1.5);
   h_dx_pol_n->GetXaxis()->SetTitle("dx [m]");
   h_dx_pol_n->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_n->SetTitle("dx for Neutrons");
