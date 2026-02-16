@@ -64,6 +64,8 @@ void MissingMom(const char *kinematic)
   double dx_p_shift = 0.74;
   double dx_n_shift = 0.74;
   double beam_e = 4.291;
+  double n_min = -0.95;
+  double n_max = 0.95;
 
   //Scan through all the entries in the TChain T
   //If the rootfiles are empty or don't exist, there will be 0 entries
@@ -93,15 +95,25 @@ void MissingMom(const char *kinematic)
   h_dx_missing_mom_n->GetYaxis()->SetTitle("Missing Momentum [GeV]");
   h_dx_missing_mom_n->SetTitle("dx for Neutrons");
 
-  TH2D* h_dx_pol_p = new TH2D("h_dx_pol_p", ";h_dx_pol_p", 140.0, -4.0, 3.0, 40.0, -0.5, 1.5);
+  TH2D* h_dx_pol_p = new TH2D("h_dx_pol_p", ";h_dx_pol_p", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
   h_dx_pol_p->GetXaxis()->SetTitle("dx [m]");
   h_dx_pol_p->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_p->SetTitle("dx for Protons");
 
-  TH2D* h_dx_pol_n = new TH2D("h_dx_pol_n", ";h_dx_pol_n", 140.0, -4.0, 3.0, 40.0, -0.5, 1.5);
+  TH2D* h_dx_pol_n = new TH2D("h_dx_pol_n", ";h_dx_pol_n", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
   h_dx_pol_n->GetXaxis()->SetTitle("dx [m]");
   h_dx_pol_n->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_n->SetTitle("dx for Neutrons");
+
+  TH2D* h_dx_pol_p_inWindow = new TH2D("h_dx_pol_p_inWindow", ";h_dx_pol_p_inWindow", 200.0, n_min, n_max, 200.0, -0.5, 1.5);
+  h_dx_pol_p_inWindow->GetXaxis()->SetTitle("dx [m]");
+  h_dx_pol_p_inWindow->GetYaxis()->SetTitle("Nucleon Effective Polarization");
+  h_dx_pol_p_inWindow->SetTitle("Proton Effective Polarization in the Neutron Window");
+
+  TH2D* h_dx_pol_n_inWindow = new TH2D("h_dx_pol_n_inWindow", ";h_dx_pol_n_inWindow", 200.0, n_min, n_max, 200.0, -0.5, 1.5);
+  h_dx_pol_n_inWindow->GetXaxis()->SetTitle("dx [m]");
+  h_dx_pol_n_inWindow->GetYaxis()->SetTitle("Nucleon Effective Polarization");
+  h_dx_pol_n_inWindow->SetTitle("Neutron Effective Polarization in the Neutron Window");
 
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
@@ -126,6 +138,7 @@ void MissingMom(const char *kinematic)
           pol_p = (585.36 * TMath::Power(missing_mom,4)) - (617.45 * TMath::Power(missing_mom,3)) + (228.85 * TMath::Power(missing_mom,2)) - (36.301 * missing_mom) - 2.1489;
         }
         h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
+        h_dx_pol_p_inWindow->Fill(dx-dx_p_shift,pol_p,weight);
       }
 
       if (fnucl==0.0)
@@ -141,6 +154,7 @@ void MissingMom(const char *kinematic)
           pol_n = (-409.23 * TMath::Power(missing_mom,4)) + (660.3 * TMath::Power(missing_mom,3)) - (364.59 * TMath::Power(missing_mom,2)) + (77.325 * missing_mom) - 4.6319;
         }
         h_dx_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
+        h_dx_pol_n_inWindow->Fill(dx-dx_n_shift,pol_n,weight);
       }
 
       dx_out = dx-dx_n_shift;
@@ -162,10 +176,18 @@ void MissingMom(const char *kinematic)
   h_dx_pol_p->Draw();
   h_dx_pol_n->Draw("SAMES");
 
+  TCanvas *c2 = new TCanvas("c2","1D dx and dy Plots",100,100,700,700);
+  c1->Divide(1,2);
+  c1->cd(1);
+  h_dx_pol_p_inWindow->Draw();
+  c1->cd(2);
+  h_dx_pol_n_inWindow->Draw();
+
   printf("You've completed the script!\n");
 
   //Save the canvas to a pdf
   c1->Print(outputfile);
+  c2->Print(outputfile);
 
   fout->Write();
 }
