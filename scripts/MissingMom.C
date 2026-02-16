@@ -131,9 +131,6 @@ void MissingMom(const char *kinematic)
 
     missing_mom = TMath::Sqrt(TMath::Power((-beam_e)+(npz)+(epz),2)+TMath::Power((npx)+(epx),2)+TMath::Power((npy)+(epy),2));
 
-    if(ePS>0.2&&W2<1.5)
-    {
-
       if (fnucl==1.0)
       {
         h_dx_p->Fill(dx-dx_p_shift,weight);
@@ -175,8 +172,6 @@ void MissingMom(const char *kinematic)
       dx_out = dx-dx_n_shift;
       dy_out = dy;
       W2_out = W2;
-
-    }
 
     T_out->Fill();
 
