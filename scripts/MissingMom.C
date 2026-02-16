@@ -28,7 +28,7 @@ void MissingMom(const char *kinematic)
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
-  TString inputfile = Form("/volatile/halla/sbs/ktevans/QE_sim/QE_sim_%s_sbs100p_nucleon_np_model2_elastic.root",kinematic);
+  TString inputfile = Form("outfiles/parsed_SIM_GEn_%s_He3_dxdy.root",kinematic);
   TString outputfile = Form("plots/parsed_GEn_pass2_%s_simulation.pdf",kinematic);
   TString outfile = Form("outfiles/parsed_GEn_pass2_%s_simulation.root",kinematic);
   TFile *fout = new TFile(outfile,"RECREATE");
@@ -45,7 +45,7 @@ void MissingMom(const char *kinematic)
   T_out->Branch("pol_p",         &pol_p,         "pol_p/D");
   T_out->Branch("pol_n",         &pol_n,         "pol_n/D");
 
-  TChain* T = new TChain("Tout");
+  TChain* T = new TChain("T_sim");
   T->Add(inputfile);
 
   double dx;         T->SetBranchAddress("dx", &dx);
