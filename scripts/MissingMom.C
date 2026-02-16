@@ -109,7 +109,8 @@ void MissingMom(const char *kinematic)
   h_dx_pol_p->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_p->SetTitle("dx for Protons");
 
-  TProfile* h_prof_pol_p = new TProfile("h_prof_p_pol", "pol_prof", 140.0, -4.0, 3.0, -0.5, 1.5);
+  TProfile* h_prof_pol_p = new TProfile("h_prof_pol_p", "pol_prof_p", 140.0, -4.0, 3.0, -0.5, 1.5);
+  TProfile* h_prof_pol_n = new TProfile("h_prof_pol_n", "pol_prof_n", 140.0, -4.0, 3.0, -0.5, 1.5);
 
   TH2D* h_dx_pol_n = new TH2D("h_dx_pol_n", ";h_dx_pol_n", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
   h_dx_pol_n->GetXaxis()->SetTitle("dx [m]");
@@ -166,6 +167,7 @@ void MissingMom(const char *kinematic)
           pol_n = (-409.23 * TMath::Power(missing_mom,4)) + (660.3 * TMath::Power(missing_mom,3)) - (364.59 * TMath::Power(missing_mom,2)) + (77.325 * missing_mom) - 4.6319;
         }
         h_dx_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
+        h_prof_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
         if (dx-dx_n_shift<n_max&&dx-dx_n_shift>n_min)
         {
           h_dx_pol_n_inWindow->Fill(dx-dx_n_shift,pol_n,weight);
