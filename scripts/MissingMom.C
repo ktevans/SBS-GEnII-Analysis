@@ -63,7 +63,7 @@ void MissingMom(const char *kinematic)
 
   double dx_p_shift = 0.0;
   double dx_n_shift = 0.0;
-  double beam_e = 0.0;
+  double beam_e = 4.291;
 
   if (kinematic == "GEN2")
   {
