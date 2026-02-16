@@ -105,12 +105,12 @@ void MissingMom(const char *kinematic)
   h_dx_pol_n->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_n->SetTitle("dx for Neutrons");
 
-  TH2D* h_dx_pol_p_inWindow = new TH2D("h_dx_pol_p_inWindow", ";h_dx_pol_p_inWindow", 200.0, n_min, n_max, 200.0, -0.5, 1.5);
+  TH2D* h_dx_pol_p_inWindow = new TH2D("h_dx_pol_p_inWindow", ";h_dx_pol_p_inWindow", 200.0, n_min-0.05, n_max+0.05, 200.0, -0.5, 1.5);
   h_dx_pol_p_inWindow->GetXaxis()->SetTitle("dx [m]");
   h_dx_pol_p_inWindow->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_p_inWindow->SetTitle("Proton Effective Polarization in the Neutron Window");
 
-  TH2D* h_dx_pol_n_inWindow = new TH2D("h_dx_pol_n_inWindow", ";h_dx_pol_n_inWindow", 200.0, n_min, n_max, 200.0, -0.5, 1.5);
+  TH2D* h_dx_pol_n_inWindow = new TH2D("h_dx_pol_n_inWindow", ";h_dx_pol_n_inWindow", 200.0, n_min-0.05, n_max+0.05, 200.0, -0.5, 1.5);
   h_dx_pol_n_inWindow->GetXaxis()->SetTitle("dx [m]");
   h_dx_pol_n_inWindow->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_n_inWindow->SetTitle("Neutron Effective Polarization in the Neutron Window");
