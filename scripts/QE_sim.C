@@ -28,18 +28,24 @@ void QE_sim(const char *kinematic)
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
-  TString inputfile = Form("/volatile/halla/sbs/ktevans/SIM_%s_sbs100p_model2.root",kinematic);
+  TString inputfile = Form("/volatile/halla/sbs/ktevans/QE_sim/QE_sim_%s_sbs100p_nucleon_np_model2.root",kinematic);
   TString outputfile = Form("plots/parsed_SIM_GEn_%s_He3_dxdy.pdf",kinematic);
   TString outfile = Form("outfiles/parsed_SIM_GEn_%s_He3_dxdy.root",kinematic);
   TFile *fout = new TFile(outfile,"RECREATE");
 
   TTree *T_sim = new TTree("T_sim", "Analysis Data Tree");
 
-  double dx_out, dy_out, fnucl_out, weight_out;
+  double dx_out, dy_out, fnucl_out, weight_out, epx_out, epy_out, epz_out, npx_out, npy_out, npz_out;
   T_sim->Branch("dx", &dx_out, "dx/D");
   T_sim->Branch("dy", &dy_out, "dy/D");
   T_sim->Branch("fnucl", &fnucl_out, "fnucl/D");
   T_sim->Branch("weight", &weight_out, "weight/D");
+  T_sim->Branch("epx", &epx_out, "epx/D");
+  T_sim->Branch("epy", &epy_out, "epy/D");
+  T_sim->Branch("epz", &epz_out, "epz/D");
+  T_sim->Branch("npx", &npx_out, "npx/D");
+  T_sim->Branch("npy", &npy_out, "npy/D");
+  T_sim->Branch("npz", &npz_out, "npz/D");
 
   TChain* T = new TChain("Tout");
   T->Add(inputfile);
@@ -56,6 +62,12 @@ void QE_sim(const char *kinematic)
   double dy_hcal;           T->SetBranchAddress("dy", &dy_hcal);
   double fnucl_hcal;        T->SetBranchAddress("fnucl", &fnucl_hcal);
   double weight_hcal;       T->SetBranchAddress("weight", &weight_hcal);
+  double epx_in;            T->SetBranchAddress("epx", &epx_in);
+  double epy_in;            T->SetBranchAddress("epy", &epy_in);
+  double epz_in;            T->SetBranchAddress("epz", &epz_in);
+  double npx_in;            T->SetBranchAddress("npx", &npx_in);
+  double npy_in;            T->SetBranchAddress("npy", &npy_in);
+  double npz_in;            T->SetBranchAddress("npz", &npz_in);
 
   //Scan through all the entries in the TChain T
   //If the rootfiles are empty or don't exist, there will be 0 entries
@@ -80,15 +92,21 @@ void QE_sim(const char *kinematic)
   {
     T->GetEntry(iev);
 
-    if(abs(e_kine_W2-1.0)<0.5 && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && abs(bb_tr_vz)<0.27 && sbs_hcal_e>0.025)
+    if(abs(e_kine_W2-1.0)<0.7 && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && abs(bb_tr_vz)<0.27 && sbs_hcal_e>0.025)
     {
-      h_dx->Fill(dx_hcal);
-      h_dy->Fill(dy_hcal);
+      h_dx->Fill(dx_hcal,weight_hcal);
+      h_dy->Fill(dy_hcal,weight_hcal);
 
       dx_out = dx_hcal;
       dy_out = dy_hcal;
       fnucl_out = fnucl_hcal;
       weight_out = weight_hcal;
+      epx_out = epx_in;
+      epy_out = epy_in;
+      epz_out = epz_in;
+      npx_out = npx_in;
+      npy_out = npy_in;
+      npz_out = npz_in;
     }
 
     T_sim->Fill();
