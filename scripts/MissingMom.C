@@ -138,7 +138,10 @@ void MissingMom(const char *kinematic)
           pol_p = (585.36 * TMath::Power(missing_mom,4)) - (617.45 * TMath::Power(missing_mom,3)) + (228.85 * TMath::Power(missing_mom,2)) - (36.301 * missing_mom) - 2.1489;
         }
         h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
-        h_dx_pol_p_inWindow->Fill(dx-dx_p_shift,pol_p,weight);
+        if (dx-dx_p_shift<n_max&&dx-dx_p_shift>n_min)
+        {
+          h_dx_pol_p_inWindow->Fill(dx-dx_p_shift,pol_p,weight);
+        }
       }
 
       if (fnucl==0.0)
@@ -154,7 +157,10 @@ void MissingMom(const char *kinematic)
           pol_n = (-409.23 * TMath::Power(missing_mom,4)) + (660.3 * TMath::Power(missing_mom,3)) - (364.59 * TMath::Power(missing_mom,2)) + (77.325 * missing_mom) - 4.6319;
         }
         h_dx_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
-        h_dx_pol_n_inWindow->Fill(dx-dx_n_shift,pol_n,weight);
+        if (dx-dx_n_shift<n_max&&dx-dx_n_shift>n_min)
+        {
+          h_dx_pol_n_inWindow->Fill(dx-dx_n_shift,pol_n,weight);
+        }
       }
 
       dx_out = dx-dx_n_shift;
@@ -167,7 +173,13 @@ void MissingMom(const char *kinematic)
 
   }//end event loop
 
-  TCanvas *c1 = new TCanvas("c1","1D dx and dy Plots",100,100,700,700);
+  double mean_p = 0.0;
+  double mean_n = 0.0;
+
+  mean_p = h_dx_pol_p_inWindow->GetMean(2);
+  mean_n = h_dx_pol_n_inWindow->GetMean(2);
+
+  TCanvas *c1 = new TCanvas("c1","Missing Momentum and Polarization 2D Plots",100,100,700,700);
   c1->Divide(1,2);
   c1->cd(1);
   h_dx_missing_mom_p->Draw();
@@ -176,13 +188,15 @@ void MissingMom(const char *kinematic)
   h_dx_pol_p->Draw();
   h_dx_pol_n->Draw("SAMES");
 
-  TCanvas *c2 = new TCanvas("c2","1D dx and dy Plots",100,100,700,700);
+  TCanvas *c2 = new TCanvas("c2","Effective Polarization in Neutron Window",100,100,700,700);
   c2->Divide(1,2);
   c2->cd(1);
   h_dx_pol_p_inWindow->Draw();
   c2->cd(2);
   h_dx_pol_n_inWindow->Draw();
 
+  printf("Mean Proton Effective Polarization in Neutron Window = %f \n", mean_p);
+  printf("Mean Neutron Effective Polarization in Neutron Window = %f \n", mean_n);
   printf("You've completed the script!\n");
 
   //Save the canvas to a pdf
