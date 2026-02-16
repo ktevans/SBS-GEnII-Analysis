@@ -96,22 +96,22 @@ void MissingMom(const char *kinematic)
   h_dx_n->GetXaxis()->SetTitle("dx [m]");
   h_dx_n->SetTitle("dx for Neutrons");
 
-  TH2D* h_dx_missing_mom_p = new TH1D("h_dx_missing_mom_p", ";h_dx_missing_mom_p", 70.0, -4.0, 3.0, 40.0, 0.0, 0.4);
+  TH2D* h_dx_missing_mom_p = new TH2D("h_dx_missing_mom_p", ";h_dx_missing_mom_p", 70.0, -4.0, 3.0, 40.0, 0.0, 0.4);
   h_dx_missing_mom_p->GetXaxis()->SetTitle("dx [m]");
   h_dx_missing_mom_p->GetYaxis()->SetTitle("Missing Momentum [GeV]");
   h_dx_missing_mom_p->SetTitle("dx for Protons");
 
-  TH2D* h_dx_missing_mom_n = new TH1D("h_dx_missing_mom_n", ";h_dx_missing_mom_n", 70.0, -4.0, 3.0, 40.0, 0.0, 0.4);
+  TH2D* h_dx_missing_mom_n = new TH2D("h_dx_missing_mom_n", ";h_dx_missing_mom_n", 70.0, -4.0, 3.0, 40.0, 0.0, 0.4);
   h_dx_missing_mom_n->GetXaxis()->SetTitle("dx [m]");
   h_dx_missing_mom_n->GetYaxis()->SetTitle("Missing Momentum [GeV]");
   h_dx_missing_mom_n->SetTitle("dx for Neutrons");
 
-  TH2D* h_dx_pol_p = new TH1D("h_dx_pol_p", ";h_dx_pol_p", 70.0, -4.0, 3.0, 20.0, -0.5, 1.5);
+  TH2D* h_dx_pol_p = new TH2D("h_dx_pol_p", ";h_dx_pol_p", 70.0, -4.0, 3.0, 20.0, -0.5, 1.5);
   h_dx_pol_p->GetXaxis()->SetTitle("dx [m]");
   h_dx_pol_p->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_p->SetTitle("dx for Protons");
 
-  TH2D* h_dx_pol_n = new TH1D("h_dx_pol_n", ";h_dx_pol_n", 70.0, -4.0, 3.0, 20.0, -0.5, 1.5);
+  TH2D* h_dx_pol_n = new TH2D("h_dx_pol_n", ";h_dx_pol_n", 70.0, -4.0, 3.0, 20.0, -0.5, 1.5);
   h_dx_pol_n->GetXaxis()->SetTitle("dx [m]");
   h_dx_pol_n->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_n->SetTitle("dx for Neutrons");
