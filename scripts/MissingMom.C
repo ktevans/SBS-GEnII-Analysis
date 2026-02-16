@@ -109,7 +109,7 @@ void MissingMom(const char *kinematic)
   h_dx_pol_p->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_p->SetTitle("dx for Protons");
 
-  TProfile* h_prof_pol_p = new TProfile("h_prof_p_pol", ";pol_prof", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
+  TProfile* h_prof_pol_p = new TProfile("h_prof_p_pol", "pol_prof", 140.0, -4.0, 3.0, -0.5, 1.5);
 
   TH2D* h_dx_pol_n = new TH2D("h_dx_pol_n", ";h_dx_pol_n", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
   h_dx_pol_n->GetXaxis()->SetTitle("dx [m]");
