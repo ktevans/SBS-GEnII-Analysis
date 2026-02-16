@@ -186,7 +186,7 @@ void MissingMom(const char *kinematic)
   printf("You've completed the script!\n");
 
   //Save the canvas to a pdf
-  c1->Print(outputfile);
+  //c1->Print(outputfile);
   c2->Print(outputfile);
 
   fout->Write();
