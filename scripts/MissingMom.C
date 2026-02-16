@@ -177,10 +177,10 @@ void MissingMom(const char *kinematic)
   h_dx_pol_n->Draw("SAMES");
 
   TCanvas *c2 = new TCanvas("c2","1D dx and dy Plots",100,100,700,700);
-  c1->Divide(1,2);
-  c1->cd(1);
+  c2->Divide(1,2);
+  c2->cd(1);
   h_dx_pol_p_inWindow->Draw();
-  c1->cd(2);
+  c2->cd(2);
   h_dx_pol_n_inWindow->Draw();
 
   printf("You've completed the script!\n");
