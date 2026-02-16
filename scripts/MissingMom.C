@@ -61,8 +61,8 @@ void MissingMom(const char *kinematic)
   double npz;        T->SetBranchAddress("npz", &npz);
   double weight;     T->SetBranchAddress("weight", &weight);
 
-  double dx_p_shift = 0.0;
-  double dx_n_shift = 0.0;
+  double dx_p_shift = 0.74;
+  double dx_n_shift = 0.74;
   double beam_e = 4.291;
 
   //Scan through all the entries in the TChain T
@@ -115,8 +115,8 @@ void MissingMom(const char *kinematic)
 
       if (fnucl==1.0)
       {
-        h_dx_p->Fill(dx,weight);
-        h_dx_missing_mom_p->Fill(dx,missing_mom,weight);
+        h_dx_p->Fill(dx-dx_p_shift,weight);
+        h_dx_missing_mom_p->Fill(dx-dx_p_shift,missing_mom,weight);
         if (missing_mom<0.2)
         {
           pol_p = (191.16 * TMath::Power(missing_mom,4)) - (111.53 * TMath::Power(missing_mom,3)) + (18.734 * TMath::Power(missing_mom,2)) - (0.1466 * missing_mom) - 0.0934;
@@ -125,13 +125,13 @@ void MissingMom(const char *kinematic)
         {
           pol_p = (585.36 * TMath::Power(missing_mom,4)) - (617.45 * TMath::Power(missing_mom,3)) + (228.85 * TMath::Power(missing_mom,2)) - (36.301 * missing_mom) - 2.1489;
         }
-        h_dx_pol_p->Fill(dx,pol_p,weight);
+        h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
       }
 
       if (fnucl==0.0)
       {
-        h_dx_n->Fill(dx,weight);
-        h_dx_missing_mom_n->Fill(dx,missing_mom,weight);
+        h_dx_n->Fill(dx-dx_n_shift,weight);
+        h_dx_missing_mom_n->Fill(dx-dx_n_shift,missing_mom,weight);
         if (missing_mom<0.2)
         {
           pol_n = (-149.54 * TMath::Power(missing_mom,4)) + (26.742 * TMath::Power(missing_mom,3)) - (3.1007 * TMath::Power(missing_mom,2)) + (0.064 * missing_mom) + 0.9999;
@@ -140,10 +140,10 @@ void MissingMom(const char *kinematic)
         {
           pol_n = (-409.23 * TMath::Power(missing_mom,4)) + (660.3 * TMath::Power(missing_mom,3)) - (364.59 * TMath::Power(missing_mom,2)) + (77.325 * missing_mom) - 4.6319;
         }
-        h_dx_pol_n->Fill(dx,pol_n,weight);
+        h_dx_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
       }
 
-      dx_out = dx;
+      dx_out = dx-dx_n_shift;
       dy_out = dy;
       W2_out = W2;
 
