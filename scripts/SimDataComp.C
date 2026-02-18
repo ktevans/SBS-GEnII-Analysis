@@ -158,7 +158,7 @@ void SimDataComp()
   {
     T_data->GetEntry(iev);
 
-    h_data_dx->Fill(dx);
+    h_data_dx->Fill(dx, weight);
 
     int binAt = (int) ((dx + 6.0) / binSize);
 
