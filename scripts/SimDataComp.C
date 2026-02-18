@@ -303,7 +303,7 @@ void SimDataComp()
   //FitFunc->SetParLimits(5,-1.0,1.0);  // background shift
 
   //----- GEN3 -----
-  double startpar[] = {0.2,-0.5,0.1,-0.7,0.4,-1.0};
+  double startpar[] = {0.2,-0.5,0.005,-0.7,0.4,-1.0};
   FitFunc->SetParameters(startpar);
   FitFunc->SetParLimits(0,0.1,5.0);   // proton scale
   FitFunc->SetParLimits(1,-1.0,1.0);  // proton shift
