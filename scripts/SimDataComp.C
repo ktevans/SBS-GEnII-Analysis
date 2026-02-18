@@ -72,7 +72,7 @@ void SimDataComp()
 
   int npar = 6;
   double dx_min_d, dx_max_d;
-  in dx_min_i, dx_max_i;
+  int dx_min_i, dx_max_i;
 
   if(kin == 2)
   {
