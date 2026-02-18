@@ -120,6 +120,7 @@ void SimDataComp()
   T_data->Add(data_file);
 
   Double_t dx;       T_data->SetBranchAddress("dx", &dx);
+  Double_t weight;   T_data->SetBranchAddress("weight", &weight);
   int helicity;      T_data->SetBranchAddress("helicity", &helicity);
 
   if(T_data->GetEntries()==0)
