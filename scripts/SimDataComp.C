@@ -129,17 +129,18 @@ void SimDataComp()
     dx_max_i = 2;
 
   }
-  else
-  {
-    data_file = "null";
-    nucleon_sim_file = "null";
-    inel_sim_file = "null";
-    title_words = "null";
-    dx_min_d = 0.0;
-    dx_min_i = 0;
-    dx_max_d = 0.0;
-    dx_max_i = 0.0;
-  }
+
+  //else
+  //{
+    //data_file = "null";
+    //nucleon_sim_file = "null";
+    //inel_sim_file = "null";
+    //title_words = "null";
+    //dx_min_d = 0.0;
+    //dx_min_i = 0;
+    //dx_max_d = 0.0;
+    //dx_max_i = 0.0;
+  //}
 
   gErrorIgnoreLevel = kError;
 
