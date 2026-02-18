@@ -119,9 +119,8 @@ void SimDataComp()
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
 
-  Double_t dx;            T_data->SetBranchAddress("dx", &dx);
-  Double_t weight_data;   T_data->SetBranchAddress("weight", &weight_data);
-  int helicity;           T_data->SetBranchAddress("helicity", &helicity);
+  Double_t dx;      T_data->SetBranchAddress("dx", &dx);
+  int helicity;     T_data->SetBranchAddress("helicity", &helicity);
 
   if(T_data->GetEntries()==0)
   {
@@ -159,7 +158,7 @@ void SimDataComp()
   {
     T_data->GetEntry(iev);
 
-    h_data_dx->Fill(dx, weight_data);
+    h_data_dx->Fill(dx);
 
     int binAt = (int) ((dx + 6.0) / binSize);
 
@@ -249,7 +248,8 @@ void SimDataComp()
   //******************************************************
 
   double scale = h_data_dx->Integral();
-  h_data_dx->Scale(1.0/h_data_dx->Integral());
+  //h_data_dx->Scale(1.0/h_data_dx->Integral());
+  h_data_dx->Scale(1.0/scale);
   h_sim_proton_dx->Scale(1.0/h_sim_proton_dx->Integral());
   h_sim_neutron_dx->Scale(1.0/h_sim_neutron_dx->Integral());
   h_simIN_dx->Scale(1.0/h_simIN_dx->Integral());
@@ -494,7 +494,7 @@ void SimDataComp()
 
   pad1->cd();
   pad1->SetTitle(title_words);
-  h_total_dx->Draw("E");
+  h_total_dx->Draw("HIST");
   shifted_h_simIN_dx->Draw("HIST SAMES");
   shifted_h_sim_proton_dx->Draw("HIST SAMES");
   shifted_h_sim_neutron_dx->Draw("HIST SAMES");
