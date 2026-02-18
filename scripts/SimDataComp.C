@@ -64,7 +64,7 @@ double fitAsym(double *xA, double *parA)
 void SimDataComp()
 {
 
-  int kin = 2;
+  int kin = 3;
   auto data_file = "null";
   auto nucleon_sim_file = "null";
   auto inel_sim_file = "null";
