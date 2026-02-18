@@ -261,14 +261,14 @@ void SimDataComp()
   TF1 *FitFunc = new TF1("FitFunc",&fitsim,-6,4,6);
 
   FitFunc->SetNpx(numberBins);
-  double startpar[] = {0.5,-0.2,0.5,0.0,1.0,-1.0};
+  double startpar[] = {1.0,-0.3,0.5,0.0,1.0,-1.0};
   FitFunc->SetParameters(startpar);
   FitFunc->SetParLimits(0,0.1,100);   // proton scale
   FitFunc->SetParLimits(1,-1.0,1.0);  // proton shift
   FitFunc->SetParLimits(2,0.0,100);   // neutron scale
-  FitFunc->SetParLimits(3,-1.0,1.0);  // neutron shift
+  FitFunc->SetParLimits(3,-0.5,0.5);  // neutron shift
   FitFunc->SetParLimits(4,0.0,10.0);  // background scale
-  FitFunc->SetParLimits(5,-3.0,3.0);  // background shift
+  FitFunc->SetParLimits(5,-1.0,1.0);  // background shift
 
   h_data_dx->Fit(FitFunc,"0","",xmin,xmax);
 
