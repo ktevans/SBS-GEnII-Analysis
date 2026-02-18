@@ -119,9 +119,9 @@ void SimDataComp()
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
 
-  Double_t dx;       T_data->SetBranchAddress("dx", &dx);
-  Double_t weight;   T_data->SetBranchAddress("weight", &weight);
-  int helicity;      T_data->SetBranchAddress("helicity", &helicity);
+  Double_t dx;            T_data->SetBranchAddress("dx", &dx);
+  Double_t weight_data;   T_data->SetBranchAddress("weight", &weight_data);
+  int helicity;           T_data->SetBranchAddress("helicity", &helicity);
 
   if(T_data->GetEntries()==0)
   {
@@ -159,7 +159,7 @@ void SimDataComp()
   {
     T_data->GetEntry(iev);
 
-    h_data_dx->Fill(dx, weight);
+    h_data_dx->Fill(dx, weight_data);
 
     int binAt = (int) ((dx + 6.0) / binSize);
 
