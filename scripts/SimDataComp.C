@@ -71,6 +71,8 @@ void SimDataComp()
   auto title_words = "null";
 
   int npar = 6;
+  double dx_min_d, dx_max_d;
+  in dx_min_i, dx_max_i;
 
   if(kin == 2)
   {
@@ -79,6 +81,10 @@ void SimDataComp()
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN2_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN2_He3_dxdy.root";
     title_words = "GEN2";
+    dx_min_d = -5.0;
+    dx_min_i = -5;
+    dx_max_d = 2.0;
+    dx_max_i = 2;
 
   }
 
@@ -89,6 +95,10 @@ void SimDataComp()
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN3_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN3_He3_dxdy.root";
     title_words = "GEN3";
+    dx_min_d = -3.0;
+    dx_min_i = -3;
+    dx_max_d = 2.0;
+    dx_max_i = 2;
 
   }
 
@@ -99,6 +109,10 @@ void SimDataComp()
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN4a_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
     title_words = "GEN4a";
+    dx_min_d = -3.0;
+    dx_min_i = -3;
+    dx_max_d = 2.0;
+    dx_max_i = 2;
 
   }
 
@@ -109,7 +123,22 @@ void SimDataComp()
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN4b_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
     title_words = "GEN4b";
+    dx_min_d = -3.0;
+    dx_min_i = -3;
+    dx_max_d = 2.0;
+    dx_max_i = 2;
 
+  }
+  else
+  {
+    data_file = "null";
+    nucleon_sim_file = "null";
+    inel_sim_file = "null";
+    title_words = "null";
+    dx_min_d = 0.0;
+    dx_min_i = 0;
+    dx_max_d = 0.0;
+    dx_max_i = 0.0;
   }
 
   gErrorIgnoreLevel = kError;
@@ -129,16 +158,16 @@ void SimDataComp()
   }
   else std::cout << "\nFound " << T_data->GetEntries() << " events. \n";
 
-  h_data_dx = new TH1D("h_data_dx", ";dx", numberBins, -5.0, 2.0);
+  h_data_dx = new TH1D("h_data_dx", ";dx", numberBins, dx_min_d, dx_max_d);
   h_data_dx->GetXaxis()->SetTitle("dx [m]");
   h_data_dx->Sumw2();
 
-  TH1D* h_neg_hel_dx = new TH1D("h_neg_hel_dx",";-hel", numberBins, -5.0, 2.0);
+  TH1D* h_neg_hel_dx = new TH1D("h_neg_hel_dx",";-hel", numberBins, dx_min_d, dx_max_d);
   h_neg_hel_dx->GetXaxis()->SetTitle("dx [m]");
   h_neg_hel_dx->SetLineColor(kRed);
   //h_neg_hel_dx->Sumw2();
 
-  TH1D* h_pos_hel_dx = new TH1D("h_pos_hel_dx",";+hel", numberBins, -5.0, 2.0);
+  TH1D* h_pos_hel_dx = new TH1D("h_pos_hel_dx",";+hel", numberBins, dx_min_d, dx_max_d);
   h_pos_hel_dx->GetXaxis()->SetTitle("dx [m]");
   h_pos_hel_dx->SetLineColor(kBlue);
   //h_pos_hel_dx->Sumw2();
@@ -190,11 +219,11 @@ void SimDataComp()
   }
   else std::cout << "\nFound " << T_sim->GetEntries() << " events. \n";
 
-  h_sim_proton_dx = new TH1D("h_sim_proton_dx", ";dx_sim_p", numberBins, -5.0, 2.0);
+  h_sim_proton_dx = new TH1D("h_sim_proton_dx", ";dx_sim_p", numberBins, dx_min_d, dx_max_d);
   h_sim_proton_dx->GetXaxis()->SetTitle("dx [m]");
   h_sim_proton_dx->SetLineColor(kGreen);
 
-  h_sim_neutron_dx = new TH1D("h_sim_neutron_dx", ";dx_sim_n", numberBins, -5.0, 2.0);
+  h_sim_neutron_dx = new TH1D("h_sim_neutron_dx", ";dx_sim_n", numberBins, dx_min_d, dx_max_d);
   h_sim_neutron_dx->GetXaxis()->SetTitle("dx [m]");
   h_sim_neutron_dx->SetLineColor(kRed);
 
@@ -228,7 +257,7 @@ void SimDataComp()
   }
   else std::cout << "\nFound " << T_simIN->GetEntries() << " events. \n";
 
-  h_simIN_dx = new TH1D("h_simIN_dx", ";dxIN", numberBins, -5.0, 2.0);
+  h_simIN_dx = new TH1D("h_simIN_dx", ";dxIN", numberBins, dx_min_d, dx_max_d);
   h_simIN_dx->GetXaxis()->SetTitle("dx [m]");
   h_simIN_dx->SetLineColor(kBlue);
 
@@ -258,7 +287,7 @@ void SimDataComp()
   double xmin = h_data_dx->GetXaxis()->GetBinLowEdge(1);
   double xmax = h_data_dx->GetXaxis()->GetBinUpEdge(nbins);
 
-  TF1 *FitFunc = new TF1("FitFunc",&fitsim,-5,2,6); //-6,4,6
+  TF1 *FitFunc = new TF1("FitFunc",&fitsim,dx_min_i,dx_max_i,6); //-6,4,6
 
   FitFunc->SetNpx(numberBins);
   
@@ -458,7 +487,7 @@ void SimDataComp()
   h_prob_bckgrnd_dx -> SetEntries(totalentries);
   h_asym            -> SetEntries(totalentries);
 
-  TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,-5,2,3); //-6,3,3
+  TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,dx_min_i,dx_max_i,3); //-6,3,3
 
   AsymFitFunc->SetNpx(numberBins);
   double Asymstartpar[] = {0.0,0.08,0.0};
