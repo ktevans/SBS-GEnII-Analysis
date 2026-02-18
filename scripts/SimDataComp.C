@@ -277,15 +277,15 @@ void SimDataComp()
   std::cout << "Background Shift: " << FitFunc->GetParameter(4)*FitFunc->GetParameter(5) << std::endl;
 
   TH1D* shifted_h_sim_proton_dx = (TH1D*)h_sim_proton_dx->Clone("shifted_h_sim_proton_dx");
-  shifted_h_sim_proton_dx->Reset("ICES");
+  shifted_h_sim_proton_dx->Reset("ICESM");
   //shifted_h_sim_proton_dx->Sumw2();
 
   TH1D* shifted_h_sim_neutron_dx = (TH1D*)h_sim_neutron_dx->Clone("shifted_h_sim_neutron_dx");
-  shifted_h_sim_neutron_dx->Reset("ICES");
+  shifted_h_sim_neutron_dx->Reset("ICESM");
   //shifted_h_sim_neutron_dx->Sumw2();
 
   TH1D* shifted_h_simIN_dx = (TH1D*)h_simIN_dx->Clone("shifted_h_simIN_dx");
-  shifted_h_simIN_dx->Reset("ICES");
+  shifted_h_simIN_dx->Reset("ICESM");
   //shifted_h_simIN_dx->Sumw2();
 
   for(int i =1; i <= nbins; i++)
