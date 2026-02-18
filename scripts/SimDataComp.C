@@ -493,9 +493,9 @@ void SimDataComp()
   AsymFitFunc->SetNpx(numberBins);
   double Asymstartpar[] = {0.0,0.04,0.0};
   AsymFitFunc->SetParameters(Asymstartpar);
-  AsymFitFunc->SetParLimits(0,-0.2,0.2); // proton asymmetry
-  AsymFitFunc->SetParLimits(1,0.0,0.2); // neutron asymmetry
-  AsymFitFunc->SetParLimits(2,-0.2,0.2); // background asymmetry
+  AsymFitFunc->SetParLimits(0,-0.1,0.1); // proton asymmetry
+  AsymFitFunc->SetParLimits(1,0.0,0.1);  // neutron asymmetry
+  AsymFitFunc->SetParLimits(2,-0.1,0.1); // background asymmetry
 
   h_asym->Fit(AsymFitFunc,"0","",h_minX,h_maxX);
 
