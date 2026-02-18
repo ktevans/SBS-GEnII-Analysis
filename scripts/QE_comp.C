@@ -102,7 +102,7 @@ void QE_comp(const char *kinematic)
     optics_valid_min = -0.37;
     optics_valid_max = 0.32;
     //coin_mean = 185.5;
-    coing_mean = 0.2546;
+    coin_mean = 0.2546;
     //coin_sigma = 7.0;
     coin_sigma = 2.695;
     IHWP_flip = 1;
