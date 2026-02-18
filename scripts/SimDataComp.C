@@ -129,16 +129,16 @@ void SimDataComp()
   }
   else std::cout << "\nFound " << T_data->GetEntries() << " events. \n";
 
-  h_data_dx = new TH1D("h_data_dx", ";dx", numberBins, -6.0, 4.0);
+  h_data_dx = new TH1D("h_data_dx", ";dx", numberBins, -5.0, 2.0);
   h_data_dx->GetXaxis()->SetTitle("dx [m]");
   h_data_dx->Sumw2();
 
-  TH1D* h_neg_hel_dx = new TH1D("h_neg_hel_dx",";-hel", numberBins, -6.0, 4.0);
+  TH1D* h_neg_hel_dx = new TH1D("h_neg_hel_dx",";-hel", numberBins, -5.0, 2.0);
   h_neg_hel_dx->GetXaxis()->SetTitle("dx [m]");
   h_neg_hel_dx->SetLineColor(kRed);
   //h_neg_hel_dx->Sumw2();
 
-  TH1D* h_pos_hel_dx = new TH1D("h_pos_hel_dx",";+hel", numberBins, -6.0, 4.0);
+  TH1D* h_pos_hel_dx = new TH1D("h_pos_hel_dx",";+hel", numberBins, -5.0, 2.0);
   h_pos_hel_dx->GetXaxis()->SetTitle("dx [m]");
   h_pos_hel_dx->SetLineColor(kBlue);
   //h_pos_hel_dx->Sumw2();
@@ -160,7 +160,7 @@ void SimDataComp()
 
     h_data_dx->Fill(dx);
 
-    int binAt = (int) ((dx + 6.0) / binSize);
+    int binAt = (int) ((dx + 5.0) / binSize); // what???
 
     if(helicity==1)  //h_pos_hel_dx->Fill(dx);
     {
@@ -190,11 +190,11 @@ void SimDataComp()
   }
   else std::cout << "\nFound " << T_sim->GetEntries() << " events. \n";
 
-  h_sim_proton_dx = new TH1D("h_sim_proton_dx", ";dx_sim_p", numberBins, -6.0, 4.0);
+  h_sim_proton_dx = new TH1D("h_sim_proton_dx", ";dx_sim_p", numberBins, -5.0, 2.0);
   h_sim_proton_dx->GetXaxis()->SetTitle("dx [m]");
   h_sim_proton_dx->SetLineColor(kGreen);
 
-  h_sim_neutron_dx = new TH1D("h_sim_neutron_dx", ";dx_sim_n", numberBins, -6.0, 4.0);
+  h_sim_neutron_dx = new TH1D("h_sim_neutron_dx", ";dx_sim_n", numberBins, -5.0, 2.0);
   h_sim_neutron_dx->GetXaxis()->SetTitle("dx [m]");
   h_sim_neutron_dx->SetLineColor(kRed);
 
@@ -228,7 +228,7 @@ void SimDataComp()
   }
   else std::cout << "\nFound " << T_simIN->GetEntries() << " events. \n";
 
-  h_simIN_dx = new TH1D("h_simIN_dx", ";dxIN", numberBins, -6.0, 4.0);
+  h_simIN_dx = new TH1D("h_simIN_dx", ";dxIN", numberBins, -5.0, 2.0);
   h_simIN_dx->GetXaxis()->SetTitle("dx [m]");
   h_simIN_dx->SetLineColor(kBlue);
 
@@ -258,7 +258,7 @@ void SimDataComp()
   double xmin = h_data_dx->GetXaxis()->GetBinLowEdge(1);
   double xmax = h_data_dx->GetXaxis()->GetBinUpEdge(nbins);
 
-  TF1 *FitFunc = new TF1("FitFunc",&fitsim,-6,4,6);
+  TF1 *FitFunc = new TF1("FitFunc",&fitsim,-5,2,6); //-6,4,6
 
   FitFunc->SetNpx(numberBins);
   double startpar[] = {1.0,-0.3,0.5,0.0,1.0,-1.0};
@@ -446,7 +446,7 @@ void SimDataComp()
   h_prob_bckgrnd_dx -> SetEntries(totalentries);
   h_asym            -> SetEntries(totalentries);
 
-  TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,-6,3,3);
+  TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,-5,2,3); //-6,3,3
 
   AsymFitFunc->SetNpx(numberBins);
   double Asymstartpar[] = {0.0,0.08,0.0};
