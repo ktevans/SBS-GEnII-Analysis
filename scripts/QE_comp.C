@@ -71,8 +71,10 @@ void QE_comp(const char *kinematic)
   {
     optics_valid_min = -0.35;
     optics_valid_max = 0.34;
-    coin_mean = 129.1;
-    coin_sigma = 5.6;
+    //coin_mean = 129.1;
+    coin_mean = -0.08;
+    //coin_sigma = 5.6;
+    coin_sigma = 1.883;
     IHWP_flip = -1;
   }
   else if(kinematic=="GEN3")
@@ -86,8 +88,10 @@ void QE_comp(const char *kinematic)
   {
     optics_valid_min = -0.36;
     optics_valid_max = 0.30;
-    coin_mean = 121.4;
-    coin_sigma = 5.8;
+    //coin_mean = 121.4;
+    coin_mean = 0.2289;
+    //coin_sigma = 5.8;
+    coin_sigma = 2.017;
   }
   else if(kinematic=="GEN4b")
   {
