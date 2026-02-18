@@ -64,7 +64,7 @@ double fitAsym(double *xA, double *parA)
 void SimDataComp()
 {
 
-  int kin = 3;
+  int kin = 2;
   auto data_file = "null";
   auto nucleon_sim_file = "null";
   auto inel_sim_file = "null";
@@ -491,10 +491,10 @@ void SimDataComp()
   TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,dx_min_i,dx_max_i,3); //-6,3,3
 
   AsymFitFunc->SetNpx(numberBins);
-  double Asymstartpar[] = {0.0,0.08,0.0};
+  double Asymstartpar[] = {0.0,0.04,0.0};
   AsymFitFunc->SetParameters(Asymstartpar);
   AsymFitFunc->SetParLimits(0,-0.2,0.2); // proton asymmetry
-  AsymFitFunc->SetParLimits(1,-0.2,0.2); // neutron asymmetry
+  AsymFitFunc->SetParLimits(1,0.0,0.2); // neutron asymmetry
   AsymFitFunc->SetParLimits(2,-0.2,0.2); // background asymmetry
 
   h_asym->Fit(AsymFitFunc,"0","",h_minX,h_maxX);
