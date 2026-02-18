@@ -293,24 +293,24 @@ void SimDataComp()
   FitFunc->SetNpx(numberBins);
   
   //----- GEN2 -----
-  //double startpar[] = {1.0,-0.5,0.5,0.0,1.0,-1.0};
-  //FitFunc->SetParameters(startpar);
-  //FitFunc->SetParLimits(0,0.1,100);   // proton scale
-  //FitFunc->SetParLimits(1,-1.0,1.0);  // proton shift
-  //FitFunc->SetParLimits(2,0.0,100);   // neutron scale
-  //FitFunc->SetParLimits(3,-1.0,0.0);  // neutron shift
-  //FitFunc->SetParLimits(4,0.0,0.2);   // background scale
-  //FitFunc->SetParLimits(5,-1.0,1.0);  // background shift
+  double startpar[] = {1.0,-0.5,0.3,-0.7,1.0,-1.0};
+  FitFunc->SetParameters(startpar);
+  FitFunc->SetParLimits(0,0.1,100);   // proton scale
+  FitFunc->SetParLimits(1,-1.0,1.0);  // proton shift
+  FitFunc->SetParLimits(2,0.0,100);   // neutron scale
+  FitFunc->SetParLimits(3,-1.0,0.0);  // neutron shift
+  FitFunc->SetParLimits(4,0.0,0.2);   // background scale
+  FitFunc->SetParLimits(5,-1.0,1.0);  // background shift
 
   //----- GEN3 -----
-  double startpar[] = {0.2,-0.5,0.1,-0.7,0.4,-1.0};
-  FitFunc->SetParameters(startpar);
-  FitFunc->SetParLimits(0,0.1,5.0);   // proton scale
-  FitFunc->SetParLimits(1,-1.0,1.0);  // proton shift
-  FitFunc->SetParLimits(2,0.0,5.0);   // neutron scale
-  FitFunc->SetParLimits(3,-1.0,0.0);  // neutron shift
-  FitFunc->SetParLimits(4,0.0,0.5);   // background scale
-  FitFunc->SetParLimits(5,-1.0,2.0);   // background shift
+  //double startpar[] = {0.2,-0.5,0.1,-0.7,0.4,-1.0};
+  //FitFunc->SetParameters(startpar);
+  //FitFunc->SetParLimits(0,0.1,5.0);   // proton scale
+  //FitFunc->SetParLimits(1,-1.0,1.0);  // proton shift
+  //FitFunc->SetParLimits(2,0.0,5.0);   // neutron scale
+  //FitFunc->SetParLimits(3,-1.0,0.0);  // neutron shift
+  //FitFunc->SetParLimits(4,0.0,0.5);   // background scale
+  //FitFunc->SetParLimits(5,-1.0,2.0);   // background shift
 
   h_data_dx->Fit(FitFunc,"0","",xmin,xmax);
 
