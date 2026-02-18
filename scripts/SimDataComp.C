@@ -131,7 +131,7 @@ void SimDataComp()
 
   h_data_dx = new TH1D("h_data_dx", ";dx", numberBins, -6.0, 4.0);
   h_data_dx->GetXaxis()->SetTitle("dx [m]");
-  //h_data_dx->Sumw2();
+  h_data_dx->Sumw2();
 
   TH1D* h_neg_hel_dx = new TH1D("h_neg_hel_dx",";-hel", numberBins, -6.0, 4.0);
   h_neg_hel_dx->GetXaxis()->SetTitle("dx [m]");
