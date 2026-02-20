@@ -81,10 +81,10 @@ void SimDataComp()
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN2_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN2_He3_dxdy.root";
     title_words = "GEN2";
-    dx_min_d = -5.0;
-    dx_min_i = -5;
-    dx_max_d = 2.0;
-    dx_max_i = 2;
+    dx_min_d = -10.0;
+    dx_min_i = -10;
+    dx_max_d = 10.0;
+    dx_max_i = 10;
 
   }
 
