@@ -293,7 +293,7 @@ void SimDataComp()
   FitFunc->SetNpx(numberBins);
   
   //----- GEN2 -----
-  double startpar[] = {1.0,-0.5,0.3,-0.7,1.0,-1.0};
+  double startpar[] = {1.0,-0.5,0.3,-0.7,0.1,0.0};
   FitFunc->SetParameters(startpar);
   FitFunc->SetParLimits(0,0.1,100);   // proton scale
   FitFunc->SetParLimits(1,-1.0,1.0);  // proton shift
