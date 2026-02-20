@@ -28,7 +28,7 @@ void QE_INsim(const char *kinematic)
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
-  TString inputfile = Form("/volatile/halla/sbs/ktevans/SIM_IN_%s_sbs100p_nucleon_np_model2.root",kinematic);
+  TString inputfile = Form("/volatile/halla/sbs/ktevans/QE_SIM_%s_sbs100p_nucleon_np_model2_inelastic.root",kinematic);
   TString outputfile = Form("plots/parsed_SIM_IN_GEn_%s_He3_dxdy.pdf",kinematic);
   TString outfile = Form("outfiles/parsed_SIM_IN_GEn_%s_He3_dxdy.root",kinematic);
   TFile *fout = new TFile(outfile,"RECREATE");
