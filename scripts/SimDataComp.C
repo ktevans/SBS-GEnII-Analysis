@@ -81,10 +81,10 @@ void SimDataComp()
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN2_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN2_He3_dxdy.root";
     title_words = "GEN2";
-    dx_min_d = -8.0;
-    dx_min_i = -8;
-    dx_max_d = 6.0;
-    dx_max_i = 6;
+    dx_min_d = -6.0;
+    dx_min_i = -6;
+    dx_max_d = 4.0;
+    dx_max_i = 4;
 
   }
 
@@ -144,7 +144,7 @@ void SimDataComp()
 
   gErrorIgnoreLevel = kError;
 
-  int numberBins = 100;
+  int numberBins = 75;
 
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
