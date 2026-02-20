@@ -81,10 +81,10 @@ void SimDataComp()
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN2_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN2_He3_dxdy.root";
     title_words = "GEN2";
-    dx_min_d = -6.0;
-    dx_min_i = -6;
-    dx_max_d = 4.0;
-    dx_max_i = 4;
+    dx_min_d = -5.0;
+    dx_min_i = -5;
+    dx_max_d = 2.0;
+    dx_max_i = 2;
 
   }
 
@@ -293,13 +293,13 @@ void SimDataComp()
   FitFunc->SetNpx(numberBins);
   
   //----- GEN2 -----
-  double startpar[] = {1.0,-0.5,0.5,-0.7,0.05,-1.0};
+  double startpar[] = {1.0,-0.5,0.5,-0.7,0.1,-1.0};
   FitFunc->SetParameters(startpar);
   FitFunc->SetParLimits(0,0.1,100);   // proton scale
   FitFunc->SetParLimits(1,-1.0,1.0);  // proton shift
   FitFunc->SetParLimits(2,0.1,100);   // neutron scale
   FitFunc->SetParLimits(3,-1.0,0.0);  // neutron shift
-  FitFunc->SetParLimits(4,0.05,100);  // background scale
+  FitFunc->SetParLimits(4,0.0,0.5);  // background scale
   FitFunc->SetParLimits(5,-1.0,1.0);  // background shift
 
   //----- GEN3 -----
