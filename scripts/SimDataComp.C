@@ -268,7 +268,7 @@ void SimDataComp()
 
     h_simIN_dx->GetSumw2();
 
-    h_simIN_dx->Fill(dx_simIN,weight_IN);
+    h_simIN_dx->Fill(dx_simIN);//,weight_IN);
 
   }//end loop over events
 
