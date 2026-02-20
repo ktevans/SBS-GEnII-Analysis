@@ -144,7 +144,7 @@ void SimDataComp()
 
   gErrorIgnoreLevel = kError;
 
-  int numberBins = 100;
+  int numberBins = 50;
 
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
