@@ -76,7 +76,7 @@ void QA_QE(const char *kinematic)
   double coin_mean;
   double coin_sigma;
   double dx_n_mean;
-  double dx_n_sigma = 0.5;
+  double dx_n_sigma;
   double dx_p_mean;
   double dx_p_sigma;
   double dy_mean;
@@ -84,8 +84,6 @@ void QA_QE(const char *kinematic)
 
   int IHWP_flip;
 
-  if(kinematic=="GEN2")
-  {
     optics_valid_min = -0.35;
     optics_valid_max = 0.34;
     //coin_mean = 129.1;
@@ -99,69 +97,6 @@ void QA_QE(const char *kinematic)
     dx_p_sigma = 0.600;
     dy_mean = 0.431;
     dy_sigma = 1.265;
-  }
-  else if(kinematic=="GEN3")
-  {
-    optics_valid_min = -0.35;
-    optics_valid_max = 0.33;
-    //coin_mean = 120.3;
-    coin_mean = 0.4239;
-    //coin_sigma = 6.0;
-    coin_sigma = 2.728;
-    IHWP_flip = 1;
-    dx_n_mean = 0.0;
-    dx_n_sigma = 1.0;
-    dx_p_mean = -1.541;
-    dx_p_sigma = 0.365;
-    dy_mean = 0.336;
-    dy_sigma = 0.913;
-  }
-  else if(kinematic=="GEN4a")
-  {
-    optics_valid_min = -0.36;
-    optics_valid_max = 0.30;
-    //coin_mean = 121.4;
-    coin_mean = 0.2289;
-    //coin_sigma = 5.8;
-    coin_sigma = 2.017;
-    IHWP_flip = 1;
-    dx_n_mean = 0.0;
-    dx_n_sigma = 0.5;
-    dx_p_mean = -1.124;
-    dx_p_sigma = 0.464;
-    dy_mean = 0.254;
-    dy_sigma = 0.773;
-  }
-  else if(kinematic=="GEN4b")
-  {
-    optics_valid_min = -0.37;
-    optics_valid_max = 0.32;
-    //coin_mean = 185.5;
-    coin_mean = 0.2546;
-    //coin_sigma = 7.0;
-    coin_sigma = 2.695;
-    IHWP_flip = 1;
-    dx_n_mean = 0.0;
-    dx_n_sigma = 0.5;
-    dx_p_mean = -1.124;
-    dx_p_sigma = 0.361;
-    dy_mean = 0.248;
-    dy_sigma = 0.769;
-  }
-  else
-  {
-    optics_valid_min = -2.0;
-    optics_valid_max = 2.0;
-    coin_mean = 0.0;
-    coin_sigma = 400.0;
-    IHWP_flip = 1;
-    dx_n_mean = 0.0;
-    dx_n_sigma = 5.0;
-    dx_p_mean = -1.0;
-    dx_p_sigma = 5.0;
-    dy_mean = 0.0;
-    dy_sigma = 5.0;
-  }
 
   //Scan through all the entries in the TChain T
   //If the rootfiles are empty or don't exist, there will be 0 entries
