@@ -153,19 +153,19 @@ void QA_QE(const char *kinematic)
   TH2D* h2_pse_grclus = new TH2D("h2_pse_grclus", "PSe vs GRclus", 100.0, 0.0, 2.0, 20.0, 0.0, 20.0);
   h2_pse_grclus->GetXaxis()->SetTitle("bb.ps.e [GeV]");
   h2_pse_grclus->GetYaxis()->SetTitle("bb.gr.clus.size");
-  h2_pse_grclus->SetTitle("PreShower Energy vs GRINCH Cluster Size with Global, Vertex, and PSe Cuts");
+  h2_pse_grclus->SetTitle("PreShower Energy vs GRINCH Cluster Size with Global, Vertex, E/p, and PSe Cuts");
 
   TH1D* h_W2 = new TH1D("h_W2", "W2", 100.0, 0.0, 2.0);
   h_W2->GetXaxis()->SetTitle("e.kine.W2 [GeV]");
-  h_W2->SetTitle("W2 with Global, Vertex, and PSe Cuts");
+  h_W2->SetTitle("W2 with Global, Vertex, E/p, and PSe Cuts");
 
   TH1D* h_dx = new TH1D("h_dx", ";dx", 70.0, -4.0, 3.0);
   h_dx->GetXaxis()->SetTitle("dx [m]");
-  h_dx->SetTitle("dx with Global, Vertex, PSe, and W2 Cuts");
+  h_dx->SetTitle("dx with Global, Vertex, E/p, PSe, and W2 Cuts");
 
   TH1D* h_dy = new TH1D("h_dy", ";dy", 60.0, -3.0, 3.0);
   h_dy->GetXaxis()->SetTitle("dy [m]");
-  h_dy->SetTitle("dy with Global, Vertex, PSe, and W2 Cuts");
+  h_dy->SetTitle("dy with Global, Vertex, E/p, PSe, and W2 Cuts");
 
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
@@ -174,7 +174,7 @@ void QA_QE(const char *kinematic)
 
     // && abs(adc_coin-coin_mean)<coin_sigma && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>2.0 && abs(bb_tr_vz)<0.27
 
-    if(pass_global==1 && (IHWP==-1.0 || IHWP==1.0) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max&&bb_gr_clus_track==0)
+    if(pass_global==1 && (IHWP==-1.0 || IHWP==1.0) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0)
     {
 
       h_tr_vz->Fill(bb_tr_vz);
@@ -183,7 +183,7 @@ void QA_QE(const char *kinematic)
       {
         h_ps_e->Fill(bb_ps_e);
 
-        h2_coin_W2->Fill(adc_coin,e_kine_W2);
+        h2_coin_W2->Fill(e_kine_W2,adc_coin);
 
         if (bb_ps_e>0.2)
         {
