@@ -287,6 +287,9 @@ void QA_QE(const char *kinematic)
   Ep_n.SetLineWidth(2);
   Ep_n.DrawEllipse(dy_mean, dx_n_mean, 2*dy_sigma, dx_n_sigma, 0,360,0);
 
+  //Save the canvas to a pdf
+  c1_2->Print(outputfile);
+
   TCanvas *c2 = new TCanvas("c2","QE Cuts",100,100,700,700);
   c2->Divide(2,2);
   c2->cd(1);
