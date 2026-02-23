@@ -66,7 +66,7 @@ void QA_QE(const char *kinematic)
   double sbs_hcal_x;            T->SetBranchAddress("sbs.hcal.x", &sbs_hcal_x);
   double sbs_hcal_y;            T->SetBranchAddress("sbs.hcal.y", &sbs_hcal_y);
   double sbs_hcal_atimeblk;     T->SetBranchAddress("sbs.hcal.atimeblk", &sbs_hcal_atimeblk);
-  double sbs_hcal_clus_blk_id;  T->SetBranchAddress("sbs.hcal.clus_blk.id", &sbs_hcal_clus_blk_id);
+  int sbs_hcal_clus_blk_id;     T->SetBranchAddress("sbs.hcal.clus_blk.id", &sbs_hcal_clus_blk_id);
   double dx_hcal;               T->SetBranchAddress("dx", &dx_hcal);
   double dy_hcal;               T->SetBranchAddress("dy", &dy_hcal);
   double IHWP;                  T->SetBranchAddress("IHWP", &IHWP);
