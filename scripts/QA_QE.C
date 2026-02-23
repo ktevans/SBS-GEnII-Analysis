@@ -75,6 +75,12 @@ void QA_QE(const char *kinematic)
   double optics_valid_max;
   double coin_mean;
   double coin_sigma;
+  double dx_n_mean;
+  double dx_n_sigma;
+  double dx_p_mean;
+  double dx_p_sigma;
+  double dy_mean;
+  double dy_sigma;
 
   int IHWP_flip;
 
@@ -87,6 +93,12 @@ void QA_QE(const char *kinematic)
     //coin_sigma = 5.6;
     coin_sigma = 1.883;
     IHWP_flip = -1;
+    dx_n_mean = -0.147;
+    dx_n_sigma = 0.812;
+    dx_p_mean = -2.811;
+    dx_p_sigma = 0.600;
+    dy_mean = 0.431;
+    dy_sigma = 1.265;
   }
   else if(kinematic=="GEN3")
   {
@@ -97,6 +109,12 @@ void QA_QE(const char *kinematic)
     //coin_sigma = 6.0;
     coin_sigma = 2.728;
     IHWP_flip = 1;
+    dx_n_mean = 0.0;
+    dx_n_sigma = 1.0;
+    dx_p_mean = -1.541;
+    dx_p_sigma = 0.365;
+    dy_mean = 0.336;
+    dy_sigma = 0.913;
   }
   else if(kinematic=="GEN4a")
   {
@@ -107,6 +125,12 @@ void QA_QE(const char *kinematic)
     //coin_sigma = 5.8;
     coin_sigma = 2.017;
     IHWP_flip = 1;
+    dx_n_mean = 0.0;
+    dx_n_sigma = 0.5;
+    dx_p_mean = -1.124;
+    dx_p_sigma = 0.464;
+    dy_mean = 0.254;
+    dy_sigma = 0.773;
   }
   else if(kinematic=="GEN4b")
   {
@@ -117,6 +141,12 @@ void QA_QE(const char *kinematic)
     //coin_sigma = 7.0;
     coin_sigma = 2.695;
     IHWP_flip = 1;
+    dx_n_mean = 0.0;
+    dx_n_sigma = 0.5;
+    dx_p_mean = -1.124;
+    dx_p_sigma = 0.361;
+    dy_mean = 0.248;
+    dy_sigma = 0.769;
   }
   else
   {
@@ -125,6 +155,12 @@ void QA_QE(const char *kinematic)
     coin_mean = 0.0;
     coin_sigma = 400.0;
     IHWP_flip = 1;
+    dx_n_mean = 0.0;
+    dx_n_sigma = 5.0;
+    dx_p_mean = -1.0;
+    dx_p_sigma = 5.0;
+    dy_mean = 0.0;
+    dy_sigma = 5.0;
   }
 
   //Scan through all the entries in the TChain T
@@ -167,6 +203,11 @@ void QA_QE(const char *kinematic)
   h_dy->GetXaxis()->SetTitle("dy [m]");
   h_dy->SetTitle("dy with Global, Vertex, E/p, PSe, and W2 Cuts");
 
+  TH2D* h2_dxdy = new TH2D("h2_dxdy", "dy vs dx", 70.0, -3.0, 4.0, 100.0, -6.0, 4.0);
+  h2_dxdy->GetXaxis()->SetTitle("dy [m]");
+  h2_dxdy->GetYaxis()->SetTitle("dx [m]");
+  h2_dxdy->SetTitle("dx vs dy with Global, Vertex, E/p, PSe, and W2 Cuts");
+
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
   {
@@ -201,9 +242,11 @@ void QA_QE(const char *kinematic)
               {
                 h_dx->Fill(dx_hcal);
                 h_dy->Fill(dy_hcal);
+                h2_dxdy->Fill(dy_hcal,dx_hcal);
 
                 dx_out = dx_hcal;
                 dy_out = dy_hcal;
+
               }// end W2 cut
             }// end coin cut
           }// end E/p cut
@@ -227,6 +270,22 @@ void QA_QE(const char *kinematic)
 
   //Save the canvas to a pdf
   c1->Print(outputfile+"(");
+
+  TCanvas *c1_2 = new TCanvas("c1_2", "dxdy Plot", 100,100,700,700);
+  c1_2->cd();
+  h2_dxdy->Draw("colz");
+
+  TEllipse Ep_p;
+  Ep_p.SetFillStyle(0);
+  Ep_p.SetLineColor(2);
+  Ep_p.SetLineWidth(2);
+  Ep_p.DrawEllipse(dy_mean, dx_p_mean, 2*dy_sigma, dx_p_sigma, 0,360,0);
+
+  TEllipse Ep_n;
+  Ep_n.SetFillStyle(0);
+  Ep_n.SetLineColor(3);
+  Ep_n.SetLineWidth(2);
+  Ep_n.DrawEllipse(dy_mean, dx_n_mean, 2*dy_sigma, dx_n_sigma, 0,360,0);
 
   TCanvas *c2 = new TCanvas("c2","QE Cuts",100,100,700,700);
   c2->Divide(2,2);
