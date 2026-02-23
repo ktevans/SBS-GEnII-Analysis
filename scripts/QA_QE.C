@@ -150,7 +150,7 @@ void QA_QE(const char *kinematic)
   h2_coin_W2->GetYaxis()->SetTitle("adc.coin [ns]");
   h2_coin_W2->SetTitle("Coincidence Time (HCal-BBCal) vs W2 with Global and Vertex Cuts");
 
-  TH2D* h2_pse_grclus = new TH2D("h2_pse_grclus", "PSe vs GRclus", 100.0, 0.0, 2.0, 100.0, 0.0, 20.0);
+  TH2D* h2_pse_grclus = new TH2D("h2_pse_grclus", "PSe vs GRclus", 100.0, 0.0, 2.0, 20.0, 0.0, 20.0);
   h2_pse_grclus->GetXaxis()->SetTitle("bb.ps.e [GeV]");
   h2_pse_grclus->GetYaxis()->SetTitle("bb.gr.clus.size");
   h2_pse_grclus->SetTitle("PreShower Energy vs GRINCH Cluster Size with Global, Vertex, and PSe Cuts");
