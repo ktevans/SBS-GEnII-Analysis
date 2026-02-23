@@ -26,6 +26,8 @@
 void QA_QE(const char *kinematic)
 {
 
+  int kin = 2;
+
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
   TString inputfile = Form("/volatile/halla/sbs/ktevans/KateJackSBSAnalysis/TEST_pass3/KJ_parsed_GEn_pass2_%s_He3_100.root",kinematic);
@@ -84,6 +86,8 @@ void QA_QE(const char *kinematic)
 
   int IHWP_flip;
 
+  if(kin==2)
+  {
     optics_valid_min = -0.35;
     optics_valid_max = 0.34;
     //coin_mean = 129.1;
@@ -97,6 +101,69 @@ void QA_QE(const char *kinematic)
     dx_p_sigma = 0.600;
     dy_mean = 0.431;
     dy_sigma = 1.265;
+  }
+  else if(kin==3)
+  {
+    optics_valid_min = -0.35;
+    optics_valid_max = 0.33;
+    //coin_mean = 120.3;
+    coin_mean = 0.4239;
+    //coin_sigma = 6.0;
+    coin_sigma = 2.728;
+    IHWP_flip = 1;
+    dx_n_mean = 0.0;
+    dx_n_sigma = 1.0;
+    dx_p_mean = -1.541;
+    dx_p_sigma = 0.365;
+    dy_mean = 0.336;
+    dy_sigma = 0.913;
+  }
+  else if(kin==4)
+  {
+    optics_valid_min = -0.36;
+    optics_valid_max = 0.30;
+    //coin_mean = 121.4;
+    coin_mean = 0.2289;
+    //coin_sigma = 5.8;
+    coin_sigma = 2.017;
+    IHWP_flip = 1;
+    dx_n_mean = 0.0;
+    dx_n_sigma = 0.5;
+    dx_p_mean = -1.124;
+    dx_p_sigma = 0.464;
+    dy_mean = 0.254;
+    dy_sigma = 0.773;
+  }
+  else if(kin==5)
+  {
+    optics_valid_min = -0.37;
+    optics_valid_max = 0.32;
+    //coin_mean = 185.5;
+    coin_mean = 0.2546;
+    //coin_sigma = 7.0;
+    coin_sigma = 2.695;
+    IHWP_flip = 1;
+    dx_n_mean = 0.0;
+    dx_n_sigma = 0.5;
+    dx_p_mean = -1.124;
+    dx_p_sigma = 0.361;
+    dy_mean = 0.248;
+    dy_sigma = 0.769;
+  }
+  else
+  {
+    optics_valid_min = -2.0;
+    optics_valid_max = 2.0;
+    coin_mean = 0.0;
+    coin_sigma = 400.0;
+    IHWP_flip = 1;
+    dx_n_mean = 0.0;
+    dx_n_sigma = 5.0;
+    dx_p_mean = -1.0;
+    dx_p_sigma = 5.0;
+    dy_mean = 0.0;
+    dy_sigma = 5.0;
+  }
 
   //Scan through all the entries in the TChain T
   //If the rootfiles are empty or don't exist, there will be 0 entries
@@ -210,27 +277,17 @@ void QA_QE(const char *kinematic)
   c1_2->cd();
   h2_dxdy->Draw("colz");
 
-  TEllipse Ep_p;
-  Ep_p.SetFillStyle(0);
-  Ep_p.SetLineColor(2);
-  Ep_p.SetLineWidth(2);
-  Ep_p.DrawEllipse(dy_mean, dx_p_mean, 2*dy_sigma, dx_p_sigma, 0,360,0);
-
-  TBox* Bp = new TBox(dy_mean-dy_sigma, dx_p_mean-dx_p_sigma, dy_mean+dy_sigma, dx_p_mean+dx_p_sigma);
-  //Bp.SetX1(dy_mean-dy_sigma);
-  //Bp.SetX2(dy_mean+dy_sigma);
-  //Bp.SetY1(dx_p_mean-dx_p_sigma);
-  //Bp.SetY1(dx_p_mean+dx_p_sigma);
+  TBox* Bp = new TBox(dy_mean-2*dy_sigma, dx_p_mean-dx_p_sigma, dy_mean+2*dy_sigma, dx_p_mean+dx_p_sigma);
   Bp->SetFillStyle(0);
   Bp->SetLineColor(2);
   Bp->SetLineWidth(2);
   Bp->Draw();
 
-  TEllipse Ep_n;
-  Ep_n.SetFillStyle(0);
-  Ep_n.SetLineColor(3);
-  Ep_n.SetLineWidth(2);
-  Ep_n.DrawEllipse(dy_mean, dx_n_mean, 2*dy_sigma, dx_n_sigma, 0,360,0);
+  TBox* Bn = new TBox(dy_mean-2*dy_sigma, dx_n_mean-dx_n_sigma, dy_mean+2*dy_sigma, dx_n_mean+dx_n_sigma);
+  Bn->SetFillStyle(0);
+  Bn->SetLineColor(3);
+  Bn->SetLineWidth(2);
+  Bn->Draw();
 
   //Save the canvas to a pdf
   c1_2->Print(outputfile);
