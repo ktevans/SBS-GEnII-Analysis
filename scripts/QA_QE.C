@@ -159,11 +159,11 @@ void QA_QE(const char *kinematic)
   h_W2->GetXaxis()->SetTitle("e.kine.W2 [GeV]");
   h_W2->SetTitle("W2 with Global, Vertex, E/p, and PSe Cuts");
 
-  TH1D* h_dx = new TH1D("h_dx", ";dx", 70.0, -4.0, 3.0);
+  TH1D* h_dx = new TH1D("h_dx", ";dx", 100.0, -6.0, 4.0);
   h_dx->GetXaxis()->SetTitle("dx [m]");
   h_dx->SetTitle("dx with Global, Vertex, E/p, PSe, and W2 Cuts");
 
-  TH1D* h_dy = new TH1D("h_dy", ";dy", 60.0, -3.0, 3.0);
+  TH1D* h_dy = new TH1D("h_dy", ";dy", 70.0, -3.0, 4.0);
   h_dy->GetXaxis()->SetTitle("dy [m]");
   h_dy->SetTitle("dy with Global, Vertex, E/p, PSe, and W2 Cuts");
 
