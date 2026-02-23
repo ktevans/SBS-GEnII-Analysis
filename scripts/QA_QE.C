@@ -192,7 +192,7 @@ void QA_QE(const char *kinematic)
 
             h2_pse_grclus->Fill(bb_ps_e,bb_gr_clus_size);
 
-            if (abs(acd_coin-coin_mean)<(2*coin_sigma))
+            if (abs(adc_coin-coin_mean)<(2*coin_sigma))
             {
               h_W2->Fill(e_kine_W2);
 
