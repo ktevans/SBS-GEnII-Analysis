@@ -83,6 +83,8 @@ void QA_QE(const char *kinematic)
   double dx_p_sigma;
   double dy_mean;
   double dy_sigma;
+  int firstRun;
+  int lastRun;
 
   int IHWP_flip;
 
@@ -101,6 +103,8 @@ void QA_QE(const char *kinematic)
     dx_p_sigma = 0.600;
     dy_mean = 0.431;
     dy_sigma = 1.265;
+    firstRun = 2033;
+    lastRun = 2322;
   }
   else if(kin==3)
   {
@@ -117,6 +121,8 @@ void QA_QE(const char *kinematic)
     dx_p_sigma = 0.365;
     dy_mean = 0.336;
     dy_sigma = 0.913;
+    firstRun = 2506;
+    lastRun = 3250;
   }
   else if(kin==4)
   {
@@ -133,6 +139,8 @@ void QA_QE(const char *kinematic)
     dx_p_sigma = 0.464;
     dy_mean = 0.254;
     dy_sigma = 0.773;
+    firstRun = 3510;
+    lastRun = 4587;
   }
   else if(kin==5)
   {
@@ -149,6 +157,8 @@ void QA_QE(const char *kinematic)
     dx_p_sigma = 0.361;
     dy_mean = 0.248;
     dy_sigma = 0.769;
+    firstRun = 5044;
+    lastRun = 6083;
   }
   else
   {
@@ -163,6 +173,8 @@ void QA_QE(const char *kinematic)
     dx_p_sigma = 5.0;
     dy_mean = 0.0;
     dy_sigma = 5.0;
+    firstRun = 0;
+    lastRun = 100;
   }
 
   //Scan through all the entries in the TChain T
@@ -214,6 +226,45 @@ void QA_QE(const char *kinematic)
   h_eovp->GetXaxis()->SetTitle("E/p");
   h_eovp->SetTitle("E/p with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
 
+  TH2D* h2_pse_trx = new TH2D("h2_pse_trx", "PSe vs TrX", 100.0, -0.45, 0.6, 100.0, 0.0, 3.0);
+  h2_pse_trx->GetYaxis()->SetTitle("bb.ps.e [GeV]");
+  h2_pse_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
+  h2_pse_trx->SetTitle("PreShower Energy vs Track x with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+
+  TH2D* h2_pse_try = new TH2D("h2_pse_try", "PSe vs TrY", 100.0, -0.2, 0.15, 100.0, 0.0, 3.0);
+  h2_pse_try->GetYaxis()->SetTitle("bb.ps.e [GeV]");
+  h2_pse_try->GetXaxis()->SetTitle("bb.tr.y [m]");
+  h2_pse_try->SetTitle("PreShower Energy vs Track y with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+
+  TH2D* h2_she_trx = new TH2D("h2_she_trx", "SHe vs TrX", 100.0, -0.45, 0.6, 100.0, 0.0, 3.0);
+  h2_she_trx->GetYaxis()->SetTitle("bb.sh.e [GeV]");
+  h2_she_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
+  h2_she_trx->SetTitle("Shower Energy vs Track x with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+
+  TH2D* h2_she_try = new TH2D("h2_she_try", "SHe vs TrY", 100.0, -0.2, 0.15, 100.0, 0.0, 3.0);
+  h2_she_try->GetYaxis()->SetTitle("bb.sh.e [GeV]");
+  h2_she_try->GetXaxis()->SetTitle("bb.tr.y [m]");
+  h2_she_try->SetTitle("Shower Energy vs Track y with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+
+  TH2D* h2_trp_trx = new TH2D("h2_trp_trx", "TrP vs TrX", 100.0, -0.45, 0.6, 100.0, 2.0, 3.5);
+  h2_trp_trx->GetYaxis()->SetTitle("bb.tr.p [GeV]");
+  h2_trp_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
+  h2_trp_trx->SetTitle("Track p vs Track x with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+
+  TH2D* h2_trp_try = new TH2D("h2_trp_try", "TrP vs TrY", 100.0, -0.2, 0.15, 100.0, 2.0, 3.5);
+  h2_trp_try->GetYaxis()->SetTitle("bb.tr.p [GeV]");
+  h2_trp_try->GetXaxis()->SetTitle("bb.tr.y [m]");
+  h2_trp_try->SetTitle("Track p vs Track y with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+
+  TH1D* h_coin = new TH1D("h_coin", "coin", 100.0, -5.0, 5.0);
+  h_coin->GetXaxis()->SetTitle("Coincidence Time [ns]");
+  h_coin->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+
+  TH2D* h2_eovp_runnum = new TH2D("h2_eovp_runnum", "E/p vs runnum", lastRun-firstRun, firstRun, lastRun, 100.0, 0.5, 1.5);
+  h2_eovp_runnum->GetYaxis()->SetTitle("E/p");
+  h2_eovp_runnum->GetXaxis()->SetTitle("runnum");
+  h2_eovp_runnum->SetTitle("E/p vs Run Number with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
   {
@@ -257,6 +308,20 @@ void QA_QE(const char *kinematic)
                 {
 
                   h_eovp->Fill((bb_ps_e+bb_sh_e)/bb_tr_p);
+                  h2_eovp_runnum->Fill(runnum,(bb_ps_e+bb_sh_e)/bb_tr_p);
+
+                  h2_pse_trx->Fill(bb_tr_x,bb_ps_e);
+                  h2_pse_try->Fill(bb_tr_y,bb_ps_e);
+
+                  h2_she_trx->Fill(bb_tr_x,bb_sh_e);
+                  h2_she_try->Fill(bb_tr_y,bb_sh_e);
+
+                  h2_trp_trx->Fill(bb_tr_x,bb_tr_p);
+                  h2_trp_try->Fill(bb_tr_y,bb_tr_p);
+
+                  h_coin->Fill(adc_coin);
+
+
 
                 }// end spot cuts
 
@@ -278,7 +343,7 @@ void QA_QE(const char *kinematic)
 
   }//end event loop
 
-  TCanvas *c1 = new TCanvas("c1","1D dx and dy Plots",100,100,700,700);
+  TCanvas *c1 = new TCanvas("c1","1D dx and dy Plots",100,100,1200,1200);
   c1->Divide(1,2);
   c1->cd(1);
   h_dx->Draw();
@@ -288,7 +353,7 @@ void QA_QE(const char *kinematic)
   //Save the canvas to a pdf
   c1->Print(outputfile+"(");
 
-  TCanvas *c1_2 = new TCanvas("c1_2", "dxdy Plot", 100,100,700,700);
+  TCanvas *c1_2 = new TCanvas("c1_2", "dxdy Plot", 100,100,1200,1200);
   c1_2->cd();
   h2_dxdy->Draw("colz");
 
@@ -307,7 +372,7 @@ void QA_QE(const char *kinematic)
   //Save the canvas to a pdf
   c1_2->Print(outputfile);
 
-  TCanvas *c2 = new TCanvas("c2","QE Cuts",100,100,700,700);
+  TCanvas *c2 = new TCanvas("c2","QE Cuts",100,100,1200,1200);
   c2->Divide(2,2);
   c2->cd(1);
   h_tr_vz->Draw();
@@ -321,15 +386,39 @@ void QA_QE(const char *kinematic)
   //Save the canvas to a pdf
   c2->Print(outputfile);
 
-  TCanvas *c3 = new TCanvas("c3","W2",100,100,700,700);
-  c3->Divide(1,2);
+  TCanvas *c3 = new TCanvas("c3","W2",100,100,1200,1200);
+  c3->Divide(1,3);
   c3->cd(1);
   h2_coin_W2->Draw("colz");
   c3->cd(2);
   h_eovp->Draw();
+  c3->cd(3);
+  h2_eovp_runnum->Draw("colz");
 
   //Save the canvas to a pdf
-  c3->Print(outputfile+")");
+  c3->Print(outputfile);
+
+  TCanvas *c4 = new TCanvas("c4","bbE",100,100,1200,1200);
+  c4->Divide(2,2);
+  c4->cd(1);
+  h2_pse_trx->Draw("colz");
+  c4->cd(2);
+  h2_pse_try->Draw("colz");
+  c4->cd(3);
+  h2_she_trx->Draw("colz");
+  c4->cd(4);
+  h2_she_try->Draw("colz");
+
+  c4->Print(outputfile);
+
+  TCanvas *c5 = new TCanvas("c5","bbTr",100,100,1200,1200);
+  c5->Divide(1,2);
+  c5->cd(1);
+  h2_trp_trx->Draw("colz");
+  c5->cd(2);
+  h2_trp_try->Draw("colz");
+
+  c5->Print(outputfile+")");
 
   fout->Write();
 }
