@@ -103,7 +103,7 @@ void QA_QE(const char *kinematic)
     dx_p_sigma = 0.600;
     dy_mean = 0.431;
     dy_sigma = 1.265;
-    firstRun = 2033;
+    firstRun = 2130;
     lastRun = 2322;
   }
   else if(kin==3)
@@ -207,63 +207,63 @@ void QA_QE(const char *kinematic)
 
   TH1D* h_W2 = new TH1D("h_W2", "W2", 100.0, 0.0, 2.0);
   h_W2->GetXaxis()->SetTitle("e.kine.W2 [GeV]");
-  h_W2->SetTitle("W2 with Global, Vertex, E/p, and PSe Cuts");
+  h_W2->SetTitle("W2 with Global, Vertex, E/p, PSe, Coin, and GRINCH Cuts");
 
   TH1D* h_dx = new TH1D("h_dx", ";dx", 100.0, -6.0, 4.0);
   h_dx->GetXaxis()->SetTitle("dx [m]");
-  h_dx->SetTitle("dx with Global, Vertex, E/p, PSe, and W2 Cuts");
+  h_dx->SetTitle("dx with Global, Vertex, E/p, PSe, Coin, GRINCH, and W2 Cuts");
 
   TH1D* h_dy = new TH1D("h_dy", ";dy", 70.0, -3.0, 4.0);
   h_dy->GetXaxis()->SetTitle("dy [m]");
-  h_dy->SetTitle("dy with Global, Vertex, E/p, PSe, and W2 Cuts");
+  h_dy->SetTitle("dy with Global, Vertex, E/p, PSe, Coin, GRINCH, and W2 Cuts");
 
   TH2D* h2_dxdy = new TH2D("h2_dxdy", "dy vs dx", 70.0, -3.0, 4.0, 100.0, -6.0, 4.0);
   h2_dxdy->GetXaxis()->SetTitle("dy [m]");
   h2_dxdy->GetYaxis()->SetTitle("dx [m]");
-  h2_dxdy->SetTitle("dx vs dy with Global, Vertex, E/p, PSe, and W2 Cuts");
+  h2_dxdy->SetTitle("dx vs dy with Global, Vertex, E/p, PSe, Coin, GRINCH, and W2 Cuts");
 
   TH1D* h_eovp = new TH1D("h_eovp", "E/p", 100.0, 0.5, 1.5);
   h_eovp->GetXaxis()->SetTitle("E/p");
-  h_eovp->SetTitle("E/p with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+  h_eovp->SetTitle("E/p with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH2D* h2_pse_trx = new TH2D("h2_pse_trx", "PSe vs TrX", 100.0, -0.45, 0.6, 100.0, 0.0, 3.0);
   h2_pse_trx->GetYaxis()->SetTitle("bb.ps.e [GeV]");
   h2_pse_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
-  h2_pse_trx->SetTitle("PreShower Energy vs Track x with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+  h2_pse_trx->SetTitle("PreShower Energy vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH2D* h2_pse_try = new TH2D("h2_pse_try", "PSe vs TrY", 100.0, -0.2, 0.15, 100.0, 0.0, 3.0);
   h2_pse_try->GetYaxis()->SetTitle("bb.ps.e [GeV]");
   h2_pse_try->GetXaxis()->SetTitle("bb.tr.y [m]");
-  h2_pse_try->SetTitle("PreShower Energy vs Track y with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+  h2_pse_try->SetTitle("PreShower Energy vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH2D* h2_she_trx = new TH2D("h2_she_trx", "SHe vs TrX", 100.0, -0.45, 0.6, 100.0, 0.0, 3.0);
   h2_she_trx->GetYaxis()->SetTitle("bb.sh.e [GeV]");
   h2_she_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
-  h2_she_trx->SetTitle("Shower Energy vs Track x with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+  h2_she_trx->SetTitle("Shower Energy vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH2D* h2_she_try = new TH2D("h2_she_try", "SHe vs TrY", 100.0, -0.2, 0.15, 100.0, 0.0, 3.0);
   h2_she_try->GetYaxis()->SetTitle("bb.sh.e [GeV]");
   h2_she_try->GetXaxis()->SetTitle("bb.tr.y [m]");
-  h2_she_try->SetTitle("Shower Energy vs Track y with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+  h2_she_try->SetTitle("Shower Energy vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH2D* h2_trp_trx = new TH2D("h2_trp_trx", "TrP vs TrX", 100.0, -0.45, 0.6, 100.0, 2.0, 3.5);
   h2_trp_trx->GetYaxis()->SetTitle("bb.tr.p [GeV]");
   h2_trp_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
-  h2_trp_trx->SetTitle("Track p vs Track x with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+  h2_trp_trx->SetTitle("Track p vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH2D* h2_trp_try = new TH2D("h2_trp_try", "TrP vs TrY", 100.0, -0.2, 0.15, 100.0, 2.0, 3.5);
   h2_trp_try->GetYaxis()->SetTitle("bb.tr.p [GeV]");
   h2_trp_try->GetXaxis()->SetTitle("bb.tr.y [m]");
-  h2_trp_try->SetTitle("Track p vs Track y with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+  h2_trp_try->SetTitle("Track p vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH1D* h_coin = new TH1D("h_coin", "coin", 100.0, -5.0, 5.0);
   h_coin->GetXaxis()->SetTitle("Coincidence Time [ns]");
-  h_coin->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+  h_coin->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH2D* h2_eovp_runnum = new TH2D("h2_eovp_runnum", "E/p vs runnum", lastRun-firstRun, firstRun, lastRun, 100.0, 0.5, 1.5);
   h2_eovp_runnum->GetYaxis()->SetTitle("E/p");
   h2_eovp_runnum->GetXaxis()->SetTitle("runnum");
-  h2_eovp_runnum->SetTitle("E/p vs Run Number with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+  h2_eovp_runnum->SetTitle("E/p vs Run Number with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
@@ -291,7 +291,7 @@ void QA_QE(const char *kinematic)
 
             h2_pse_grclus->Fill(bb_ps_e,bb_gr_clus_size);
 
-            if (abs(adc_coin-coin_mean)<(2*coin_sigma))
+            if (abs(adc_coin-coin_mean)<(2*coin_sigma) && bb_gr_clus_size>2)
             {
               h_W2->Fill(e_kine_W2);
 
