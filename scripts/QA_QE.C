@@ -281,12 +281,15 @@ void QA_QE(const char *kinematic)
   Ep_p.SetLineWidth(2);
   Ep_p.DrawEllipse(dy_mean, dx_p_mean, 2*dy_sigma, dx_p_sigma, 0,360,0);
 
-  TBox Bp;
-  Bp.SetX1(dy_mean-dy_sigma);
-  Bp.SetX2(dy_mean+dy_sigma);
-  Bp.SetY1(dx_p_mean-dx_p_sigma);
-  Bp.SetY1(dx_p_mean+dx_p_sigma);
-  Bp.Draw();
+  TBox* Bp = new TBox(dy_mean-dy_sigma, dx_p_mean-dx_p_sigma, dy_mean+dy_sigma, dx_p_mean+dx_p_sigma);
+  //Bp.SetX1(dy_mean-dy_sigma);
+  //Bp.SetX2(dy_mean+dy_sigma);
+  //Bp.SetY1(dx_p_mean-dx_p_sigma);
+  //Bp.SetY1(dx_p_mean+dx_p_sigma);
+  Bp->SetFillStyle(0);
+  Bp->SetLineColor(2);
+  Bp->SetLineWidth(2);
+  Bp->Draw();
 
   TEllipse Ep_n;
   Ep_n.SetFillStyle(0);
