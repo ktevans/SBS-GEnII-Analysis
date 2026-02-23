@@ -210,6 +210,10 @@ void QA_QE(const char *kinematic)
   h2_dxdy->GetYaxis()->SetTitle("dx [m]");
   h2_dxdy->SetTitle("dx vs dy with Global, Vertex, E/p, PSe, and W2 Cuts");
 
+  TH1D* h_eovp = new TH1D("h_eovp", "E/p", 100.0, 0.5, 1.5);
+  h_eovp->GetXaxis()->SetTitle("E/p");
+  h_eovp->SetTitle("E/p with Global, Vertex, E/p, PSe, W2, and Spot Cuts");
+
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
   {
@@ -240,7 +244,7 @@ void QA_QE(const char *kinematic)
             {
               h_W2->Fill(e_kine_W2);
 
-              if(abs(e_kine_W2-1.0)<0.5)
+              if (abs(e_kine_W2-1.0)<0.5)
               {
                 h_dx->Fill(dx_hcal);
                 h_dy->Fill(dy_hcal);
@@ -249,10 +253,21 @@ void QA_QE(const char *kinematic)
                 dx_out = dx_hcal;
                 dy_out = dy_hcal;
 
+                if (abs(dy_hcal-dy_mean)<dy_sigma && (abs(dx_hcal-dx_n_mean)<dx_n_sigma)||(abs(dx_hcal-dx_p_mean)<dx_p_sigma))
+                {
+
+                  h_eovp->Fill((bb_ps_e+bb_sh_e)/bb_tr_p);
+
+                }// end spot cuts
+
               }// end W2 cut
+
             }// end coin cut
+
           }// end E/p cut
+
         }// end ps cut
+
       }// end vertex cut
 
       W2_out = e_kine_W2;
@@ -277,13 +292,13 @@ void QA_QE(const char *kinematic)
   c1_2->cd();
   h2_dxdy->Draw("colz");
 
-  TBox* Bp = new TBox(dy_mean-2*dy_sigma, dx_p_mean-dx_p_sigma, dy_mean+2*dy_sigma, dx_p_mean+dx_p_sigma);
+  TBox* Bp = new TBox(dy_mean-dy_sigma, dx_p_mean-dx_p_sigma, dy_mean+dy_sigma, dx_p_mean+dx_p_sigma);
   Bp->SetFillStyle(0);
   Bp->SetLineColor(2);
   Bp->SetLineWidth(2);
   Bp->Draw();
 
-  TBox* Bn = new TBox(dy_mean-2*dy_sigma, dx_n_mean-dx_n_sigma, dy_mean+2*dy_sigma, dx_n_mean+dx_n_sigma);
+  TBox* Bn = new TBox(dy_mean-dy_sigma, dx_n_mean-dx_n_sigma, dy_mean+dy_sigma, dx_n_mean+dx_n_sigma);
   Bn->SetFillStyle(0);
   Bn->SetLineColor(3);
   Bn->SetLineWidth(2);
@@ -307,8 +322,11 @@ void QA_QE(const char *kinematic)
   c2->Print(outputfile);
 
   TCanvas *c3 = new TCanvas("c3","W2",100,100,700,700);
-  c3->cd();
+  c3->Divide(1,2);
+  c3->cd(1);
   h2_coin_W2->Draw("colz");
+  c3->cd(2);
+  h_eovp->Draw();
 
   //Save the canvas to a pdf
   c3->Print(outputfile+")");
