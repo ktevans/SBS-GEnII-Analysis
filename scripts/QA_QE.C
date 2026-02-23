@@ -76,7 +76,7 @@ void QA_QE(const char *kinematic)
   double coin_mean;
   double coin_sigma;
   double dx_n_mean;
-  double dx_n_sigma;
+  double dx_n_sigma = 0.5;
   double dx_p_mean;
   double dx_p_sigma;
   double dy_mean;
