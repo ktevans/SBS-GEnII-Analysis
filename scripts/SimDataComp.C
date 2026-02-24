@@ -71,10 +71,10 @@ double fitAsym(double *xA, double *parA)
 
 }//end fitAsym
 
-void SimDataComp(const int kin)
+void SimDataComp()
 {
 
-  //const int kinematic = kin;
+  int kin = 2;
   //auto data_file = "null";
   TString data_file;
   //auto nucleon_sim_file = "null";
