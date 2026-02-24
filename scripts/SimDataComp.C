@@ -14,6 +14,16 @@
 #include <iostream>
 #include <TMath.h>
 
+//To run script:
+// Go to SBS-GEnII-Analysis directory and type "root"
+// Type ".L scripts/SimDataComp.C" 
+//   This will compile the code and show any errors but will not run the code.
+// To run the code, type one of the following commands:
+//  for GEN2:  "SimDataComp(2)"
+//  for GEN3:  "SimDataComp(3)"
+//  for GEN4a: "SimDataComp(4)"
+//  for GEN4b: "SimDataComp(5)"
+
 //TH1::SetDefaultSumw2();
 
 TH1D *h_data_dx;
@@ -61,10 +71,10 @@ double fitAsym(double *xA, double *parA)
 
 }//end fitAsym
 
-void SimDataComp()
+void SimDataComp(int kin)
 {
 
-  int kin = 2;
+  //int kin = 2;
   auto data_file = "null";
   auto nucleon_sim_file = "null";
   auto inel_sim_file = "null";
@@ -130,17 +140,17 @@ void SimDataComp()
 
   }
 
-  //else
-  //{
-    //data_file = "null";
-    //nucleon_sim_file = "null";
-    //inel_sim_file = "null";
-    //title_words = "null";
-    //dx_min_d = 0.0;
-    //dx_min_i = 0;
-    //dx_max_d = 0.0;
-    //dx_max_i = 0.0;
-  //}
+  else
+  {
+    data_file = "null";
+    nucleon_sim_file = "null";
+    inel_sim_file = "null";
+    title_words = "null";
+    dx_min_d = 0.0;
+    dx_min_i = 0;
+    dx_max_d = 0.0;
+    dx_max_i = 0.0;
+  }
 
   gErrorIgnoreLevel = kError;
 
