@@ -62,11 +62,11 @@ void MissingMom(const char *kinematic)
   double weight;     T->SetBranchAddress("weight", &weight);
 
   //double dx_p_shift = 0.375;
-  double dx_p_shift = -0.442;
+  double dx_p_shift = 0.442;
   //double dx_p_shift = 0.375;
 
   //double dx_n_shift = 0.7;
-  double dx_n_shift = -0.108;
+  double dx_n_shift = 0.108;
   //double dx_n_shift = 0.7;
 
   //double beam_e = 4.291;
