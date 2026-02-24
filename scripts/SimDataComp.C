@@ -78,7 +78,7 @@ void SimDataComp(int kin)
   //auto data_file = "null";
   TString data_file;
   //auto nucleon_sim_file = "null";
-  TString nucleon_sim_dile;
+  TString nucleon_sim_file;
   //auto inel_sim_file = "null";
   TString inel_sim_file;
   //auto title_words = "null";
