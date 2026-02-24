@@ -457,7 +457,7 @@ void QA_QE(const char *kinematic)
 
   c5->Print(outputfile);
 
-  TCanvas *coinTime = new TCanvas("coinTime", 1200, 1000);
+  TCanvas *coinTime = new TCanvas("coinTime", "Coincidence Time", 1200, 1000);
   coinTime->cd();
   h_coin->Draw();
   coinTime->Update();
