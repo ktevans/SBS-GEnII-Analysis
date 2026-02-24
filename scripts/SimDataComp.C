@@ -95,10 +95,10 @@ void SimDataComp(int kin)
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN2_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN2_He3_dxdy.root";
     title_words = "GEN2";
-    dx_min_d = -5.0;
-    dx_min_i = -5;
-    dx_max_d = 2.0;
-    dx_max_i = 2;
+    dx_min_d = -6.0;
+    dx_min_i = -6;
+    dx_max_d = 4.0;
+    dx_max_i = 4;
     cout<<"\nHi!\n";
 
   }
@@ -159,7 +159,7 @@ void SimDataComp(int kin)
 
   //gErrorIgnoreLevel = kError;
 
-  int numberBins = 75;
+  int numberBins = 150;
 
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
@@ -310,12 +310,12 @@ void SimDataComp(int kin)
   //----- GEN2 -----
   double startpar[] = {1.0,-0.5,0.5,-0.7,0.1,-1.0};
   FitFunc->SetParameters(startpar);
-  FitFunc->SetParLimits(0,0.1,100);   // proton scale
-  FitFunc->SetParLimits(1,-1.0,1.0);  // proton shift
-  FitFunc->SetParLimits(2,0.1,100);   // neutron scale
-  FitFunc->SetParLimits(3,-1.0,0.0);  // neutron shift
-  FitFunc->SetParLimits(4,0.0,0.5);  // background scale
-  FitFunc->SetParLimits(5,-1.0,1.0);  // background shift
+  FitFunc->SetParLimits(0,0.0,100);   // proton scale
+  FitFunc->SetParLimits(1,-4.0,4.0);  // proton shift
+  FitFunc->SetParLimits(2,0.0,100);   // neutron scale
+  FitFunc->SetParLimits(3,-4.0,4.0);  // neutron shift
+  FitFunc->SetParLimits(4,0.0,100);   // background scale
+  FitFunc->SetParLimits(5,-4.0,4.0);  // background shift
 
   //----- GEN3 -----
   //double startpar[] = {0.2,-0.5,0.1,-0.7,0.4,-1.0};
