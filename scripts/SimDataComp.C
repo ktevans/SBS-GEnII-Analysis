@@ -74,7 +74,7 @@ double fitAsym(double *xA, double *parA)
 void SimDataComp(const int kin)
 {
 
-  const int kinematic = kin;
+  //const int kinematic = kin;
   //auto data_file = "null";
   TString data_file;
   //auto nucleon_sim_file = "null";
@@ -88,7 +88,7 @@ void SimDataComp(const int kin)
   double dx_min_d, dx_max_d;
   int dx_min_i, dx_max_i;
 
-  if(kinematic == 2)
+  if(kin == 2)
   {
 
     data_file = "outfiles/parsed_GEn_pass2_GEN2_He3_dxdy.root";
