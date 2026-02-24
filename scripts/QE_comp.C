@@ -76,6 +76,7 @@ void QE_comp(const char *kinematic, int kin)
     //coin_sigma = 5.6;
     coin_sigma = 1.883;
     IHWP_flip = -1;
+    std::cout << "\nYou are replaying GEN2!\n";
   }
   else if(kin==3)
   {
@@ -86,6 +87,7 @@ void QE_comp(const char *kinematic, int kin)
     //coin_sigma = 6.0;
     coin_sigma = 2.728;
     IHWP_flip = 1;
+    std::cout << "\nYou are replaying GEN3!\n";
   }
   else if(kin==4)
   {
@@ -96,6 +98,7 @@ void QE_comp(const char *kinematic, int kin)
     //coin_sigma = 5.8;
     coin_sigma = 2.017;
     IHWP_flip = 1;
+    std::cout << "\nYou are replaying GEN4a!\n";
   }
   else if(kin==5)
   {
@@ -106,6 +109,7 @@ void QE_comp(const char *kinematic, int kin)
     //coin_sigma = 7.0;
     coin_sigma = 2.695;
     IHWP_flip = 1;
+    std::cout << "\nYou are replaying GEN4b!\n";
   }
   else
   {
@@ -114,6 +118,7 @@ void QE_comp(const char *kinematic, int kin)
     coin_mean = 0.0;
     coin_sigma = 400.0;
     IHWP_flip = 1;
+    std::cout << "\nWhatever you are replaying does not have the proper cuts applied...\n";
   }
 
   //Scan through all the entries in the TChain T
