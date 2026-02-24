@@ -102,7 +102,7 @@ void SimDataComp(const int kin)
 
   }
 
-  if(kinematic == 3)
+  if(kin == 3)
   {
 
     data_file = "outfiles/parsed_GEn_pass2_GEN3_He3_dxdy.root";
@@ -116,7 +116,7 @@ void SimDataComp(const int kin)
 
   }
 
-  if(kinematic == 4)
+  if(kin == 4)
   {
 
     data_file = "outfiles/parsed_GEn_pass2_GEN4a_He3_dxdy.root";
@@ -130,7 +130,7 @@ void SimDataComp(const int kin)
 
   }
 
-  if(kinematic == 5)
+  if(kin == 5)
   {
 
     data_file = "outfiles/parsed_GEn_pass2_GEN4b_He3_dxdy.root";
