@@ -265,6 +265,36 @@ void QA_QE(const char *kinematic)
   h2_eovp_runnum->GetXaxis()->SetTitle("runnum");
   h2_eovp_runnum->SetTitle("E/p vs Run Number with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
+  TH2D* h2_hcal_atime_x = new TH2D("h2_hcal_atime_x", "HCal time vs HCal x", 37.0, -2.6, 1.1, 100.0, -10.0, 15.0);
+  h2_hcal_atime_x->GetXaxis()->SetTitle("sbs.hcal.x [m]");
+  h2_hcal_atime_x->GetYaxis()->SetTitle("sbs.hcal.atimeblk [ns]");
+  h2_hcal_atime_x->SetTitle("HCal ADC Time vs HCal x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_hcal_atime_y = new TH2D("h2_hcal_atime_y", "HCal time vs HCal y", 18.0, -0.9, 0.9, 100.0, -10.0, 15.0);
+  h2_hcal_atime_y->GetXaxis()->SetTitle("sbs.hcal.y [m]");
+  h2_hcal_atime_y->GetYaxis()->SetTitle("sbs.hcal.atimeblk [ns]");
+  h2_hcal_atime_y->SetTitle("HCal ADC Time vs HCal y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_ps_atime_x = new TH2D("h2_ps_atime_x", "PS Time vs Tr x", 105.0, -0.45, 0.6, 100.0, -10.0, 15.0);
+  h2_ps_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
+  h2_ps_atime_x->GetYaxis()->SetTitle("bb.ps.atimeblk [ns]");
+  h2_ps_atime_x->SetTitle("PS ADC Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_ps_atime_y = new TH2D("h2_ps_atime_y", "PS Time vs Tr y", 35.0, -0.2, 0.15, 100.0, -10.0, 15.0);
+  h2_ps_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
+  h2_ps_atime_y->GetYaxis()->SetTitle("bb.ps.atimeblk [ns]");
+  h2_ps_atime_y->SetTitle("PS ADC Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_sh_atime_x = new TH2D("h2_sh_atime_x", "SH Time vs Tr x", 105.0, -0.45, 0.6, 100.0, -10.0, 15.0);
+  h2_sh_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
+  h2_sh_atime_x->GetYaxis()->SetTitle("bb.sh.atimeblk [ns]");
+  h2_sh_atime_x->SetTitle("SH ADC Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_sh_atime_y = new TH2D("h2_sh_atime_y", "SH Time vs Tr y", 35.0, -0.2, 0.15, 100.0, -10.0, 15.0);
+  h2_sh_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
+  h2_sh_atime_y->GetYaxis()->SetTitle("bb.sh.atimeblk [ns]");
+  h2_sh_atime_y->SetTitle("SH ADC Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
   {
@@ -321,7 +351,14 @@ void QA_QE(const char *kinematic)
 
                   h_coin->Fill(adc_coin);
 
+                  h2_hcal_atime_x->Fill(sbs_hcal_x,sbs_hcal_atimeblk);
+                  h2_hcal_atime_y->Fill(sbs_hcal_y,sbs_hcal_atimeblk);
 
+                  h2_ps_atime_x->Fill(bb_tr_x,bb_ps_atimeblk);
+                  h2_ps_atime_y->Fill(bb_tr_y,bb_ps_atimeblk);
+
+                  h2_sh_atime_x->Fill(bb_tr_x,bb_sh_atimeblk);
+                  h2_sh_atime_y->Fill(bb_tr_y,bb_sh_atimeblk);
 
                 }// end spot cuts
 
@@ -419,6 +456,33 @@ void QA_QE(const char *kinematic)
   h2_trp_try->Draw("colz");
 
   c5->Print(outputfile);
+
+  TCanvas *c6 = new TCanvas("c6","HCalTime", 1200, 1000);
+  c6->Divide(1,2);
+  c6->cd(1);
+  h2_hcal_atime_x->Draw("colz");
+  c6->cd(2);
+  h2_hcal_atime_y->Draw("colz");
+
+  c6->Print(outputfile);
+
+  TCanvas *c7 = new TCanvas("c6","PSTime", 1200, 1000);
+  c7->Divide(1,2);
+  c7->cd(1);
+  h2_ps_atime_x->Draw("colz");
+  c7->cd(2);
+  h2_ps_atime_y->Draw("colz");
+
+  c7->Print(outputfile);
+
+  TCanvas *c8 = new TCanvas("c6","SHTime", 1200, 1000);
+  c8->Divide(1,2);
+  c8->cd(1);
+  h2_sh_atime_x->Draw("colz");
+  c8->cd(2);
+  h2_sh_atime_y->Draw("colz");
+
+  c8->Print(outputfile);
 
   TCanvas *summary = new TCanvas("summary", "summary", 1200, 1000);
   summary->cd();
