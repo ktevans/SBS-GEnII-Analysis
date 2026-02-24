@@ -23,7 +23,7 @@
 #include <math.h>
 #include <stack>
 
-void QE_comp(const char *kinematic)
+void QE_comp(const char *kinematic, int kin)
 {
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
@@ -67,7 +67,7 @@ void QE_comp(const char *kinematic)
 
   int IHWP_flip;
 
-  if(kinematic=="GEN2")
+  if(kin==2)
   {
     optics_valid_min = -0.35;
     optics_valid_max = 0.34;
@@ -77,7 +77,7 @@ void QE_comp(const char *kinematic)
     coin_sigma = 1.883;
     IHWP_flip = -1;
   }
-  else if(kinematic=="GEN3")
+  else if(kin==3)
   {
     optics_valid_min = -0.35;
     optics_valid_max = 0.33;
@@ -87,7 +87,7 @@ void QE_comp(const char *kinematic)
     coin_sigma = 2.728;
     IHWP_flip = 1;
   }
-  else if(kinematic=="GEN4a")
+  else if(kin==4)
   {
     optics_valid_min = -0.36;
     optics_valid_max = 0.30;
@@ -97,7 +97,7 @@ void QE_comp(const char *kinematic)
     coin_sigma = 2.017;
     IHWP_flip = 1;
   }
-  else if(kinematic=="GEN4b")
+  else if(kin==5)
   {
     optics_valid_min = -0.37;
     optics_valid_max = 0.32;
@@ -144,7 +144,7 @@ void QE_comp(const char *kinematic)
       
       if(abs(e_kine_W2-1.0)<0.5)
       {
-	h_dx->Fill(dx_hcal);
+	    h_dx->Fill(dx_hcal);
         h_dy->Fill(dy_hcal);
 
         dx_out = dx_hcal;
