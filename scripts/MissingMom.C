@@ -61,8 +61,8 @@ void MissingMom(const char *kinematic)
   double npz;        T->SetBranchAddress("npz", &npz);
   double weight;     T->SetBranchAddress("weight", &weight);
 
-  double dx_p_shift = 0.375;
-  double dx_n_shift = 0.0876;
+  double dx_p_shift = -0.463;
+  double dx_n_shift = -0.116;
 
   double beam_e = 4.291;
   //double beam_e = 6.373;
