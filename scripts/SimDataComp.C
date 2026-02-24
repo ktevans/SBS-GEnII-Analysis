@@ -76,13 +76,13 @@ void SimDataComp(int kin)
 
   int kinematic = kin;
   //auto data_file = "null";
-  String data_file;
+  TString data_file;
   //auto nucleon_sim_file = "null";
-  String nucleon_sim_dile;
+  TString nucleon_sim_dile;
   //auto inel_sim_file = "null";
-  String inel_sim_file;
+  TString inel_sim_file;
   //auto title_words = "null";
-  String title_words;
+  TString title_words;
 
   int npar = 6;
   double dx_min_d, dx_max_d;
