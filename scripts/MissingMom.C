@@ -63,11 +63,11 @@ void MissingMom(const char *kinematic)
 
   //double dx_p_shift = 0.375;
   //double dx_p_shift = 0.5;
-  double dx_p_shift = 0.0;
+  double dx_p_shift = 0.7;
 
   //double dx_n_shift = 0.7;
   //double dx_n_shift = 0.7;
-  double dx_n_shift = 0.0;
+  double dx_n_shift = 0.1;
 
   //double beam_e = 4.291;
   //double beam_e = 6.373;
