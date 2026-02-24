@@ -74,7 +74,7 @@ double fitAsym(double *xA, double *parA)
 void SimDataComp(int *kin)
 {
 
-  int kinematic = kin;
+  int *kinematic = kin;
   //auto data_file = "null";
   TString data_file;
   //auto nucleon_sim_file = "null";
