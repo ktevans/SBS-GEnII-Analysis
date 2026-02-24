@@ -129,9 +129,9 @@ void QA_QE(const char *kinematic)
     optics_valid_min = -0.36;
     optics_valid_max = 0.30;
     //coin_mean = 121.4;
-    coin_mean = 0.2289;
+    coin_mean = -1.576;
     //coin_sigma = 5.8;
-    coin_sigma = 2.017;
+    coin_sigma = 2.608;
     IHWP_flip = 1;
     dx_n_mean = 0.0;
     dx_n_sigma = 0.5;
