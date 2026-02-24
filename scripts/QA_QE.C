@@ -321,7 +321,7 @@ void QA_QE(const char *kinematic)
 
             h2_pse_grclus->Fill(bb_ps_e,bb_gr_clus_size);
 
-            if (abs(adc_coin-coin_mean)<(2*coin_sigma) && bb_gr_clus_size>2)
+            if (abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2)
             {
               h_W2->Fill(e_kine_W2);
 
@@ -461,10 +461,10 @@ void QA_QE(const char *kinematic)
   coinTime->cd();
   h_coin->Draw();
   coinTime->Update();
-  TLine *coinMin = new TLine(coin_mean-2*coin_sigma, 0, coin_mean-2*coin_sigma, 10000000);
+  TLine *coinMin = new TLine(coin_mean-coin_sigma, 0, coin_mean-coin_sigma, 10000000);
   coinMin->SetLineColor(kRed);
   coinMin->Draw();
-  TLine *coinMax = new TLine(coin_mean+2*coin_sigma, 0, coin_mean+2*coin_sigma, 10000000);
+  TLine *coinMax = new TLine(coin_mean+coin_sigma, 0, coin_mean+coin_sigma, 10000000);
   coinMax->SetLineColor(kRed);
   coinMax->Draw();
   gPad->Update();
@@ -508,7 +508,7 @@ void QA_QE(const char *kinematic)
   pt->AddText("PreShower Cut: bb.ps.e>0.2");
   pt->AddText("E/p Cut: abs(E/p - 1.0)<0.2");
   pt->AddText("W2 Cut: abs(e.kine.W2 - 1.0)<0.5");
-  pt->AddText(Form("Coincidence Cut: abs(adc.coin - %.3f)<(2 * %.3f)",coin_mean,coin_sigma));
+  pt->AddText(Form("Coincidence Cut: abs(adc.coin - %.3f)<%.3f",coin_mean,coin_sigma));
   pt->AddText("GRINCH cut: bb.grinch_tdc.clus.size>2");
   pt->AddText(Form("Proton Spot Cut: %.3f<dx<%.3f && %.3f<dy<%.3f",(dx_p_mean-dx_p_sigma),(dx_p_mean+dx_p_sigma),(dy_mean-dy_sigma),(dy_mean-dy_sigma)));
   pt->AddText(Form("Neutron Spot Cut: %.3f<dx<%.3f && %.3f<dy<%.3f",(dx_n_mean-dx_p_sigma),(dx_n_mean+dx_p_sigma),(dy_mean-dy_sigma),(dy_mean-dy_sigma)));
