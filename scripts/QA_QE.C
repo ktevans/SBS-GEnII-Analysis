@@ -466,7 +466,7 @@ void QA_QE(const char *kinematic)
 
   c6->Print(outputfile);
 
-  TCanvas *c7 = new TCanvas("c6","PSTime", 1200, 1000);
+  TCanvas *c7 = new TCanvas("c7","PSTime", 1200, 1000);
   c7->Divide(1,2);
   c7->cd(1);
   h2_ps_atime_x->Draw("colz");
@@ -475,7 +475,7 @@ void QA_QE(const char *kinematic)
 
   c7->Print(outputfile);
 
-  TCanvas *c8 = new TCanvas("c6","SHTime", 1200, 1000);
+  TCanvas *c8 = new TCanvas("c8","SHTime", 1200, 1000);
   c8->Divide(1,2);
   c8->cd(1);
   h2_sh_atime_x->Draw("colz");
