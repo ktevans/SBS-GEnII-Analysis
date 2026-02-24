@@ -71,7 +71,7 @@ double fitAsym(double *xA, double *parA)
 
 }//end fitAsym
 
-void SimDataComp(int *kin)
+void SimDataComp(const int kin)
 {
 
   const int kinematic = kin;
