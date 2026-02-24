@@ -99,6 +99,7 @@ void SimDataComp()
     dx_min_i = -5;
     dx_max_d = 2.0;
     dx_max_i = 2;
+    cout<<"\nHi!\n";
 
   }
 
