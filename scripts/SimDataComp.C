@@ -71,10 +71,10 @@ double fitAsym(double *xA, double *parA)
 
 }//end fitAsym
 
-void SimDataComp()
+void SimDataComp(int kin)
 {
 
-  int kin = 2;
+  //int kin = 2;
   //auto data_file = "null";
   TString data_file;
   //auto nucleon_sim_file = "null";
@@ -145,19 +145,19 @@ void SimDataComp()
 
   }
 
-  else
-  {
-    data_file = "null";
-    nucleon_sim_file = "null";
-    inel_sim_file = "null";
-    title_words = "null";
-    dx_min_d = 0.0;
-    dx_min_i = 0;
-    dx_max_d = 0.0;
-    dx_max_i = 0.0;
-  }
+  //else
+  //{
+    //data_file = "null";
+    //nucleon_sim_file = "null";
+    //inel_sim_file = "null";
+    //title_words = "null";
+    //dx_min_d = 0.0;
+    //dx_min_i = 0;
+    //dx_max_d = 0.0;
+    //dx_max_i = 0.0;
+  //}
 
-  gErrorIgnoreLevel = kError;
+  //gErrorIgnoreLevel = kError;
 
   int numberBins = 75;
 
