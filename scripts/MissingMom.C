@@ -61,19 +61,24 @@ void MissingMom(const char *kinematic)
   double npz;        T->SetBranchAddress("npz", &npz);
   double weight;     T->SetBranchAddress("weight", &weight);
 
-  double dx_p_shift = 0.375;
-  double dx_n_shift = 0.7;
+  //double dx_p_shift = 0.375;
+  double dx_p_shift = 0.442;
+  //double dx_p_shift = 0.375;
 
-  double beam_e = 4.291;
-  //double beam_e = 6.373;
+  //double dx_n_shift = 0.7;
+  double dx_n_shift = 0.108;
+  //double dx_n_shift = 0.7;
+
+  //double beam_e = 4.291;
+  double beam_e = 6.373;
   //double beam_e = 8.448;
 
-  double n_min = -0.95;
-  //double n_min = -0.5;
+  //double n_min = -0.95;
+  double n_min = -0.5;
   //double n_min = -0.3;
 
-  double n_max = 0.95;
-  //double n_max = 0.5;
+  //double n_max = 0.95;
+  double n_max = 0.5;
   //double n_max = 0.3;
 
   //Scan through all the entries in the TChain T
