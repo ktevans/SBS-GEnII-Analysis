@@ -26,7 +26,7 @@
 void QA_QE(const char *kinematic)
 {
 
-  int kin = 3;
+  int kin = 2;
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
@@ -456,6 +456,20 @@ void QA_QE(const char *kinematic)
   h2_trp_try->Draw("colz");
 
   c5->Print(outputfile);
+
+  TCanvas *coinTime = new TCanvas("coinTime", 1200, 1000);
+  coinTime->cd();
+  h_coin->Draw();
+  coinTime->Update();
+  TLine *coinMin = new TLine(coin_mean-2*coin_sigma, 0, coin_mean-2*coin_sigma, 10000000);
+  coinMin->SetLineColor(kRed);
+  coinMin->Draw();
+  TLine *coinMax = new TLine(coin_mean+2*coin_sigma, 0, coin_mean+2*coin_sigma, 10000000);
+  coinMax->SetLineColor(kRed);
+  coinMax->Draw();
+  gPad->Update();
+
+  coinTime->Print(outputfile);
 
   TCanvas *c6 = new TCanvas("c6","HCalTime", 1200, 1000);
   c6->Divide(1,2);
