@@ -28,7 +28,7 @@ void QE_comp(const char *kinematic, int kin)
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
-  TString inputfile = Form("/volatile/halla/sbs/ktevans/KateJackSBSAnalysis/KJ_parsed_GEn_pass2_%s_He3_100.root",kinematic);
+  TString inputfile = Form("/volatile/halla/sbs/ktevans/KateJackSBSAnalysis/FEB172026/KJ_parsed_GEn_pass2_%s_He3_100.root",kinematic);
   TString outputfile = Form("plots/parsed_GEn_pass2_%s_He3_dxdy.pdf",kinematic);
   TString outfile = Form("outfiles/parsed_GEn_pass2_%s_He3_dxdy.root",kinematic);
   TFile *fout = new TFile(outfile,"RECREATE");
