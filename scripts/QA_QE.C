@@ -500,7 +500,7 @@ void QA_QE(const char *kinematic)
   pt->AddText(Form("Neutron Spot Cut: %.3f<dx<%.3f && %.3f<dy<%.3f",(dx_n_mean-dx_p_sigma),(dx_n_mean+dx_p_sigma),(dy_mean-dy_sigma),(dy_mean-dy_sigma)));
   pt->Draw();
 
-  summary->Print(outfile+")");
+  summary->Print(outputfile+")");
 
   fout->Write();
 }
