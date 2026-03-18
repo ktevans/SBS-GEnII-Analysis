@@ -26,7 +26,7 @@
 void QA_QE(const char *kinematic)
 {
 
-  int kin = 5;
+  int kin = 3;
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
@@ -62,6 +62,8 @@ void QA_QE(const char *kinematic)
   double bb_tr_vz;              T->SetBranchAddress("bb.tr.vz", &bb_tr_vz);
   double bb_gr_clus_size;       T->SetBranchAddress("bb.grinch_tdc.clus.size", &bb_gr_clus_size);
   double bb_gr_clus_track;      T->SetBranchAddress("bb.grinch_tdc.clus.trackindex", &bb_gr_clus_track);
+  double bb_hodotdc_clus_tmean; T->SetBranchAddress("bb.hodotdc.clus.tmean", &bb_hodotdc_clus_tmean);
+  double bb_hodotdc_clus_id;    T->SetBranchAddress("bb.hodotdc.clus.id", &bb_hodotdc_clus_id);
   int pass_global;              T->SetBranchAddress("passGlobal", &pass_global);
   int runnum;                   T->SetBranchAddress("runnum", &runnum);
   double sbs_hcal_e;            T->SetBranchAddress("sbs.hcal.e", &sbs_hcal_e);
@@ -111,9 +113,9 @@ void QA_QE(const char *kinematic)
     optics_valid_min = -0.35;
     optics_valid_max = 0.33;
     //coin_mean = 120.3;
-    coin_mean = 0.4239;
+    coin_mean = 0.327;
     //coin_sigma = 6.0;
-    coin_sigma = 2.728;
+    coin_sigma = 2.686;
     IHWP_flip = 1;
     dx_n_mean = 0.0;
     dx_n_sigma = 1.0;
