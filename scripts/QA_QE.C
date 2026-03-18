@@ -110,7 +110,7 @@ void QA_QE(const char *kinematic)
     firstRun = 2130;
     lastRun = 2322;
     Trp_max = 3.5;
-    Trp_max = 2.0;
+    Trp_min = 2.0;
   }
   else if(kin==3)
   {
@@ -130,7 +130,7 @@ void QA_QE(const char *kinematic)
     firstRun = 2506;
     lastRun = 3250;
     Trp_max = 3.5;
-    Trp_max = 2.0;
+    Trp_min = 2.0;
   }
   else if(kin==4)
   {
@@ -150,7 +150,7 @@ void QA_QE(const char *kinematic)
     firstRun = 3510;
     lastRun = 4587;
     Trp_max = 4.0;
-    Trp_max = 2.5;
+    Trp_min = 2.5;
   }
   else if(kin==5)
   {
@@ -170,7 +170,7 @@ void QA_QE(const char *kinematic)
     firstRun = 5044;
     lastRun = 6083;
     Trp_max = 4.0;
-    Trp_max = 2.5;
+    Trp_min = 2.5;
   }
   else
   {
@@ -188,7 +188,7 @@ void QA_QE(const char *kinematic)
     firstRun = 0;
     lastRun = 100;
     Trp_max = 3.5;
-    Trp_max = 2.0;
+    Trp_min = 2.0;
   }
 
   //Scan through all the entries in the TChain T
