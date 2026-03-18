@@ -31,8 +31,8 @@ void QA_QE(const char *kinematic)
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
   TString inputfile = Form("/volatile/halla/sbs/ktevans/KateJackSBSAnalysis/KJ_parsed_GEn_pass2_%s_He3_100.root",kinematic);
-  TString outputfile = Form("plots/QA_parsed_GEn_pass2_%s_He3_dxdy.pdf",kinematic);
-  TString outfile = Form("outfiles/QA_parsed_GEn_pass2_%s_He3_dxdy.root",kinematic);
+  TString outputfile = Form("plots/QA_parsed_GEn_pass3_%s_He3_dxdy.pdf",kinematic);
+  TString outfile = Form("outfiles/QA_parsed_GEn_pass3_%s_He3_dxdy.root",kinematic);
   TFile *fout = new TFile(outfile,"RECREATE");
 
   TTree *T_data = new TTree("T_data", "Analysis Data Tree");
@@ -87,6 +87,8 @@ void QA_QE(const char *kinematic)
   double dy_sigma;
   int firstRun;
   int lastRun;
+  double Trp_max;
+  double Trp_min;
 
   int IHWP_flip;
 
@@ -107,6 +109,8 @@ void QA_QE(const char *kinematic)
     dy_sigma = 1.265;
     firstRun = 2130;
     lastRun = 2322;
+    Trp_max = 3.5;
+    Trp_max = 2.0;
   }
   else if(kin==3)
   {
@@ -125,6 +129,8 @@ void QA_QE(const char *kinematic)
     dy_sigma = 0.913;
     firstRun = 2506;
     lastRun = 3250;
+    Trp_max = 3.5;
+    Trp_max = 2.0;
   }
   else if(kin==4)
   {
@@ -143,6 +149,8 @@ void QA_QE(const char *kinematic)
     dy_sigma = 0.773;
     firstRun = 3510;
     lastRun = 4587;
+    Trp_max = 4.0;
+    Trp_max = 2.5;
   }
   else if(kin==5)
   {
@@ -161,6 +169,8 @@ void QA_QE(const char *kinematic)
     dy_sigma = 0.769;
     firstRun = 5044;
     lastRun = 6083;
+    Trp_max = 4.0;
+    Trp_max = 2.5;
   }
   else
   {
@@ -248,12 +258,12 @@ void QA_QE(const char *kinematic)
   h2_she_try->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_she_try->SetTitle("Shower Energy vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_trp_trx = new TH2D("h2_trp_trx", "TrP vs TrX", 100.0, -0.45, 0.6, 100.0, 2.0, 3.5);
+  TH2D* h2_trp_trx = new TH2D("h2_trp_trx", "TrP vs TrX", 100.0, -0.45, 0.6, 100.0, TrP_min, TrP_max);
   h2_trp_trx->GetYaxis()->SetTitle("bb.tr.p [GeV]");
   h2_trp_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
   h2_trp_trx->SetTitle("Track p vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_trp_try = new TH2D("h2_trp_try", "TrP vs TrY", 100.0, -0.2, 0.15, 100.0, 2.0, 3.5);
+  TH2D* h2_trp_try = new TH2D("h2_trp_try", "TrP vs TrY", 100.0, -0.2, 0.15, 100.0, TrP_min, TrP_max);
   h2_trp_try->GetYaxis()->SetTitle("bb.tr.p [GeV]");
   h2_trp_try->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_trp_try->SetTitle("Track p vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
@@ -267,62 +277,62 @@ void QA_QE(const char *kinematic)
   h2_eovp_runnum->GetXaxis()->SetTitle("runnum");
   h2_eovp_runnum->SetTitle("E/p vs Run Number with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_hcal_atime_x = new TH2D("h2_hcal_atime_x", "HCal time vs HCal x", 37.0, -2.6, 1.1, 100.0, -10.0, 15.0);
+  TH2D* h2_hcal_atime_x = new TH2D("h2_hcal_atime_x", "HCal time vs HCal x", 37.0, -2.6, 1.1, 200.0, -10.0, 25.0);
   h2_hcal_atime_x->GetXaxis()->SetTitle("sbs.hcal.x [m]");
   h2_hcal_atime_x->GetYaxis()->SetTitle("sbs.hcal.atimeblk [ns]");
   h2_hcal_atime_x->SetTitle("HCal ADC Time vs HCal x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_hcal_atime_y = new TH2D("h2_hcal_atime_y", "HCal time vs HCal y", 18.0, -0.9, 0.9, 100.0, -10.0, 15.0);
+  TH2D* h2_hcal_atime_y = new TH2D("h2_hcal_atime_y", "HCal time vs HCal y", 18.0, -0.9, 0.9, 200.0, -10.0, 25.0);
   h2_hcal_atime_y->GetXaxis()->SetTitle("sbs.hcal.y [m]");
   h2_hcal_atime_y->GetYaxis()->SetTitle("sbs.hcal.atimeblk [ns]");
   h2_hcal_atime_y->SetTitle("HCal ADC Time vs HCal y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_ps_atime_x = new TH2D("h2_ps_atime_x", "PS Time vs Tr x", 105.0, -0.45, 0.6, 100.0, -10.0, 15.0);
+  TH2D* h2_ps_atime_x = new TH2D("h2_ps_atime_x", "PS Time vs Tr x", 105.0, -0.45, 0.6, 200.0, -10.0, 25.0);
   h2_ps_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
   h2_ps_atime_x->GetYaxis()->SetTitle("bb.ps.atimeblk [ns]");
   h2_ps_atime_x->SetTitle("PS ADC Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_ps_atime_y = new TH2D("h2_ps_atime_y", "PS Time vs Tr y", 35.0, -0.2, 0.15, 100.0, -10.0, 15.0);
+  TH2D* h2_ps_atime_y = new TH2D("h2_ps_atime_y", "PS Time vs Tr y", 35.0, -0.2, 0.15, 200.0, -10.0, 25.0);
   h2_ps_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_ps_atime_y->GetYaxis()->SetTitle("bb.ps.atimeblk [ns]");
   h2_ps_atime_y->SetTitle("PS ADC Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_sh_atime_x = new TH2D("h2_sh_atime_x", "SH Time vs Tr x", 105.0, -0.45, 0.6, 100.0, -10.0, 15.0);
+  TH2D* h2_sh_atime_x = new TH2D("h2_sh_atime_x", "SH Time vs Tr x", 105.0, -0.45, 0.6, 200.0, -10.0, 25.0);
   h2_sh_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
   h2_sh_atime_x->GetYaxis()->SetTitle("bb.sh.atimeblk [ns]");
   h2_sh_atime_x->SetTitle("SH ADC Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_sh_atime_y = new TH2D("h2_sh_atime_y", "SH Time vs Tr y", 35.0, -0.2, 0.15, 100.0, -10.0, 15.0);
+  TH2D* h2_sh_atime_y = new TH2D("h2_sh_atime_y", "SH Time vs Tr y", 35.0, -0.2, 0.15, 200.0, -10.0, 25.0);
   h2_sh_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_sh_atime_y->GetYaxis()->SetTitle("bb.sh.atimeblk [ns]");
   h2_sh_atime_y->SetTitle("SH ADC Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_hcalTH_atime_x = new TH2D("h2_hcalTH_atime_x", "(TH-HCal) Time vs Tr x", 37.0, -2.6, 1.1, 100.0, -10.0, 15.0);
+  TH2D* h2_hcalTH_atime_x = new TH2D("h2_hcalTH_atime_x", "(TH-HCal) Time vs Tr x", 37.0, -2.6, 1.1, 200.0, -20.0, 15.0);
   h2_hcalTH_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
   h2_hcalTH_atime_x->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - sbs.hcal.atimeblk [ns]");
   h2_hcalTH_atime_x->SetTitle("(TH-HCal) Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_psTH_atime_x = new TH2D("h2_psTH_atime_x", "(TH-PS) Time vs Tr x", 105.0, -0.45, 0.6, 100.0, -10.0, 15.0);
+  TH2D* h2_psTH_atime_x = new TH2D("h2_psTH_atime_x", "(TH-PS) Time vs Tr x", 105.0, -0.45, 0.6, 200.0, -20.0, 15.0);
   h2_psTH_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
   h2_psTH_atime_x->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - bb.ps.atimeblk [ns]");
   h2_psTH_atime_x->SetTitle("(TH-PS) Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_shTH_atime_x = new TH2D("h2_shTH_atime_x", "(TH-SH) Time vs Tr x", 105.0, -0.45, 0.6, 100.0, -10.0, 15.0);
+  TH2D* h2_shTH_atime_x = new TH2D("h2_shTH_atime_x", "(TH-SH) Time vs Tr x", 105.0, -0.45, 0.6, 200.0, -20.0, 15.0);
   h2_shTH_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
   h2_shTH_atime_x->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - bb.sh.atimeblk [ns]");
   h2_shTH_atime_x->SetTitle("(TH-SH) Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_hcalTH_atime_y = new TH2D("h2_hcalTH_atime_y", "(TH-HCal) Time vs Tr y", 18.0, -0.9, 0.9, 100.0, -10.0, 15.0);
+  TH2D* h2_hcalTH_atime_y = new TH2D("h2_hcalTH_atime_y", "(TH-HCal) Time vs Tr y", 18.0, -0.9, 0.9, 200.0, -20.0, 15.0);
   h2_hcalTH_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_hcalTH_atime_y->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - sbs.hcal.atimeblk [ns]");
   h2_hcalTH_atime_y->SetTitle("(TH-HCal) Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_psTH_atime_y = new TH2D("h2_psTH_atime_y", "(TH-PS) Time vs Tr y", 35.0, -0.2, 0.15, 100.0, -10.0, 15.0);
+  TH2D* h2_psTH_atime_y = new TH2D("h2_psTH_atime_y", "(TH-PS) Time vs Tr y", 35.0, -0.2, 0.15, 200.0, -20.0, 15.0);
   h2_psTH_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_psTH_atime_y->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - bb.ps.atimeblk [ns]");
   h2_psTH_atime_y->SetTitle("(TH-PS) Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_shTH_atime_y = new TH2D("h2_shTH_atime_y", "(TH-SH) Time vs Tr y", 35.0, -0.2, 0.15, 100.0, -10.0, 15.0);
+  TH2D* h2_shTH_atime_y = new TH2D("h2_shTH_atime_y", "(TH-SH) Time vs Tr y", 35.0, -0.2, 0.15, 200.0, -20.0, 15.0);
   h2_shTH_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_shTH_atime_y->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - bb.sh.atimeblk [ns]");
   h2_shTH_atime_y->SetTitle("(TH-SH) Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
