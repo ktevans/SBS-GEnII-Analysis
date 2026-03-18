@@ -187,6 +187,8 @@ void QA_QE(const char *kinematic)
     dy_sigma = 5.0;
     firstRun = 0;
     lastRun = 100;
+    Trp_max = 3.5;
+    Trp_max = 2.0;
   }
 
   //Scan through all the entries in the TChain T
@@ -258,12 +260,12 @@ void QA_QE(const char *kinematic)
   h2_she_try->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_she_try->SetTitle("Shower Energy vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_trp_trx = new TH2D("h2_trp_trx", "TrP vs TrX", 100.0, -0.45, 0.6, 100.0, TrP_min, TrP_max);
+  TH2D* h2_trp_trx = new TH2D("h2_trp_trx", "TrP vs TrX", 100.0, -0.45, 0.6, 100.0, Trp_min, Trp_max);
   h2_trp_trx->GetYaxis()->SetTitle("bb.tr.p [GeV]");
   h2_trp_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
   h2_trp_trx->SetTitle("Track p vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_trp_try = new TH2D("h2_trp_try", "TrP vs TrY", 100.0, -0.2, 0.15, 100.0, TrP_min, TrP_max);
+  TH2D* h2_trp_try = new TH2D("h2_trp_try", "TrP vs TrY", 100.0, -0.2, 0.15, 100.0, Trp_min, Trp_max);
   h2_trp_try->GetYaxis()->SetTitle("bb.tr.p [GeV]");
   h2_trp_try->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_trp_try->SetTitle("Track p vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
