@@ -297,6 +297,36 @@ void QA_QE(const char *kinematic)
   h2_sh_atime_y->GetYaxis()->SetTitle("bb.sh.atimeblk [ns]");
   h2_sh_atime_y->SetTitle("SH ADC Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
+  TH2D* h2_hcalTH_atime_x = new TH2D("h2_hcalTH_atime_x", "(TH-HCal) Time vs Tr x", 37.0, -2.6, 1.1, 100.0, -10.0, 15.0);
+  h2_hcalTH_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
+  h2_hcalTH_atime_x->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - sbs.hcal.atimeblk [ns]");
+  h2_hcalTH_atime_x->SetTitle("(TH-HCal) Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_psTH_atime_x = new TH2D("h2_psTH_atime_x", "(TH-PS) Time vs Tr x", 105.0, -0.45, 0.6, 100.0, -10.0, 15.0);
+  h2_psTH_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
+  h2_psTH_atime_x->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - bb.ps.atimeblk [ns]");
+  h2_psTH_atime_x->SetTitle("(TH-PS) Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_shTH_atime_x = new TH2D("h2_shTH_atime_x", "(TH-SH) Time vs Tr x", 105.0, -0.45, 0.6, 100.0, -10.0, 15.0);
+  h2_shTH_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
+  h2_shTH_atime_x->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - bb.sh.atimeblk [ns]");
+  h2_shTH_atime_x->SetTitle("(TH-SH) Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_hcalTH_atime_y = new TH2D("h2_hcalTH_atime_y", "(TH-HCal) Time vs Tr y", 18.0, -0.9, 0.9, 100.0, -10.0, 15.0);
+  h2_hcalTH_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
+  h2_hcalTH_atime_y->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - sbs.hcal.atimeblk [ns]");
+  h2_hcalTH_atime_y->SetTitle("(TH-HCal) Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_psTH_atime_y = new TH2D("h2_psTH_atime_y", "(TH-PS) Time vs Tr y", 35.0, -0.2, 0.15, 100.0, -10.0, 15.0);
+  h2_psTH_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
+  h2_psTH_atime_y->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - bb.ps.atimeblk [ns]");
+  h2_psTH_atime_y->SetTitle("(TH-PS) Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_shTH_atime_y = new TH2D("h2_shTH_atime_y", "(TH-SH) Time vs Tr y", 35.0, -0.2, 0.15, 100.0, -10.0, 15.0);
+  h2_shTH_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
+  h2_shTH_atime_y->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - bb.sh.atimeblk [ns]");
+  h2_shTH_atime_y->SetTitle("(TH-SH) Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
   {
@@ -361,6 +391,14 @@ void QA_QE(const char *kinematic)
 
                   h2_sh_atime_x->Fill(bb_tr_x,bb_sh_atimeblk);
                   h2_sh_atime_y->Fill(bb_tr_y,bb_sh_atimeblk);
+
+                  h2_hcalTH_atime_x->Fill(sbs_hcal_x,bb_hodotdc_clus_tmean-sbs_hcal_atimeblk);
+                  h2_psTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
+                  h2_shTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_sh_atimeblk);
+
+                  h2_hcalTH_atime_y->Fill(sbs_hcal_y,bb_hodotdc_clus_tmean-sbs_hcal_atimeblk);
+                  h2_psTH_atime_y->Fill(bb_tr_y,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
+                  h2_shTH_atime_y->Fill(bb_tr_y,bb_hodotdc_clus_tmean-bb_sh_atimeblk);
 
                 }// end spot cuts
 
@@ -499,6 +537,28 @@ void QA_QE(const char *kinematic)
   h2_sh_atime_y->Draw("colz");
 
   c8->Print(outputfile);
+
+  TCanvas *c9 = new TCanvas("c9","TimeX", 1200, 1000);
+  c9->Divide(1,3);
+  c9->cd(1);
+  h2_shTH_atime_x->Draw("colz");
+  c9->cd(2);
+  h2_psTH_atime_x->Draw("colz");
+  c9->cd(3);
+  h2_hcalTH_atime_x->Draw("colz");
+
+  c9->Print(outputfile);
+
+  TCanvas *c10 = new TCanvas("c10","TimeY", 1200, 1000);
+  c10->Divide(1,3);
+  c10->cd(1);
+  h2_shTH_atime_y->Draw("colz");
+  c10->cd(2);
+  h2_psTH_atime_y->Draw("colz");
+  c10->cd(3);
+  h2_hcalTH_atime_y->Draw("colz");
+
+  c10->Print(outputfile);
 
   TCanvas *summary = new TCanvas("summary", "summary", 1200, 1000);
   summary->cd();
