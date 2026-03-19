@@ -463,9 +463,9 @@ void SimDataComp(int kin)
     h_prob_bckgrnd_dx->SetBinError(bin,P_bg_err);
 
     double c_pos      = h_pos_hel_dx->GetBinContent(bin);
-    double c_pos_err  = h_pos_hel_dx->GetBinError(bin) / TMath::Sqrt(c_pos);
+    double c_pos_err  = h_pos_hel_dx->GetBinError(bin);
     double c_neg      = h_neg_hel_dx->GetBinContent(bin);
-    double c_neg_err  = h_neg_hel_dx->GetBinError(bin) / TMath::Sqrt(c_neg);
+    double c_neg_err  = h_neg_hel_dx->GetBinError(bin);
 
     A_array[bin] = (helPosArray[bin] - helNegArray[bin])*1.0 / (helPosArray[bin] + helNegArray[bin]);
     A_err_array[bin] = std::sqrt(std::max(0.0,(4.0*helPosArray[bin]*helNegArray[bin])/std::pow((helPosArray[bin] + helNegArray[bin]),3)));
@@ -481,8 +481,8 @@ void SimDataComp(int kin)
     if (Asym_tot != 0.0)
     {
       Asym_raw = Asym_diff / Asym_tot;
-      Asym_raw_err = 2 * TMath::Sqrt( c_neg*c_neg*c_pos_err*c_pos_err + c_pos*c_pos*c_neg_err*c_neg_err ) / ( (c_pos+c_neg)*(c_pos+c_neg) );
-      //std::sqrt(std::max(0.0,(4.0*c_pos*c_neg)/std::pow(Asym_tot,3)));
+      //Asym_raw_err = 2 * TMath::Sqrt( c_neg*c_neg*c_pos_err*c_pos_err + c_pos*c_pos*c_neg_err*c_neg_err ) / ( (c_pos+c_neg)*(c_pos+c_neg) );
+      Asym_raw_err = std::sqrt(std::max(0.0,(4.0*c_pos*c_neg)/std::pow(Asym_tot,3)));
       //^^method from JAck's code
     }//end if the total asym is nonzero
 
