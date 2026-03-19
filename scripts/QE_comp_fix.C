@@ -55,7 +55,7 @@ void QE_comp_fix(const char *kinematic, int kin)
   double vz;          T->SetBranchAddress("vz", &vz);
   double dx_hcal;           T->SetBranchAddress("dx", &dx_hcal);
   double dy_hcal;           T->SetBranchAddress("dy", &dy_hcal);
-  double IHWP;              T->SetBranchAddress("IHWP", &IHWP);
+  int IHWP;              T->SetBranchAddress("IHWP", &IHWP);
 
   double coin_mean;
   double coin_sigma;
