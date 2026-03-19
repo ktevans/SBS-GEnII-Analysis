@@ -203,13 +203,13 @@ void SimDataComp(int kin)
 
     int binAt = (int) ((dx + 5.0) / binSize); // what???
 
-    if(helicity==1)  //h_pos_hel_dx->Fill(dx);
+    if(helicity==-1)  //h_pos_hel_dx->Fill(dx);
     {
       h_pos_hel_dx->Fill(dx);
       helPosArray[binAt]++;
     }
 
-    if(helicity==-1)  //h_neg_hel_dx->Fill(dx);
+    if(helicity==1)  //h_neg_hel_dx->Fill(dx);
     {
       h_neg_hel_dx->Fill(dx);
       helNegArray[binAt]++;
