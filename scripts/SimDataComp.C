@@ -74,14 +74,9 @@ double fitAsym(double *xA, double *parA)
 void SimDataComp(int kin)
 {
 
-  //int kin = 2;
-  //auto data_file = "null";
   TString data_file;
-  //auto nucleon_sim_file = "null";
   TString nucleon_sim_file;
-  //auto inel_sim_file = "null";
   TString inel_sim_file;
-  //auto title_words = "null";
   TString title_words;
 
   int npar = 6;
@@ -159,7 +154,7 @@ void SimDataComp(int kin)
 
   //gErrorIgnoreLevel = kError;
 
-  int numberBins = 150;
+  int numberBins = 100;
 
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
