@@ -467,7 +467,7 @@ void SimDataComp(int kin)
     double c_neg      = h_neg_hel_dx->GetBinContent(bin);
     double c_neg_err  = h_neg_hel_dx->GetBinError(bin);
 
-    A_array[bin] = (helNegArray[bin] - helPosArray[bin])*1.0 / (helPosArray[bin] + helNegArray[bin]);
+    A_array[bin] = (helPosArray[bin] - helNegArray[bin])*1.0 / (helPosArray[bin] + helNegArray[bin]);
     A_err_array[bin] = std::sqrt(std::max(0.0,(4.0*helPosArray[bin]*helNegArray[bin])/std::pow((helPosArray[bin] + helNegArray[bin]),3)));
     //TMath::Sqrt((1 - A_array[bin]*A_array[bin])/(helPosArray[bin]+helNegArray[bin]));
 
