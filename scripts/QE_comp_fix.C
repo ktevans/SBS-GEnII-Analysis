@@ -29,7 +29,7 @@ void QE_comp_fix(const char *kinematic, int kin)
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
   //TString inputfile = Form("/volatile/halla/sbs/ktevans/KateJackSBSAnalysis/KJ_parsed_GEn_pass2_%s_He3_100.root",kinematic);
-  TString inputfile = "/volatile/halla/sbs/cmjackso/Data/GEN2/QE_ana_GEN2_sbs100p_nucleon_np_model2.root"
+  TString inputfile = "/volatile/halla/sbs/cmjackso/Data/GEN2/QE_ana_GEN2_sbs100p_nucleon_np_model2.root";
   TString outputfile = Form("plots/sean_GEn_pass2_%s_He3_dxdy.pdf",kinematic);
   TString outfile = Form("outfiles/sean_GEn_pass2_%s_He3_dxdy.root",kinematic);
   TFile *fout = new TFile(outfile,"RECREATE");
@@ -69,43 +69,8 @@ void QE_comp_fix(const char *kinematic, int kin)
     IHWP_flip = -1;
     std::cout << "\nYou are replaying GEN2!\n";
   }
-  else if(kin==3)
-  {
-    optics_valid_min = -0.35;
-    optics_valid_max = 0.33;
-    //coin_mean = 120.3;
-    coin_mean = 0.4239;
-    //coin_sigma = 6.0;
-    coin_sigma = 2.728;
-    IHWP_flip = 1;
-    std::cout << "\nYou are replaying GEN3!\n";
-  }
-  else if(kin==4)
-  {
-    optics_valid_min = -0.36;
-    optics_valid_max = 0.30;
-    //coin_mean = 121.4;
-    coin_mean = 0.2289;
-    //coin_sigma = 5.8;
-    coin_sigma = 2.017;
-    IHWP_flip = 1;
-    std::cout << "\nYou are replaying GEN4a!\n";
-  }
-  else if(kin==5)
-  {
-    optics_valid_min = -0.37;
-    optics_valid_max = 0.32;
-    //coin_mean = 185.5;
-    coin_mean = 0.2546;
-    //coin_sigma = 7.0;
-    coin_sigma = 2.695;
-    IHWP_flip = 1;
-    std::cout << "\nYou are replaying GEN4b!\n";
-  }
   else
   {
-    optics_valid_min = -2.0;
-    optics_valid_max = 2.0;
     coin_mean = 0.0;
     coin_sigma = 400.0;
     IHWP_flip = 1;
@@ -138,13 +103,13 @@ void QE_comp_fix(const char *kinematic, int kin)
     if(abs(W2-1)<0.5 && abs(coin_time-coin_mean)<coin_sigma && ePS>0.2 && abs(((ePS+eSH)/trP)-1)<0.2 && abs(vz)<0.27)
     {
       
-	    h_dx->Fill(dx_hcal);
+	  h_dx->Fill(dx_hcal);
       h_dy->Fill(dy_hcal);
 
       dx_out = dx_hcal;
       dy_out = dy_hcal;
       
-      W2_out = e_kine_W2;
+      W2_out = W2;
       helicity_out = helicity * -1 *IHWP;
     }
 
