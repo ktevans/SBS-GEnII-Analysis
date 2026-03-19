@@ -86,8 +86,8 @@ void SimDataComp(int kin)
   if(kin == 2)
   {
 
-    //data_file = "outfiles/parsed_GEn_pass2_GEN2_He3_dxdy.root";
-    data_file = "outfiles/sean_GEn_pass2_GEN2_He3_dxdy.root";
+    data_file = "outfiles/parsed_GEn_pass2_GEN2_He3_dxdy.root";
+    //data_file = "outfiles/sean_GEn_pass2_GEN2_He3_dxdy.root";
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN2_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN2_He3_dxdy.root";
     title_words = "GEN2";
@@ -480,7 +480,7 @@ void SimDataComp(int kin)
 
     if (Asym_tot != 0.0)
     {
-      Asym_raw = -Asym_diff / Asym_tot;
+      Asym_raw = Asym_diff / Asym_tot;
       Asym_raw_err = 2 * TMath::Sqrt( c_neg*c_neg*c_pos_err*c_pos_err + c_pos*c_pos*c_neg_err*c_neg_err ) / ( (c_pos+c_neg)*(c_pos+c_neg) );
       //std::sqrt(std::max(0.0,(4.0*c_pos*c_neg)/std::pow(Asym_tot,3)));
       //^^method from JAck's code
