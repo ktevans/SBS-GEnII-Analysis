@@ -188,11 +188,11 @@ void SimDataComp(int kin)
 
   double binSize = 10.0 / numberBins;
 
-  for(int j = 0; j < numberBins; j++)
-  {
-    helPosArray[j] = 0;
-    helNegArray[j] = 0;
-  }
+  //for(int j = 0; j < numberBins; j++)
+  //{
+    //helPosArray[j] = 0;
+    //helNegArray[j] = 0;
+  //}
 
   for (size_t iev = 0; iev < T_data->GetEntries(); iev++)
   {
