@@ -465,9 +465,9 @@ void SimDataComp(int kin)
     h_prob_bckgrnd_dx->SetBinError(bin,P_bg_err);
 
     double c_pos      = h_pos_hel_dx->GetBinContent(bin);
-    double c_pos_err  = TMath::Sqrt(c_pos); //h_pos_hel_dx->GetBinError(bin);
+    double c_pos_err  = h_pos_hel_dx->GetBinError(bin);
     double c_neg      = h_neg_hel_dx->GetBinContent(bin);
-    double c_neg_err  = TMath::Sqrt(c_neg); //h_neg_hel_dx->GetBinError(bin);
+    double c_neg_err  = h_neg_hel_dx->GetBinError(bin);
 
     A_array[bin] = (helPosArray[bin] - helNegArray[bin])*1.0 / (helPosArray[bin] + helNegArray[bin]);
     A_err_array[bin] = std::sqrt(std::max(0.0,(4.0*helPosArray[bin]*helNegArray[bin])/std::pow((helPosArray[bin] + helNegArray[bin]),3)));
