@@ -56,10 +56,10 @@ void QE_comp(const char *kinematic, int kin)
   double bb_tr_p;           T->SetBranchAddress("bb.tr.p", &bb_tr_p);
   double bb_tr_vz;          T->SetBranchAddress("bb.tr.vz", &bb_tr_vz);
   double bb_gr_clus_size;   T->SetBranchAddress("bb.grinch_tdc.clus.size", &bb_gr_clus_size);
-  //int pass_global;          T->SetBranchAddress("passGlobal", &pass_global);
+  //int pass_global;        T->SetBranchAddress("passGlobal", &pass_global);
   double dx_hcal;           T->SetBranchAddress("dx", &dx_hcal);
   double dy_hcal;           T->SetBranchAddress("dy", &dy_hcal);
-  double IHWP;              T->SetBranchAddress("IHWP", &IHWP);
+  int IHWP;                 T->SetBranchAddress("IHWP", &IHWP);
 
   double optics_valid_min;
   double optics_valid_max;
@@ -159,7 +159,7 @@ void QE_comp(const char *kinematic, int kin)
       }
       
       W2_out = e_kine_W2;
-      helicity_out = helicity; // * (IHWP * IHWP_flip); //* IHWP;
+      helicity_out = helicity * (IHWP * IHWP_flip); //* IHWP;
 	//-1* IHWP * helicity * IHWP_flip;
       T_data->Fill();
     }
