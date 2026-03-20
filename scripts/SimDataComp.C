@@ -465,6 +465,7 @@ void SimDataComp(int kin)
     h_prob_bckgrnd_dx->SetBinError(bin,P_bg_err);
 
     double c_pos      = h_pos_hel_dx->GetBinContent(bin);
+    cout<<"Positive helicity content for "<< bin <<" bin: "<< c_pos <<"\n";
     double c_pos_err  = h_pos_hel_dx->GetBinError(bin);
     double c_neg      = h_neg_hel_dx->GetBinContent(bin);
     double c_neg_err  = h_neg_hel_dx->GetBinError(bin);
