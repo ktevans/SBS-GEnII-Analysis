@@ -111,9 +111,8 @@ void QE_comp_fix(const char *kinematic, int kin)
       
       W2_out = W2;
       helicity_out = helicity * -1 *IHWP;
+      T_data->Fill();
     }
-
-    T_data->Fill();
 
   }//end event loop
 
