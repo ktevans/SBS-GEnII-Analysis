@@ -155,6 +155,7 @@ void QE_comp(const char *kinematic, int kin)
 
         dx_out = dx_hcal;
         dy_out = dy_hcal;
+        T_data->Fill();
       }
       
       W2_out = e_kine_W2;
