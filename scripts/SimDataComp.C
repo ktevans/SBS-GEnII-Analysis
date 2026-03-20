@@ -288,7 +288,7 @@ void SimDataComp(int kin)
 
   //******************************************************
 
-  double scale = h_data_dx->Integral();
+  //double scale = h_data_dx->Integral();
   //h_data_dx->Scale(1.0/h_data_dx->Integral());
   h_data_dx->Scale(1.0/scale);
   h_pos_hel_dx->Scale(1.0/h_pos_hel_dx->Integral());
@@ -377,7 +377,7 @@ void SimDataComp(int kin)
     h_total_dx->SetBinContent(ibin, shifted_h_sim_neutron_dx->GetBinContent(ibin) + shifted_h_sim_proton_dx->GetBinContent(ibin) + shifted_h_simIN_dx->GetBinContent(ibin));
   }
 
-  h_data_dx                ->Scale(scale);
+  //h_data_dx                ->Scale(scale);
   h_pos_hel_dx             ->Scale(scale);
   h_neg_hel_dx             ->Scale(scale);
   shifted_h_sim_proton_dx  ->Scale(scale);
