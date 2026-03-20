@@ -43,7 +43,7 @@ void QE_comp(const char *kinematic, int kin)
   T_data->Branch("W2", &W2_out, "W2/D");
   T_data->Branch("helicity", &helicity_out, "helicity/I");
 
-  TChain* T = new TChain("Parse");
+  TChain* T = new TChain("Tout");
   T->Add(inputfile);
 
   double bb_tr_r_x;         T->SetBranchAddress("bb.tr.r_x", &bb_tr_r_x);
