@@ -89,9 +89,10 @@ void QE_INsim(const char *kinematic)
       dy_out = dy_hcal;
       fnucl_out = fnucl_hcal;
       weight_out = weight_hcal;
+      T_sim->Fill();
     }
 
-    T_sim->Fill();
+    //T_sim->Fill();
 
   }//end event loop
 
