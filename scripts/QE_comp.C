@@ -55,7 +55,7 @@ void QE_comp(const char *kinematic, int kin)
   double bb_tr_p;           T->SetBranchAddress("bb.tr.p", &bb_tr_p);
   double bb_tr_vz;          T->SetBranchAddress("bb.tr.vz", &bb_tr_vz);
   double bb_gr_clus_size;   T->SetBranchAddress("bb.grinch_tdc.clus.size", &bb_gr_clus_size);
-  int pass_global;          T->SetBranchAddress("passGlobal", &pass_global);
+  //int pass_global;          T->SetBranchAddress("passGlobal", &pass_global);
   double dx_hcal;           T->SetBranchAddress("dx", &dx_hcal);
   double dy_hcal;           T->SetBranchAddress("dy", &dy_hcal);
   double IHWP;              T->SetBranchAddress("IHWP", &IHWP);
@@ -144,7 +144,7 @@ void QE_comp(const char *kinematic, int kin)
   {
     T->GetEntry(iev);
 
-    if(pass_global==1 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<(2*coin_sigma) && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>=2.0 && abs(bb_tr_vz)<0.27)
+    if((bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<(2*coin_sigma) && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>=2.0 && abs(bb_tr_vz)<0.27)
     {
       
       if(abs(e_kine_W2-1.0)<0.5)
