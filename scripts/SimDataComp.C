@@ -467,8 +467,11 @@ void SimDataComp(int kin)
     double c_pos      = h_pos_hel_dx->GetBinContent(bin);
     cout<<"Positive helicity content for "<< bin <<" bin: "<< c_pos <<"\n";
     double c_pos_err  = h_pos_hel_dx->GetBinError(bin);
+    cout<<"Positive helicity error for "<< bin <<" bin: "<< c_pos_err <<"\n";
     double c_neg      = h_neg_hel_dx->GetBinContent(bin);
+    cout<<"Negative helicity content for "<< bin <<" bin: "<< c_neg <<"\n";
     double c_neg_err  = h_neg_hel_dx->GetBinError(bin);
+    cout<<"Negative helicity error for "<< bin <<" bin: "<< c_neg_err <<"\n";
 
     A_array[bin] = (helPosArray[bin] - helNegArray[bin])*1.0 / (helPosArray[bin] + helNegArray[bin]);
     A_err_array[bin] = std::sqrt(std::max(0.0,(4.0*helPosArray[bin]*helNegArray[bin])/std::pow((helPosArray[bin] + helNegArray[bin]),3)));
