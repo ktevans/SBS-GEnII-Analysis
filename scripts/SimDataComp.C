@@ -177,12 +177,12 @@ void SimDataComp(int kin)
   TH1D* h_neg_hel_dx = new TH1D("h_neg_hel_dx",";-hel", numberBins, dx_min_d, dx_max_d);
   h_neg_hel_dx->GetXaxis()->SetTitle("dx [m]");
   h_neg_hel_dx->SetLineColor(kRed);
-  h_neg_hel_dx->Sumw2();
+  //h_neg_hel_dx->Sumw2();
 
   TH1D* h_pos_hel_dx = new TH1D("h_pos_hel_dx",";+hel", numberBins, dx_min_d, dx_max_d);
   h_pos_hel_dx->GetXaxis()->SetTitle("dx [m]");
   h_pos_hel_dx->SetLineColor(kBlue);
-  h_pos_hel_dx->Sumw2();
+  //h_pos_hel_dx->Sumw2();
 
   int helPosArray[numberBins];
   int helNegArray[numberBins];
