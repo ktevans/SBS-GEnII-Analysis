@@ -107,10 +107,9 @@ void QE_sim(const char *kinematic)
       npx_out = npx_in;
       npy_out = npy_in;
       npz_out = npz_in;
+
+      T_sim->Fill();
     }
-
-    T_sim->Fill();
-
   }//end event loop
 
   TCanvas *c1 = new TCanvas("c1","1D dx and dy Plots",100,100,700,700);
