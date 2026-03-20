@@ -160,9 +160,9 @@ void QE_comp(const char *kinematic, int kin)
       W2_out = e_kine_W2;
       helicity_out = helicity; // * (IHWP * IHWP_flip); //* IHWP;
 	//-1* IHWP * helicity * IHWP_flip;
+      T_data->Fill();
     }
 
-    T_data->Fill();
 
   }//end event loop
 
