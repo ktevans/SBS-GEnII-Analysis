@@ -146,10 +146,10 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   setrootvar::setbranch(C,"Ndata.bb.hodotdc.clus.bar.tdc","meantime",&nhodo_clus);
 
   // GEMs
-  double gem_nhits, gem_ngood, gem_chi2df;
+  double gem_nhits, gem_ngood, gem_chi2ndf;
   setrootvar::setbranch(C,"bb.gem.track","nhits",&gem_nhits);
   setrootvar::setbranch(C,"bb.gem.track","ngoodhits",&gem_ngood);
-  setrootvar::setbranch(C,"bb.gem.track","chi2df",&gem_chi2df);
+  setrootvar::setbranch(C,"bb.gem.track","chi2ndf",&gem_chi2ndf);
 
   // track var
   double ntrack, p[maxNtr],px[maxNtr],py[maxNtr],pz[maxNtr],xTr[maxNtr],yTr[maxNtr],thTr[maxNtr],phTr[maxNtr];
@@ -541,7 +541,7 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
 
     T_gem_nhits = gem_nhits;
     T_gem_ngood = gem_ngood;
-    T_gem_chi2ndf = gem_chi2df;
+    T_gem_chi2ndf = gem_chi2ndf;
 
     T_ePS = ePS;
     T_xPS = xPS;
