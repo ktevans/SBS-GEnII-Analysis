@@ -378,6 +378,8 @@ void SimDataComp(int kin)
   }
 
   h_data_dx                ->Scale(scale);
+  h_pos_hel_dx             ->Scale(scale);
+  h_neg_hel_dx             ->Scale(scale);
   shifted_h_sim_proton_dx  ->Scale(scale);
   shifted_h_sim_neutron_dx ->Scale(scale);
   shifted_h_simIN_dx       ->Scale(scale);
