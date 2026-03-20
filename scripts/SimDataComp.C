@@ -650,4 +650,8 @@ void SimDataComp(int kin)
   c4->SetGrid();
   c4->Update();
 
+  delete T_data;
+  delete T_sim;
+  delete T_simIN;
+
 }//end main
