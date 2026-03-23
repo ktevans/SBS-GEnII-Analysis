@@ -97,9 +97,9 @@ void QA_QE(const char *kinematic)
     optics_valid_min = -0.35;
     optics_valid_max = 0.34;
     //coin_mean = 129.1;
-    coin_mean = -0.08;
+    coin_mean = 0.978;
     //coin_sigma = 5.6;
-    coin_sigma = 1.883;
+    coin_sigma = 1.179;
     IHWP_flip = -1;
     dx_n_mean = -0.147;
     dx_n_sigma = 0.812;
@@ -117,9 +117,9 @@ void QA_QE(const char *kinematic)
     optics_valid_min = -0.35;
     optics_valid_max = 0.33;
     //coin_mean = 120.3;
-    coin_mean = 0.327;
+    coin_mean = 0.382;
     //coin_sigma = 6.0;
-    coin_sigma = 2.686;
+    coin_sigma = 1.077;
     IHWP_flip = 1;
     dx_n_mean = 0.0;
     dx_n_sigma = 1.0;
@@ -137,9 +137,9 @@ void QA_QE(const char *kinematic)
     optics_valid_min = -0.36;
     optics_valid_max = 0.30;
     //coin_mean = 121.4;
-    coin_mean = -0.112;
+    coin_mean = 0.589;
     //coin_sigma = 5.8;
-    coin_sigma = 1.911;
+    coin_sigma = 1.136;
     IHWP_flip = 1;
     dx_n_mean = 0.0;
     dx_n_sigma = 0.5;
@@ -157,9 +157,9 @@ void QA_QE(const char *kinematic)
     optics_valid_min = -0.37;
     optics_valid_max = 0.32;
     //coin_mean = 185.5;
-    coin_mean = 0.024;
+    coin_mean = 0.568;
     //coin_sigma = 7.0;
-    coin_sigma = 2.158;
+    coin_sigma = 1.055;
     IHWP_flip = 1;
     dx_n_mean = 0.0;
     dx_n_sigma = 0.5;
@@ -201,6 +201,8 @@ void QA_QE(const char *kinematic)
   }
   else std::cout << "\nFound " << T->GetEntries() << " events. Starting analysis.. \n";
 
+  // ~~~~~~~~~~~~~~~~~~~~ Basic QE cut plots ~~~~~~~~~~~~~~~~~~~~
+
   TH1D* h_tr_vz = new TH1D("h_tr_vz", "Track z Vertex", 140.0, -0.8, 0.6);
   h_tr_vz->GetXaxis()->SetTitle("bb.tr.vz [m]");
   h_tr_vz->SetTitle("Track z Vertex with Global Cuts");
@@ -236,9 +238,36 @@ void QA_QE(const char *kinematic)
   h2_dxdy->GetYaxis()->SetTitle("dx [m]");
   h2_dxdy->SetTitle("dx vs dy with Global, Vertex, E/p, PSe, Coin, GRINCH, and W2 Cuts");
 
+  // ~~~~~~~~~~~~~~~~~~~~ BBCal plots ~~~~~~~~~~~~~~~~~~~~
+
   TH1D* h_eovp = new TH1D("h_eovp", "E/p", 100.0, 0.5, 1.5);
   h_eovp->GetXaxis()->SetTitle("E/p");
   h_eovp->SetTitle("E/p with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_eovp_runnum = new TH2D("h2_eovp_runnum", "E/p vs runnum", lastRun-firstRun, firstRun, lastRun, 100.0, 0.5, 1.5);
+  h2_eovp_runnum->GetYaxis()->SetTitle("E/p");
+  h2_eovp_runnum->GetXaxis()->SetTitle("runnum");
+  h2_eovp_runnum->SetTitle("E/p vs Run Number with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_eovp_trx = new TH2D("h2_eovp_trx", "E/p vs trx", 100, -0.45, 0.6, 100.0, 0.5, 1.5);
+  h2_eovp_trx->GetYaxis()->SetTitle("E/p");
+  h2_eovp_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
+  h2_eovp_trx->SetTitle("E/p vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_eovp_try = new TH2D("h2_eovp_try", "E/p vs try", 100, -0.2, 0.15, 100.0, 0.5, 1.5);
+  h2_eovp_try->GetYaxis()->SetTitle("E/p");
+  h2_eovp_try->GetXaxis()->SetTitle("bb.tr.y [m]");
+  h2_eovp_try->SetTitle("E/p vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH1D* h_ps_e_anti = new TH1D("h_ps_e_anti", "PreShower Energy (anti-QE cuts)", 100.0, 0.0, 2.0);
+  h_ps_e_anti->GetXaxis()->SetTitle("bb.ps.e [GeV]");
+  h_ps_e_anti->SetTitle("PreShower Energy with Anti - (Global, Vertex, E/p, Coin, GRINCH, W2, and Spot) Cuts");
+  h_ps_e_anti->SetLineColor(kRed);
+
+  TH1D* h_ps_e_qe = new TH1D("h_ps_e_qe", "PreShower Energy (QE cuts)", 100.0, 0.0, 2.0);
+  h_ps_e_qe->GetXaxis()->SetTitle("bb.ps.e [GeV]");
+  h_ps_e_qe->SetTitle("PreShower Energy with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
+  h_ps_e_qe->SetLineColor(kBlue);
 
   TH2D* h2_pse_trx = new TH2D("h2_pse_trx", "PSe vs TrX", 100.0, -0.45, 0.6, 100.0, 0.0, 3.0);
   h2_pse_trx->GetYaxis()->SetTitle("bb.ps.e [GeV]");
@@ -260,6 +289,13 @@ void QA_QE(const char *kinematic)
   h2_she_try->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_she_try->SetTitle("Shower Energy vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
+
+
+
+
+
+
+
   TH2D* h2_trp_trx = new TH2D("h2_trp_trx", "TrP vs TrX", 100.0, -0.45, 0.6, 100.0, Trp_min, Trp_max);
   h2_trp_trx->GetYaxis()->SetTitle("bb.tr.p [GeV]");
   h2_trp_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
@@ -273,11 +309,6 @@ void QA_QE(const char *kinematic)
   TH1D* h_coin = new TH1D("h_coin", "coin", 100.0, -5.0, 5.0);
   h_coin->GetXaxis()->SetTitle("Coincidence Time [ns]");
   h_coin->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_eovp_runnum = new TH2D("h2_eovp_runnum", "E/p vs runnum", lastRun-firstRun, firstRun, lastRun, 100.0, 0.5, 1.5);
-  h2_eovp_runnum->GetYaxis()->SetTitle("E/p");
-  h2_eovp_runnum->GetXaxis()->SetTitle("runnum");
-  h2_eovp_runnum->SetTitle("E/p vs Run Number with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH2D* h2_hcal_atime_x = new TH2D("h2_hcal_atime_x", "HCal time vs HCal x", 37.0, -2.6, 1.1, 200.0, -10.0, 25.0);
   h2_hcal_atime_x->GetXaxis()->SetTitle("sbs.hcal.x [m]");
@@ -356,6 +387,16 @@ void QA_QE(const char *kinematic)
         h_ps_e->Fill(bb_ps_e);
 
         h2_coin_W2->Fill(e_kine_W2,adc_coin);
+
+        if (abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)>=0.2 && abs(adc_coin-coin_mean)>=(coin_sigma) && bb_gr_clus_size<2 && abs(e_kine_W2-1.0)>=0.5 && abs(dy_hcal-dy_mean)>=dy_sigma && (abs(dx_hcal-dx_n_mean)>=dx_n_sigma)||(abs(dx_hcal-dx_p_mean)>=dx_p_sigma))
+        {
+          h_ps_e_anti->Fill(bb_ps_e);
+        } // end anti-QE cuts
+
+        if (abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2 && abs(e_kine_W2-1.0)<0.5 && abs(dy_hcal-dy_mean)<dy_sigma && (abs(dx_hcal-dx_n_mean)<dx_n_sigma)||(abs(dx_hcal-dx_p_mean)<dx_p_sigma))
+        {
+          h_ps_e_qe->Fill(bb_ps_e);
+        } // end QE cuts
 
         if (bb_ps_e>0.2)
         {
@@ -499,6 +540,24 @@ void QA_QE(const char *kinematic)
   h2_she_try->Draw("colz");
 
   c4->Print(outputfile);
+
+  TCanvas *c4_2 = new TCanvas("c4_2","bbPS", 1200, 1000);
+  c4_2->Divide(2,2);
+  c4_2->cd(1);
+  h_ps_e->Draw();
+  h_ps_e_anti->Draw("same");
+  h_ps_e_qe->Draw("same");
+  auto legend_ps = new TLegend(0.55,0.7,0.9,0.9);
+  legend_ps->AddEntry(h_ps_e, "PS with Global Cuts", "l");
+  legend_ps->AddEntry(h_ps_e_qe, "PS with QE Cuts", "l");
+  legend_ps->AddEntry(h_ps_e_anti, "PS with Anti-QE Cuts", "l");
+  legend_ps->Draw();
+  c4_2->cd(2);
+  h2_pse_trx->Draw("colz");
+  c4_2->cd(3);
+  h2_pse_try->Draw("colz");
+
+  c4_2->Print(outputfile);
 
   TCanvas *c5 = new TCanvas("c5","bbTr", 1200, 1000);
   c5->Divide(1,2);
