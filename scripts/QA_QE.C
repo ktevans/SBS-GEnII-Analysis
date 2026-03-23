@@ -254,7 +254,7 @@ void QA_QE(const char *kinematic)
 
   // ~~~~~~~~~~~~~~~~~~~~ BBCal plots ~~~~~~~~~~~~~~~~~~~~
 
-  TH1D* h_eovp = new TH1D("h_eovp", "E/p", 100.0, 0.5, 1.5);
+  TH1D* h_eovp = new TH1D("h_eovp", "E/p", 100.0, 0.0, 2.0);
   h_eovp->GetXaxis()->SetTitle("E/p");
   h_eovp->SetTitle("E/p with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
@@ -373,7 +373,7 @@ void QA_QE(const char *kinematic)
 
   // ~~~~~~~~~~~~~~~~~~~~ Timing plots ~~~~~~~~~~~~~~~~~~~~
 
-  TH1D* h_coin = new TH1D("h_coin", "coin", 100.0, -5.0, 5.0);
+  TH1D* h_coin = new TH1D("h_coin", "coin", 200.0, -10.0, 10.0);
   h_coin->GetXaxis()->SetTitle("Coincidence Time [ns]");
   h_coin->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, W2, and Spot Cuts");
 
@@ -618,12 +618,6 @@ void QA_QE(const char *kinematic)
   //Save the canvas to a pdf
   c1_2->Print(outputfile);
 
-  TCanvas *c1_3 = new TCanvas("c1_3", "PS_PSSH Plot", 100,100,1200,1200);
-  c1_3->cd();
-  h2_ps_tot->Draw("colz");
-
-  c1_3->Print(outputfile);
-
   TCanvas *c2 = new TCanvas("c2","QE Cuts", 1200, 1000);
   c2->Divide(2,2);
   c2->cd(1);
@@ -644,13 +638,15 @@ void QA_QE(const char *kinematic)
   c2->Print(outputfile);
 
   TCanvas *c3 = new TCanvas("c3","W2", 1200, 1000);
-  c3->Divide(1,3);
+  c3->Divide(2,2);
   c3->cd(1);
   h2_coin_W2->Draw("colz");
   c3->cd(2);
   h_eovp->Draw();
   c3->cd(3);
   h2_eovp_runnum->Draw("colz");
+  c3->cd(4);
+  h2_ps_tot->Draw("colz");
 
   //Save the canvas to a pdf
   c3->Print(outputfile);
@@ -732,7 +728,7 @@ void QA_QE(const char *kinematic)
 
   TCanvas *coinTime = new TCanvas("coinTime", "Coincidence Time", 1200, 1000);
   coinTime->cd();
-  h_coin->Draw();
+  h_coin->Draw("E");
   coinTime->Update();
   TLine *coinMin = new TLine(coin_mean-coin_sigma, 0, coin_mean-coin_sigma, 10000000);
   coinMin->SetLineColor(kRed);
