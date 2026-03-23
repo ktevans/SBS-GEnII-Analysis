@@ -424,7 +424,7 @@ void QA_QE(const char *kinematic)
                 dx_out = dx_hcal;
                 dy_out = dy_hcal;
 
-                if (abs(dy_hcal-dy_mean)<dy_sigma && (abs(dx_hcal-dx_n_mean)<dx_n_sigma)||(abs(dx_hcal-dx_p_mean)<dx_p_sigma))
+                if (abs(dy_hcal-dy_mean)<dy_sigma && ((abs(dx_hcal-dx_n_mean)<dx_n_sigma)||(abs(dx_hcal-dx_p_mean)<dx_p_sigma)))
                 {
 
                   h_eovp->Fill((bb_ps_e+bb_sh_e)/bb_tr_p);
