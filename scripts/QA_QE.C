@@ -327,12 +327,23 @@ void QA_QE(const char *kinematic)
   h_sh_e_qe->SetTitle("Shower Energy with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
   h_sh_e_qe->SetLineColor(kBlue);
 
+  // ~~~~~~~~~~~~~~~~~~~~ HCal plots ~~~~~~~~~~~~~~~~~~~~
+
+  TH2D* h2_hcal_e_x = new TH2D("h2_hcal_e_x", "HCal energy vs HCal x", 37.0, -2.6, 1.1, 200.0, 0.0, 4.0);
+  h2_hcal_e_x->GetXaxis()->SetTitle("sbs.hcal.x [m]");
+  h2_hcal_e_x->GetYaxis()->SetTitle("sbs.hcal.e [GeV]");
+  h2_hcal_e_x->SetTitle("HCal Energy vs HCal x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_hcal_e_y = new TH2D("h2_hcal_e_y", "HCal energy vs HCal y", 18.0, -0.9, 0.9, 200.0, 0.0, 4.0);
+  h2_hcal_e_y->GetXaxis()->SetTitle("sbs.hcal.y [m]");
+  h2_hcal_e_y->GetYaxis()->SetTitle("sbs.hcal.e [GeV]");
+  h2_hcal_e_y->SetTitle("HCal Energy vs HCal y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
 
 
 
 
-
+  // ~~~~~~~~~~~~~~~~~~~~ GEM plots ~~~~~~~~~~~~~~~~~~~~
 
   TH2D* h2_trp_trx = new TH2D("h2_trp_trx", "TrP vs TrX", 100.0, -0.45, 0.6, 100.0, Trp_min, Trp_max);
   h2_trp_trx->GetYaxis()->SetTitle("bb.tr.p [GeV]");
@@ -343,6 +354,8 @@ void QA_QE(const char *kinematic)
   h2_trp_try->GetYaxis()->SetTitle("bb.tr.p [GeV]");
   h2_trp_try->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_trp_try->SetTitle("Track p vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  // ~~~~~~~~~~~~~~~~~~~~ Timing plots ~~~~~~~~~~~~~~~~~~~~
 
   TH1D* h_coin = new TH1D("h_coin", "coin", 100.0, -5.0, 5.0);
   h_coin->GetXaxis()->SetTitle("Coincidence Time [ns]");
@@ -490,7 +503,7 @@ void QA_QE(const char *kinematic)
                   h_eovp->Fill((bb_ps_e+bb_sh_e)/bb_tr_p);
                   h2_eovp_runnum->Fill(runnum,(bb_ps_e+bb_sh_e)/bb_tr_p);
 
-                  h2_ps_tot->Fill(bb_ps_e+bb_sh_e,bb_ps_e);
+                  h2_ps_tot->Fill(bb_ps_e,bb_ps_e+bb_sh_e);
 
                   h2_pse_trx->Fill(bb_tr_x,bb_ps_e);
                   h2_pse_try->Fill(bb_tr_y,bb_ps_e);
@@ -502,6 +515,9 @@ void QA_QE(const char *kinematic)
 
                   h2_trp_trx->Fill(bb_tr_x,bb_tr_p);
                   h2_trp_try->Fill(bb_tr_y,bb_tr_p);
+
+                  h2_hcal_e_x->Fill(sbs_hcal_x,sbs_hcal_e);
+                  h2_hcal_e_y->Fill(sbs_hcal_y,sbs_hcal_e);
 
                   //h_coin->Fill(adc_coin);
 
@@ -661,6 +677,15 @@ void QA_QE(const char *kinematic)
   h2_she_shtime->Draw("colz");
 
   c4_3->Print(outputfile);
+
+  TCanvas *cHCal = new TCanvas("cHCal","sbsHCal", 1200, 1000);
+  cHCal->Divide(2,2);
+  cHCal->cd(1);
+  h2_hcal_e_x->Draw("colz");
+  cHCal->cd(2);
+  h2_hcal_e_y->Draw("colz");
+
+  cHCal->Print(outputfile);
 
   TCanvas *c5 = new TCanvas("c5","bbTr", 1200, 1000);
   c5->Divide(1,2);
