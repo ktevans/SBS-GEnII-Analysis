@@ -258,7 +258,7 @@ void QA_QE(const char *kinematic)
   h_eovp->GetXaxis()->SetTitle("E/p");
   h_eovp->SetTitle("E/p with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_eovp_runnum = new TH2D("h2_eovp_runnum", "E/p vs runnum", lastRun-firstRun, 0, lastRun-firstRun, 100.0, 0.5, 1.5);
+  TH2D* h2_eovp_runnum = new TH2D("h2_eovp_runnum", "E/p vs runnum", totRun, 0, totRun, 100.0, 0.5, 1.5);
   h2_eovp_runnum->GetYaxis()->SetTitle("E/p");
   h2_eovp_runnum->GetXaxis()->SetTitle("runnum");
   h2_eovp_runnum->SetTitle("E/p vs Run Number with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
