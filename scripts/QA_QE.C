@@ -393,14 +393,18 @@ void QA_QE(const char *kinematic)
 
         h2_coin_W2->Fill(e_kine_W2,adc_coin);
 
+        T_data->Fill();
+
         if (abs(adc_coin-coin_mean)>=(coin_sigma) && bb_gr_clus_size<2 && abs(e_kine_W2-1.0)>=0.5 && abs(dy_hcal-dy_mean)>=dy_sigma && (abs(dx_hcal-dx_n_mean)>=dx_n_sigma) && (abs(dx_hcal-dx_p_mean)>=dx_p_sigma))
         {
           h_ps_e_anti->Fill(bb_ps_e);
+          T_data->Fill();
         } // end anti-QE cuts
 
         if (abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2 && abs(e_kine_W2-1.0)<0.5 && ((abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_n_mean)<dx_n_sigma) || (abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_p_mean)<dx_p_sigma)))
         {
           h_ps_e_qe->Fill(bb_ps_e);
+          T_data->Fill();
         } // end QE cuts
 
         if (bb_ps_e>0.2)
@@ -411,9 +415,13 @@ void QA_QE(const char *kinematic)
 
             h2_pse_grclus->Fill(bb_ps_e,bb_gr_clus_size);
 
+            T_data->Fill();
+
             if (abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2)
             {
               h_W2->Fill(e_kine_W2);
+
+              T_data->Fill();
 
               if (abs(e_kine_W2-1.0)<0.5)
               {
@@ -423,6 +431,8 @@ void QA_QE(const char *kinematic)
 
                 dx_out = dx_hcal;
                 dy_out = dy_hcal;
+
+                T_data->Fill();
 
                 if (abs(dy_hcal-dy_mean)<dy_sigma && ((abs(dx_hcal-dx_n_mean)<dx_n_sigma)||(abs(dx_hcal-dx_p_mean)<dx_p_sigma)))
                 {
@@ -459,6 +469,8 @@ void QA_QE(const char *kinematic)
                   h2_psTH_atime_y->Fill(bb_tr_y,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
                   h2_shTH_atime_y->Fill(bb_tr_y,bb_hodotdc_clus_tmean-bb_sh_atimeblk);
 
+                  T_data->Fill();
+
                 }// end spot cuts
 
               }// end W2 cut
@@ -473,9 +485,8 @@ void QA_QE(const char *kinematic)
 
       W2_out = e_kine_W2;
       helicity_out = helicity * (IHWP * IHWP_flip); //* IHWP;//-1* IHWP * helicity * IHWP_flip;
+      T_data->Fill();
    }// end global cuts
-
-    T_data->Fill();
 
   }//end event loop
 
@@ -652,7 +663,7 @@ void QA_QE(const char *kinematic)
   pt->AddText(Form("Coincidence Cut: abs(adc.coin - %.3f)<%.3f",coin_mean,coin_sigma));
   pt->AddText("GRINCH cut: bb.grinch_tdc.clus.size>2");
   pt->AddText(Form("Proton Spot Cut: %.3f<dx<%.3f && %.3f<dy<%.3f",(dx_p_mean-dx_p_sigma),(dx_p_mean+dx_p_sigma),(dy_mean-dy_sigma),(dy_mean-dy_sigma)));
-  pt->AddText(Form("Neutron Spot Cut: %.3f<dx<%.3f && %.3f<dy<%.3f",(dx_n_mean-dx_p_sigma),(dx_n_mean+dx_p_sigma),(dy_mean-dy_sigma),(dy_mean-dy_sigma)));
+  pt->AddText(Form("Neutron Spot Cut: %.3f<dx<%.3f && %.3f<dy<%.3f",(dx_n_mean-dx_n_sigma),(dx_n_mean+dx_n_sigma),(dy_mean-dy_sigma),(dy_mean-dy_sigma)));
   pt->Draw();
 
   summary->Print(outputfile+")");
