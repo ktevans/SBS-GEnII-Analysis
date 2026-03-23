@@ -263,6 +263,9 @@ void QA_QE(const char *kinematic)
   h2_eovp_runnum->GetXaxis()->SetTitle("runnum");
   h2_eovp_runnum->SetTitle("E/p vs Run Number with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
+  TProfile *h2_eovp_runnum_prof = new TProfile("h2_eovp_runnum_prof", "Prof E/p", totRun, 0, totRun, 100.0, 0.5, 1.5);
+  h2_eovp_runnum_prof->SetMarkerColor(kRed);
+
   TH2D* h2_eovp_trx = new TH2D("h2_eovp_trx", "E/p vs trx", 100, -0.45, 0.6, 100.0, 0.5, 1.5);
   h2_eovp_trx->GetYaxis()->SetTitle("E/p");
   h2_eovp_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
@@ -534,6 +537,7 @@ void QA_QE(const char *kinematic)
 
                   h_eovp->Fill((bb_ps_e+bb_sh_e)/bb_tr_p);
                   h2_eovp_runnum->Fill(runTrack,(bb_ps_e+bb_sh_e)/bb_tr_p);
+                  h2_eovp_runnum_prof->Fill(runTrack,(bb_ps_e+bb_sh_e)/bb_tr_p,1);
 
                   h2_ps_tot->Fill(bb_ps_e,bb_ps_e+bb_sh_e);
 
@@ -651,7 +655,7 @@ void QA_QE(const char *kinematic)
   h_eovp->Draw();
   c3->cd(3);
   h2_eovp_runnum->Draw("colz");
-  h2_eovp_runnum->ProfileY()->Draw("SAMES");
+  h2_eovp_runnum_prof->Draw("SAMES");
   c3->cd(4);
   h2_ps_tot->Draw("colz");
 
