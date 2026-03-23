@@ -561,9 +561,9 @@ void QA_QE(const char *kinematic)
   TCanvas *c4_2 = new TCanvas("c4_2","bbPS", 1200, 1000);
   c4_2->Divide(2,2);
   c4_2->cd(1);
-  h_ps_e->Draw();
-  h_ps_e_anti->Draw("same");
-  h_ps_e_qe->Draw("same");
+  h_ps_e_qe->Draw();
+  //h_ps_e_anti->Draw("same");
+  //h_ps_e_qe->Draw("same");
   auto legend_ps = new TLegend(0.55,0.7,0.9,0.9);
   legend_ps->AddEntry(h_ps_e, "PS with Global Cuts", "l");
   legend_ps->AddEntry(h_ps_e_qe, "PS with QE Cuts", "l");
