@@ -225,6 +225,11 @@ void QA_QE(const char *kinematic)
   h_W2->GetXaxis()->SetTitle("e.kine.W2 [GeV]");
   h_W2->SetTitle("W2 with Global, Vertex, E/p, PSe, Coin, and GRINCH Cuts");
 
+  TH1D* h_W2_raw = new TH1D("h_W2_raw", "W2", 100.0, 0.0, 2.0);
+  h_W2_raw->GetXaxis()->SetTitle("e.kine.W2 [GeV]");
+  h_W2_raw->SetTitle("W2 with Global Cuts");
+  h_W2_raw->SetLineColor(kRed);
+
   TH1D* h_dx = new TH1D("h_dx", ";dx", 100.0, -6.0, 4.0);
   h_dx->GetXaxis()->SetTitle("dx [m]");
   h_dx->SetTitle("dx with Global, Vertex, E/p, PSe, Coin, GRINCH, and W2 Cuts");
@@ -258,6 +263,11 @@ void QA_QE(const char *kinematic)
   h2_eovp_try->GetYaxis()->SetTitle("E/p");
   h2_eovp_try->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_eovp_try->SetTitle("E/p vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_ps_tot = new TH2D("h2_ps_tot", "ePS vs ePS+eSH", 100, 0.0, 2.0, 100.0, 0.0, 4.5);
+  h2_ps_tot->GetYaxis()->SetTitle("bb.ps.e [GeV]");
+  h2_ps_tot->GetXaxis()->SetTitle("bb.ps.e+bb.sh.e [GeV]");
+  h2_ps_tot->SetTitle("PreShower Energy vs Total BBCal Energy with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH1D* h_ps_e = new TH1D("h_ps_e", "PreShower Energy", 100.0, 0.0, 2.0);
   h_ps_e->GetXaxis()->SetTitle("bb.ps.e [GeV]");
@@ -413,6 +423,7 @@ void QA_QE(const char *kinematic)
     {
 
       h_tr_vz->Fill(bb_tr_vz);
+      h_W2_raw->Fill(e_kine_W2);
 
       if (abs(bb_tr_vz)<0.27)
       {
@@ -567,7 +578,12 @@ void QA_QE(const char *kinematic)
   c2->cd(3);
   h2_pse_grclus->Draw("colz");
   c2->cd(4);
-  h_W2->Draw();
+  h_W2_raw->Draw();
+  h_W2->Draw("SAMES");
+  auto legend_W2 = new TLegend(0.1,0.7,0.4,0.9);
+  legend_W2->AddEntry(h_W2_raw, "W2 with Global Cuts", "l");
+  legend_W2->AddEntry(h_W2, "W2 with QE Cuts", "l");
+  legend_W2->Draw();
 
   //Save the canvas to a pdf
   c2->Print(outputfile);
