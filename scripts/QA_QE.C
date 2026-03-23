@@ -382,12 +382,12 @@ void QA_QE(const char *kinematic)
 
     // && abs(adc_coin-coin_mean)<coin_sigma && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>2.0 && abs(bb_tr_vz)<0.27
 
-    if(pass_global==1 && (IHWP==-1.0 || IHWP==1.0) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.0 && e_kine_W2>-1.0 && e_kine_W2<=2.0)
+    if(pass_global==1 && (IHWP==-1.0 || IHWP==1.0) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.0)
     {
 
       h_tr_vz->Fill(bb_tr_vz);
 
-      if (abs(bb_tr_vz)<0.27)
+      if (abs(bb_tr_vz)<0.27 && e_kine_W2>-1.0 && e_kine_W2<=2.0)
       {
         h_ps_e->Fill(bb_ps_e);
 
@@ -561,9 +561,9 @@ void QA_QE(const char *kinematic)
   TCanvas *c4_2 = new TCanvas("c4_2","bbPS", 1200, 1000);
   c4_2->Divide(2,2);
   c4_2->cd(1);
-  h_ps_e_qe->Draw();
-  //h_ps_e_anti->Draw("same");
-  //h_ps_e_qe->Draw("same");
+  h_ps_e->Draw();
+  h_ps_e_anti->Draw("same");
+  h_ps_e_qe->Draw("same");
   auto legend_ps = new TLegend(0.55,0.7,0.9,0.9);
   legend_ps->AddEntry(h_ps_e, "PS with Global Cuts", "l");
   legend_ps->AddEntry(h_ps_e_qe, "PS with QE Cuts", "l");
