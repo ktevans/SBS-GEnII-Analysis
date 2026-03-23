@@ -620,12 +620,12 @@ void QA_QE(const char *kinematic)
   c2->cd(3);
   h2_pse_grclus->Draw("colz");
   c2->cd(4);
-  h_W2_raw->Draw();
-  h_W2->Draw("SAMES");
-  auto legend_W2 = new TLegend(0.1,0.7,0.4,0.9);
-  legend_W2->AddEntry(h_W2_raw, "W2 with Global Cuts", "l");
-  legend_W2->AddEntry(h_W2, "W2 with QE Cuts", "l");
-  legend_W2->Draw();
+  //h_W2_raw->Draw();
+  h_W2->Draw();
+  //auto legend_W2 = new TLegend(0.1,0.7,0.4,0.9);
+  //legend_W2->AddEntry(h_W2_raw, "W2 with Global Cuts", "l");
+  //legend_W2->AddEntry(h_W2, "W2 with QE Cuts", "l");
+  //legend_W2->Draw();
 
   //Save the canvas to a pdf
   c2->Print(outputfile);
