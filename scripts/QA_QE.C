@@ -371,6 +371,11 @@ void QA_QE(const char *kinematic)
   h2_trp_try->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_trp_try->SetTitle("Track p vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
+  TH2D* h2_trp_bbcalE = new TH2D("h2_trp_bbcalE", "TrP vs BBCalE", 100.0, Trp_min, Trp_max, 100.0, 1.5, 4.5);
+  h2_trp_bbcalE->GetXaxis()->SetTitle("bb.tr.p [GeV]");
+  h2_trp_bbcalE->GetYaxis()->SetTitle("bb.ps.e+bb.sh.e [GeV]");
+  h2_trp_bbcalE->SetTitle("Track p vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
   // ~~~~~~~~~~~~~~~~~~~~ Timing plots ~~~~~~~~~~~~~~~~~~~~
 
   TH1D* h_coin = new TH1D("h_coin", "coin", 200.0, -10.0, 10.0);
@@ -542,6 +547,7 @@ void QA_QE(const char *kinematic)
 
                   h2_trp_trx->Fill(bb_tr_x,bb_tr_p);
                   h2_trp_try->Fill(bb_tr_y,bb_tr_p);
+                  h2_trp_bbcalE->Fill(bb_tr_p,bb_ps_e+bb_sh_e);
 
                   h2_hcal_e_x->Fill(sbs_hcal_x,sbs_hcal_e);
                   h2_hcal_e_y->Fill(sbs_hcal_y,sbs_hcal_e);
@@ -718,12 +724,16 @@ void QA_QE(const char *kinematic)
   cHCal->Print(outputfile);
 
   TCanvas *c5 = new TCanvas("c5","bbTr", 1200, 1000);
-  c5->Divide(1,2);
+  c5->Divide(2,2);
   c5->cd(1);
   h2_trp_trx->Draw("colz");
   c5->cd(2);
   h2_trp_try->Draw("colz");
-
+  c5->cd(3);
+  h2_trp_bbcalE->Draw("colz")
+  TF1 *f1 = new TF1("f1", "x",0.0,10.0);
+  f1->SetLineColor(kRed);
+  f1->Draw("SAMES");
   c5->Print(outputfile);
 
   TCanvas *coinTime = new TCanvas("coinTime", "Coincidence Time", 1200, 1000);
