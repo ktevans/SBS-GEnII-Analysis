@@ -273,9 +273,9 @@ void QA_QE(const char *kinematic)
   h2_eovp_try->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_eovp_try->SetTitle("E/p vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_ps_tot = new TH2D("h2_ps_tot", "ePS vs ePS+eSH", 100, 0.0, 2.0, 100.0, 0.0, 4.5);
-  h2_ps_tot->GetYaxis()->SetTitle("bb.ps.e [GeV]");
-  h2_ps_tot->GetXaxis()->SetTitle("bb.ps.e+bb.sh.e [GeV]");
+  TH2D* h2_ps_tot = new TH2D("h2_ps_tot", "ePS vs ePS+eSH", 100, 0.0, 2.0, 100.0, 1.5, 4.5);
+  h2_ps_tot->GetXaxis()->SetTitle("bb.ps.e [GeV]");
+  h2_ps_tot->GetYaxis()->SetTitle("bb.ps.e+bb.sh.e [GeV]");
   h2_ps_tot->SetTitle("PreShower Energy vs Total BBCal Energy with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH1D* h_ps_e = new TH1D("h_ps_e", "PreShower Energy", 100.0, 0.0, 2.0);
