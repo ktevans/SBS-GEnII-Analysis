@@ -26,7 +26,7 @@
 void QA_QE(const char *kinematic)
 {
 
-  int kin = 4;
+  int kin = 5;
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
@@ -150,7 +150,7 @@ void QA_QE(const char *kinematic)
     dx_n_mean = 0.0;
     dx_n_sigma = 0.5;
     dx_p_mean = -1.108;
-    dx_p_sigma = 0.75;
+    dx_p_sigma = 0.399;
     dy_mean = 0.254;
     dy_sigma = 0.773;
     firstRun = 3510;
