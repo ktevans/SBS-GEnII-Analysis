@@ -65,8 +65,8 @@ void QE_comp_fix(const char *kinematic, int kin)
 
   if(kin==2)
   {
-    coin_mean = 130.217;
-    coin_sigma = 2.285;
+    coin_mean = 0.978;
+    coin_sigma = 1.179;
     IHWP_flip = -1;
     std::cout << "\nYou are replaying GEN2!\n";
   }
