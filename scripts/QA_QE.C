@@ -382,7 +382,7 @@ void QA_QE(const char *kinematic)
 
     // && abs(adc_coin-coin_mean)<coin_sigma && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>2.0 && abs(bb_tr_vz)<0.27
 
-    if(pass_global==1 && (IHWP==-1.0 || IHWP==1.0) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.0)
+    if(pass_global==1 && (IHWP==-1.0 || IHWP==1.0) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.0 && e_kine_W2>-1.0 && e_kine_W2<=2.0)
     {
 
       h_tr_vz->Fill(bb_tr_vz);
@@ -395,7 +395,7 @@ void QA_QE(const char *kinematic)
 
         T_data->Fill();
 
-        if (abs(adc_coin-coin_mean)>=(coin_sigma) && bb_gr_clus_size<2 && abs(e_kine_W2-1.0)>=0.5 && abs(dy_hcal-dy_mean)>=dy_sigma && (abs(dx_hcal-dx_n_mean)>=dx_n_sigma) && (abs(dx_hcal-dx_p_mean)>=dx_p_sigma))
+        if (abs(adc_coin-coin_mean)>=(coin_sigma) && bb_gr_clus_size<2 && abs(e_kine_W2-1.0)>0.5 && abs(dy_hcal-dy_mean)>=dy_sigma && (abs(dx_hcal-dx_n_mean)>=dx_n_sigma) && (abs(dx_hcal-dx_p_mean)>=dx_p_sigma))
         {
           h_ps_e_anti->Fill(bb_ps_e);
           T_data->Fill();
@@ -702,7 +702,7 @@ void QA_QE(const char *kinematic)
   h2_shTH_atime_y->Write();
   h2_psTH_atime_y->Write();
   h2_hcalTH_atime_y->Write();
-  
+
   fout->Write();
   T_data->Delete();
   T->Delete();
