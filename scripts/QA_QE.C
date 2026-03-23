@@ -348,6 +348,16 @@ void QA_QE(const char *kinematic)
   h2_hcal_e_y->GetYaxis()->SetTitle("sbs.hcal.e [GeV]");
   h2_hcal_e_y->SetTitle("HCal Energy vs HCal y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
+  TH2D* h2_hcal_time_e = new TH2D("h2_hcal_time_e", "HCal energy vs HCal ADC time", 100.0, -10.0, 10.0, 200.0, 0.0, 1.5);
+  h2_hcal_time_e->GetXaxis()->SetTitle("sbs.hcal.atimeblk [ns]");
+  h2_hcal_time_e->GetYaxis()->SetTitle("sbs.hcal.e [GeV]");
+  h2_hcal_time_e->SetTitle("HCal Energy vs HCal ADC Time with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_hodo_time_hcal_e = new TH2D("h2_hodo_time_hcal_e", "HCal energy vs Hodo Mean time", 100.0, -10.0, 10.0, 200.0, 0.0, 1.5);
+  h2_hodo_time_hcal_e->GetXaxis()->SetTitle("bb.hodotdc.clus.tmean [ns]");
+  h2_hodo_time_hcal_e->GetYaxis()->SetTitle("sbs.hcal.e [GeV]");
+  h2_hodo_time_hcal_e->SetTitle("HCal Energy vs Hodo Mean Time with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
 
   // ~~~~~~~~~~~~~~~~~~~~ GEM plots ~~~~~~~~~~~~~~~~~~~~
 
@@ -536,6 +546,9 @@ void QA_QE(const char *kinematic)
                   h2_hcal_e_x->Fill(sbs_hcal_x,sbs_hcal_e);
                   h2_hcal_e_y->Fill(sbs_hcal_y,sbs_hcal_e);
 
+                  h2_hcal_time_e->Fill(sbs_hcal_atimeblk,sbs_hcal_e);
+                  h2_hodo_time_hcal_e->Fill(bb_hodotdc_clus_tmean,sbs_hcal_e);
+
                   //h_coin->Fill(adc_coin);
 
                   h2_hcal_atime_x->Fill(sbs_hcal_x,sbs_hcal_atimeblk);
@@ -701,6 +714,10 @@ void QA_QE(const char *kinematic)
   h2_hcal_e_x->Draw("colz");
   cHCal->cd(2);
   h2_hcal_e_y->Draw("colz");
+  cHCal->cd(3);
+  h2_hcal_time_e->Draw("colz");
+  cHCal->cd(4);
+  h2_hodo_time_hcal_e->Draw("colz");
 
   cHCal->Print(outputfile);
 
