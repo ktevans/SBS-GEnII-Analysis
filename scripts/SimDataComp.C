@@ -1,784 +1,659 @@
-#include <TMath.h>
 #include <TF1.h>
-#include <TSystem.h>
+#include <TAxis.h>
 #include <TChain.h>
-#include <TString.h>
-#include <TNtuple.h>
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <TH2.h>
-#include <TStyle.h>
-#include <TGraph.h>
-#include <TROOT.h>
-#include <TMath.h>
+#include <TH1D.h>
+#include <TH1F.h>
+#include <TCanvas.h>
+#include <TPad.h>
 #include <TLegend.h>
-#include <TPaveLabel.h>
-#include <TProfile.h>
-#include <TPolyLine.h>
-#include <TObjArray.h>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <math.h>
-#include <stack>
+#include <TStyle.h>
+#include <TError.h>
 
-void QA_QE(const char *kinematic)
+#include <string>
+#include <cmath>
+#include <iostream>
+#include <TMath.h>
+
+//To run script:
+// Go to SBS-GEnII-Analysis directory and type "root"
+// Type ".L scripts/SimDataComp.C" 
+//   This will compile the code and show any errors but will not run the code.
+// To run the code, type one of the following commands:
+//  for GEN2:  "SimDataComp(2)"
+//  for GEN3:  "SimDataComp(3)"
+//  for GEN4a: "SimDataComp(4)"
+//  for GEN4b: "SimDataComp(5)"
+
+//TH1::SetDefaultSumw2();
+
+TH1D *h_data_dx;
+TH1D *h_simIN_dx;
+TH1D *h_sim_proton_dx;
+TH1D *h_sim_neutron_dx;
+TH1D *h_prob_proton_dx;
+TH1D *h_prob_neutron_dx;
+TH1D *h_prob_bckgrnd_dx;
+
+double fitsim( double *x, double *par)
 {
 
-  int kin = 3;
+  const double dx   = x[0];
+  const double Rp   = par[0];
+  const double shp  = par[1];
+  const double Rn   = par[2];
+  const double shn  = par[3];
+  const double Rbg  = par[4];
+  const double shbg = par[5];
 
-  gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
+  //condition ? expression_if_true : expression_if_false
+  const double p  = (h_sim_proton_dx  ? h_sim_proton_dx->Interpolate(dx - shp)  :0.0);
+  const double n  = (h_sim_neutron_dx ? h_sim_neutron_dx->Interpolate(dx - shn) :0.0);
+  const double bg = (h_simIN_dx       ? h_simIN_dx->Interpolate(dx - shbg)      :0.0);
 
-  TString inputfile = Form("/volatile/halla/sbs/ktevans/KateJackSBSAnalysis/KJ_parsed_GEn_pass2_%s_He3_100.root",kinematic);
-  TString outputfile = Form("plots/QA_parsed_GEn_pass3_%s_He3_dxdy.pdf",kinematic);
-  TString outfile = Form("outfiles/QA_parsed_GEn_pass3_%s_He3_dxdy.root",kinematic);
-  TFile *fout = new TFile(outfile,"RECREATE");
+  return Rp * p + Rn * n + Rbg * bg;
 
-  TTree *T_data = new TTree("T_data", "Analysis Data Tree");
+}//end fitsim
 
-  double dx_out, dy_out, W2_out;
-  int helicity_out;
-  T_data->Branch("dx", &dx_out, "dx/D");
-  T_data->Branch("dy", &dy_out, "dy/D");
-  T_data->Branch("W2", &W2_out, "W2/D");
-  T_data->Branch("helicity", &helicity_out, "helicity/I");
+double fitAsym(double *xA, double *parA)
+{
 
-  TChain* T = new TChain("Parse");
-  T->Add(inputfile);
+  const double dxA  = xA[0];
+  const double Ap   = parA[0];
+  const double An   = parA[1];
+  const double Abg  = parA[2];
 
-  double bb_tr_r_x;             T->SetBranchAddress("bb.tr.r_x", &bb_tr_r_x);
-  double bb_tr_r_th;            T->SetBranchAddress("bb.tr.r_th", &bb_tr_r_th);
-  double e_kine_W2;             T->SetBranchAddress("e.kine.W2", &e_kine_W2);
-  double adc_coin;              T->SetBranchAddress("adc.coin", &adc_coin);
-  int helicity;                 T->SetBranchAddress("helicity", &helicity);
-  double bb_ps_e;               T->SetBranchAddress("bb.ps.e", &bb_ps_e);
-  double bb_ps_atimeblk;        T->SetBranchAddress("bb.ps.atimeblk", &bb_ps_atimeblk);
-  double bb_sh_e;               T->SetBranchAddress("bb.sh.e", &bb_sh_e);
-  double bb_sh_atimeblk;        T->SetBranchAddress("bb.sh.atimeblk", &bb_sh_atimeblk);
-  double bb_tr_p;               T->SetBranchAddress("bb.tr.p", &bb_tr_p);
-  double bb_tr_x;               T->SetBranchAddress("bb.tr.x", &bb_tr_x);
-  double bb_tr_y;               T->SetBranchAddress("bb.tr.y", &bb_tr_y);
-  double bb_tr_vz;              T->SetBranchAddress("bb.tr.vz", &bb_tr_vz);
-  double bb_gr_clus_size;       T->SetBranchAddress("bb.grinch_tdc.clus.size", &bb_gr_clus_size);
-  double bb_gr_clus_track;      T->SetBranchAddress("bb.grinch_tdc.clus.trackindex", &bb_gr_clus_track);
-  double bb_hodotdc_clus_tmean; T->SetBranchAddress("bb.hodotdc.clus.tmean", &bb_hodotdc_clus_tmean);
-  double bb_hodotdc_clus_id;    T->SetBranchAddress("bb.hodotdc.clus.id", &bb_hodotdc_clus_id);
-  int pass_global;              T->SetBranchAddress("passGlobal", &pass_global);
-  int runnum;                   T->SetBranchAddress("runnum", &runnum);
-  double sbs_hcal_e;            T->SetBranchAddress("sbs.hcal.e", &sbs_hcal_e);
-  double sbs_hcal_x;            T->SetBranchAddress("sbs.hcal.x", &sbs_hcal_x);
-  double sbs_hcal_y;            T->SetBranchAddress("sbs.hcal.y", &sbs_hcal_y);
-  double sbs_hcal_atimeblk;     T->SetBranchAddress("sbs.hcal.atimeblk", &sbs_hcal_atimeblk);
-  int sbs_hcal_clus_blk_id;     T->SetBranchAddress("sbs.hcal.clus_blk.id", &sbs_hcal_clus_blk_id);
-  double dx_hcal;               T->SetBranchAddress("dx", &dx_hcal);
-  double dy_hcal;               T->SetBranchAddress("dy", &dy_hcal);
-  double IHWP;                  T->SetBranchAddress("IHWP", &IHWP);
+  //condition ? expression_if_true : expression_if_false
+  const double Prob_p  = (h_prob_proton_dx  ? h_prob_proton_dx->Interpolate(dxA)  :0.0);
+  const double Prob_n  = (h_prob_neutron_dx ? h_prob_neutron_dx->Interpolate(dxA) :0.0);
+  const double Prob_bg = (h_prob_bckgrnd_dx ? h_prob_bckgrnd_dx->Interpolate(dxA) :0.0);
 
-  double optics_valid_min;
-  double optics_valid_max;
-  double coin_mean;
-  double coin_sigma;
-  double dx_n_mean;
-  double dx_n_sigma;
-  double dx_p_mean;
-  double dx_p_sigma;
-  double dy_mean;
-  double dy_sigma;
-  int firstRun;
-  int lastRun;
-  double Trp_max;
-  double Trp_min;
+  return (Ap * Prob_p) + (An * Prob_n) + (Abg * Prob_bg);
 
-  int IHWP_flip;
+}//end fitAsym
 
-  if(kin==2)
+void SimDataComp(int kin)
+{
+
+  TString data_file;
+  TString nucleon_sim_file;
+  TString inel_sim_file;
+  TString title_words;
+
+  int npar = 6;
+  double dx_min_d, dx_max_d;
+  int dx_min_i, dx_max_i;
+
+  if(kin == 2)
   {
-    optics_valid_min = -0.35;
-    optics_valid_max = 0.34;
-    //coin_mean = 129.1;
-    coin_mean = 0.978;
-    //coin_sigma = 5.6;
-    coin_sigma = 1.179;
-    IHWP_flip = -1;
-    dx_n_mean = -0.147;
-    dx_n_sigma = 0.812;
-    dx_p_mean = -2.811;
-    dx_p_sigma = 0.600;
-    dy_mean = 0.431;
-    dy_sigma = 1.265;
-    firstRun = 2130;
-    lastRun = 2322;
-    Trp_max = 3.5;
-    Trp_min = 2.0;
-  }
-  else if(kin==3)
-  {
-    optics_valid_min = -0.35;
-    optics_valid_max = 0.33;
-    //coin_mean = 120.3;
-    coin_mean = 0.382;
-    //coin_sigma = 6.0;
-    coin_sigma = 1.077;
-    IHWP_flip = 1;
-    dx_n_mean = 0.0;
-    dx_n_sigma = 0.5;
-    dx_p_mean = -1.541;
-    dx_p_sigma = 0.365;
-    dy_mean = 0.336;
-    dy_sigma = 0.913;
-    firstRun = 2506;
-    lastRun = 3250;
-    Trp_max = 3.5;
-    Trp_min = 2.0;
-  }
-  else if(kin==4)
-  {
-    optics_valid_min = -0.36;
-    optics_valid_max = 0.30;
-    //coin_mean = 121.4;
-    coin_mean = 0.589;
-    //coin_sigma = 5.8;
-    coin_sigma = 1.136;
-    IHWP_flip = 1;
-    dx_n_mean = 0.0;
-    dx_n_sigma = 0.5;
-    dx_p_mean = -1.124;
-    dx_p_sigma = 0.464;
-    dy_mean = 0.254;
-    dy_sigma = 0.773;
-    firstRun = 3510;
-    lastRun = 4587;
-    Trp_max = 4.0;
-    Trp_min = 2.5;
-  }
-  else if(kin==5)
-  {
-    optics_valid_min = -0.37;
-    optics_valid_max = 0.32;
-    //coin_mean = 185.5;
-    coin_mean = 0.568;
-    //coin_sigma = 7.0;
-    coin_sigma = 1.055;
-    IHWP_flip = 1;
-    dx_n_mean = 0.0;
-    dx_n_sigma = 0.5;
-    dx_p_mean = -1.124;
-    dx_p_sigma = 0.361;
-    dy_mean = 0.248;
-    dy_sigma = 0.769;
-    firstRun = 5044;
-    lastRun = 6083;
-    Trp_max = 4.0;
-    Trp_min = 2.5;
-  }
-  else
-  {
-    optics_valid_min = -2.0;
-    optics_valid_max = 2.0;
-    coin_mean = 0.0;
-    coin_sigma = 400.0;
-    IHWP_flip = 1;
-    dx_n_mean = 0.0;
-    dx_n_sigma = 5.0;
-    dx_p_mean = -1.0;
-    dx_p_sigma = 5.0;
-    dy_mean = 0.0;
-    dy_sigma = 5.0;
-    firstRun = 0;
-    lastRun = 100;
-    Trp_max = 3.5;
-    Trp_min = 2.0;
+
+    //data_file = "outfiles/parsed_GEn_pass2_GEN2_He3_dxdy.root";
+    data_file = "outfiles/sean_GEn_pass2_GEN2_He3_dxdy.root";
+    nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN2_He3_dxdy.root";
+    inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN2_He3_dxdy.root";
+    title_words = "GEN2";
+    dx_min_d = -6.0;
+    dx_min_i = -6;
+    dx_max_d = 3.0;
+    dx_max_i = 3;
+    cout<<"\nHi!\n";
+
   }
 
-  //Scan through all the entries in the TChain T
-  //If the rootfiles are empty or don't exist, there will be 0 entries
-  //If there are entries, then print out how many
-  if(T->GetEntries()==0)
+  if(kin == 3)
+  {
+
+    data_file = "outfiles/parsed_GEn_pass2_GEN3_He3_dxdy.root";
+    nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN3_He3_dxdy.root";
+    inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN3_He3_dxdy.root";
+    title_words = "GEN3";
+    dx_min_d = -6.0;
+    dx_min_i = -6;
+    dx_max_d = 4.0;
+    dx_max_i = 4;
+
+  }
+
+  if(kin == 4)
+  {
+
+    data_file = "outfiles/parsed_GEn_pass2_GEN4a_He3_dxdy.root";
+    nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN4_He3_dxdy.root";
+    inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
+    title_words = "GEN4a";
+    dx_min_d = -3.0;
+    dx_min_i = -3;
+    dx_max_d = 2.0;
+    dx_max_i = 2;
+
+  }
+
+  if(kin == 5)
+  {
+
+    data_file = "outfiles/parsed_GEn_pass2_GEN4b_He3_dxdy.root";
+    nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN4_He3_dxdy.root";
+    inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
+    title_words = "GEN4b";
+    dx_min_d = -3.0;
+    dx_min_i = -3;
+    dx_max_d = 2.0;
+    dx_max_i = 2;
+
+  }
+
+  //else
+  //{
+    //data_file = "null";
+    //nucleon_sim_file = "null";
+    //inel_sim_file = "null";
+    //title_words = "null";
+    //dx_min_d = 0.0;
+    //dx_min_i = 0;
+    //dx_max_d = 0.0;
+    //dx_max_i = 0.0;
+  //}
+
+  //gErrorIgnoreLevel = kError;
+
+  int numberBins = 100;
+
+  TChain* T_data = new TChain("T_data");
+  T_data->Add(data_file);
+
+  Double_t dx;      T_data->SetBranchAddress("dx", &dx);
+  int helicity;     T_data->SetBranchAddress("helicity", &helicity);
+
+  if(T_data->GetEntries()==0)
   {
     std::cerr << "\n --- No ROOT file found!! --- \n\n";
     throw;
   }
-  else std::cout << "\nFound " << T->GetEntries() << " events. Starting analysis.. \n";
+  else std::cout << "\nFound " << T_data->GetEntries() << " events. \n";
 
-  // ~~~~~~~~~~~~~~~~~~~~ Basic QE cut plots ~~~~~~~~~~~~~~~~~~~~
+  h_data_dx = new TH1D("h_data_dx", ";dx", numberBins, dx_min_d, dx_max_d);
+  h_data_dx->GetXaxis()->SetTitle("dx [m]");
+  h_data_dx->Sumw2();
 
-  TH1D* h_tr_vz = new TH1D("h_tr_vz", "Track z Vertex", 140.0, -0.8, 0.6);
-  h_tr_vz->GetXaxis()->SetTitle("bb.tr.vz [m]");
-  h_tr_vz->SetTitle("Track z Vertex with Global Cuts");
+  TH1D* h_neg_hel_dx = new TH1D("h_neg_hel_dx",";-hel", numberBins, dx_min_d, dx_max_d);
+  h_neg_hel_dx->GetXaxis()->SetTitle("dx [m]");
+  h_neg_hel_dx->SetLineColor(kRed);
+  h_neg_hel_dx->Sumw2();
 
-  TH1D* h_ps_e_raw = new TH1D("h_ps_e_raw", "PreShower Energy", 100.0, 0.0, 2.0);
-  h_ps_e_raw->GetXaxis()->SetTitle("bb.ps.e [GeV]");
-  h_ps_e_raw->SetTitle("PreShower Energy with Global and Vertex Cuts");
+  TH1D* h_pos_hel_dx = new TH1D("h_pos_hel_dx",";+hel", numberBins, dx_min_d, dx_max_d);
+  h_pos_hel_dx->GetXaxis()->SetTitle("dx [m]");
+  h_pos_hel_dx->SetLineColor(kBlue);
+  h_pos_hel_dx->Sumw2();
 
-  TH2D* h2_coin_W2 = new TH2D("h2_coin_W2", "Coin vs W2", 100.0, -2.0, 8.0, 80.0, -20.0, 20.0);
-  h2_coin_W2->GetXaxis()->SetTitle("e.kine.W2 [GeV]");
-  h2_coin_W2->GetYaxis()->SetTitle("adc.coin [ns]");
-  h2_coin_W2->SetTitle("Coincidence Time (HCal-BBCal) vs W2 with Global and Vertex Cuts");
+  int helPosArray[numberBins];
+  int helNegArray[numberBins];
 
-  TH2D* h2_pse_grclus = new TH2D("h2_pse_grclus", "PSe vs GRclus", 100.0, 0.0, 2.0, 20.0, 0.0, 20.0);
-  h2_pse_grclus->GetXaxis()->SetTitle("bb.ps.e [GeV]");
-  h2_pse_grclus->GetYaxis()->SetTitle("bb.gr.clus.size");
-  h2_pse_grclus->SetTitle("PreShower Energy vs GRINCH Cluster Size with Global, Vertex, E/p, and PSe Cuts");
+  double binSize = 10.0 / numberBins;
 
-  TH1D* h_W2 = new TH1D("h_W2", "W2", 100.0, 0.0, 2.0);
-  h_W2->GetXaxis()->SetTitle("e.kine.W2 [GeV]");
-  h_W2->SetTitle("W2 with Global, Vertex, E/p, PSe, Coin, and GRINCH Cuts");
-
-  TH1D* h_W2_raw = new TH1D("h_W2_raw", "W2", 100.0, 0.0, 2.0);
-  h_W2_raw->GetXaxis()->SetTitle("e.kine.W2 [GeV]");
-  h_W2_raw->SetTitle("W2 with Global Cuts");
-  h_W2_raw->SetLineColor(kRed);
-
-  TH1D* h_dx = new TH1D("h_dx", ";dx", 100.0, -6.0, 4.0);
-  h_dx->GetXaxis()->SetTitle("dx [m]");
-  h_dx->SetTitle("dx with Global, Vertex, E/p, PSe, Coin, GRINCH, and W2 Cuts");
-
-  TH1D* h_dy = new TH1D("h_dy", ";dy", 70.0, -3.0, 4.0);
-  h_dy->GetXaxis()->SetTitle("dy [m]");
-  h_dy->SetTitle("dy with Global, Vertex, E/p, PSe, Coin, GRINCH, and W2 Cuts");
-
-  TH2D* h2_dxdy = new TH2D("h2_dxdy", "dy vs dx", 70.0, -3.0, 4.0, 100.0, -6.0, 4.0);
-  h2_dxdy->GetXaxis()->SetTitle("dy [m]");
-  h2_dxdy->GetYaxis()->SetTitle("dx [m]");
-  h2_dxdy->SetTitle("dx vs dy with Global, Vertex, E/p, PSe, Coin, GRINCH, and W2 Cuts");
-
-  // ~~~~~~~~~~~~~~~~~~~~ BBCal plots ~~~~~~~~~~~~~~~~~~~~
-
-  TH1D* h_eovp = new TH1D("h_eovp", "E/p", 100.0, 0.5, 1.5);
-  h_eovp->GetXaxis()->SetTitle("E/p");
-  h_eovp->SetTitle("E/p with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_eovp_runnum = new TH2D("h2_eovp_runnum", "E/p vs runnum", lastRun-firstRun, firstRun, lastRun, 100.0, 0.5, 1.5);
-  h2_eovp_runnum->GetYaxis()->SetTitle("E/p");
-  h2_eovp_runnum->GetXaxis()->SetTitle("runnum");
-  h2_eovp_runnum->SetTitle("E/p vs Run Number with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_eovp_trx = new TH2D("h2_eovp_trx", "E/p vs trx", 100, -0.45, 0.6, 100.0, 0.5, 1.5);
-  h2_eovp_trx->GetYaxis()->SetTitle("E/p");
-  h2_eovp_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
-  h2_eovp_trx->SetTitle("E/p vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_eovp_try = new TH2D("h2_eovp_try", "E/p vs try", 100, -0.2, 0.15, 100.0, 0.5, 1.5);
-  h2_eovp_try->GetYaxis()->SetTitle("E/p");
-  h2_eovp_try->GetXaxis()->SetTitle("bb.tr.y [m]");
-  h2_eovp_try->SetTitle("E/p vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_ps_tot = new TH2D("h2_ps_tot", "ePS vs ePS+eSH", 100, 0.0, 2.0, 100.0, 0.0, 4.5);
-  h2_ps_tot->GetYaxis()->SetTitle("bb.ps.e [GeV]");
-  h2_ps_tot->GetXaxis()->SetTitle("bb.ps.e+bb.sh.e [GeV]");
-  h2_ps_tot->SetTitle("PreShower Energy vs Total BBCal Energy with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH1D* h_ps_e = new TH1D("h_ps_e", "PreShower Energy", 100.0, 0.0, 2.0);
-  h_ps_e->GetXaxis()->SetTitle("bb.ps.e [GeV]");
-  h_ps_e->SetTitle("PreShower Energy with Global, Vertex, and W2 Cuts");
-
-  TH1D* h_ps_e_anti = new TH1D("h_ps_e_anti", "PreShower Energy (anti-QE cuts)", 100.0, 0.0, 2.0);
-  h_ps_e_anti->GetXaxis()->SetTitle("bb.ps.e [GeV]");
-  h_ps_e_anti->SetTitle("PreShower Energy with Global, Vertex, and W2 Cuts and Anti - (E/p, Coin, GRINCH and Spot) Cuts");
-  h_ps_e_anti->SetLineColor(kRed);
-
-  TH1D* h_ps_e_qe = new TH1D("h_ps_e_qe", "PreShower Energy (QE cuts)", 100.0, 0.0, 2.0);
-  h_ps_e_qe->GetXaxis()->SetTitle("bb.ps.e [GeV]");
-  h_ps_e_qe->SetTitle("PreShower Energy with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
-  h_ps_e_qe->SetLineColor(kBlue);
-
-  TH2D* h2_pse_trx = new TH2D("h2_pse_trx", "PSe vs TrX", 100.0, -0.45, 0.6, 100.0, 0.0, 2.0);
-  h2_pse_trx->GetYaxis()->SetTitle("bb.ps.e [GeV]");
-  h2_pse_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
-  h2_pse_trx->SetTitle("PreShower Energy vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_pse_try = new TH2D("h2_pse_try", "PSe vs TrY", 100.0, -0.2, 0.15, 100.0, 0.0, 2.0);
-  h2_pse_try->GetYaxis()->SetTitle("bb.ps.e [GeV]");
-  h2_pse_try->GetXaxis()->SetTitle("bb.tr.y [m]");
-  h2_pse_try->SetTitle("PreShower Energy vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_pse_pstime = new TH2D("h2_pse_pstime", "PSe vs PStime", 100.0, 0.0, 2.0, 200.0, -10.0, 25.0);
-  h2_pse_pstime->GetXaxis()->SetTitle("bb.ps.e [GeV]");
-  h2_pse_pstime->GetYaxis()->SetTitle("bb.ps.atimeblk [ns]");
-  h2_pse_pstime->SetTitle("PreShower Energy vs PreShower ADC Time with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_she_trx = new TH2D("h2_she_trx", "SHe vs TrX", 100.0, -0.45, 0.6, 100.0, 0.0, 3.0);
-  h2_she_trx->GetYaxis()->SetTitle("bb.sh.e [GeV]");
-  h2_she_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
-  h2_she_trx->SetTitle("Shower Energy vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_she_try = new TH2D("h2_she_try", "SHe vs TrY", 100.0, -0.2, 0.15, 100.0, 0.0, 3.0);
-  h2_she_try->GetYaxis()->SetTitle("bb.sh.e [GeV]");
-  h2_she_try->GetXaxis()->SetTitle("bb.tr.y [m]");
-  h2_she_try->SetTitle("Shower Energy vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_she_shtime = new TH2D("h2_she_shtime", "SHe vs SHtime", 100.0, 0.0, 3.0, 200.0, -10.0, 25.0);
-  h2_she_shtime->GetXaxis()->SetTitle("bb.sh.e [GeV]");
-  h2_she_shtime->GetYaxis()->SetTitle("bb.sh.atimeblk [ns]");
-  h2_she_shtime->SetTitle("Shower Energy vs PreShower ADC Time with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH1D* h_sh_e = new TH1D("h_sh_e", "Shower Energy", 100.0, 0.0, 3.0);
-  h_sh_e->GetXaxis()->SetTitle("bb.sh.e [GeV]");
-  h_sh_e->SetTitle("Shower Energy with Global, Vertex, and W2 Cuts");
-
-  TH1D* h_sh_e_anti = new TH1D("h_sh_e_anti", "Shower Energy (anti-QE cuts)", 100.0, 0.0, 3.0);
-  h_sh_e_anti->GetXaxis()->SetTitle("bb.sh.e [GeV]");
-  h_sh_e_anti->SetTitle("Shower Energy with Global, Vertex, and W2 Cuts and Anti - (E/p, Coin, GRINCH, and Spot) Cuts");
-  h_sh_e_anti->SetLineColor(kRed);
-
-  TH1D* h_sh_e_qe = new TH1D("h_sh_e_qe", "Shower Energy (QE cuts)", 100.0, 0.0, 3.0);
-  h_sh_e_qe->GetXaxis()->SetTitle("bb.sh.e [GeV]");
-  h_sh_e_qe->SetTitle("Shower Energy with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
-  h_sh_e_qe->SetLineColor(kBlue);
-
-
-
-
-
-
-
-
-  TH2D* h2_trp_trx = new TH2D("h2_trp_trx", "TrP vs TrX", 100.0, -0.45, 0.6, 100.0, Trp_min, Trp_max);
-  h2_trp_trx->GetYaxis()->SetTitle("bb.tr.p [GeV]");
-  h2_trp_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
-  h2_trp_trx->SetTitle("Track p vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_trp_try = new TH2D("h2_trp_try", "TrP vs TrY", 100.0, -0.2, 0.15, 100.0, Trp_min, Trp_max);
-  h2_trp_try->GetYaxis()->SetTitle("bb.tr.p [GeV]");
-  h2_trp_try->GetXaxis()->SetTitle("bb.tr.y [m]");
-  h2_trp_try->SetTitle("Track p vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH1D* h_coin = new TH1D("h_coin", "coin", 100.0, -5.0, 5.0);
-  h_coin->GetXaxis()->SetTitle("Coincidence Time [ns]");
-  h_coin->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_hcal_atime_x = new TH2D("h2_hcal_atime_x", "HCal time vs HCal x", 37.0, -2.6, 1.1, 200.0, -10.0, 25.0);
-  h2_hcal_atime_x->GetXaxis()->SetTitle("sbs.hcal.x [m]");
-  h2_hcal_atime_x->GetYaxis()->SetTitle("sbs.hcal.atimeblk [ns]");
-  h2_hcal_atime_x->SetTitle("HCal ADC Time vs HCal x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_hcal_atime_y = new TH2D("h2_hcal_atime_y", "HCal time vs HCal y", 18.0, -0.9, 0.9, 200.0, -10.0, 25.0);
-  h2_hcal_atime_y->GetXaxis()->SetTitle("sbs.hcal.y [m]");
-  h2_hcal_atime_y->GetYaxis()->SetTitle("sbs.hcal.atimeblk [ns]");
-  h2_hcal_atime_y->SetTitle("HCal ADC Time vs HCal y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_ps_atime_x = new TH2D("h2_ps_atime_x", "PS Time vs Tr x", 105.0, -0.45, 0.6, 200.0, -10.0, 25.0);
-  h2_ps_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
-  h2_ps_atime_x->GetYaxis()->SetTitle("bb.ps.atimeblk [ns]");
-  h2_ps_atime_x->SetTitle("PS ADC Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_ps_atime_y = new TH2D("h2_ps_atime_y", "PS Time vs Tr y", 35.0, -0.2, 0.15, 200.0, -10.0, 25.0);
-  h2_ps_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
-  h2_ps_atime_y->GetYaxis()->SetTitle("bb.ps.atimeblk [ns]");
-  h2_ps_atime_y->SetTitle("PS ADC Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_sh_atime_x = new TH2D("h2_sh_atime_x", "SH Time vs Tr x", 105.0, -0.45, 0.6, 200.0, -10.0, 25.0);
-  h2_sh_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
-  h2_sh_atime_x->GetYaxis()->SetTitle("bb.sh.atimeblk [ns]");
-  h2_sh_atime_x->SetTitle("SH ADC Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_sh_atime_y = new TH2D("h2_sh_atime_y", "SH Time vs Tr y", 35.0, -0.2, 0.15, 200.0, -10.0, 25.0);
-  h2_sh_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
-  h2_sh_atime_y->GetYaxis()->SetTitle("bb.sh.atimeblk [ns]");
-  h2_sh_atime_y->SetTitle("SH ADC Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_hcalTH_atime_x = new TH2D("h2_hcalTH_atime_x", "(TH-HCal) Time vs Tr x", 37.0, -2.6, 1.1, 200.0, -20.0, 15.0);
-  h2_hcalTH_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
-  h2_hcalTH_atime_x->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - sbs.hcal.atimeblk [ns]");
-  h2_hcalTH_atime_x->SetTitle("(TH-HCal) Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_psTH_atime_x = new TH2D("h2_psTH_atime_x", "(TH-PS) Time vs Tr x", 105.0, -0.45, 0.6, 200.0, -20.0, 15.0);
-  h2_psTH_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
-  h2_psTH_atime_x->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - bb.ps.atimeblk [ns]");
-  h2_psTH_atime_x->SetTitle("(TH-PS) Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_shTH_atime_x = new TH2D("h2_shTH_atime_x", "(TH-SH) Time vs Tr x", 105.0, -0.45, 0.6, 200.0, -20.0, 15.0);
-  h2_shTH_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
-  h2_shTH_atime_x->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - bb.sh.atimeblk [ns]");
-  h2_shTH_atime_x->SetTitle("(TH-SH) Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_hcalTH_atime_y = new TH2D("h2_hcalTH_atime_y", "(TH-HCal) Time vs Tr y", 18.0, -0.9, 0.9, 200.0, -20.0, 15.0);
-  h2_hcalTH_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
-  h2_hcalTH_atime_y->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - sbs.hcal.atimeblk [ns]");
-  h2_hcalTH_atime_y->SetTitle("(TH-HCal) Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_psTH_atime_y = new TH2D("h2_psTH_atime_y", "(TH-PS) Time vs Tr y", 35.0, -0.2, 0.15, 200.0, -20.0, 15.0);
-  h2_psTH_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
-  h2_psTH_atime_y->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - bb.ps.atimeblk [ns]");
-  h2_psTH_atime_y->SetTitle("(TH-PS) Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  TH2D* h2_shTH_atime_y = new TH2D("h2_shTH_atime_y", "(TH-SH) Time vs Tr y", 35.0, -0.2, 0.15, 200.0, -20.0, 15.0);
-  h2_shTH_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
-  h2_shTH_atime_y->GetYaxis()->SetTitle("bb.hodotdc.clus.tmean - bb.sh.atimeblk [ns]");
-  h2_shTH_atime_y->SetTitle("(TH-SH) Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-  int QE_check = 0;
-
-  //Loop over all events to fill the histogram
-  for (size_t iev = 0; iev < T->GetEntries(); iev++)
+  for(int j = 0; j < numberBins; j++)
   {
-    T->GetEntry(iev);
+    helPosArray[j] = 0;
+    helNegArray[j] = 0;
+  }
 
-    QE_check = 0;
+  for (size_t iev = 0; iev < T_data->GetEntries(); iev++)
+  {
+    T_data->GetEntry(iev);
 
-    // && abs(adc_coin-coin_mean)<coin_sigma && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>2.0 && abs(bb_tr_vz)<0.27
+    h_data_dx->Fill(dx);
 
-    if(pass_global==1 && (IHWP==-1.0 || IHWP==1.0) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.0)
+    int binAt = (int) ((dx + 5.0) / binSize); // what???
+
+    if(helicity==-1)  //h_pos_hel_dx->Fill(dx);
+    {
+      h_pos_hel_dx->Fill(dx);
+      helPosArray[binAt]++;
+    }
+
+    if(helicity==1)  //h_neg_hel_dx->Fill(dx);
+    {
+      h_neg_hel_dx->Fill(dx);
+      helNegArray[binAt]++;
+    }
+
+  }//end loop over events
+
+  TChain* T_sim = new TChain("T_sim");
+  T_sim->Add(nucleon_sim_file);
+
+  Double_t dx_sim;     T_sim->SetBranchAddress("dx", &dx_sim);
+  Double_t fnucl;      T_sim->SetBranchAddress("fnucl", &fnucl);
+  Double_t weight;     T_sim->SetBranchAddress("weight", &weight);
+
+  if(T_sim->GetEntries()==0)
+  {
+    std::cerr << "\n --- No ROOT file found!! --- \n\n";
+    throw;
+  }
+  else std::cout << "\nFound " << T_sim->GetEntries() << " events. \n";
+
+  h_sim_proton_dx = new TH1D("h_sim_proton_dx", ";dx_sim_p", numberBins, dx_min_d, dx_max_d);
+  h_sim_proton_dx->GetXaxis()->SetTitle("dx [m]");
+  h_sim_proton_dx->SetLineColor(kGreen);
+
+  h_sim_neutron_dx = new TH1D("h_sim_neutron_dx", ";dx_sim_n", numberBins, dx_min_d, dx_max_d);
+  h_sim_neutron_dx->GetXaxis()->SetTitle("dx [m]");
+  h_sim_neutron_dx->SetLineColor(kRed);
+
+  for (size_t iev = 0; iev < T_sim->GetEntries(); iev++)
+  {
+    T_sim->GetEntry(iev);
+
+    if(fnucl == 1.0)
+    {
+      h_sim_proton_dx->Fill(dx_sim,weight);
+    }
+
+    if(fnucl == 0.0)
+    {
+      h_sim_neutron_dx->Fill(dx_sim,weight);
+    }
+
+  }//end loop over events
+
+  TChain* T_simIN = new TChain("T_sim");
+  T_simIN->Add(inel_sim_file);
+
+  Double_t dx_simIN;      T_simIN->SetBranchAddress("dx", &dx_simIN);
+  Double_t fnucl_IN;      T_simIN->SetBranchAddress("fnucl", &fnucl_IN);
+  Double_t weight_IN;     T_simIN->SetBranchAddress("weight", &weight_IN);
+
+  if(T_simIN->GetEntries()==0)
+  {
+    std::cerr << "\n --- No ROOT file found!! --- \n\n";
+    throw;
+  }
+  else std::cout << "\nFound " << T_simIN->GetEntries() << " events. \n";
+
+  h_simIN_dx = new TH1D("h_simIN_dx", ";dxIN", numberBins, dx_min_d, dx_max_d);
+  h_simIN_dx->GetXaxis()->SetTitle("dx [m]");
+  h_simIN_dx->SetLineColor(kBlue);
+
+  for (size_t iev = 0; iev < T_simIN->GetEntries(); iev++)
+  {
+    T_simIN->GetEntry(iev);
+
+    h_simIN_dx->GetSumw2();
+
+    h_simIN_dx->Fill(dx_simIN,weight_IN);
+
+  }//end loop over events
+
+  //std::cout << "sqrt(n) error " << h_simIN_dx->GetBinError(250) << std::endl;
+  //std::cout << "Get Sumw2 Error: " << h_simIN_dx->GetSumw2() << std::endl;
+
+  //******************************************************
+
+  double scale = h_data_dx->Integral();
+  //h_data_dx->Scale(1.0/h_data_dx->Integral());
+  h_data_dx->Scale(1.0/scale);
+  h_pos_hel_dx->Scale(1.0/h_pos_hel_dx->Integral());
+  h_neg_hel_dx->Scale(1.0/h_neg_hel_dx->Integral());
+  h_sim_proton_dx->Scale(1.0/h_sim_proton_dx->Integral());
+  h_sim_neutron_dx->Scale(1.0/h_sim_neutron_dx->Integral());
+  h_simIN_dx->Scale(1.0/h_simIN_dx->Integral());
+
+  int nbins = h_data_dx->GetNbinsX();
+  double xmin = h_data_dx->GetXaxis()->GetBinLowEdge(1);
+  double xmax = h_data_dx->GetXaxis()->GetBinUpEdge(nbins);
+
+  TF1 *FitFunc = new TF1("FitFunc",&fitsim,dx_min_i,dx_max_i,6); //-6,4,6
+
+  FitFunc->SetNpx(numberBins);
+  
+  //----- GEN2 -----
+  double startpar[] = {1.0,-0.5,0.5,-0.7,0.1,-1.0};
+  FitFunc->SetParameters(startpar);
+  FitFunc->SetParLimits(0,0.0,100);   // proton scale
+  FitFunc->SetParLimits(1,-4.0,4.0);  // proton shift
+  FitFunc->SetParLimits(2,0.0,100);   // neutron scale
+  FitFunc->SetParLimits(3,-4.0,4.0);  // neutron shift
+  FitFunc->SetParLimits(4,0.0,100);   // background scale
+  FitFunc->SetParLimits(5,-4.0,4.0);  // background shift
+
+  //----- GEN3 -----
+  //double startpar[] = {0.2,-0.5,0.1,-0.7,0.4,-1.0};
+  //FitFunc->SetParameters(startpar);
+  //FitFunc->SetParLimits(0,0.1,5.0);   // proton scale
+  //FitFunc->SetParLimits(1,-1.0,1.0);  // proton shift
+  //FitFunc->SetParLimits(2,0.0,5.0);   // neutron scale
+  //FitFunc->SetParLimits(3,-1.0,0.0);  // neutron shift
+  //FitFunc->SetParLimits(4,0.0,0.5);   // background scale
+  //FitFunc->SetParLimits(5,-1.0,2.0);   // background shift
+
+  h_data_dx->Fit(FitFunc,"0","",xmin,xmax);
+
+  std::cout << "Proton Shift: " << FitFunc->GetParameter(0)*FitFunc->GetParameter(1) << std::endl;
+  std::cout << "Neutron Shift: " << FitFunc->GetParameter(2)*FitFunc->GetParameter(3) << std::endl;
+  std::cout << "Background Shift: " << FitFunc->GetParameter(4)*FitFunc->GetParameter(5) << std::endl;
+
+  TH1D* shifted_h_sim_proton_dx = (TH1D*)h_sim_proton_dx->Clone("shifted_h_sim_proton_dx");
+  shifted_h_sim_proton_dx->Reset("ICESM");
+  //shifted_h_sim_proton_dx->Sumw2();
+
+  TH1D* shifted_h_sim_neutron_dx = (TH1D*)h_sim_neutron_dx->Clone("shifted_h_sim_neutron_dx");
+  shifted_h_sim_neutron_dx->Reset("ICESM");
+  //shifted_h_sim_neutron_dx->Sumw2();
+
+  TH1D* shifted_h_simIN_dx = (TH1D*)h_simIN_dx->Clone("shifted_h_simIN_dx");
+  shifted_h_simIN_dx->Reset("ICESM");
+  //shifted_h_simIN_dx->Sumw2();
+
+  for(int i =1; i <= nbins; i++)
+  {
+
+    const double b_p  = shifted_h_sim_proton_dx->GetBinCenter(i);
+    const double b_n  = shifted_h_sim_neutron_dx->GetBinCenter(i);
+    const double b_in = shifted_h_simIN_dx->GetBinCenter(i);
+
+    const double v_p         = h_sim_proton_dx->Interpolate(b_p  - FitFunc->GetParameter(1));
+    const double v_p_error   = h_sim_proton_dx->GetBinError(b_p  - FitFunc->GetParameter(1));
+    const double v_n         = h_sim_neutron_dx->Interpolate(b_n - FitFunc->GetParameter(3));
+    const double v_n_error   = h_sim_proton_dx->GetBinError(b_n  - FitFunc->GetParameter(3));
+    const double v_in        = h_simIN_dx->Interpolate(b_in      - FitFunc->GetParameter(5));
+    const double v_in_error  = h_simIN_dx->GetBinError(b_in      - FitFunc->GetParameter(5));
+
+    shifted_h_sim_proton_dx->SetBinContent(i, v_p);
+    shifted_h_sim_proton_dx->SetBinError(i, v_p_error);
+    shifted_h_sim_neutron_dx->SetBinContent(i, v_n);
+    shifted_h_sim_neutron_dx->SetBinError(i, v_n_error);
+    shifted_h_simIN_dx->SetBinContent(i, v_in);
+    shifted_h_simIN_dx->SetBinError(i, v_in_error);
+
+  }//end loop over bins
+
+  shifted_h_sim_proton_dx->Scale(FitFunc->GetParameter(0));
+  shifted_h_sim_neutron_dx->Scale(FitFunc->GetParameter(2));
+  shifted_h_simIN_dx->Scale(FitFunc->GetParameter(4));
+
+  TH1F* h_total_dx = new TH1F("h_total_dx","",nbins,xmin,xmax);
+
+  for(int ibin = 0; ibin < nbins; ibin++)
+  {
+    h_total_dx->SetBinContent(ibin, shifted_h_sim_neutron_dx->GetBinContent(ibin) + shifted_h_sim_proton_dx->GetBinContent(ibin) + shifted_h_simIN_dx->GetBinContent(ibin));
+  }
+
+  h_data_dx                ->Scale(scale);
+  h_pos_hel_dx             ->Scale(scale);
+  h_neg_hel_dx             ->Scale(scale);
+  shifted_h_sim_proton_dx  ->Scale(scale);
+  shifted_h_sim_neutron_dx ->Scale(scale);
+  shifted_h_simIN_dx       ->Scale(scale);
+  h_total_dx               ->Scale(scale);
+
+  //Create residual and probability plots
+
+  double totalentries = h_data_dx->GetEntries();
+  int h_Nbins = h_data_dx->GetNbinsX();
+  double h_minX = h_data_dx->GetXaxis()->GetXmin();
+  double h_maxX = h_data_dx->GetXaxis()->GetXmax();
+
+  TH1D* h_resid = new TH1D("h_resid",";Residuals",h_Nbins,h_minX,h_maxX);
+  h_resid->GetXaxis()->SetTitle("Residuals (Data - Fit) [m]");
+
+  h_prob_proton_dx = new TH1D("h_prob_proton_dx:",";prob dx proton",h_Nbins,h_minX,h_maxX);
+  h_prob_proton_dx->GetXaxis()->SetTitle("dx [m]");
+  h_prob_proton_dx->GetYaxis()->SetTitle("Proton Probability");
+  h_prob_proton_dx->GetYaxis()->SetRangeUser(0.0,1.0);
+
+  h_prob_neutron_dx = new TH1D("h_prob_neutron_dx:",";prob dx neutron",h_Nbins,h_minX,h_maxX);
+  h_prob_neutron_dx->GetXaxis()->SetTitle("dx [m]");
+  h_prob_neutron_dx->GetYaxis()->SetTitle("Neutron Probability");
+  h_prob_neutron_dx->GetYaxis()->SetRangeUser(0.0,1.0);
+
+  h_prob_bckgrnd_dx = new TH1D("h_prob_bckgrnd_dx:",";prob dx background",h_Nbins,h_minX,h_maxX);
+  h_prob_bckgrnd_dx->GetXaxis()->SetTitle("dx [m]");
+  h_prob_bckgrnd_dx->GetYaxis()->SetTitle("Background Probability");
+  h_prob_bckgrnd_dx->GetYaxis()->SetRangeUser(0.0,1.0);
+
+  TH1D* h_asym = new TH1D("h_asym",";Raw Asymmetry",h_Nbins,h_minX,h_maxX);
+  h_asym->GetXaxis()->SetTitle("dx [m]");
+  h_asym->SetTitle("Raw Asymmetry (N+ - N-)/(N+ + N-)");
+  //h_asym->Sumw2();
+
+  double A_array[numberBins];
+  double A_err_array[numberBins];
+
+  for (int bin = 0; bin < h_Nbins; bin++)
+  {
+
+    double hist_val    = h_data_dx->GetBinContent(bin);
+    double hist_error  = h_data_dx->GetBinError(bin);
+    double fit_val     = h_total_dx->GetBinContent(bin);
+
+    double new_val = (hist_val - fit_val);
+    h_resid->SetBinContent(bin,new_val);
+    h_resid->SetBinError(bin,hist_error);
+
+    double c_p       = shifted_h_sim_proton_dx->GetBinContent(bin);
+    double c_p_err   = shifted_h_sim_proton_dx->GetBinError(bin);
+    double c_n       = shifted_h_sim_neutron_dx->GetBinContent(bin);
+    double c_n_err   = shifted_h_sim_neutron_dx->GetBinError(bin);
+    double c_bg      = shifted_h_simIN_dx->GetBinContent(bin);
+    double c_bg_err  = shifted_h_simIN_dx->GetBinError(bin);
+
+    double P_tot = c_p + c_n + c_bg;
+
+    double P_p       = 0.0;
+    double P_p_err   = 1.0;
+    double P_n       = 0.0;
+    double P_n_err   = 1.0;
+    double P_bg      = 0.0;
+    double P_bg_err  = 1.0;
+
+    if (P_tot != 0.0)
     {
 
-      h_tr_vz->Fill(bb_tr_vz);
-      h_W2_raw->Fill(e_kine_W2);
+      P_p  = c_p / P_tot;
+      P_n  = c_n / P_tot;
+      P_bg = c_bg / P_tot;
 
-      if (abs(bb_tr_vz)<0.27)
-      {
+      P_p_err  = TMath::Sqrt( (c_n+c_bg)*(c_n+c_bg)*c_p_err*c_p_err + c_p*c_p*c_n_err*c_n_err + c_p*c_p*c_bg_err*c_bg_err ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
+      P_n_err  = TMath::Sqrt( (c_bg+c_p)*(c_bg+c_p)*c_n_err*c_n_err + c_n*c_n*c_p_err*c_p_err + c_n*c_n*c_bg_err*c_bg_err ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
+      P_bg_err = TMath::Sqrt( (c_n+c_p)*(c_n+c_p)*c_bg_err*c_bg_err + c_bg*c_bg*c_p_err*c_p_err + c_bg*c_bg*c_p_err*c_p_err ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
 
-        h_ps_e_raw->Fill(bb_ps_e);
+    }//end if total probability is nonzero
 
-        if (abs(e_kine_W2-1.0)<0.5)
-        {
-          h_ps_e->Fill(bb_ps_e);
-          h_sh_e->Fill(bb_sh_e);
+    //std::cout << "Proton probability: " << P_p << std::endl;
+    h_prob_proton_dx->SetBinContent(bin,P_p);
+    h_prob_proton_dx->SetBinError(bin,P_p_err);
+    h_prob_neutron_dx->SetBinContent(bin,P_n);
+    h_prob_neutron_dx->SetBinError(bin,P_n_err);
+    h_prob_bckgrnd_dx->SetBinContent(bin,P_bg);
+    h_prob_bckgrnd_dx->SetBinError(bin,P_bg_err);
 
-          if (abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2 && ((abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_n_mean)<dx_n_sigma) || (abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_p_mean)<dx_p_sigma)) && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
-          {
-            h_ps_e_qe->Fill(bb_ps_e);
-            h_sh_e_qe->Fill(bb_sh_e);
-            QE_check = 1;
-          } // end QE cuts
+    double c_pos      = h_pos_hel_dx->GetBinContent(bin);
+    cout<<"Positive helicity content for "<< bin <<" bin: "<< c_pos <<"\n";
+    double c_pos_err  = h_pos_hel_dx->GetBinError(bin);
+    cout<<"Positive helicity error for "<< bin <<" bin: "<< c_pos_err <<"\n";
+    double c_neg      = h_neg_hel_dx->GetBinContent(bin);
+    cout<<"Negative helicity content for "<< bin <<" bin: "<< c_neg <<"\n";
+    double c_neg_err  = h_neg_hel_dx->GetBinError(bin);
+    cout<<"Negative helicity error for "<< bin <<" bin: "<< c_neg_err <<"\n";
 
-          if (QE_check==0)
-          {
-            h_ps_e_anti->Fill(bb_ps_e);
-            h_sh_e_anti->Fill(bb_sh_e);
-          } // en anti-QE check
-        }
+    A_array[bin] = (helPosArray[bin] - helNegArray[bin])*1.0 / (helPosArray[bin] + helNegArray[bin]);
+    A_err_array[bin] = std::sqrt(std::max(0.0,(4.0*helPosArray[bin]*helNegArray[bin])/std::pow((helPosArray[bin] + helNegArray[bin]),3)));
+    //TMath::Sqrt((1 - A_array[bin]*A_array[bin])/(helPosArray[bin]+helNegArray[bin]));
 
-        if(abs(e_kine_W2-1.0)<0.5 && bb_gr_clus_size>2 && ((abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_n_mean)<dx_n_sigma) || (abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_p_mean)<dx_p_sigma)) && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
-        {
-          h_coin->Fill(adc_coin);
-        }
+    double Asym_tot = c_pos + c_neg;
+    double Asym_diff = c_pos - c_neg;
 
-        h2_coin_W2->Fill(e_kine_W2,adc_coin);
+    double Asym_raw = 0.0;
+    double Asym_raw_err = 1.0;
+    //if counts add up to zero then the stat error should be infinity, but in order to avoid the code exploding, i'll just make the error really large if we dont have any counts in that bin. this is just for safety. every bin should have counts.
 
+    if (Asym_tot != 0.0)
+    {
+      Asym_raw = Asym_diff / Asym_tot;
+      //Asym_raw_err = 2 * TMath::Sqrt( c_neg*c_neg*c_pos_err*c_pos_err + c_pos*c_pos*c_neg_err*c_neg_err ) / ( (c_pos+c_neg)*(c_pos+c_neg) );
+      Asym_raw_err = std::sqrt(std::max(0.0,(4.0*c_pos*c_neg)/std::pow(Asym_tot,3)));
+      //^^method from JAck's code
+    }//end if the total asym is nonzero
 
-        if (bb_ps_e>0.2)
-        {
+    h_asym->SetBinContent(bin, Asym_raw);
+    //h_asym->SetBinContent(bin, A_array[bin]);
+    h_asym->SetBinError(bin, Asym_raw_err);
+    //h_asym->SetBinError(bin, A_err_array[bin]);
 
-          if (abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
-          {
+  }//end loop over bins
 
-            h2_pse_grclus->Fill(bb_ps_e,bb_gr_clus_size);
+  h_resid           -> SetEntries(totalentries);
+  h_prob_proton_dx  -> SetEntries(totalentries);
+  h_prob_neutron_dx -> SetEntries(totalentries);
+  h_prob_bckgrnd_dx -> SetEntries(totalentries);
+  h_asym            -> SetEntries(totalentries);
 
-            //T_data->Fill();
+  TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,dx_min_i,dx_max_i,3); //-6,3,3
 
-            if (abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2)
-            {
-              h_W2->Fill(e_kine_W2);
+  AsymFitFunc->SetNpx(numberBins);
+  double Asymstartpar[] = {0.0,0.04,0.0};
+  AsymFitFunc->SetParameters(Asymstartpar);
+  AsymFitFunc->SetParLimits(0,-0.1,0.1); // proton asymmetry
+  AsymFitFunc->SetParLimits(1,0.0,0.1);  // neutron asymmetry
+  AsymFitFunc->SetParLimits(2,-0.1,0.1); // background asymmetry
 
-              //T_data->Fill();
+  h_asym->Fit(AsymFitFunc,"0","",h_minX,h_maxX);
 
-              if (abs(e_kine_W2-1.0)<0.5)
-              {
-                h_dx->Fill(dx_hcal);
-                h_dy->Fill(dy_hcal);
-                h2_dxdy->Fill(dy_hcal,dx_hcal);
+  TH1D* scaled_proton_prob  = (TH1D*)h_prob_proton_dx->Clone("scaled_proton_prob");
+  TH1D* scaled_neutron_prob = (TH1D*)h_prob_neutron_dx->Clone("scaled_neutron_prob");
+  TH1D* scaled_bckgrnd_prob = (TH1D*)h_prob_bckgrnd_dx->Clone("scaled_bckgrnd_prob");
 
-                dx_out = dx_hcal;
-                dy_out = dy_hcal;
+  scaled_proton_prob->Scale(AsymFitFunc->GetParameter(0));
+  scaled_neutron_prob->Scale(AsymFitFunc->GetParameter(1));
+  scaled_bckgrnd_prob->Scale(AsymFitFunc->GetParameter(2));
 
-                T_data->Fill();
+  std::cout << "Proton Asymmetry: " << AsymFitFunc->GetParameter(0) << std::endl;
+  std::cout << "Neutron Asymmetry: " << AsymFitFunc->GetParameter(1) << std::endl;
+  std::cout << "Background Asymmetry: " << AsymFitFunc->GetParameter(2) << std::endl;
 
-                if (abs(dy_hcal-dy_mean)<dy_sigma && ((abs(dx_hcal-dx_n_mean)<dx_n_sigma)||(abs(dx_hcal-dx_p_mean)<dx_p_sigma)))
-                {
+  //TH1F* h_Asym_dx = new TH1F("h_Asym_dx","",h_Nbins,h_minX,h_maxX);
 
-                  h_eovp->Fill((bb_ps_e+bb_sh_e)/bb_tr_p);
-                  h2_eovp_runnum->Fill(runnum,(bb_ps_e+bb_sh_e)/bb_tr_p);
+  //for(int ibin = 0; ibin < h_Nbins; ibin++)
+  //{
+    //h_Asym_dx->SetBinContent(ibin, scaled_proton_prob->GetBinContent(ibin) + scaled_neutron_prob->GetBinContent(ibin) + scaled_bckgrnd_prob->GetBinContent(ibin));
+  //}
 
-                  h2_pse_trx->Fill(bb_tr_x,bb_ps_e);
-                  h2_pse_try->Fill(bb_tr_y,bb_ps_e);
-                  h2_pse_pstime->Fill(bb_ps_e,bb_ps_atimeblk);
+  //h_Asym_dx->Scale(scale);
 
-                  h2_she_trx->Fill(bb_tr_x,bb_sh_e);
-                  h2_she_try->Fill(bb_tr_y,bb_sh_e);
+  //Create canvas and draw all the histograms
 
-                  h2_trp_trx->Fill(bb_tr_x,bb_tr_p);
-                  h2_trp_try->Fill(bb_tr_y,bb_tr_p);
+  TCanvas *c1 = new TCanvas("c1", "dx", 100,100,1600,800);
+  gStyle->SetOptStat(0);
 
-                  //h_coin->Fill(adc_coin);
+  TPad *pad1 = new TPad("pad1","Pad with the plot",0.0,0.3,1.0,1.0);
+  TPad *pad2 = new TPad("pad2","Pad with resid",0.0,0.0,1.0,0.3);
 
-                  h2_hcal_atime_x->Fill(sbs_hcal_x,sbs_hcal_atimeblk);
-                  h2_hcal_atime_y->Fill(sbs_hcal_y,sbs_hcal_atimeblk);
+  pad1->Draw();
+  pad2->Draw();
+  pad1->SetBottomMargin(0.1); // Upper and lower plot are not joined
+  pad2->SetTopMargin(0);
+  pad2->SetBottomMargin(0.2);
 
-                  h2_ps_atime_x->Fill(bb_tr_x,bb_ps_atimeblk);
-                  h2_ps_atime_y->Fill(bb_tr_y,bb_ps_atimeblk);
+  pad1->cd();
+  pad1->SetTitle(title_words);
+  h_total_dx->Draw("HIST");
+  shifted_h_simIN_dx->Draw("HIST SAMES");
+  shifted_h_sim_proton_dx->Draw("HIST SAMES");
+  shifted_h_sim_neutron_dx->Draw("HIST SAMES");
+  h_data_dx->Draw("E SAMES");
+  h_data_dx->GetXaxis()->SetTitle("dx [m]");
 
-                  h2_sh_atime_x->Fill(bb_tr_x,bb_sh_atimeblk);
-                  h2_sh_atime_y->Fill(bb_tr_y,bb_sh_atimeblk);
+  auto legend = new TLegend(0.55,0.75,0.99,0.99);
+  legend->SetTextSize(0.03);
+  legend->SetHeader("Fitting","C");
+  legend->AddEntry(h_data_dx,"Data","lep");
+  legend->AddEntry(shifted_h_sim_proton_dx,Form("Rp=%.3g, sh_p=%.3g m",FitFunc->GetParameter(0),FitFunc->GetParameter(0)*FitFunc->GetParameter(1)),"le");
+  legend->AddEntry(shifted_h_sim_neutron_dx,Form("Rn=%.3g, sh_n=%.3g m",FitFunc->GetParameter(2),FitFunc->GetParameter(2)*FitFunc->GetParameter(3)),"le");
+  legend->AddEntry(shifted_h_simIN_dx,Form("Rbg=%.3g, sh_bg=%.3g m",FitFunc->GetParameter(4),FitFunc->GetParameter(4)*FitFunc->GetParameter(5)),"le");
+  legend->AddEntry(h_total_dx,"Total Fit: (Rp*h_p+sh_p)+(Rn*h_n+sh_n)+(Rbg*h_bg+sh_bg)","l");
+  legend->Draw();
 
-                  h2_hcalTH_atime_x->Fill(sbs_hcal_x,bb_hodotdc_clus_tmean-sbs_hcal_atimeblk);
-                  h2_psTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
-                  h2_shTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_sh_atimeblk);
+  pad2->cd();
+  h_resid->Draw("E");
+  h_resid->GetXaxis()->SetTitle("dx [m]");
+  h_resid->GetYaxis()->SetTitle("Residuals (Data - Fit)");
 
-                  h2_hcalTH_atime_y->Fill(sbs_hcal_y,bb_hodotdc_clus_tmean-sbs_hcal_atimeblk);
-                  h2_psTH_atime_y->Fill(bb_tr_y,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
-                  h2_shTH_atime_y->Fill(bb_tr_y,bb_hodotdc_clus_tmean-bb_sh_atimeblk);
+  c1->cd();  // c1 is the TCanvas
+  TPad *pad5 = new TPad("all","all",0,0,1,1);
+  pad5->SetFillStyle(4000);  // transparent
+  pad5->Draw();
+  pad5->cd();
 
-                  //T_data->Fill();
+  TLatex *lat = new TLatex();
+  lat->DrawLatexNDC(.4,.95,title_words);
 
-                }// end spot cuts
+  TCanvas *c2 = new TCanvas("c2","Probabilities",100,100,1500,500);
+  c2->Divide(3,1);
 
-              }// end W2 cut
-
-            }// end coin cut
-
-          }// end E/p cut
-
-        }// end ps cut
-
-      }// end vertex cut
-
-      W2_out = e_kine_W2;
-      helicity_out = helicity * (IHWP * IHWP_flip); //* IHWP;//-1* IHWP * helicity * IHWP_flip;
-      T_data->Fill();
-   }// end global cuts
-
-  }//end event loop
-
-  TCanvas *c1 = new TCanvas("c1","1D dx and dy Plots",100,100,1200,1200);
-  c1->Divide(1,2);
-  c1->cd(1);
-  h_dx->Draw();
-  c1->cd(2);
-  h_dy->Draw();
-
-  //Save the canvas to a pdf
-  c1->Print(outputfile+"(");
-
-  TCanvas *c1_2 = new TCanvas("c1_2", "dxdy Plot", 100,100,1200,1200);
-  c1_2->cd();
-  h2_dxdy->Draw("colz");
-
-  TBox* Bp = new TBox(dy_mean-dy_sigma, dx_p_mean-dx_p_sigma, dy_mean+dy_sigma, dx_p_mean+dx_p_sigma);
-  Bp->SetFillStyle(0);
-  Bp->SetLineColor(2);
-  Bp->SetLineWidth(2);
-  Bp->Draw();
-
-  TBox* Bn = new TBox(dy_mean-dy_sigma, dx_n_mean-dx_n_sigma, dy_mean+dy_sigma, dx_n_mean+dx_n_sigma);
-  Bn->SetFillStyle(0);
-  Bn->SetLineColor(3);
-  Bn->SetLineWidth(2);
-  Bn->Draw();
-
-  //Save the canvas to a pdf
-  c1_2->Print(outputfile);
-
-  TCanvas *c2 = new TCanvas("c2","QE Cuts", 1200, 1000);
-  c2->Divide(2,2);
   c2->cd(1);
-  h_tr_vz->Draw();
+  h_prob_proton_dx->Draw();
   c2->cd(2);
-  h_ps_e_raw->Draw();
+  h_prob_neutron_dx->Draw();
   c2->cd(3);
-  h2_pse_grclus->Draw("colz");
-  c2->cd(4);
-  h_W2_raw->Draw();
-  h_W2->Draw("SAMES");
-  auto legend_W2 = new TLegend(0.1,0.7,0.4,0.9);
-  legend_W2->AddEntry(h_W2_raw, "W2 with Global Cuts", "l");
-  legend_W2->AddEntry(h_W2, "W2 with QE Cuts", "l");
-  legend_W2->Draw();
+  h_prob_bckgrnd_dx->Draw();
 
-  //Save the canvas to a pdf
-  c2->Print(outputfile);
+  TCanvas *c3 = new TCanvas("c3","Asymmetry",100,100,1500,500);
+  c3->Divide(3,1);
 
-  TCanvas *c3 = new TCanvas("c3","W2", 1200, 1000);
-  c3->Divide(1,3);
+  gStyle->SetOptStat(0);
+
   c3->cd(1);
-  h2_coin_W2->Draw("colz");
+  h_pos_hel_dx->Draw("E");
+  h_neg_hel_dx->Draw("E SAMES");
+
+  auto legendHEL = new TLegend(0.7,0.8,0.99,0.99);
+  legendHEL->SetTextSize(0.03);
+  legendHEL->AddEntry(h_pos_hel_dx,"Positive Helicity","lep");
+  legendHEL->AddEntry(h_neg_hel_dx,"Negative Helicity","lep");
+  legendHEL->Draw();
+
   c3->cd(2);
-  h_eovp->Draw();
+  h_asym->Draw("E");
+  //h_Asym_dx->Draw("SAMES");
+  AsymFitFunc->Draw("SAMES");
+
+  auto legendA = new TLegend(0.1,0.8,0.9,0.9);
+  legendA->SetTextSize(0.02);
+  legendA->AddEntry(h_asym,"Data","lep");
+  //legendA->AddEntry(h_Asym_dx,"Scaled Fit","l");
+  //legendA->AddEntry(AsymFitFunc,"Fit","l");
+  legendA->AddEntry(AsymFitFunc,Form("A(dx) = %.4gPp(dx) + %.4gPn(dx) + %.4gPbg(dx)",AsymFitFunc->GetParameter(0),AsymFitFunc->GetParameter(1),AsymFitFunc->GetParameter(2)),"l");
+  legendA->Draw();
+
   c3->cd(3);
-  h2_eovp_runnum->Draw("colz");
+  scaled_proton_prob->SetTitle("Scaled Probabilities");
 
-  //Save the canvas to a pdf
-  c3->Print(outputfile);
+  gPad->DrawFrame(dx_min_d, -0.01, dx_max_d, 0.05);
 
-  TCanvas *c4 = new TCanvas("c4","bbE", 1200, 1000);
-  c4->Divide(2,2);
-  c4->cd(1);
-  h2_pse_trx->Draw("colz");
-  c4->cd(2);
-  h2_pse_try->Draw("colz");
-  c4->cd(3);
-  h2_she_trx->Draw("colz");
-  c4->cd(4);
-  h2_she_try->Draw("colz");
+  scaled_neutron_prob->SetLineColor(kBlue);
+  scaled_neutron_prob->Draw("E SAME");
 
-  c4->Print(outputfile);
+  scaled_proton_prob->SetLineColor(kRed);
+  scaled_proton_prob->Draw("E SAME");
 
-  TCanvas *c4_2 = new TCanvas("c4_2","bbPS", 1200, 1000);
-  c4_2->Divide(2,2);
-  c4_2->cd(1);
-  h_ps_e->Draw();
-  h_ps_e_anti->Draw("same");
-  h_ps_e_qe->Draw("same");
-  auto legend_ps = new TLegend(0.55,0.7,0.9,0.9);
-  legend_ps->AddEntry(h_ps_e, "PS with Global Cuts", "l");
-  legend_ps->AddEntry(h_ps_e_qe, "PS with QE Cuts", "l");
-  legend_ps->AddEntry(h_ps_e_anti, "PS with Anti-QE Cuts", "l");
-  legend_ps->Draw();
-  c4_2->cd(2);
-  h2_pse_trx->Draw("colz");
-  c4_2->cd(3);
-  h2_pse_try->Draw("colz");
-  c4_2->cd(4);
-  h2_pse_pstime->Draw("colz");
+  scaled_bckgrnd_prob->SetLineColor(kGreen);
+  scaled_bckgrnd_prob->Draw("E SAME");
 
-  c4_2->Print(outputfile);
+  auto legendProb = new TLegend(0.7,0.8,0.9,0.9);
+  legendProb->SetTextSize(0.02);
+  legendProb->AddEntry(scaled_proton_prob, "Proton", "l");
+  legendProb->AddEntry(scaled_neutron_prob, "Neutron", "l");
+  legendProb->AddEntry(scaled_bckgrnd_prob, "Background", "l");
+  legendProb->Draw();
 
-  TCanvas *c4_3 = new TCanvas("c4_3","bbSH", 1200, 1000);
-  c4_3->Divide(2,2);
-  c4_3->cd(1);
-  h_sh_e->Draw();
-  h_sh_e_anti->Draw("same");
-  h_sh_e_qe->Draw("same");
-  auto legend_sh = new TLegend(0.55,0.7,0.9,0.9);
-  legend_sh->AddEntry(h_sh_e, "PS with Global Cuts", "l");
-  legend_sh->AddEntry(h_sh_e_qe, "PS with QE Cuts", "l");
-  legend_sh->AddEntry(h_sh_e_anti, "PS with Anti-QE Cuts", "l");
-  legend_sh->Draw();
-  c4_3->cd(2);
-  h2_she_trx->Draw("colz");
-  c4_3->cd(3);
-  h2_she_try->Draw("colz");
-  c4_3->cd(4);
-  h2_she_shtime->Draw("colz");
+  TCanvas *c4 = new TCanvas("c4","Asymmetry",100,100,1000,1000);
+  c4->cd();
+  //h_asym->GetYaxis()->SetRangeUser(-0.4,0.6);
+  h_asym->Draw("E");
+  c4->SetGrid();
+  c4->Update();
 
-  c4_3->Print(outputfile);
+  delete T_data;
+  delete T_sim;
+  delete T_simIN;
 
-  TCanvas *c5 = new TCanvas("c5","bbTr", 1200, 1000);
-  c5->Divide(1,2);
-  c5->cd(1);
-  h2_trp_trx->Draw("colz");
-  c5->cd(2);
-  h2_trp_try->Draw("colz");
-
-  c5->Print(outputfile);
-
-  TCanvas *coinTime = new TCanvas("coinTime", "Coincidence Time", 1200, 1000);
-  coinTime->cd();
-  h_coin->Draw();
-  coinTime->Update();
-  TLine *coinMin = new TLine(coin_mean-coin_sigma, 0, coin_mean-coin_sigma, 10000000);
-  coinMin->SetLineColor(kRed);
-  coinMin->Draw();
-  TLine *coinMax = new TLine(coin_mean+coin_sigma, 0, coin_mean+coin_sigma, 10000000);
-  coinMax->SetLineColor(kRed);
-  coinMax->Draw();
-  gPad->Update();
-
-  coinTime->Print(outputfile);
-
-  TCanvas *c6 = new TCanvas("c6","HCalTime", 1200, 1000);
-  c6->Divide(1,2);
-  c6->cd(1);
-  h2_hcal_atime_x->Draw("colz");
-  c6->cd(2);
-  h2_hcal_atime_y->Draw("colz");
-
-  c6->Print(outputfile);
-
-  TCanvas *c7 = new TCanvas("c7","PSTime", 1200, 1000);
-  c7->Divide(1,2);
-  c7->cd(1);
-  h2_ps_atime_x->Draw("colz");
-  c7->cd(2);
-  h2_ps_atime_y->Draw("colz");
-
-  c7->Print(outputfile);
-
-  TCanvas *c8 = new TCanvas("c8","SHTime", 1200, 1000);
-  c8->Divide(1,2);
-  c8->cd(1);
-  h2_sh_atime_x->Draw("colz");
-  c8->cd(2);
-  h2_sh_atime_y->Draw("colz");
-
-  c8->Print(outputfile);
-
-  TCanvas *c9 = new TCanvas("c9","TimeX", 1200, 1000);
-  c9->Divide(1,3);
-  c9->cd(1);
-  h2_shTH_atime_x->Draw("colz");
-  c9->cd(2);
-  h2_psTH_atime_x->Draw("colz");
-  c9->cd(3);
-  h2_hcalTH_atime_x->Draw("colz");
-
-  c9->Print(outputfile);
-
-  TCanvas *c10 = new TCanvas("c10","TimeY", 1200, 1000);
-  c10->Divide(1,3);
-  c10->cd(1);
-  h2_shTH_atime_y->Draw("colz");
-  c10->cd(2);
-  h2_psTH_atime_y->Draw("colz");
-  c10->cd(3);
-  h2_hcalTH_atime_y->Draw("colz");
-
-  c10->Print(outputfile);
-
-  TCanvas *summary = new TCanvas("summary", "summary", 1200, 1000);
-  summary->cd();
-  TPaveText *pt = new TPaveText(.05,.1,.95,.8);
-  pt->AddText("Global Cuts: ");
-  pt->AddText("bb.ps.e>0.0 && bb.gem.track.nhits>=3 && bb.gem.track.chi2ndf[0]<=15 && sbs.hcal.e>0.025");
-  pt->AddText("(IHWP==-1.0 || IHWP==1.0) && optics_valid_min<(bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0");
-  pt->AddText("Vertex Cut: abs(bb.tr.vz)<0.27");
-  pt->AddText("PreShower Cut: bb.ps.e>0.2");
-  pt->AddText("E/p Cut: abs(E/p - 1.0)<0.2");
-  pt->AddText("W2 Cut: abs(e.kine.W2 - 1.0)<0.5");
-  pt->AddText(Form("Coincidence Cut: abs(adc.coin - %.3f)<%.3f",coin_mean,coin_sigma));
-  pt->AddText("GRINCH cut: bb.grinch_tdc.clus.size>2");
-  pt->AddText(Form("Proton Spot Cut: %.3f<dx<%.3f && %.3f<dy<%.3f",(dx_p_mean-dx_p_sigma),(dx_p_mean+dx_p_sigma),(dy_mean-dy_sigma),(dy_mean-dy_sigma)));
-  pt->AddText(Form("Neutron Spot Cut: %.3f<dx<%.3f && %.3f<dy<%.3f",(dx_n_mean-dx_n_sigma),(dx_n_mean+dx_n_sigma),(dy_mean-dy_sigma),(dy_mean-dy_sigma)));
-  pt->Draw();
-
-  summary->Print(outputfile+")");
-
-  T_data->Write("", TObject::kOverwrite);
-
-  h_dx->Write();
-  h_dy->Write();
-  h2_dxdy->Write();
-  h_tr_vz->Write();
-  h_ps_e->Write();
-  h2_pse_grclus->Write();
-  h_W2->Write();
-  h2_coin_W2->Write();
-  h_eovp->Write();
-  h2_eovp_runnum->Write();
-  h2_pse_trx->Write();
-  h2_pse_try->Write();
-  h2_she_trx->Write();
-  h2_she_try->Write();
-  h_ps_e_qe->Write();
-  h_ps_e_anti->Write();
-  h2_pse_pstime->Write();
-  h2_trp_trx->Write();
-  h2_trp_try->Write();
-  h_coin->Write();
-  h2_hcal_atime_x->Write();
-  h2_hcal_atime_y->Write();
-  h2_ps_atime_x->Write();
-  h2_ps_atime_y->Write();
-  h2_sh_atime_x->Write();
-  h2_sh_atime_y->Write();
-  h2_shTH_atime_x->Write();
-  h2_psTH_atime_x->Write();
-  h2_hcalTH_atime_x->Write();
-  h2_shTH_atime_y->Write();
-  h2_psTH_atime_y->Write();
-  h2_hcalTH_atime_y->Write();
-
-  fout->Write();
-  T_data->Delete();
-  T->Delete();
-}
+}//end main
