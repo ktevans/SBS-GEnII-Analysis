@@ -73,10 +73,10 @@ void QA_QE(const char *kinematic)
   double sbs_hcal_x;            T->SetBranchAddress("xHCAL", &sbs_hcal_x);
   double sbs_hcal_y;            T->SetBranchAddress("yHCAL", &sbs_hcal_y);
   double sbs_hcal_atimeblk;     T->SetBranchAddress("hcal_clus_atime", &sbs_hcal_atimeblk);
-  int sbs_hcal_clus_blk_id;     T->SetBranchAddress("hcal_clus_id", &sbs_hcal_clus_blk_id);
+  double sbs_hcal_clus_blk_id;  T->SetBranchAddress("hcal_clus_id", &sbs_hcal_clus_blk_id);
   double dx_hcal;               T->SetBranchAddress("dx", &dx_hcal);
   double dy_hcal;               T->SetBranchAddress("dy", &dy_hcal);
-  double IHWP;                  T->SetBranchAddress("IHWP", &IHWP);
+  int IHWP;                     T->SetBranchAddress("IHWP", &IHWP);
 
   double optics_valid_min;
   double optics_valid_max;
