@@ -627,7 +627,7 @@ void SimDataComp(int kin)
   c3->cd(3);
   scaled_proton_prob->SetTitle("Scaled Probabilities");
 
-  gPad->DrawFrame(dx_min_d, dx_max_d, -0.01, 0.05);
+  gPad->DrawFrame(dx_min_d, -0.01, dx_max_d, 0.05);
 
   scaled_neutron_prob->SetLineColor(kBlue);
   scaled_neutron_prob->Draw("E SAME");
