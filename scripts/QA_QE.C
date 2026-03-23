@@ -134,7 +134,7 @@ void QA_QE(const char *kinematic)
     dy_sigma = 0.913;
     firstRun = 2506;
     lastRun = 3250;
-    totRun = 354;
+    totRun = 255;
     Trp_max = 3.5;
     Trp_min = 2.0;
   }
@@ -338,18 +338,15 @@ void QA_QE(const char *kinematic)
 
   // ~~~~~~~~~~~~~~~~~~~~ HCal plots ~~~~~~~~~~~~~~~~~~~~
 
-  TH2D* h2_hcal_e_x = new TH2D("h2_hcal_e_x", "HCal energy vs HCal x", 37.0, -2.6, 1.1, 200.0, 0.0, 1.5);
+  TH2D* h2_hcal_e_x = new TH2D("h2_hcal_e_x", "HCal energy vs HCal x", 74.0, -2.6, 1.1, 200.0, 0.0, 1.5);
   h2_hcal_e_x->GetXaxis()->SetTitle("sbs.hcal.x [m]");
   h2_hcal_e_x->GetYaxis()->SetTitle("sbs.hcal.e [GeV]");
   h2_hcal_e_x->SetTitle("HCal Energy vs HCal x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_hcal_e_y = new TH2D("h2_hcal_e_y", "HCal energy vs HCal y", 18.0, -0.9, 0.9, 200.0, 0.0, 1.5);
+  TH2D* h2_hcal_e_y = new TH2D("h2_hcal_e_y", "HCal energy vs HCal y", 36.0, -0.9, 0.9, 200.0, 0.0, 1.5);
   h2_hcal_e_y->GetXaxis()->SetTitle("sbs.hcal.y [m]");
   h2_hcal_e_y->GetYaxis()->SetTitle("sbs.hcal.e [GeV]");
   h2_hcal_e_y->SetTitle("HCal Energy vs HCal y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-
-
-
 
 
   // ~~~~~~~~~~~~~~~~~~~~ GEM plots ~~~~~~~~~~~~~~~~~~~~
