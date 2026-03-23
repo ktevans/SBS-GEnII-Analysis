@@ -490,6 +490,8 @@ void QA_QE(const char *kinematic)
                   h_eovp->Fill((bb_ps_e+bb_sh_e)/bb_tr_p);
                   h2_eovp_runnum->Fill(runnum,(bb_ps_e+bb_sh_e)/bb_tr_p);
 
+                  h2_ps_tot->Fill(bb_ps_e,bb_ps_e+bb_sh_e);
+
                   h2_pse_trx->Fill(bb_tr_x,bb_ps_e);
                   h2_pse_try->Fill(bb_tr_y,bb_ps_e);
                   h2_pse_pstime->Fill(bb_ps_e,bb_ps_atimeblk);
@@ -569,6 +571,12 @@ void QA_QE(const char *kinematic)
 
   //Save the canvas to a pdf
   c1_2->Print(outputfile);
+
+  TCanvas *c1_3 = new TCanvas("c1_3", "PS_PSSH Plot", 100,100,1200,1200);
+  c1_3->cd();
+  h2_ps_tot->Draw("colz");
+
+  c1_3->Print(outputfile);
 
   TCanvas *c2 = new TCanvas("c2","QE Cuts", 1200, 1000);
   c2->Divide(2,2);
