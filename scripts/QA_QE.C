@@ -382,7 +382,7 @@ void QA_QE(const char *kinematic)
 
     // && abs(adc_coin-coin_mean)<coin_sigma && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>2.0 && abs(bb_tr_vz)<0.27
 
-    if(pass_global==1 && (IHWP==-1.0 || IHWP==1.0) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0)
+    if(pass_global==1 && (IHWP==-1.0 || IHWP==1.0) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.0)
     {
 
       h_tr_vz->Fill(bb_tr_vz);
@@ -668,5 +668,42 @@ void QA_QE(const char *kinematic)
 
   summary->Print(outputfile+")");
 
+  T_data->Write("", TObject::kOverwrite);
+
+  h_dx->Write();
+  h_dy->Write();
+  h2_dxdy->Write();
+  h_tr_vz->Write();
+  h_ps_e->Write();
+  h2_pse_grclus->Write();
+  h_W2->Write();
+  h2_coin_W2->Write();
+  h_eovp->Write();
+  h2_eovp_runnum->Write();
+  h2_pse_trx->Write();
+  h2_pse_try->Write();
+  h2_she_trx->Write();
+  h2_she_try->Write();
+  h_ps_e_qe->Write();
+  h_ps_e_anti->Write();
+  h2_pse_pstime->Write();
+  h2_trp_trx->Write();
+  h2_trp_try->Write();
+  h_coin->Write();
+  h2_hcal_atime_x->Write();
+  h2_hcal_atime_y->Write();
+  h2_ps_atime_x->Write();
+  h2_ps_atime_y->Write();
+  h2_sh_atime_x->Write();
+  h2_sh_atime_y->Write();
+  h2_shTH_atime_x->Write();
+  h2_psTH_atime_x->Write();
+  h2_hcalTH_atime_x->Write();
+  h2_shTH_atime_y->Write();
+  h2_psTH_atime_y->Write();
+  h2_hcalTH_atime_y->Write();
+  
   fout->Write();
+  T_data->Delete();
+  T->Delete();
 }
