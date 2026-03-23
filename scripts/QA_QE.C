@@ -730,7 +730,7 @@ void QA_QE(const char *kinematic)
   c5->cd(2);
   h2_trp_try->Draw("colz");
   c5->cd(3);
-  h2_trp_bbcalE->Draw("colz")
+  h2_trp_bbcalE->Draw("colz");
   TF1 *f1 = new TF1("f1", "x",0.0,10.0);
   f1->SetLineColor(kRed);
   f1->Draw("SAMES");
