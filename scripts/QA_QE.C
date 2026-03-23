@@ -87,8 +87,12 @@ void QA_QE(const char *kinematic)
   double dy_sigma;
   int firstRun;
   int lastRun;
+  int totRun;
   double Trp_max;
   double Trp_min;
+
+  int runindex = 0;
+  int runTrack = 0;
 
   int IHWP_flip;
 
@@ -109,6 +113,7 @@ void QA_QE(const char *kinematic)
     dy_sigma = 1.265;
     firstRun = 2130;
     lastRun = 2322;
+    totRun = 354;
     Trp_max = 3.5;
     Trp_min = 2.0;
   }
@@ -129,6 +134,7 @@ void QA_QE(const char *kinematic)
     dy_sigma = 0.913;
     firstRun = 2506;
     lastRun = 3250;
+    totRun = 354;
     Trp_max = 3.5;
     Trp_min = 2.0;
   }
@@ -149,6 +155,7 @@ void QA_QE(const char *kinematic)
     dy_sigma = 0.773;
     firstRun = 3510;
     lastRun = 4587;
+    totRun = 354;
     Trp_max = 4.0;
     Trp_min = 2.5;
   }
@@ -169,6 +176,7 @@ void QA_QE(const char *kinematic)
     dy_sigma = 0.769;
     firstRun = 5044;
     lastRun = 6083;
+    totRun = 354;
     Trp_max = 4.0;
     Trp_min = 2.5;
   }
@@ -187,6 +195,7 @@ void QA_QE(const char *kinematic)
     dy_sigma = 5.0;
     firstRun = 0;
     lastRun = 100;
+    totRun = 500;
     Trp_max = 3.5;
     Trp_min = 2.0;
   }
@@ -249,7 +258,7 @@ void QA_QE(const char *kinematic)
   h_eovp->GetXaxis()->SetTitle("E/p");
   h_eovp->SetTitle("E/p with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_eovp_runnum = new TH2D("h2_eovp_runnum", "E/p vs runnum", lastRun-firstRun, firstRun, lastRun, 100.0, 0.5, 1.5);
+  TH2D* h2_eovp_runnum = new TH2D("h2_eovp_runnum", "E/p vs runnum", lastRun-firstRun, 0, lastRun-firstRun, 100.0, 0.5, 1.5);
   h2_eovp_runnum->GetYaxis()->SetTitle("E/p");
   h2_eovp_runnum->GetXaxis()->SetTitle("runnum");
   h2_eovp_runnum->SetTitle("E/p vs Run Number with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
@@ -329,12 +338,12 @@ void QA_QE(const char *kinematic)
 
   // ~~~~~~~~~~~~~~~~~~~~ HCal plots ~~~~~~~~~~~~~~~~~~~~
 
-  TH2D* h2_hcal_e_x = new TH2D("h2_hcal_e_x", "HCal energy vs HCal x", 37.0, -2.6, 1.1, 200.0, 0.0, 4.0);
+  TH2D* h2_hcal_e_x = new TH2D("h2_hcal_e_x", "HCal energy vs HCal x", 37.0, -2.6, 1.1, 200.0, 0.0, 1.5);
   h2_hcal_e_x->GetXaxis()->SetTitle("sbs.hcal.x [m]");
   h2_hcal_e_x->GetYaxis()->SetTitle("sbs.hcal.e [GeV]");
   h2_hcal_e_x->SetTitle("HCal Energy vs HCal x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_hcal_e_y = new TH2D("h2_hcal_e_y", "HCal energy vs HCal y", 18.0, -0.9, 0.9, 200.0, 0.0, 4.0);
+  TH2D* h2_hcal_e_y = new TH2D("h2_hcal_e_y", "HCal energy vs HCal y", 18.0, -0.9, 0.9, 200.0, 0.0, 1.5);
   h2_hcal_e_y->GetXaxis()->SetTitle("sbs.hcal.y [m]");
   h2_hcal_e_y->GetYaxis()->SetTitle("sbs.hcal.e [GeV]");
   h2_hcal_e_y->SetTitle("HCal Energy vs HCal y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
@@ -430,6 +439,17 @@ void QA_QE(const char *kinematic)
 
     QE_check = 0;
 
+    if (runindex == 0)
+    {
+      runindex = runnum;
+    }
+
+    if (runindex != 0 && runindex !=runnum)
+    {
+      runindex = runnum;
+      runTrack++;
+    }
+
     // && abs(adc_coin-coin_mean)<coin_sigma && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>2.0 && abs(bb_tr_vz)<0.27
 
     if(pass_global==1 && (IHWP==-1.0 || IHWP==1.0) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.0)
@@ -501,7 +521,7 @@ void QA_QE(const char *kinematic)
                 {
 
                   h_eovp->Fill((bb_ps_e+bb_sh_e)/bb_tr_p);
-                  h2_eovp_runnum->Fill(runnum,(bb_ps_e+bb_sh_e)/bb_tr_p);
+                  h2_eovp_runnum->Fill(runTrack,(bb_ps_e+bb_sh_e)/bb_tr_p);
 
                   h2_ps_tot->Fill(bb_ps_e,bb_ps_e+bb_sh_e);
 
