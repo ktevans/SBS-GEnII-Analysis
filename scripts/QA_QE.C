@@ -299,9 +299,9 @@ void QA_QE(const char *kinematic)
   h2_she_try->SetTitle("Shower Energy vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH2D* h2_she_shtime = new TH2D("h2_she_shtime", "SHe vs SHtime", 100.0, 0.0, 3.0, 200.0, -10.0, 25.0);
-  h2_pse_shtime->GetXaxis()->SetTitle("bb.ps.e [GeV]");
-  h2_pse_shtime->GetYaxis()->SetTitle("bb.ps.atimeblk [ns]");
-  h2_pse_shtime->SetTitle("PreShower Energy vs PreShower ADC Time with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+  h2_she_shtime->GetXaxis()->SetTitle("bb.sh.e [GeV]");
+  h2_she_shtime->GetYaxis()->SetTitle("bb.sh.atimeblk [ns]");
+  h2_she_shtime->SetTitle("Shower Energy vs PreShower ADC Time with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH1D* h_sh_e = new TH1D("h_sh_e", "Shower Energy", 100.0, 0.0, 3.0);
   h_sh_e->GetXaxis()->SetTitle("bb.sh.e [GeV]");
