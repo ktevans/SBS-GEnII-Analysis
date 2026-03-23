@@ -651,7 +651,7 @@ void QA_QE(const char *kinematic)
   h_eovp->Draw();
   c3->cd(3);
   h2_eovp_runnum->Draw("colz");
-  h2_eovp_runnum.ProfileY()->Draw("SAMES");
+  h2_eovp_runnum->ProfileY()->Draw("SAMES");
   c3->cd(4);
   h2_ps_tot->Draw("colz");
 
