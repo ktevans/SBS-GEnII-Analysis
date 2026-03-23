@@ -122,7 +122,7 @@ void QA_QE(const char *kinematic)
     coin_sigma = 1.077;
     IHWP_flip = 1;
     dx_n_mean = 0.0;
-    dx_n_sigma = 1.0;
+    dx_n_sigma = 0.5;
     dx_p_mean = -1.541;
     dx_p_sigma = 0.365;
     dy_mean = 0.336;
@@ -398,7 +398,7 @@ void QA_QE(const char *kinematic)
           h_ps_e_anti->Fill(bb_ps_e);
         } // end anti-QE cuts
 
-        if (abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2 && abs(e_kine_W2-1.0)<0.5 && abs(dy_hcal-dy_mean)<dy_sigma && ((abs(dx_hcal-dx_n_mean)<dx_n_sigma)||(abs(dx_hcal-dx_p_mean)<dx_p_sigma)))
+        if (abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2 && abs(e_kine_W2-1.0)<0.5 && ((abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_n_mean)<dx_n_sigma) || (abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_p_mean)<dx_p_sigma)))
         {
           h_ps_e_qe->Fill(bb_ps_e);
         } // end QE cuts
