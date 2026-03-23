@@ -420,7 +420,7 @@ void QA_QE(const char *kinematic)
           //T_data->Fill();
         //} // end anti-QE cuts
 
-        if (abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2 && abs(e_kine_W2-1.0)<1.0 && ((abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_n_mean)<dx_n_sigma) || (abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_p_mean)<dx_p_sigma)) && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
+        if (abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2 && abs(e_kine_W2-1.0)<0.5 && ((abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_n_mean)<dx_n_sigma) || (abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_p_mean)<dx_p_sigma)) && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
         {
           h_ps_e_qe->Fill(bb_ps_e);
           h_sh_e_qe->Fill(bb_sh_e);
