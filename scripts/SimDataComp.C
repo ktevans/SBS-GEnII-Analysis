@@ -627,11 +627,11 @@ void SimDataComp(int kin)
   c3->cd(3);
   scaled_proton_prob->SetTitle("Scaled Probabilities");
 
-  scaled_proton_prob->SetLineColor(kRed);
-  scaled_proton_prob->Draw("E");
-
   scaled_neutron_prob->SetLineColor(kBlue);
-  scaled_neutron_prob->Draw("E SAMES");
+  scaled_neutron_prob->Draw("E");
+
+  scaled_proton_prob->SetLineColor(kRed);
+  scaled_proton_prob->Draw("E SAMES");
 
   scaled_bckgrnd_prob->SetLineColor(kGreen);
   scaled_bckgrnd_prob->Draw("E SAMES");
