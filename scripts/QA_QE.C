@@ -263,7 +263,7 @@ void QA_QE(const char *kinematic)
   h2_eovp_runnum->GetXaxis()->SetTitle("runnum");
   h2_eovp_runnum->SetTitle("E/p vs Run Number with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TProfile *h2_eovp_runnum_prof = new TProfile("h2_eovp_runnum_prof", "Prof E/p", totRun, 0, totRun, 100.0, 0.5, 1.5);
+  TProfile *h2_eovp_runnum_prof = new TProfile("h2_eovp_runnum_prof", "Prof E/p", totRun, 0, totRun, 0.5, 1.5);
   h2_eovp_runnum_prof->SetMarkerColor(kRed);
 
   TH2D* h2_eovp_trx = new TH2D("h2_eovp_trx", "E/p vs trx", 100, -0.45, 0.6, 100.0, 0.5, 1.5);
