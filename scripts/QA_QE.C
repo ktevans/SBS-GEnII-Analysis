@@ -279,6 +279,11 @@ void QA_QE(const char *kinematic)
   h2_pse_try->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_pse_try->SetTitle("PreShower Energy vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
+  TH2D* h2_pse_pstime = new TH2D("h2_pse_pstime", "PSe vs PStime", 100.0, 0.0, 3.0, 200.0, -10.0, 25.0);
+  h2_pse_pstime->GetXaxis()->SetTitle("bb.ps.e [GeV]");
+  h2_pse_pstime->GetYaxis()->SetTitle("bb.ps.atimeblk [ns]");
+  h2_pse_pstime->SetTitle("PreShower Energy vs PreShower ADC Time with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
   TH2D* h2_she_trx = new TH2D("h2_she_trx", "SHe vs TrX", 100.0, -0.45, 0.6, 100.0, 0.0, 3.0);
   h2_she_trx->GetYaxis()->SetTitle("bb.sh.e [GeV]");
   h2_she_trx->GetXaxis()->SetTitle("bb.tr.x [m]");
@@ -388,7 +393,7 @@ void QA_QE(const char *kinematic)
 
         h2_coin_W2->Fill(e_kine_W2,adc_coin);
 
-        if (abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)>=0.2 && abs(adc_coin-coin_mean)>=(coin_sigma) && bb_gr_clus_size<2 && abs(e_kine_W2-1.0)>=0.5 && abs(dy_hcal-dy_mean)>=dy_sigma && (abs(dx_hcal-dx_n_mean)>=dx_n_sigma)||(abs(dx_hcal-dx_p_mean)>=dx_p_sigma))
+        if (abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)>=0.2 && abs(adc_coin-coin_mean)>=(coin_sigma) && bb_gr_clus_size<2 && abs(e_kine_W2-1.0)>=0.5 && abs(dy_hcal-dy_mean)>=dy_sigma && (abs(dx_hcal-dx_n_mean)>=dx_n_sigma)&&(abs(dx_hcal-dx_p_mean)>=dx_p_sigma))
         {
           h_ps_e_anti->Fill(bb_ps_e);
         } // end anti-QE cuts
@@ -427,6 +432,7 @@ void QA_QE(const char *kinematic)
 
                   h2_pse_trx->Fill(bb_tr_x,bb_ps_e);
                   h2_pse_try->Fill(bb_tr_y,bb_ps_e);
+                  h2_pse_pstime->Fill(bb_ps_e,bb_ps_atimeblk);
 
                   h2_she_trx->Fill(bb_tr_x,bb_sh_e);
                   h2_she_try->Fill(bb_tr_y,bb_sh_e);
@@ -556,6 +562,8 @@ void QA_QE(const char *kinematic)
   h2_pse_trx->Draw("colz");
   c4_2->cd(3);
   h2_pse_try->Draw("colz");
+  c4_2->cd(4);
+  h2_pse_pstime->Draw("colz");
 
   c4_2->Print(outputfile);
 
