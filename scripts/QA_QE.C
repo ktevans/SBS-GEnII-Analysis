@@ -30,7 +30,8 @@ void QA_QE(const char *kinematic)
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
-  TString inputfile = Form("/volatile/halla/sbs/ktevans/KateJackSBSAnalysis/KJ_parsed_GEn_pass2_%s_He3_100.root",kinematic);
+  //TString inputfile = Form("/volatile/halla/sbs/ktevans/KateJackSBSAnalysis/KJ_parsed_GEn_pass2_%s_He3_100.root",kinematic);
+  TString inputfile = Form("/volatile/halla/sbs/vimukthi/outfiles/thesis_final/He3/QE_data_%s__sbs100p_nucleon_np_model2_sbstrackingon.root",kinematic);
   TString outputfile = Form("plots/QA_parsed_GEn_pass3_%s_He3_dxdy.pdf",kinematic);
   TString outfile = Form("outfiles/QA_parsed_GEn_pass3_%s_He3_dxdy.root",kinematic);
   TFile *fout = new TFile(outfile,"RECREATE");
@@ -47,30 +48,32 @@ void QA_QE(const char *kinematic)
   TChain* T = new TChain("Parse");
   T->Add(inputfile);
 
-  double bb_tr_r_x;             T->SetBranchAddress("bb.tr.r_x", &bb_tr_r_x);
-  double bb_tr_r_th;            T->SetBranchAddress("bb.tr.r_th", &bb_tr_r_th);
-  double e_kine_W2;             T->SetBranchAddress("e.kine.W2", &e_kine_W2);
-  double adc_coin;              T->SetBranchAddress("adc.coin", &adc_coin);
+  double bb_tr_r_x;             T->SetBranchAddress("xfp", &bb_tr_r_x);
+  double bb_tr_r_th;            T->SetBranchAddress("thfp", &bb_tr_r_th);
+  double e_kine_W2;             T->SetBranchAddress("W2", &e_kine_W2);
+  double adc_coin;              T->SetBranchAddress("coin_time", &adc_coin);
   int helicity;                 T->SetBranchAddress("helicity", &helicity);
-  double bb_ps_e;               T->SetBranchAddress("bb.ps.e", &bb_ps_e);
-  double bb_ps_atimeblk;        T->SetBranchAddress("bb.ps.atimeblk", &bb_ps_atimeblk);
-  double bb_sh_e;               T->SetBranchAddress("bb.sh.e", &bb_sh_e);
-  double bb_sh_atimeblk;        T->SetBranchAddress("bb.sh.atimeblk", &bb_sh_atimeblk);
-  double bb_tr_p;               T->SetBranchAddress("bb.tr.p", &bb_tr_p);
-  double bb_tr_x;               T->SetBranchAddress("bb.tr.x", &bb_tr_x);
-  double bb_tr_y;               T->SetBranchAddress("bb.tr.y", &bb_tr_y);
-  double bb_tr_vz;              T->SetBranchAddress("bb.tr.vz", &bb_tr_vz);
-  double bb_gr_clus_size;       T->SetBranchAddress("bb.grinch_tdc.clus.size", &bb_gr_clus_size);
-  double bb_gr_clus_track;      T->SetBranchAddress("bb.grinch_tdc.clus.trackindex", &bb_gr_clus_track);
+  double bb_ps_e;               T->SetBranchAddress("ePS", &bb_ps_e);
+  //double bb_ps_atimeblk;        T->SetBranchAddress("bb.ps.atimeblk", &bb_ps_atimeblk);
+  double bb_sh_e;               T->SetBranchAddress("eSH", &bb_sh_e);
+  double bb_sh_atimeblk;        T->SetBranchAddress("bbcal_time", &bb_sh_atimeblk);
+  double bb_tr_p;               T->SetBranchAddress("trP", &bb_tr_p);
+  double bb_tr_x;               T->SetBranchAddress("track_x", &bb_tr_x);
+  double bb_tr_y;               T->SetBranchAddress("track_y", &bb_tr_y);
+  double bb_gem_tr_nhits;       T->SetBranchAddress("ntrack_hits", &bb_gem_tr_nhits);
+  double bb_gem_tr_chi2;        T->SetBranchAddress("ntrack_chi2", &bb_gem_tr_chi2);
+  double bb_tr_vz;              T->SetBranchAddress("vz", &bb_tr_vz);
+  double bb_gr_clus_size;       T->SetBranchAddress("grinch_clus_size", &bb_gr_clus_size);
+  double bb_gr_clus_track;      T->SetBranchAddress("grinch_track", &bb_gr_clus_track);
   double bb_hodotdc_clus_tmean; T->SetBranchAddress("bb.hodotdc.clus.tmean", &bb_hodotdc_clus_tmean);
   double bb_hodotdc_clus_id;    T->SetBranchAddress("bb.hodotdc.clus.id", &bb_hodotdc_clus_id);
-  int pass_global;              T->SetBranchAddress("passGlobal", &pass_global);
+  //int pass_global;              T->SetBranchAddress("passGlobal", &pass_global);
   int runnum;                   T->SetBranchAddress("runnum", &runnum);
-  double sbs_hcal_e;            T->SetBranchAddress("sbs.hcal.e", &sbs_hcal_e);
-  double sbs_hcal_x;            T->SetBranchAddress("sbs.hcal.x", &sbs_hcal_x);
-  double sbs_hcal_y;            T->SetBranchAddress("sbs.hcal.y", &sbs_hcal_y);
-  double sbs_hcal_atimeblk;     T->SetBranchAddress("sbs.hcal.atimeblk", &sbs_hcal_atimeblk);
-  int sbs_hcal_clus_blk_id;     T->SetBranchAddress("sbs.hcal.clus_blk.id", &sbs_hcal_clus_blk_id);
+  double sbs_hcal_e;            T->SetBranchAddress("eHCAL", &sbs_hcal_e);
+  double sbs_hcal_x;            T->SetBranchAddress("xHCAL", &sbs_hcal_x);
+  double sbs_hcal_y;            T->SetBranchAddress("yHCAL", &sbs_hcal_y);
+  double sbs_hcal_atimeblk;     T->SetBranchAddress("hcal_clus_atime", &sbs_hcal_atimeblk);
+  int sbs_hcal_clus_blk_id;     T->SetBranchAddress("hcal_clus_id", &sbs_hcal_clus_blk_id);
   double dx_hcal;               T->SetBranchAddress("dx", &dx_hcal);
   double dy_hcal;               T->SetBranchAddress("dy", &dy_hcal);
   double IHWP;                  T->SetBranchAddress("IHWP", &IHWP);
@@ -400,7 +403,7 @@ void QA_QE(const char *kinematic)
 
     // && abs(adc_coin-coin_mean)<coin_sigma && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>2.0 && abs(bb_tr_vz)<0.27
 
-    if(pass_global==1 && (IHWP==-1.0 || IHWP==1.0) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.0)
+    if(sbs_hcal_e>0.025 && bb_gem_tr_chi2<=15 && bb_gem_tr_nhits>=3 && (IHWP==-1.0 || IHWP==1.0) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.0)
     {
 
       h_tr_vz->Fill(bb_tr_vz);
@@ -469,7 +472,7 @@ void QA_QE(const char *kinematic)
 
                   h2_pse_trx->Fill(bb_tr_x,bb_ps_e);
                   h2_pse_try->Fill(bb_tr_y,bb_ps_e);
-                  h2_pse_pstime->Fill(bb_ps_e,bb_ps_atimeblk);
+                  //h2_pse_pstime->Fill(bb_ps_e,bb_ps_atimeblk);
 
                   h2_she_trx->Fill(bb_tr_x,bb_sh_e);
                   h2_she_try->Fill(bb_tr_y,bb_sh_e);
@@ -482,18 +485,18 @@ void QA_QE(const char *kinematic)
                   h2_hcal_atime_x->Fill(sbs_hcal_x,sbs_hcal_atimeblk);
                   h2_hcal_atime_y->Fill(sbs_hcal_y,sbs_hcal_atimeblk);
 
-                  h2_ps_atime_x->Fill(bb_tr_x,bb_ps_atimeblk);
-                  h2_ps_atime_y->Fill(bb_tr_y,bb_ps_atimeblk);
+                  //h2_ps_atime_x->Fill(bb_tr_x,bb_ps_atimeblk);
+                  //h2_ps_atime_y->Fill(bb_tr_y,bb_ps_atimeblk);
 
                   h2_sh_atime_x->Fill(bb_tr_x,bb_sh_atimeblk);
                   h2_sh_atime_y->Fill(bb_tr_y,bb_sh_atimeblk);
 
                   h2_hcalTH_atime_x->Fill(sbs_hcal_x,bb_hodotdc_clus_tmean-sbs_hcal_atimeblk);
-                  h2_psTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
+                  //h2_psTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
                   h2_shTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_sh_atimeblk);
 
                   h2_hcalTH_atime_y->Fill(sbs_hcal_y,bb_hodotdc_clus_tmean-sbs_hcal_atimeblk);
-                  h2_psTH_atime_y->Fill(bb_tr_y,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
+                  //h2_psTH_atime_y->Fill(bb_tr_y,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
                   h2_shTH_atime_y->Fill(bb_tr_y,bb_hodotdc_clus_tmean-bb_sh_atimeblk);
 
                   //T_data->Fill();
