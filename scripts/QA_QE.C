@@ -299,9 +299,9 @@ void QA_QE(const char *kinematic)
   h2_she_try->SetTitle("Shower Energy vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH2D* h2_she_shtime = new TH2D("h2_she_shtime", "SHe vs SHtime", 100.0, 0.0, 3.0, 200.0, -10.0, 25.0);
-  h2_pse_pstime->GetXaxis()->SetTitle("bb.ps.e [GeV]");
-  h2_pse_pstime->GetYaxis()->SetTitle("bb.ps.atimeblk [ns]");
-  h2_pse_pstime->SetTitle("PreShower Energy vs PreShower ADC Time with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+  h2_pse_shtime->GetXaxis()->SetTitle("bb.ps.e [GeV]");
+  h2_pse_shtime->GetYaxis()->SetTitle("bb.ps.atimeblk [ns]");
+  h2_pse_shtime->SetTitle("PreShower Energy vs PreShower ADC Time with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH1D* h_sh_e = new TH1D("h_sh_e", "Shower Energy", 100.0, 0.0, 3.0);
   h_sh_e->GetXaxis()->SetTitle("bb.sh.e [GeV]");
@@ -633,7 +633,7 @@ void QA_QE(const char *kinematic)
   c4_3->cd(3);
   h2_she_try->Draw("colz");
   c4_3->cd(4);
-  h2_she_pstime->Draw("colz");
+  h2_she_shtime->Draw("colz");
 
   c4_3->Print(outputfile);
 
