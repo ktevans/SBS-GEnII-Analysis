@@ -133,6 +133,15 @@ namespace kine {
     //TVector3 HCALmeas(xyHCALmeas[0],xyHCALmeas[0];
     //TVector3 direction = 
   }
+
+  double theta_pq(TVector3 vertex, TVector3 HCAL_origin, TVector3 q_hat, double HCALx, double HCALy){
+	TVector3 HCAL_hit_vec (HCALy,-HCALx,0); //hcal cos -> hall cos
+	TVector3 Vertex_to_HCAL_origin = (HCAL_origin - vertex);
+	TVector3 P = (Vertex_to_HCAL_origin + HCAL_hit_vec); //(hcal hit pos + vertex) should be in hall coordinate system
+  	double theta_pq = acos(P.Dot(q_hat)/P.Mag());
+	return theta_pq;
+  }
+
   //--------------------------------------------
   double Q2(double ebeam, double eeprime, double etheta) {
     return 2.0*ebeam*eeprime*(1.0-cos(etheta));
