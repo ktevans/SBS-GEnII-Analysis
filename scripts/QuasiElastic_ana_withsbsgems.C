@@ -601,7 +601,7 @@ int QuasiElastic_ana_withsbsgems(const std::string configfilename, std::string f
 
     //cout<<"pass checkpoint 2"<<endl;
 
-    size_t j   = up(evnum_T);        // first EPICS evnum > current event
+    size_t j   = evnum_T; //up(evnum_T);        // first EPICS evnum > current event
     size_t idx = (j==0) ? 0 : j-1;    // take the latest EPICS sample <= event evnum
     
     double pMeV = 0.0;
