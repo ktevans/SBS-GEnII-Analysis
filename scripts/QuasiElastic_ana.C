@@ -526,7 +526,7 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
      // kinematic parameters
      //double ebeam = sbsconf.GetEbeam();       // Expected beam energy (GeV) [Get it from EPICS, eventually]
 
-     size_t j   = evTnum; //up(evnum_T);        // first EPICS evnum > current event
+     size_t j   = evnum_T; //up(evnum_T);        // first EPICS evnum > current event
      size_t idx = (j==0) ? 0 : j-1;    // take the latest EPICS sample <= event evnum
     
      double pMeV = 0.0;
