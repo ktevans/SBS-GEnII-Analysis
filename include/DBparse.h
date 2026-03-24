@@ -28,7 +28,7 @@ namespace DBparse {
     double                   W2max;
     double                   dymax;
     vector<DBrequest>        var_req;
-    map<TDatime,double>      He3Pol;
+    map<TDatime,pair<double,double>>      He3Pol;
     vector<vector<TDatime*>> BeamPolTime;
     vector<vector<double>>   BeamPolValue;
     map<int,double>          GoodHel;
