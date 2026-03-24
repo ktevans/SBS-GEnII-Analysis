@@ -69,6 +69,7 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
 
   // parsing trees
   TChain *C = LoadRawRootFiles(kin_info, 1);
+  TChain *E = LoadRawRootFiles_E(kin_info, 1);
 
   // seting up the desired SBS configuration
   TString conf = kin_info.conf;
@@ -106,8 +107,29 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   // double HALLA_p;
   // setrootvar::setbranch(C, "HALLA_p", "", &HALLA_p);
 
+  // taking beam energy from the epics
+  Long64_t evnum;
+  double HALLA_p;
+
+  E->SetBranchAddress("evnum",&evnum);
+  E->SetBranchAddress("HALLA_p",&HALLA_p);
+
+  std::vector<double> epics_evnum;
+  std::vector<double> epics_HALLA_p;
+  
+  epics_evnum.reserve(E->GetEntries());
+  epics_HALLA_p.reserve(E->GetEntries());
+
+  for(int i =0;i<E->GetEntries();++i)
+  {
+    E->GetEntry(i);
+    epics_evnum.push_back(static_cast<double>(evnum));
+    epics_HALLA_p.push_back(HALLA_p);
+  }
+
   // Some CODA event information
   double evtime;   setrootvar::setbranch(C,"g","evtime",&evtime);
+  double evnum_T;  setrootvar::setbranch(C,"g","evnum",&evnum_T);
 
   // bbcal sh clus var
   double eSH,xSH,ySH,atimeSH;
@@ -123,7 +145,7 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   std::vector<void*> bbcalpsclvar_mem = {&ePS,&xPS,&yPS,&atimePS,&idPS};
   setrootvar::setbranch(C,"bb.ps",bbcalpsclvar,bbcalpsclvar_mem);
 
-  int maxhcal = 100;
+  int maxhcal = 1000;
 
   // hcal clus var
   double eHCAL[maxhcal], xHCAL[maxhcal], yHCAL[maxhcal], rblkHCAL[maxhcal], cblkHCAL[maxhcal], idblkHCAL[maxhcal],tdctimeHCAL[maxhcal],atimeHCAL[maxhcal];
@@ -143,6 +165,7 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   int nhodo_clus;
   setrootvar::setbranch(C,"bb.hodotdc.clus.bar.tdc","meantime",&hodo_time);
   setrootvar::setbranch(C,"bb.hodotdc.clus.bar.tdc","id",&hodo_id);
+  setrootvar::setbranch(C,"bb.hodotdc.clus","tfinal",&hodo_time);
   setrootvar::setbranch(C,"Ndata.bb.hodotdc.clus.bar.tdc","meantime",&nhodo_clus);
 
   // GEMs
@@ -150,6 +173,26 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   setrootvar::setbranch(C,"bb.gem.track","nhits",&gem_nhits);
   setrootvar::setbranch(C,"bb.gem.track","ngoodhits",&gem_ngood);
   setrootvar::setbranch(C,"bb.gem.track","chi2ndf",&gem_chi2ndf);
+
+  const int maxTracks = 1000;
+  double sbs_gem_nhits[maxTracks];
+  int nsbs_gem_nhits;
+
+  double bb_gem_nhits[maxTracks];
+  double bb_gem_track_x[maxTracks];
+  double bb_gem_track_y[maxTracks];
+  double bb_gem_track_xp[maxTracks];
+  double bb_gem_track_yp[maxTracks];
+
+  int nbb_gem_nhits;
+
+  setrootvar::setbranch(C,"sbs.gem.track","nhits",&sbs_gem_nhits);
+  setrootvar::setbranch(C,"bb.gem.track","nhits",&bb_gem_nhits);  
+  setrootvar::setbranch(C,"bb.gem.track","x",&bb_gem_track_x);  
+  setrootvar::setbranch(C,"bb.gem.track","y",&bb_gem_track_y);  
+  setrootvar::setbranch(C,"bb.gem.track","xp",&bb_gem_track_xp);  
+  setrootvar::setbranch(C,"bb.gem.track","yp",&bb_gem_track_yp);  
+  //setrootvar::setbranch(C,"Ndata.sbs.gem.track","nhits",&nsbs_gem_nhits);
 
   // track var
   double ntrack, p[maxNtr],px[maxNtr],py[maxNtr],pz[maxNtr],xTr[maxNtr],yTr[maxNtr],thTr[maxNtr],phTr[maxNtr];
@@ -160,13 +203,24 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   std::vector<void*> trvar_mem = {&ntrack,&p,&px,&py,&pz,&vx,&vy,&vz,&xtgt,&ytgt,&thtgt,&phtgt,&xfp,&yfp,&thfp,&phfp};
   setrootvar::setbranch(C,"bb.tr",trvar,trvar_mem);
 
+  //sbs track var
+  double ntrack_sbs, chi2_sbs[maxNtr], p_sbs[maxNtr],px_sbs[maxNtr],py_sbs[maxNtr],pz_sbs[maxNtr],xTr_sbs[maxNtr],yTr_sbs[maxNtr],thTr_sbs[maxNtr],phTr_sbs[maxNtr];
+  double vx_sbs[maxNtr],vy_sbs[maxNtr],vz_sbs[maxNtr];
+  double ytgt_sbs[maxNtr],thtgt_sbs[maxNtr],phtgt_sbs[maxNtr];
+  double xfp_sbs[maxNtr],yfp_sbs[maxNtr],thfp_sbs[maxNtr],phfp_sbs[maxNtr];
+  std::vector<std::string> sbstrvar ={"n","chi2","p","px","py","pz","vx","vy","vz","tg_y","tg_th","tg_ph","r_x","r_y","r_th","r_ph","x","y","th","ph"};
+  std::vector<void*> sbstrvar_mem = {&ntrack_sbs,&chi2_sbs,&p_sbs,&px_sbs,&py_sbs,&pz_sbs,&vx_sbs,&vy_sbs,&vz_sbs,&ytgt_sbs,&thtgt_sbs,&phtgt_sbs,&xfp_sbs,&yfp_sbs,&thfp_sbs,&phfp_sbs,&xTr_sbs,&yTr_sbs,&thTr_sbs,&phTr_sbs};
+  setrootvar::setbranch(C,"sbs.tr",sbstrvar,sbstrvar_mem);
+
   // tdctrig variable (N/A for simulation)
   int tdcElemN;
+  int Ndata_bb_tdctrig_tdc;
   double tdcTrig[maxNtr], tdcElem[maxNtr];
 
   std::vector<std::string> tdcvar = {"tdcelemID","tdcelemID","tdc"};
   std::vector<void*> tdcvar_mem = {&tdcElem,&tdcElemN,&tdcTrig};
   setrootvar::setbranch(C,"bb.tdctrig",tdcvar,tdcvar_mem,1);
+  setrootvar::setbranch(C,"Ndata.bb.tdctrig","tdc",&Ndata_bb_tdctrig_tdc);
 
 
   //Beam helicity variables
@@ -176,6 +230,10 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   //IHWP State
   double IHWP;
   setrootvar::setbranch(C,"IGL1I00OD16_16","",&IHWP);
+
+  //trigbits
+  double trigbits;
+  setrootvar::setbranch(C,"g","trigbits",&trigbits);
 
   //BPMA
   double BPMAx, BPMAy;
@@ -234,7 +292,7 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   bool fiduCut;         Tout->Branch("fiduCut", &fiduCut, "fiduCut/B");
   bool coinCut;         Tout->Branch("coinCut", &coinCut, "coinCut/B");
   //kine
-  double T_ebeam;       Tout->Branch("Ebeam_corr", &T_ebeam, "Ebeam_corr/D");
+  double T_ebeam;       Tout->Branch("ebeam", &T_ebeam, "ebeam/D");
   double T_nu;          Tout->Branch("e.kine.nu", &T_nu, "e.kine.nu/D");
   double T_Q2;          Tout->Branch("e.kine.Q2", &T_Q2, "e.kine.Q2/D");
   double T_W2;          Tout->Branch("e.kine.W2", &T_W2, "e.kine.W2/D");
@@ -242,6 +300,11 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   double T_ephi;        Tout->Branch("ephi", &T_ephi, "ephi/D");
   double T_etheta;      Tout->Branch("etheta", &T_etheta, "etheta/D");
   double T_pcentral;    Tout->Branch("pcentral", &T_pcentral, "pcentral/D");
+  double T_pN_expect; 	Tout->Branch("pN_expect", &T_pN_expect, "pN_expect/D");
+  double T_ptheta_cal;	Tout->Branch("ptheta_cal",&T_ptheta_cal,"ptheta_cal/D");
+  double T_ptheta; 	    Tout->Branch("ptheta",&T_ptheta,"ptheta/D");
+  double T_pphi_cal;    Tout->Branch("pphi_cal",&T_pphi_cal,"pphi_cal/D");
+  double T_pphi;        Tout->Branch("pphi",&T_pphi,"pphi/D");
   //track
   double T_vz;          Tout->Branch("bb.tr.vz", &T_vz, "bb.tr.vz/D");
   double T_vx;          Tout->Branch("bb.tr.vx", &T_vx, "bb.tr.vx/D");
@@ -256,14 +319,18 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   double T_thfp;        Tout->Branch("bb.tr.r_th", &T_thfp, "bb.tr.r_th/D");
   double T_phfp;        Tout->Branch("bb.tr.r_ph", &T_phfp, "bb.tr.r_ph/D");
   double T_trP;         Tout->Branch("bb.tr.p", &T_trP, "bb.tr.p/D");
-  double T_trPx;        Tout->Branch("trPx", &T_trPx, "trPx/D");
-  double T_trPy;        Tout->Branch("trPy", &T_trPy, "trPy/D");
-  double T_trPz;        Tout->Branch("trPz", &T_trPz, "trPz/D");
+  double T_trPx;        Tout->Branch("bb.tr.px", &T_trPx, "bb.tr.px/D");
+  double T_trPy;        Tout->Branch("bb.tr.py", &T_trPy, "bb.tr.py/D");
+  double T_trPz;        Tout->Branch("bb.tr.pz", &T_trPz, "bb.tr.pz/D");
   double T_trN;         Tout->Branch("bb.tr.n", &T_trN, "bb.tr.n/D");
   //GEMs
   double T_gem_nhits;   Tout->Branch("bb.gem.track.nhits", &T_gem_nhits, "bb.gem.track.nhits/D");
   double T_gem_ngood;   Tout->Branch("bb.gem.track.ngoodhits", &T_gem_ngood, "bb.gem.track.ngoodhits/D");
   double T_gem_chi2ndf; Tout->Branch("bb.gem.track.chi2ndf", &T_gem_chi2ndf, "bb.gem.track.chi2ndf/D");
+  double T_gem_x;       Tout->Branch("bb.gem.track.x", &T_gem_x, "bb.gem.track.x/D");
+  double T_gem_y;       Tout->Branch("bb.gem.track.y", &T_gem_y, "bb.gem.track.y/D");
+  double T_gem_xp;      Tout->Branch("bb.gem.track.xp", &T_gem_xp, "bb.gem.track.xp/D");
+  double T_gem_yp;      Tout->Branch("bb.gem.track.yp", &T_gem_yp, "bb.gem.track.yp/D");
   //BBCAL
   double T_ePS;         Tout->Branch("bb.ps.e", &T_ePS, "bb.ps.e/D");
   double T_xPS;         Tout->Branch("bb.ps.x", &T_xPS, "bb.ps.x/D");
@@ -302,10 +369,14 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   double T_rawcur2x;  Tout->Branch("Raster2x", &T_rawcur2x, "Raster2x/D");
   double T_rawcur2y;  Tout->Branch("Raster2y", &T_rawcur2y, "Raster2y/D");
 
+  //trigbits
+  double T_trigbits; Tout->Branch("trigbits", &T_trigbits, "trigbits/D");
+
   //Beam/Target information
   int T_helicity;        Tout->Branch("helicity", &T_helicity, "helicity/I");
   int T_IHWP;            Tout->Branch("IHWP", &T_IHWP, "IHWP/I");
   double T_He3Pol;       Tout->Branch("He3Pol", &T_He3Pol, "He3Pol/D");
+  double T_err_He3Pol;   Tout->Branch("err_He3Pol", &T_err_He3Pol, "err_He3Pol/D");
 
   // Do the energy loss calculation here ...........
 
@@ -378,7 +449,7 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
 
       int start_event = nevent;
       while (C->GetEntry(start_event++) && start_event < nevent + max_events){
-	if(IHWP == 1 || IHWP == -1) IHWP_run = IHWP;
+	    if(IHWP == 1 || IHWP == -1) IHWP_run = IHWP;
       }
       C->GetEntry(nevent - 1);
 
@@ -403,9 +474,15 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
 
     auto it = DBInfo.He3Pol.find(time_abs); // Get Polarization from the table
     if(it == DBInfo.He3Pol.end())
+    {
       T_He3Pol = -1;
+      T_err_He3Pol = -1;
+    }
     else
+    {
       T_He3Pol = it->second;
+      T_err_He3Pol = it->second.second;
+    }
 
     T_datetime = time_abs;
 
@@ -431,6 +508,9 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
     T_grinch_track = grinch_track;
     T_grinch_clus_size = grinch_clus_size;
 
+    //trigbits
+    T_trigbits = trigbits;
+
     //Beam helicity information
     T_helicity = helicity;
     T_IHWP = IHWP_run;
@@ -443,10 +523,28 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
     T_rawcur2x = rawcur2x;
     T_rawcur2y = rawcur2y;
 
-    // kinematic parameters
-    double ebeam = sbsconf.GetEbeam();       // Expected beam energy (GeV) [Get it from EPICS, eventually]
-    double ebeam_corr = ebeam; //- MeanEloss;
-    double precon = p[0]; //+ MeanEloss_outgoing
+     // kinematic parameters
+     //double ebeam = sbsconf.GetEbeam();       // Expected beam energy (GeV) [Get it from EPICS, eventually]
+
+     size_t j   = up(evnum_T);        // first EPICS evnum > current event
+     size_t idx = (j==0) ? 0 : j-1;    // take the latest EPICS sample <= event evnum
+    
+     double pMeV = 0.0;
+
+     if (epics_HALLA_p.size()>0)
+     {
+       if(idx >= epics_HALLA_p.size()) idx = epics_HALLA_p.size()-1;
+       pMeV = epics_HALLA_p[idx];
+     }
+     else
+     {
+       pMeV= sbsconf.GetEbeam() * 1000; 
+     }
+
+     double ebeam = pMeV/1000.0;
+
+     double ebeam_corr = ebeam; //- MeanEloss;
+     double precon = p[0]; //+ MeanEloss_outgoing
 
     // constructing the 4 vectors
     // Reaction    : e + e' -> N + N'
@@ -479,6 +577,7 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
       pN_expect = kine::pN_expect(nu, Ntype.Data());
       thetaN_expect = acos((Pe.E() - Peprime.Pz()) / pN_expect);
       pNhat = kine::qVect_unit(thetaN_expect, phiN_expect);
+      pN_expect = q.P();//spatial magnitude
       Q2recon = kine::Q2(Pe.E(), Peprime.E(), etheta);
       W2recon = kine::W2(Pe.E(), Peprime.E(), Q2recon, Ntype.Data());
     } else if (model == 1) {
@@ -492,14 +591,15 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
       TLorentzVector q = Pe - Peprime; // 4-momentum of virtual photon
       nu = q.E();
       pNhat = q.Vect().Unit();
+      pN_expect = q.P();//spatial magnitude
       Q2recon = -q.M2();
       W2recon = (PN + q).M2();
+      thetaN_expect = q.Theta();
     }
     h_Q2->Fill(Q2recon);
     double Wrecon = sqrt(max(0., W2recon));
     double dpel = Peprime.E()/pcentral - 1.0;
     h_dpel->Fill(dpel);
-
 
     TVector3 enhat_tgt( thtgt[0], phtgt[0], 1.0 );
     enhat_tgt = enhat_tgt.Unit();
@@ -510,6 +610,8 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
     TVector3 enhat_fp_rot = enhat_fp.X() * GEMxaxis + enhat_fp.Y() * GEMyaxis + enhat_fp.Z() * GEMzaxis;
 
     double thetabend = acos( enhat_fp_rot.Dot( enhat_tgt ) );
+    double pphi = atan(py_sbs[0]/px_sbs[0]) ;
+    double ptheta = acos(pz_sbs[0]/p_sbs[0]);
 
     T_ebeam = Pe.E();
 
@@ -520,6 +622,11 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
     T_ephi = ephi;
     T_etheta = etheta;
     T_pcentral = pcentral;
+    T_pN_expect = pN_expect;
+    T_ptheta_cal = thetaN_expect;
+    T_pphi_cal = phiN_expect;
+    T_ptheta = ptheta;
+    T_pphi = pphi;
 
     T_vz = vz[0];
     T_vx = vx[0];
@@ -557,11 +664,12 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
 
     // Expected position of the q vector at HCAL
     vector<double> xyHCAL_exp; // xyHCAL_exp[0] = xHCAL_exp & xyHCAL_exp[1] = yHCAL_exp
-    double theta_pq;
+    double theta_pq = kine::theta_pq(vertex, HCAL_origin, pNhat, xHCAL[0], yHCAL[0]);
     kine::GetxyHCALexpect(vertex, pNhat, HCAL_origin, HCAL_axes, xyHCAL_exp);
     double dx = xHCAL[0] - xyHCAL_exp[0];
     double dy = yHCAL[0] - xyHCAL_exp[1];
 
+    T_theta_pq = theta_pq;
     T_xHCAL_exp = xyHCAL_exp[0];
     T_yHCAL_exp = xyHCAL_exp[1];
     T_dx = dx;
