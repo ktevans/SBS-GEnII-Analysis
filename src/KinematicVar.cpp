@@ -140,6 +140,7 @@ namespace kine {
   	double theta_pq = acos(P.Dot(q_hat)/P.Mag());
 	return theta_pq;
   }
+
   //--------------------------------------------
   double Q2(double ebeam, double eeprime, double etheta) {
     return 2.0*ebeam*eeprime*(1.0-cos(etheta));
