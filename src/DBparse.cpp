@@ -6,7 +6,7 @@ namespace DBparse {
 
   void DB_load(DBInfo &request){
 
-    TString DB_dir = "/work/halla/sbs/vimukthi/GEn_analysis/DB/"; 
+    TString DB_dir = "/work/halla/sbs/ktevans/GEN_ANALYSIS/SBS-GEnII-Analysis/DB/"; 
 
     for(int ivar = 0; ivar < request.var_req.size(); ivar++){
       DBrequest var_info = request.var_req[ivar];
