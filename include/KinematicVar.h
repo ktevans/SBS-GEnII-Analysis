@@ -56,6 +56,7 @@ namespace kine{
 		       vector<TVector3> HCAL_axes,      // HCAL CoS axes [in Hall CoS]
 		       vector<double> &xyHCALexpect);   // expected x and y positions (Output)       
 
+  double theta_pq(TVector3 vertex, TVector3 HCAL_origin, TVector3 q_hat, double HCALx, double HCALy);  
   double Q2(double ebeam, double eeprime, double etheta);                // GeV, GeV, rad
   double W2(double ebeam, double eeprime, double Q2, std::string Ntype); // GeV, GeV, GeV2
   double W(double ebeam, double eeprime, double Q2, std::string Ntype);  // GeV, GeV, GeV2
