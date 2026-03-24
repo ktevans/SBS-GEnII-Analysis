@@ -218,7 +218,7 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   double xfp_sbs[maxNtr],yfp_sbs[maxNtr],thfp_sbs[maxNtr],phfp_sbs[maxNtr];
   std::vector<std::string> sbstrvar ={"n","chi2","p","px","py","pz","vx","vy","vz","tg_y","tg_th","tg_ph","r_x","r_y","r_th","r_ph","x","y","th","ph"};
   std::vector<void*> sbstrvar_mem = {&ntrack_sbs,&chi2_sbs,&p_sbs,&px_sbs,&py_sbs,&pz_sbs,&vx_sbs,&vy_sbs,&vz_sbs,&ytgt_sbs,&thtgt_sbs,&phtgt_sbs,&xfp_sbs,&yfp_sbs,&thfp_sbs,&phfp_sbs,&xTr_sbs,&yTr_sbs,&thTr_sbs,&phTr_sbs};
-  setrootvar::setbranch(C,"sbs.tr",sbstrvar,sbstrvar_mem);
+  //setrootvar::setbranch(C,"sbs.tr",sbstrvar,sbstrvar_mem);
 
   // tdctrig variable (N/A for simulation)
   int tdcElemN;
@@ -438,8 +438,6 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
     if( nevent % 1000 == 0 ) std::cout << nevent*100.0/nevents << "% \r";
     std::cout.flush();
 
-
-
     // apply global cuts efficiently (AJRP method)
     currenttreenum = C->GetTreeNumber();
     if (nevent == 1 || currenttreenum != treenum) {
@@ -476,7 +474,6 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
     bool passedgCut = GlobalCut->EvalInstance(0) != 0;
 
     if (!passedgCut) continue;
-
 
     double bbcal_trig_time=0., hcal_trig_time=0.;
     for(int ihit=0; ihit<tdcElemN; ihit++){
