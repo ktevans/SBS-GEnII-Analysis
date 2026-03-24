@@ -194,7 +194,7 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
 
   int nbb_gem_nhits;
 
-  setrootvar::setbranch(C,"sbs.gem.track","nhits",&sbs_gem_nhits);
+  //setrootvar::setbranch(C,"sbs.gem.track","nhits",&sbs_gem_nhits);
   setrootvar::setbranch(C,"bb.gem.track","nhits",&bb_gem_nhits);  
   setrootvar::setbranch(C,"bb.gem.track","x",&bb_gem_track_x);  
   setrootvar::setbranch(C,"bb.gem.track","y",&bb_gem_track_y);  
