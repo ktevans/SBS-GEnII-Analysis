@@ -104,7 +104,7 @@ namespace Utilities {
 		TString conf) {             // SBS config
     // returns Q2 histogram
     int nbin=0; double hmin=-100, hmax=-100;
-    if (conf=="GEN2" || conf=="GEN3" || conf=="GEN4" || conf=="GEN4b") { nbin=100; hmin=1.; hmax=4.; } 
+    if (conf=="GEN1" || conf=="GEN2" || conf=="GEN3" || conf=="GEN4" || conf=="GEN4b") { nbin=100; hmin=1.; hmax=4.; } 
     else if (conf=="GMN14") { nbin=100; hmin=5.; hmax=10.; }
     else cerr << "[Utilities::TH1FhQ2] Enter valid SBS config!!" << endl;
     TH1F *h = new TH1F(name.c_str(), "Q^{2} Distribution (GeV^{2})", 
@@ -131,17 +131,15 @@ namespace Utilities {
       kin_info.IHWP_Flip = jmgr->GetValueFromKey<int>("IHWP_Flip");
       kin_info.dymin = jmgr->GetValueFromKey<double>("dymin");
       kin_info.dymax = jmgr->GetValueFromKey<double>("dymax");
-
-      vector<double> coin_time_cut;
-      jmgr->GetVectorFromKey<double>("coin_time", coin_time_cut);
-      kin_info.coin_min = coin_time_cut[0];
-      kin_info.coin_max = coin_time_cut[1];
+      jmgr->GetVectorFromKey<double>("coin_time", kin_info.coin_time_cut);
+      kin_info.Nsigma_coin_time = jmgr->GetValueFromKey<double>("Nsigma_coin_time");
       jmgr->GetVectorFromKey<int>("runnums",kin_info.runnums);
       kin_info.nruns = jmgr->GetValueFromKey<int>("Nruns_to_ana");
     }
 
     // seting up the desired SBS configuration
     kin_info.conf = jmgr->GetValueFromKey_str("GEN_config");
+    kin_info.target = jmgr->GetValueFromKey_str("target_type");
     kin_info.sbsmag = jmgr->GetValueFromKey<int>("SBS_magnet_percent");
 
 
@@ -207,17 +205,97 @@ namespace Utilities {
 	T->Add(rfname.c_str());
       }
     }
-    
+
+    // 2. Check for corrupted or partially recovered files
+    //    after they've been added to the TChain.
+    TObjArray* fileList = T->GetListOfFiles();
+    TIter nextFile(fileList);
+    TChainElement *chEl = nullptr;
+
+    while ((chEl = (TChainElement*)nextFile())) {
+      const char* fname = chEl->GetTitle();  // The file name/path
+
+      // Try opening each file individually
+      TFile* f = TFile::Open(fname, "READ");
+      if (!f || f->IsZombie()) {
+        std::cerr << "WARNING: Cannot open or file is corrupted: " << fname << std::endl;
+
+        // Optionally remove this file from the TChain:
+        //   T->Remove(fname);
+        // Or remove from the TObjArray if you like:
+        //   fileList->Remove(chEl);
+
+      } else {
+        // Check whether ROOT recovered partial data (indicates some corruption)
+        if (f->TestBit(TFile::kRecovered)) {
+          std::cerr << "WARNING: File was partially recovered (potential corruption): "
+                    << fname << std::endl;
+        }
+        f->Close();
+      }
+    }
     return T;
   }
 
+  // is_data = 0/1 (data/simulation)
+  TChain *LoadRawRootFiles_E(KinConf kin_info, bool is_data){
 
-  analyzed_tree *LoadAnalyzedRootFiles(KinConf kin_info, bool is_data, bool is_reduced, bool is_pion = false){
+    TChain *E = new TChain("E");
+
+    int nruns = kin_info.nruns;
+    string rootfile_dir = kin_info.rootfile_dir;
+
+    if(!is_data){
+      TString rootfiles = rootfile_dir + "replayed*.root";
+      E->Add(rootfiles);
+    }
+    else{
+      vector<int> runnums = kin_info.runnums;
+      if (nruns < 1 || nruns > runnums.size()) nruns = runnums.size();
+      for (int i=0; i<nruns; i++) {
+        string rfname = rootfile_dir + Form("/*%d*",runnums[i]);
+        E->Add(rfname.c_str());
+      }
+    }
+
+    // 2. Check for corrupted or partially recovered files
+    //    after they've been added to the TChain.
+    TObjArray* fileList = E->GetListOfFiles();
+    TIter nextFile(fileList);
+    TChainElement *chEl = nullptr;
+
+    while ((chEl = (TChainElement*)nextFile())) {
+      const char* fname = chEl->GetTitle();  // The file name/path
+
+      // Try opening each file individually
+      TFile* f = TFile::Open(fname, "READ");
+      if (!f || f->IsZombie()) {
+        std::cerr << "WARNING: Cannot open or file is corrupted: " << fname << std::endl;
+
+        // Optionally remove this file from the TChain:
+        //   T->Remove(fname);
+        // Or remove from the TObjArray if you like:
+        //   fileList->Remove(chEl);
+
+      } else {
+        // Check whether ROOT recovered partial data (indicates some corruption)
+        if (f->TestBit(TFile::kRecovered)) {
+          std::cerr << "WARNING: File was partially recovered (potential corruption): "
+                    << fname << std::endl;
+        }
+        f->Close();
+      }
+    }
+    return E;
+  }
+
+
+  analyzed_tree *LoadAnalyzedRootFiles(KinConf kin_info, bool is_data, bool is_reduced){
     
     TChain *T = new TChain("Tout");
     
     TString file_dir = "/w/halla-scshelf2102/sbs/jeffas/GEN_analysis/scripts/outfiles/good_files/";
-    if(is_pion) file_dir = "/lustre19/expphy/volatile/halla/sbs/jeffas/GEN_root/pion_test/";
+    //TString file_dir = "/lustre19/expphy/volatile/halla/sbs/jeffas/GEN_root/pion_test/";
     TString root_file;
     if(!is_data)
       root_file = "QE_sim_" + kin_info.conf + "_sbs" + kin_info.sbsmag + "p_nucleon_" + kin_info.Ntype + "_model" + kin_info.model + ".root";
