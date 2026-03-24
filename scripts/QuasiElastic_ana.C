@@ -390,8 +390,8 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   vector<double> dy_n = kin_info.dy_n;
   double Nsigma_cut_dx_n = kin_info.Nsigma_dx_n;
   double Nsigma_cut_dy_n = kin_info.Nsigma_dy_n;
-  double coin_min = kin_info.coin_min;
-  double coin_max = kin_info.coin_max;
+  double coin_min = -2.0; //fix later
+  double coin_max = 2.0; //fix later
   vector<double> hcal_active_area = cut::hcal_active_area_data(); // Exc. 1 blk from all 4 sides
   vector<double> hcal_safety_margin = cut::hcal_safety_margin(dx_p[1], dx_n[1], dy_p[1], hcal_active_area);
 
@@ -480,7 +480,7 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
     }
     else
     {
-      T_He3Pol = it->second;
+      T_He3Pol = it->second.first;
       T_err_He3Pol = it->second.second;
     }
 
