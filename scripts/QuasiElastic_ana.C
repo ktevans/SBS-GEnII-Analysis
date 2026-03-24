@@ -152,12 +152,19 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   std::vector<std::string> hcalclvar = {"e","x","y","rowblk","colblk","idblk","tdctimeblk","atimeblk"};
   std::vector<void*> hcalclvar_mem = {&eHCAL,&xHCAL,&yHCAL,&rblkHCAL,&cblkHCAL,&idblkHCAL,&tdctimeHCAL,&atimeHCAL};
   setrootvar::setbranch(C, "sbs.hcal", hcalclvar, hcalclvar_mem);
+  double hcal_blk_e[maxhcal], hcal_blk_id[maxhcal];
+  setrootvar::setbranch(C, "sbs.hcal.clus_blk", "e", &hcal_blk_e);
+  setrootvar::setbranch(C, "sbs.hcal.clus_blk", "id", &hcal_blk_id);
 
   // grinch var
-  double grinch_track,grinch_clus_size;
+  double grinch_track[maxhcal], grinch_clus_size[maxhcal];
   std::vector<std::string> grinchvar = {"trackindex","size"};
   std::vector<void*> grinchvar_mem = {&grinch_track,&grinch_clus_size};
   setrootvar::setbranch(C, "bb.grinch_tdc.clus", grinchvar, grinchvar_mem);
+  double grinch_pmt[maxhcal], grinch_time[maxhcal], grinch_time_corr[maxhcal];
+  setrootvar::setbranch(C, "bb.grinch_tdc.hit", "pmtnum", &grinch_pmt);
+  setrootvar::setbranch(C, "bb.grinch_tdc.hit", "time", &grinch_time);
+  setrootvar::setbranch(C, "bb.grinch_tdc.hit", "time_corr", &grinch_time_corr);
 
   // hodoscope
   const int maxClus = 1000;
@@ -168,13 +175,14 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   setrootvar::setbranch(C,"bb.hodotdc.clus","tfinal",&hodo_time);
   setrootvar::setbranch(C,"Ndata.bb.hodotdc.clus.bar.tdc","meantime",&nhodo_clus);
 
+  const int maxTracks = 1000;
+
   // GEMs
-  double gem_nhits, gem_ngood, gem_chi2ndf;
+  double gem_nhits[maxTracks], gem_ngood[maxTracks], gem_chi2ndf[maxTracks];
   setrootvar::setbranch(C,"bb.gem.track","nhits",&gem_nhits);
   setrootvar::setbranch(C,"bb.gem.track","ngoodhits",&gem_ngood);
   setrootvar::setbranch(C,"bb.gem.track","chi2ndf",&gem_chi2ndf);
 
-  const int maxTracks = 1000;
   double sbs_gem_nhits[maxTracks];
   int nsbs_gem_nhits;
 
@@ -199,8 +207,8 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   double vx[maxNtr],vy[maxNtr],vz[maxNtr];
   double xtgt[maxNtr],ytgt[maxNtr],thtgt[maxNtr],phtgt[maxNtr];
   double xfp[maxNtr],yfp[maxNtr],thfp[maxNtr],phfp[maxNtr];
-  std::vector<std::string> trvar = {"n","p","px","py","pz","vx","vy","vz","tg_x","tg_y","tg_th","tg_ph","r_x","r_y","r_th","r_ph"};
-  std::vector<void*> trvar_mem = {&ntrack,&p,&px,&py,&pz,&vx,&vy,&vz,&xtgt,&ytgt,&thtgt,&phtgt,&xfp,&yfp,&thfp,&phfp};
+  std::vector<std::string> trvar = {"n","p","px","py","pz","vx","vy","vz","tg_x","tg_y","tg_th","tg_ph","r_x","r_y","r_th","r_ph","x","y","ph","th"};
+  std::vector<void*> trvar_mem = {&ntrack,&p,&px,&py,&pz,&vx,&vy,&vz,&xtgt,&ytgt,&thtgt,&phtgt,&xfp,&yfp,&thfp,&phfp,&xTr,&yTr,&phTr,&thTr};
   setrootvar::setbranch(C,"bb.tr",trvar,trvar_mem);
 
   //sbs track var
@@ -221,7 +229,6 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   std::vector<void*> tdcvar_mem = {&tdcElem,&tdcElemN,&tdcTrig};
   setrootvar::setbranch(C,"bb.tdctrig",tdcvar,tdcvar_mem,1);
   setrootvar::setbranch(C,"Ndata.bb.tdctrig","tdc",&Ndata_bb_tdctrig_tdc);
-
 
   //Beam helicity variables
   double helicity;
@@ -309,6 +316,10 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   double T_vz;          Tout->Branch("bb.tr.vz", &T_vz, "bb.tr.vz/D");
   double T_vx;          Tout->Branch("bb.tr.vx", &T_vx, "bb.tr.vx/D");
   double T_vy;          Tout->Branch("bb.tr.vy", &T_vy, "bb.tr.vy/D");
+  double T_xTr;         Tout->Branch("bb.tr.x", &T_xTr, "bb.tr.x/D");
+  double T_yTr;         Tout->Branch("bb.tr.y", &T_yTr, "bb.tr.y/D");
+  double T_thTr;        Tout->Branch("bb.tr.th", &T_thTr, "bb.tr.th/D");
+  double T_phTr;        Tout->Branch("bb.tr.ph", &T_phTr, "bb.tr.ph/D");
   double T_xtgt;        Tout->Branch("xtgt", &T_xtgt, "xtgt/D");
   double T_ytgt;        Tout->Branch("ytgt", &T_ytgt, "ytgt/D");
   double T_thtgt;       Tout->Branch("thtgt", &T_thtgt, "thtgt/D");
@@ -339,18 +350,25 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
   double T_xSH;         Tout->Branch("bb.sh.x", &T_xSH, "bb.sh.x/D");
   double T_ySH;         Tout->Branch("bb.sh.y", &T_ySH, "bb.sh.y/D");
   //HCAL
-  double T_eHCAL;       Tout->Branch("sbs.hcal.e", &T_eHCAL, "sbs.hcal.e/D");
-  double T_xHCAL;       Tout->Branch("sbs.hcal.x", &T_xHCAL, "sbs.hcal.x/D");
-  double T_yHCAL;       Tout->Branch("sbs.hcal.y", &T_yHCAL, "sbs.hcal.y/D");
-  double T_idblkHCAL;   Tout->Branch("sbs.hcal.idblk", &T_idblkHCAL, "sbs.hcal.idblk/D");
-  double T_xHCAL_exp;   Tout->Branch("xHCAL_exp", &T_xHCAL_exp, "xHCAL_exp/D");
-  double T_yHCAL_exp;   Tout->Branch("yHCAL_exp", &T_yHCAL_exp, "yHCAL_exp/D");
-  double T_dx;          Tout->Branch("dx", &T_dx, "dx/D");
-  double T_dy;          Tout->Branch("dy", &T_dy, "dy/D");
-  double T_theta_pq;    Tout->Branch("theta_pq", &T_theta_pq, "theta_pq/D");
+  double T_eHCAL;           Tout->Branch("sbs.hcal.e", &T_eHCAL, "sbs.hcal.e/D");
+  double T_xHCAL;           Tout->Branch("sbs.hcal.x", &T_xHCAL, "sbs.hcal.x/D");
+  double T_yHCAL;           Tout->Branch("sbs.hcal.y", &T_yHCAL, "sbs.hcal.y/D");
+  double T_idblkHCAL;       Tout->Branch("sbs.hcal.idblk", &T_idblkHCAL, "sbs.hcal.idblk/D");
+  double T_hcal_primblk_e;  Tout->Branch("sbs.hcal.primary_blk.e", &T_hcal_primblk_e, "sbs.hcal.primary_blk.e/D");
+  double T_hcal_primblk_id; Tout->Branch("sbs.hcal.primary_blk.id", &T_hcal_primblk_id, "sbs.hcal.primary_blk.id/D");
+  double T_hcal_secblk_e;   Tout->Branch("sbs.hcal.secondary_blk.e", &T_hcal_secblk_e, "sbs.hcal.secondary_blk.e/D");
+  double T_hcal_secblk_id;  Tout->Branch("sbs.hcal.secondary_blk.id", &T_hcal_secblk_id, "sbs.hcal.secondary_blk.id/D");
+  double T_xHCAL_exp;       Tout->Branch("xHCAL_exp", &T_xHCAL_exp, "xHCAL_exp/D");
+  double T_yHCAL_exp;       Tout->Branch("yHCAL_exp", &T_yHCAL_exp, "yHCAL_exp/D");
+  double T_dx;              Tout->Branch("dx", &T_dx, "dx/D");
+  double T_dy;              Tout->Branch("dy", &T_dy, "dy/D");
+  double T_theta_pq;        Tout->Branch("theta_pq", &T_theta_pq, "theta_pq/D");
   //GRINCH
   double T_grinch_track;        Tout->Branch("bb.grinch_tdc.clus.trackindex", &T_grinch_track, "bb.grinch_tdc.clus.trackindex/D");
   double T_grinch_clus_size;    Tout->Branch("bb.grinch_tdc.clus.size", &T_grinch_clus_size, "bb.grinch_tdc.clus.size/D");
+  double T_grinch_pmt;          Tout->Branch("bb.grinch_tdc.hit.pmtnum", &T_grinch_pmt, "bb.grinch_tdc.hit.pmtnum/D");
+  double T_grinch_time;         Tout->Branch("bb.grinch_tdc.hit.time", &T_grinch_time, "bb.grinch_tdc.hit.time/D");
+  double T_grinch_time_corr;    Tout->Branch("bb.grinch_tdc.hit.time_corr", &T_grinch_time_corr, "bb.grinch_tdc.hit.time_corr/D");
 
   //Timing Information
   double T_coin_time;            Tout->Branch("adc.coin", &T_coin_time, "adc.coin/D");
@@ -505,8 +523,11 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
     coinCut = coin_time > coin_min && coin_time < coin_max;
 
     //Grinch info
-    T_grinch_track = grinch_track;
-    T_grinch_clus_size = grinch_clus_size;
+    T_grinch_track = grinch_track[0];
+    T_grinch_clus_size = grinch_clus_size[0];
+    T_grinch_pmt = grinch_pmt[0];
+    T_grinch_time = grinch_time[0];
+    T_grinch_time_corr = grinch_time_corr[0];
 
     //trigbits
     T_trigbits = trigbits;
@@ -612,6 +633,8 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
     double pphi = atan(py_sbs[0]/px_sbs[0]) ;
     double ptheta = acos(pz_sbs[0]/p_sbs[0]);
 
+    //T_pN_expect = pN_expect;
+
     T_ebeam = Pe.E();
 
     T_nu = nu;
@@ -634,6 +657,10 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
     T_ytgt = ytgt[0];
     T_thtgt = thtgt[0];
     T_phtgt = phtgt[0];
+    T_xTr = xTr[0];
+    T_yTr = yTr[0];
+    T_thTr = thTr[0];
+    T_phTr = phTr[0];
     T_thetabend = thetabend;
     T_xfp = xfp[0];
     T_yfp = yfp[0];
@@ -645,9 +672,13 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
     T_trPz = pz[0];
     T_trN = ntrack;
 
-    T_gem_nhits = gem_nhits;
-    T_gem_ngood = gem_ngood;
-    T_gem_chi2ndf = gem_chi2ndf;
+    T_gem_nhits = gem_nhits[0];
+    T_gem_ngood = gem_ngood[0];
+    T_gem_chi2ndf = gem_chi2ndf[0];
+    T_gem_x = bb_gem_track_x[0];
+    T_gem_y = bb_gem_track_y[0];
+    T_gem_xp = bb_gem_track_xp[0];
+    T_gem_yp = bb_gem_track_yp[0];
 
     T_ePS = ePS;
     T_xPS = xPS;
@@ -660,6 +691,10 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
     T_xHCAL = xHCAL[0];
     T_yHCAL = yHCAL[0];
     T_idblkHCAL = idblkHCAL[0];
+    T_hcal_primblk_e = hcal_blk_e[0];
+    T_hcal_primblk_id = hcal_blk_id[0];
+    T_hcal_secblk_e = hcal_blk_e[1];
+    T_hcal_secblk_id = hcal_blk_id[1];
 
     // Expected position of the q vector at HCAL
     vector<double> xyHCAL_exp; // xyHCAL_exp[0] = xHCAL_exp & xyHCAL_exp[1] = yHCAL_exp
