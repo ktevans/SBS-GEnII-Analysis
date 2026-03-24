@@ -87,7 +87,8 @@ void SimDataComp(int kin)
   {
 
     //data_file = "outfiles/parsed_GEn_pass2_GEN2_He3_dxdy.root";
-    data_file = "outfiles/sean_GEn_pass2_GEN2_He3_dxdy.root";
+    //data_file = "outfiles/sean_GEn_pass2_GEN2_He3_dxdy.root";
+    data_file = "outfiles/QE_data_GEN2_sbs100p_nucleon_np_model2.root";
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN2_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN2_He3_dxdy.root";
     title_words = "GEN2";
