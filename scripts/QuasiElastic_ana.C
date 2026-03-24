@@ -577,7 +577,6 @@ int QuasiElastic_ana(const std::string configfilename, std::string filebase="../
       pN_expect = kine::pN_expect(nu, Ntype.Data());
       thetaN_expect = acos((Pe.E() - Peprime.Pz()) / pN_expect);
       pNhat = kine::qVect_unit(thetaN_expect, phiN_expect);
-      pN_expect = q.P();//spatial magnitude
       Q2recon = kine::Q2(Pe.E(), Peprime.E(), etheta);
       W2recon = kine::W2(Pe.E(), Peprime.E(), Q2recon, Ntype.Data());
     } else if (model == 1) {
