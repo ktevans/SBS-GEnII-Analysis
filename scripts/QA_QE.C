@@ -829,7 +829,7 @@ void QA_QE(const char *kinematic)
 
   h_dx->Write();
   h_dy->Write();
-  ->Write();
+  //->Write();
   h_tr_vz->Write();
   h_ps_e->Write();
   h2_pse_grclus->Write();
