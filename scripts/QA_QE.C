@@ -49,8 +49,8 @@ void QA_QE(const char *kinematic)
 
   double bb_tr_r_x;             T->SetBranchAddress("bb.tr.r_x", &bb_tr_r_x);
   double bb_tr_r_th;            T->SetBranchAddress("bb.tr.r_th", &bb_tr_r_th);
-  double e_kine_W2;             T->SetBranchAddress("e.kine.W2", &e_kine_W2);
-  double adc_coin;              T->SetBranchAddress("adc.coin", &adc_coin);
+  Double_t e_kine_W2;             T->SetBranchAddress("e.kine.W2", &e_kine_W2);
+  Double_t adc_coin;              T->SetBranchAddress("adc.coin", &adc_coin);
   int helicity;                 T->SetBranchAddress("helicity", &helicity);
   double bb_ps_e;               T->SetBranchAddress("bb.ps.e", &bb_ps_e);
   double bb_ps_atimeblk;        T->SetBranchAddress("bb.ps.atimeblk", &bb_ps_atimeblk);
@@ -505,7 +505,7 @@ void QA_QE(const char *kinematic)
           h_coin->Fill(adc_coin);
         }
 
-        //h2_coin_W2->Fill(e_kine_W2,adc_coin);
+        h2_coin_W2->Fill(e_kine_W2,adc_coin);
 
 
         if (bb_ps_e>0.2)
