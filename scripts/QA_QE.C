@@ -51,6 +51,8 @@ void QA_QE(const char *kinematic)
   Double_t bb_tr_r_x;             T->SetBranchAddress("bb.tr.r_x", &bb_tr_r_x);
   Double_t bb_tr_r_th;            T->SetBranchAddress("bb.tr.r_th", &bb_tr_r_th);
   Double_t e_kine_W2;             T->SetBranchAddress("e.kine.W2", &e_kine_W2);
+  Double_t e_kine_Q2;             T->SetBranchAddress("e.kine.Q2", &e_kine_Q2);
+  Double_t p_N;                   T->SetBranchAddress("p_N", &p_N);
   Double_t adc_coin;              T->SetBranchAddress("adc.coin", &adc_coin);
   Int_t helicity;                 T->SetBranchAddress("helicity", &helicity);
   Double_t bb_ps_e;               T->SetBranchAddress("bb.ps.e", &bb_ps_e);
@@ -104,7 +106,7 @@ void QA_QE(const char *kinematic)
     optics_valid_min = -0.35;
     optics_valid_max = 0.34;
     //coin_mean = 129.1;
-    coin_mean = 0.978;
+    coin_mean = -0.978;
     //coin_sigma = 5.6;
     coin_sigma = 1.179;
     IHWP_flip = -1;
@@ -125,7 +127,7 @@ void QA_QE(const char *kinematic)
     optics_valid_min = -0.35;
     optics_valid_max = 0.33;
     //coin_mean = 120.3;
-    coin_mean = 0.382;
+    coin_mean = -0.382;
     //coin_sigma = 6.0;
     coin_sigma = 1.077;
     IHWP_flip = 1;
@@ -146,7 +148,7 @@ void QA_QE(const char *kinematic)
     optics_valid_min = -0.36;
     optics_valid_max = 0.30;
     //coin_mean = 121.4;
-    coin_mean = 0.589;
+    coin_mean = -0.589;
     //coin_sigma = 5.8;
     coin_sigma = 1.136;
     IHWP_flip = 1;
@@ -167,7 +169,7 @@ void QA_QE(const char *kinematic)
     optics_valid_min = -0.37;
     optics_valid_max = 0.32;
     //coin_mean = 185.5;
-    coin_mean = 0.568;
+    coin_mean = -0.568;
     //coin_sigma = 7.0;
     coin_sigma = 1.055;
     IHWP_flip = 1;
