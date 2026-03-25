@@ -505,7 +505,7 @@ void QA_QE(const char *kinematic)
           h_coin->Fill(adc_coin);
         }
 
-        h2_coin_W2->Fill(e_kine_W2,adc_coin);
+        //h2_coin_W2->Fill(e_kine_W2,adc_coin);
 
 
         if (bb_ps_e>0.2)
