@@ -118,7 +118,7 @@ void QA_QE(const char *kinematic)
     dy_sigma = 1.265;
     firstRun = 2130;
     lastRun = 2322;
-    totRun = 354;
+    totRun = 100;
     Trp_max = 3.5;
     Trp_min = 2.0;
   }
