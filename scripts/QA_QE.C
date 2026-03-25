@@ -222,7 +222,7 @@ void QA_QE(const char *kinematic)
   h_ps_e_raw->GetXaxis()->SetTitle("bb.ps.e [GeV]");
   h_ps_e_raw->SetTitle("PreShower Energy with Global and Vertex Cuts");
 
-  TH2D* h2_coin_W2 = new TH2D("h2_coin_W2", "Coin vs W2", 100.0, -2.0, 8.0, 80.0, -20.0, 20.0);
+  TH2* h2_coin_W2 = new TH2D("h2_coin_W2", "Coin vs W2", 100.0, -2.0, 8.0, 80.0, -20.0, 20.0);
   h2_coin_W2->GetXaxis()->SetTitle("e.kine.W2 [GeV]");
   h2_coin_W2->GetYaxis()->SetTitle("adc.coin [ns]");
   h2_coin_W2->SetTitle("Coincidence Time (HCal-BBCal) vs W2 with Global and Vertex Cuts");
