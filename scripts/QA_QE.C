@@ -65,16 +65,16 @@ void QA_QE(const char *kinematic)
   Double_t bb_gr_clus_track;      T->SetBranchAddress("bb.grinch_tdc.clus.trackindex", &bb_gr_clus_track);
   Double_t bb_hodotdc_clus_tmean; T->SetBranchAddress("bb.hodotdc.clus.tmean", &bb_hodotdc_clus_tmean);
   Double_t bb_hodotdc_clus_id;    T->SetBranchAddress("bb.hodotdc.clus.id", &bb_hodotdc_clus_id);
-  //int pass_global;              T->SetBranchAddress("passGlobal", &pass_global);
+  int pass_global;              T->SetBranchAddress("passGlobal", &pass_global);
   Int_t runnum;                   T->SetBranchAddress("runnum", &runnum);
   Double_t sbs_hcal_e;            T->SetBranchAddress("sbs.hcal.e", &sbs_hcal_e);
   Double_t sbs_hcal_x;            T->SetBranchAddress("sbs.hcal.x", &sbs_hcal_x);
   Double_t sbs_hcal_y;            T->SetBranchAddress("sbs.hcal.y", &sbs_hcal_y);
   Double_t sbs_hcal_atimeblk;     T->SetBranchAddress("sbs.hcal.atimeblk", &sbs_hcal_atimeblk);
-  Double_t sbs_hcal_clus_blk_id;  T->SetBranchAddress("sbs.hcal.idblk", &sbs_hcal_clus_blk_id);
+  //Double_t sbs_hcal_clus_blk_id;  T->SetBranchAddress("sbs.hcal.idblk", &sbs_hcal_clus_blk_id);
   Double_t dx_hcal;               T->SetBranchAddress("dx", &dx_hcal);
   Double_t dy_hcal;               T->SetBranchAddress("dy", &dy_hcal);
-  Int_t IHWP;                     T->SetBranchAddress("IHWP", &IHWP);
+  Double_t IHWP;                  T->SetBranchAddress("IHWP", &IHWP);
 
   double optics_valid_min;
   double optics_valid_max;
@@ -471,7 +471,7 @@ void QA_QE(const char *kinematic)
 
     // && abs(adc_coin-coin_mean)<coin_sigma && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>2.0 && abs(bb_tr_vz)<0.27
 
-    if(sbs_hcal_e>0.025 && (IHWP==-1.0 || IHWP==1.0) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.0)
+    if(passGlobal==1 && (IHWP==-1.0 || IHWP==1.0) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.0)
     {
 
       h_tr_vz->Fill(bb_tr_vz);
