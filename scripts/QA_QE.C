@@ -367,6 +367,9 @@ void QA_QE(const char *kinematic)
   h2_hodo_time_hcal_e->GetYaxis()->SetTitle("sbs.hcal.e [GeV]");
   h2_hodo_time_hcal_e->SetTitle("HCal Energy vs Hodo Mean Time with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
+  TH1D* h_pN = new TH1D("h_pN", "Expected HCal Momentum", 100.0, 0.0, 6.0);
+  h_pN->GetXaxis()->SetTitle("Expected Scattered Nucleon Momentum [GeV]");
+
 
   // ~~~~~~~~~~~~~~~~~~~~ GEM plots ~~~~~~~~~~~~~~~~~~~~
 
@@ -561,6 +564,7 @@ void QA_QE(const char *kinematic)
 
                   h2_hcal_e_x->Fill(sbs_hcal_x,sbs_hcal_e);
                   h2_hcal_e_y->Fill(sbs_hcal_y,sbs_hcal_e);
+                  h_pN->Fill(p_N);
 
                   h2_hcal_time_e->Fill(sbs_hcal_atimeblk,sbs_hcal_e);
                   h2_hodo_time_hcal_e->Fill(bb_hodotdc_clus_tmean,sbs_hcal_e);
@@ -745,6 +749,9 @@ void QA_QE(const char *kinematic)
   TF1 *f1 = new TF1("f1", "x",0.0,10.0);
   f1->SetLineColor(kRed);
   f1->Draw("SAMES");
+  c5->cd(4);
+  h_pN->Draw();
+
   c5->Print(outputfile);
 
   TCanvas *coinTime = new TCanvas("coinTime", "Coincidence Time", 1200, 1000);
