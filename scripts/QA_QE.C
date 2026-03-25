@@ -73,7 +73,7 @@ void QA_QE(const char *kinematic)
   int sbs_hcal_clus_blk_id;     T->SetBranchAddress("sbs.hcal.clus_blk.id", &sbs_hcal_clus_blk_id);
   double dx_hcal;               T->SetBranchAddress("dx", &dx_hcal);
   double dy_hcal;               T->SetBranchAddress("dy", &dy_hcal);
-  double IHWP;                  T->SetBranchAddress("IHWP", &IHWP);
+  int IHWP;                     T->SetBranchAddress("IHWP", &IHWP);
 
   double optics_valid_min;
   double optics_valid_max;
@@ -95,6 +95,8 @@ void QA_QE(const char *kinematic)
   int runTrack = 0;
 
   int IHWP_flip;
+
+  double Mp = 0.93827081;
 
   if(kin==2)
   {
@@ -827,7 +829,7 @@ void QA_QE(const char *kinematic)
 
   h_dx->Write();
   h_dy->Write();
-  h2_dxdy->Write();
+  ->Write();
   h_tr_vz->Write();
   h_ps_e->Write();
   h2_pse_grclus->Write();
