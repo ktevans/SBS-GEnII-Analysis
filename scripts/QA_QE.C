@@ -108,7 +108,7 @@ void QA_QE(const char *kinematic)
     //coin_mean = 129.1;
     coin_mean = -0.978;
     //coin_sigma = 5.6;
-    coin_sigma = 1.179;
+    coin_sigma = 2.4;
     IHWP_flip = -1;
     dx_n_mean = -0.147;
     dx_n_sigma = 0.812;
@@ -129,7 +129,7 @@ void QA_QE(const char *kinematic)
     //coin_mean = 120.3;
     coin_mean = -0.382;
     //coin_sigma = 6.0;
-    coin_sigma = 1.077;
+    coin_sigma = 2.2;
     IHWP_flip = 1;
     dx_n_mean = 0.0;
     dx_n_sigma = 0.5;
@@ -150,7 +150,7 @@ void QA_QE(const char *kinematic)
     //coin_mean = 121.4;
     coin_mean = -0.589;
     //coin_sigma = 5.8;
-    coin_sigma = 1.136;
+    coin_sigma = 2.3;
     IHWP_flip = 1;
     dx_n_mean = 0.0;
     dx_n_sigma = 0.5;
@@ -171,7 +171,7 @@ void QA_QE(const char *kinematic)
     //coin_mean = 185.5;
     coin_mean = -0.568;
     //coin_sigma = 7.0;
-    coin_sigma = 1.055;
+    coin_sigma = 2.2;
     IHWP_flip = 1;
     dx_n_mean = 0.0;
     dx_n_sigma = 0.5;
