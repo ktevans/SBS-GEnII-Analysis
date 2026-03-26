@@ -458,7 +458,7 @@ void QA_QE(const char *kinematic)
   h2_shTH_atime_y->SetTitle("(TH-SH) Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   int QE_check = 0;
-  double hodo_hcal_coin;
+  double hodo_hcal_coin, hodo_sh_coin, hodo_ps_coin;
 
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
@@ -580,10 +580,12 @@ void QA_QE(const char *kinematic)
                   h2_sh_atime_y->Fill(bb_tr_y,bb_sh_atimeblk);
 
                   hodo_hcal_coin = bb_hodotdc_clus_tmean-sbs_hcal_atimeblk;
+                  hodo_ps_coin = bb_hodotdc_clus_tmean-bb_ps_atimeblk;
+                  hodo_sh_coin = bb_hodotdc_clus_tmean-bb_sh_atimeblk;
 
                   h2_hcalTH_atime_x->Fill(sbs_hcal_x,hodo_hcal_coin);
-                  h2_psTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
-                  //h2_shTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_sh_atimeblk);
+                  h2_psTH_atime_x->Fill(bb_tr_x,hodo_ps_coin);
+                  //h2_shTH_atime_x->Fill(bb_tr_x,hodo_sh_coin);
 
                   //h2_hcalTH_atime_y->Fill(sbs_hcal_y,bb_hodotdc_clus_tmean-sbs_hcal_atimeblk);
                   //h2_psTH_atime_y->Fill(bb_tr_y,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
