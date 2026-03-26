@@ -29,7 +29,7 @@ void QA_QE(const char *kinematic)
 
   int kin = 2;
 
-  gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
+  //gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
   TString inputfile = Form("/volatile/halla/sbs/ktevans/QA/QE_data_%s_sbs100p_nucleon_np_model2.root",kinematic);
   //TString inputfile = Form("/volatile/halla/sbs/ktevans/KateJackSBSAnalysis/KJ_parsed_GEn_pass2_%s_He3_100.root",kinematic);
