@@ -54,7 +54,7 @@ void QA_QE(const char *kinematic)
   Double_t bb_tr_r_th;            T->SetBranchAddress("bb.tr.r_th", &bb_tr_r_th);
   Double_t e_kine_W2;             T->SetBranchAddress("e.kine.W2", &e_kine_W2);
   Double_t e_kine_Q2;             T->SetBranchAddress("e.kine.Q2", &e_kine_Q2);
-  Double_t p_N;                   T->SetBranchAddress("p_N", &p_N);
+  Double_t p_N;                   T->SetBranchAddress("p_N_expect", &p_N);
   Double_t adc_coin;              T->SetBranchAddress("adc.coin", &adc_coin);
   Int_t helicity;                 T->SetBranchAddress("helicity", &helicity);
   Double_t bb_ps_e;               T->SetBranchAddress("bb.ps.e", &bb_ps_e);
