@@ -515,7 +515,7 @@ void QA_QE(const char *kinematic)
           h_coin->Fill(adc_coin);
         }
 
-        h2_coin_W2->Fill(e_kine_W2,adc_coin);
+        //h2_coin_W2->Fill(e_kine_W2,adc_coin);
 
 
         if (bb_ps_e>0.2)
@@ -524,21 +524,17 @@ void QA_QE(const char *kinematic)
           if (abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
           {
 
-            h2_pse_grclus->Fill(bb_ps_e,bb_gr_clus_size);
-
-            //T_data->Fill();
+            //h2_pse_grclus->Fill(bb_ps_e,bb_gr_clus_size);
 
             if (abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2)
             {
               h_W2->Fill(e_kine_W2);
 
-              //T_data->Fill();
-
               if (abs(e_kine_W2-1.0)<0.5)
               {
                 h_dx->Fill(dx_hcal);
                 h_dy->Fill(dy_hcal);
-                h2_dxdy->Fill(dy_hcal,dx_hcal);
+                //h2_dxdy->Fill(dy_hcal,dx_hcal);
 
                 dx_out = dx_hcal;
                 dy_out = dy_hcal;
@@ -549,50 +545,46 @@ void QA_QE(const char *kinematic)
                 {
 
                   h_eovp->Fill((bb_ps_e+bb_sh_e)/bb_tr_p);
-                  h2_eovp_runnum->Fill(runTrack,(bb_ps_e+bb_sh_e)/bb_tr_p);
-                  h2_eovp_runnum_prof->Fill(runTrack,(bb_ps_e+bb_sh_e)/bb_tr_p,1);
+                  //h2_eovp_runnum->Fill(runTrack,(bb_ps_e+bb_sh_e)/bb_tr_p);
+                  //h2_eovp_runnum_prof->Fill(runTrack,(bb_ps_e+bb_sh_e)/bb_tr_p,1);
 
-                  h2_ps_tot->Fill(bb_ps_e,bb_ps_e+bb_sh_e);
+                  //h2_ps_tot->Fill(bb_ps_e,bb_ps_e+bb_sh_e);
 
-                  h2_pse_trx->Fill(bb_tr_x,bb_ps_e);
-                  h2_pse_try->Fill(bb_tr_y,bb_ps_e);
-                  h2_pse_pstime->Fill(bb_ps_e,bb_ps_atimeblk);
+                  //h2_pse_trx->Fill(bb_tr_x,bb_ps_e);
+                  //h2_pse_try->Fill(bb_tr_y,bb_ps_e);
+                  //h2_pse_pstime->Fill(bb_ps_e,bb_ps_atimeblk);
 
-                  h2_she_trx->Fill(bb_tr_x,bb_sh_e);
-                  h2_she_try->Fill(bb_tr_y,bb_sh_e);
-                  h2_she_shtime->Fill(bb_sh_e,bb_sh_atimeblk);
+                  //h2_she_trx->Fill(bb_tr_x,bb_sh_e);
+                  //h2_she_try->Fill(bb_tr_y,bb_sh_e);
+                  //h2_she_shtime->Fill(bb_sh_e,bb_sh_atimeblk);
 
-                  h2_trp_trx->Fill(bb_tr_x,bb_tr_p);
-                  h2_trp_try->Fill(bb_tr_y,bb_tr_p);
-                  h2_trp_bbcalE->Fill(bb_tr_p,bb_ps_e+bb_sh_e);
+                  //h2_trp_trx->Fill(bb_tr_x,bb_tr_p);
+                  //h2_trp_try->Fill(bb_tr_y,bb_tr_p);
+                  //h2_trp_bbcalE->Fill(bb_tr_p,bb_ps_e+bb_sh_e);
 
-                  h2_hcal_e_x->Fill(sbs_hcal_x,sbs_hcal_e);
-                  h2_hcal_e_y->Fill(sbs_hcal_y,sbs_hcal_e);
+                  //h2_hcal_e_x->Fill(sbs_hcal_x,sbs_hcal_e);
+                  //h2_hcal_e_y->Fill(sbs_hcal_y,sbs_hcal_e);
                   h_pN->Fill(p_N);
 
-                  h2_hcal_time_e->Fill(sbs_hcal_atimeblk,sbs_hcal_e);
-                  h2_hodo_time_hcal_e->Fill(bb_hodotdc_clus_tmean,sbs_hcal_e);
+                  //h2_hcal_time_e->Fill(sbs_hcal_atimeblk,sbs_hcal_e);
+                  //h2_hodo_time_hcal_e->Fill(bb_hodotdc_clus_tmean,sbs_hcal_e);
 
-                  //h_coin->Fill(adc_coin);
+                  //h2_hcal_atime_x->Fill(sbs_hcal_x,sbs_hcal_atimeblk);
+                  //h2_hcal_atime_y->Fill(sbs_hcal_y,sbs_hcal_atimeblk);
 
-                  h2_hcal_atime_x->Fill(sbs_hcal_x,sbs_hcal_atimeblk);
-                  h2_hcal_atime_y->Fill(sbs_hcal_y,sbs_hcal_atimeblk);
+                  //h2_ps_atime_x->Fill(bb_tr_x,bb_ps_atimeblk);
+                  //h2_ps_atime_y->Fill(bb_tr_y,bb_ps_atimeblk);
 
-                  h2_ps_atime_x->Fill(bb_tr_x,bb_ps_atimeblk);
-                  h2_ps_atime_y->Fill(bb_tr_y,bb_ps_atimeblk);
+                  //h2_sh_atime_x->Fill(bb_tr_x,bb_sh_atimeblk);
+                  //h2_sh_atime_y->Fill(bb_tr_y,bb_sh_atimeblk);
 
-                  h2_sh_atime_x->Fill(bb_tr_x,bb_sh_atimeblk);
-                  h2_sh_atime_y->Fill(bb_tr_y,bb_sh_atimeblk);
+                  //h2_hcalTH_atime_x->Fill(sbs_hcal_x,bb_hodotdc_clus_tmean-sbs_hcal_atimeblk);
+                  //h2_psTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
+                  //h2_shTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_sh_atimeblk);
 
-                  h2_hcalTH_atime_x->Fill(sbs_hcal_x,bb_hodotdc_clus_tmean-sbs_hcal_atimeblk);
-                  h2_psTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
-                  h2_shTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_sh_atimeblk);
-
-                  h2_hcalTH_atime_y->Fill(sbs_hcal_y,bb_hodotdc_clus_tmean-sbs_hcal_atimeblk);
-                  h2_psTH_atime_y->Fill(bb_tr_y,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
-                  h2_shTH_atime_y->Fill(bb_tr_y,bb_hodotdc_clus_tmean-bb_sh_atimeblk);
-
-                  //T_data->Fill();
+                  //h2_hcalTH_atime_y->Fill(sbs_hcal_y,bb_hodotdc_clus_tmean-sbs_hcal_atimeblk);
+                  //h2_psTH_atime_y->Fill(bb_tr_y,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
+                  //h2_shTH_atime_y->Fill(bb_tr_y,bb_hodotdc_clus_tmean-bb_sh_atimeblk);
 
                 }// end spot cuts
 
@@ -606,9 +598,8 @@ void QA_QE(const char *kinematic)
 
       }// end vertex cut
 
-      W2_out = e_kine_W2;
-      helicity_out = helicity * (IHWP * IHWP_flip); //* IHWP;//-1* IHWP * helicity * IHWP_flip;
-      T_data->Fill();
+      //W2_out = e_kine_W2;
+      //helicity_out = helicity * (IHWP * IHWP_flip); //* IHWP;//-1* IHWP * helicity * IHWP_flip;
    }// end global cuts
 
   }//end event loop
