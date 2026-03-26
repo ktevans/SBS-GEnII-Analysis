@@ -550,9 +550,9 @@ void QA_QE(const char *kinematic)
 
                   h2_ps_tot->Fill(bb_ps_e,bb_ps_e+bb_sh_e);
 
-                  //h2_pse_trx->Fill(bb_tr_x,bb_ps_e);
-                  //h2_pse_try->Fill(bb_tr_y,bb_ps_e);
-                  //h2_pse_pstime->Fill(bb_ps_e,bb_ps_atimeblk);
+                  h2_pse_trx->Fill(bb_tr_x,bb_ps_e);
+                  h2_pse_try->Fill(bb_tr_y,bb_ps_e);
+                  h2_pse_pstime->Fill(bb_ps_e,bb_ps_atimeblk);
 
                   //h2_she_trx->Fill(bb_tr_x,bb_sh_e);
                   //h2_she_try->Fill(bb_tr_y,bb_sh_e);
