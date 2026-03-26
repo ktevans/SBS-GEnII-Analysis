@@ -578,9 +578,9 @@ void QA_QE(const char *kinematic)
                   h2_sh_atime_x->Fill(bb_tr_x,bb_sh_atimeblk);
                   h2_sh_atime_y->Fill(bb_tr_y,bb_sh_atimeblk);
 
-                  //h2_hcalTH_atime_x->Fill(sbs_hcal_x,bb_hodotdc_clus_tmean-sbs_hcal_atimeblk);
-                  //h2_psTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
-                  //h2_shTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_sh_atimeblk);
+                  h2_hcalTH_atime_x->Fill(sbs_hcal_x,bb_hodotdc_clus_tmean-sbs_hcal_atimeblk);
+                  h2_psTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
+                  h2_shTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_sh_atimeblk);
 
                   //h2_hcalTH_atime_y->Fill(sbs_hcal_y,bb_hodotdc_clus_tmean-sbs_hcal_atimeblk);
                   //h2_psTH_atime_y->Fill(bb_tr_y,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
