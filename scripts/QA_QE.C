@@ -117,8 +117,8 @@ void QA_QE(const char *kinematic)
     dx_n_sigma = 0.812;
     dx_p_mean = -2.811;
     dx_p_sigma = 0.600;
-    dy_mean = 0.431;
-    dy_sigma = 1.265;
+    dy_mean = -0.096;
+    dy_sigma = 0.580;
     firstRun = 2130;
     lastRun = 2322;
     totRun = 100;
