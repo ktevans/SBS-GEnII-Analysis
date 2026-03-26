@@ -1,5 +1,6 @@
 #include <TMath.h>
 #include <TF1.h>
+#include <TF2.h>
 #include <TSystem.h>
 #include <TChain.h>
 #include <TString.h>
