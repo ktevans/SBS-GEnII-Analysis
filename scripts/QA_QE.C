@@ -582,7 +582,7 @@ void QA_QE(const char *kinematic)
                   hodo_hcal_coin = bb_hodotdc_clus_tmean-sbs_hcal_atimeblk;
 
                   h2_hcalTH_atime_x->Fill(sbs_hcal_x,hodo_hcal_coin);
-                  //h2_psTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
+                  h2_psTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_ps_atimeblk);
                   //h2_shTH_atime_x->Fill(bb_tr_x,bb_hodotdc_clus_tmean-bb_sh_atimeblk);
 
                   //h2_hcalTH_atime_y->Fill(sbs_hcal_y,bb_hodotdc_clus_tmean-sbs_hcal_atimeblk);
