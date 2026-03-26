@@ -562,8 +562,8 @@ void QA_QE(const char *kinematic)
                   h2_trp_try->Fill(bb_tr_y,bb_tr_p);
                   h2_trp_bbcalE->Fill(bb_tr_p,bb_ps_e+bb_sh_e);
 
-                  //h2_hcal_e_x->Fill(sbs_hcal_x,sbs_hcal_e);
-                  //h2_hcal_e_y->Fill(sbs_hcal_y,sbs_hcal_e);
+                  h2_hcal_e_x->Fill(sbs_hcal_x,sbs_hcal_e);
+                  h2_hcal_e_y->Fill(sbs_hcal_y,sbs_hcal_e);
                   h_pN->Fill(p_N);
 
                   //h2_hcal_time_e->Fill(sbs_hcal_atimeblk,sbs_hcal_e);
