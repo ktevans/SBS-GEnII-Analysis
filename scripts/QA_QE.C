@@ -524,7 +524,7 @@ void QA_QE(const char *kinematic)
           if (abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
           {
 
-            //h2_pse_grclus->Fill(bb_ps_e,bb_gr_clus_size);
+            h2_pse_grclus->Fill(bb_ps_e,bb_gr_clus_size);
 
             if (abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2)
             {
