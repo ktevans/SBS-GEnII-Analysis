@@ -427,7 +427,7 @@ void QA_QE(const char *kinematic)
   h_hcal_prim_tot_e->GetXaxis()->SetTitle("sbs.hcal.clusblk.e[0] / sbs.hcal.e");
   h_hcal_prim_tot_e->SetTitle("Energy of Primary HCal Block / Total Cluster Energy with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH1D* h_hcal_sec_prim_e = new TH1D("h_hcal_sec_prim_e", "HCal Prim Sec Energy Fraction", 100.0, 0.0, 1.0);
+  TH1D* h_hcal_sec_prim_e = new TH1D("h_hcal_sec_prim_e", "HCal Prim Sec Energy Fraction", 100.0, 0.0, 1.2);
   h_hcal_sec_prim_e->GetXaxis()->SetTitle("sbs.hcal.clusblk.e[1] / sbs.hcal.clusblk.e[0]");
   h_hcal_sec_prim_e->SetTitle("Energy of Secondary HCal Block / Primary HCal Block with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
 
