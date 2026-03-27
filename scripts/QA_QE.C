@@ -187,15 +187,15 @@ void QA_QE(const char *kinematic)
     dx_n_sigma = 0.5;
     dx_p_mean = -1.124;
     dx_p_sigma = 0.361;
-    dy_mean = 0.248;
-    dy_sigma = 0.769;
+    dy_mean = -0.071;
+    dy_sigma = 0.456;
     firstRun = 5044;
     lastRun = 6083;
     totRun = 480;
     Trp_max = 4.0;
     Trp_min = 2.5;
-    pN_min = 4.0;
-    pN_max = 8.0;
+    pN_min = 5.0;
+    pN_max = 7.0;
   }
   else
   {
