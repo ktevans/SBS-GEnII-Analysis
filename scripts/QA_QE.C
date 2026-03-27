@@ -781,6 +781,10 @@ void QA_QE(const char *kinematic)
   cEp->cd();
   h2_eovp_runnum->Draw("colz");
   h2_eovp_runnum_prof->Draw("SAMES");
+  cEp->Update();
+  TLine *Ep1 = new TLine(0.0, 1.0, totRun, 1.0);
+  Ep1->SetLineColor(kRed);
+  Ep1->Draw();
 
   cEp->Print(outputfile);
 
