@@ -78,7 +78,10 @@ void QA_QE(const char *kinematic)
   Double_t sbs_hcal_e;            T->SetBranchAddress("sbs.hcal.e", &sbs_hcal_e);
   Double_t sbs_hcal_x;            T->SetBranchAddress("sbs.hcal.x", &sbs_hcal_x);
   Double_t sbs_hcal_y;            T->SetBranchAddress("sbs.hcal.y", &sbs_hcal_y);
-  Double_t sbs_hcal_atimeblk;     T->SetBranchAddress("sbs.hcal.atimeblk", &sbs_hcal_atimeblk);
+  Double_t sbs_hcal_atimeblk;     T->SetBranchAddress("sbs.hcal.atimeblk", &sbs_hcal_atimeblk); 
+  Double_t sbs_hcal_prim_e;       T->SetBranchAddress("sbs.hcal.primary_blk.e", &sbs_hcal_prim_e)
+  Double_t sbs_hcal_prim_id;      T->SetBranchAddress("sbs.hcal.primary_blk.id", &sbs_hcal_prim_id)
+  Double_t sbs_hcal_sec_e;        T->SetBranchAddress("sbs.hcal.secondary_blk.e", &sbs_hcal_sec_e)
   //Double_t sbs_hcal_clus_blk_id;  T->SetBranchAddress("sbs.hcal.idblk", &sbs_hcal_clus_blk_id);
   Double_t dx_hcal;               T->SetBranchAddress("dx", &dx_hcal);
   Double_t dy_hcal;               T->SetBranchAddress("dy", &dy_hcal);
@@ -420,6 +423,14 @@ void QA_QE(const char *kinematic)
   h2_hcal_xy->GetYaxis()->SetTitle("sbs.hcal.x [m]");
   h2_hcal_xy->SetTitle("HCal Position with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
 
+  TH1D* h_hcal_prim_tot_e = new TH1D("h_hcal_prim_tot_e", "HCal Prim Energy Fraction", 100.0, 0.0, 1.0);
+  h_hcal_prim_tot_e->GetXaxis()->SetTitle("sbs.hcal.clusblk.e[0] / sbs.hcal.e");
+  h_hcal_prim_tot_e->setTitle("Energy of Primary HCal Block / Total Cluster Energy with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH1D* h_hcal_sec_prim_e = new TH1D("h_hcal_sec_prim_e", "HCal Prim Sec Energy Fraction", 100.0, 0.0, 1.0);
+  h_hcal_sec_prim_e->GetXaxis()->SetTitle("sbs.hcal.clusblk.e[1] / sbs.hcal.clusblk.e[0]");
+  h_hcal_sec_prim_e->setTitle("Energy of Secondary HCal Block / Primary HCal Block with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
+
   // ~~~~~~~~~~~~~~~~~~~~ GEM plots ~~~~~~~~~~~~~~~~~~~~
 
   TH2D* h2_trp_trx = new TH2D("h2_trp_trx", "TrP vs TrX", 100.0, -0.45, 0.6, 100.0, Trp_min, Trp_max);
@@ -504,7 +515,7 @@ void QA_QE(const char *kinematic)
   h2_shTH_atime_y->SetTitle("(TH-SH) Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   int QE_check = 0;
-  double hodo_hcal_coin, hodo_sh_coin, hodo_ps_coin, Sf, measE, deltaEfrac;
+  double hodo_hcal_coin, hodo_sh_coin, hodo_ps_coin, Sf, measE, deltaEfrac, hcalPrimTot, hcalSecPrim;
 
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
@@ -652,6 +663,11 @@ void QA_QE(const char *kinematic)
                   h2_ps_xy->Fill(bb_ps_y,bb_ps_x);
                   h2_sh_xy->Fill(bb_sh_y,bb_sh_x);
                   h2_hcal_xy->Fill(sbs_hcal_y,sbs_hcal_x);
+
+                  hcalPrimTot = sbs_hcal_prim_e / sbs_hcal_e;
+                  hcalSecPrim = sbs_hcal_sec_e / sbs_hcal_prim_e;
+                  h_hcal_prim_tot_e->Fill(hcalPrimTot);
+                  h_hcal_sec_prim_e->Fill(hcalSecPrim);
 
                 }// end spot cuts
 
@@ -837,6 +853,15 @@ void QA_QE(const char *kinematic)
   h2_Sf_y->Draw("colz");
 
   cHCal_3->Print(outputfile);
+
+  TCanvas* cHCal_4 = new TCanvas("cHCal_4", "sbsHCal_4", 1200, 1000);
+  cHCal_4->Divide(2,1);
+  cHCal_4->cd(1);
+  h_hcal_prim_tot_e->Draw();
+  cHCal_4->cd(2);
+  h_hcal_sec_prim_e->Draw();
+
+  cHCal_4->Print(outputfile);
 
   TCanvas *c5 = new TCanvas("c5","bbTr", 1200, 1000);
   c5->Divide(2,2);
