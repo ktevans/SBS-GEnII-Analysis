@@ -382,6 +382,15 @@ void QA_QE(const char *kinematic)
   h_measE->GetXaxis()->SetTitle("Measured Energy / Actual Energy (sbs.hcal.e/(sqrt(Mp*Mp+pN*pN)-Mp)");
   h_measE->SetTitle("Measured Energy Fraction with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
+  TH2D* h2_delta_Sf_measE = new TH2D("h2_delta_Sf_measE", "Measured Energy Fraction vs Sampling Fraction", 100.0, 0.0, 0.5, 100.0, 0.0, 0.5);
+  h2_delta_Sf_measE->GetXaxis()->SetTitle("Sampling Fraction");
+  h2_delta_Sf_measE->GetYaxis()->SetTitle("Measured Energy Fraction");
+  h2_delta_Sf_measE->SetTitle("Measured Energy Fraction vs Sampling Fraction with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH1D* h_delta_Sf_measE = new TH1D("h_delta_Sf_measE", "Measured Energy Fraction - Sampling Fraction", 100.0, -0.2, 0.2);
+  h_delta_Sf_measE->GetXaxis()->SetTitle("Measured Energy Fraction - Sampling Fraction");
+  h_delta_Sf_measE->SetTitle("Measured Energy Fraction - Sampling Fraction with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
 
   // ~~~~~~~~~~~~~~~~~~~~ GEM plots ~~~~~~~~~~~~~~~~~~~~
 
@@ -467,7 +476,7 @@ void QA_QE(const char *kinematic)
   h2_shTH_atime_y->SetTitle("(TH-SH) Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   int QE_check = 0;
-  double hodo_hcal_coin, hodo_sh_coin, hodo_ps_coin, Sf, measE;
+  double hodo_hcal_coin, hodo_sh_coin, hodo_ps_coin, Sf, measE, deltaEfrac;
 
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
@@ -605,6 +614,10 @@ void QA_QE(const char *kinematic)
 
                   measE = sbs_hcal_e / (TMath::Sqrt((Mp * Mp) + (p_N * p_N)) - Mp);
                   h_measE->Fill(measE);
+
+                  deltaEfrac = measE - Sf;
+                  h2_delta_Sf_measE->Fill(measE,Sf);
+                  h_delta_Sf_measE->Fill(deltaEfrac);
 
                 }// end spot cuts
 
@@ -758,11 +771,11 @@ void QA_QE(const char *kinematic)
   cHCal_2->cd(1);
   h_Sf->Draw();
   cHCal_2->cd(2);
-  h_pN->Draw();
-  cHCal_2->cd(3);
   h_measE->Draw();
+  cHCal_2->cd(3);
+  h_delta_Sf_measE->Draw();
   cHCal_2->cd(4);
-  
+  h2_delta_Sf_measE->Draw("colz");
 
   cHCal_2->Print(outputfile);
 
@@ -778,7 +791,7 @@ void QA_QE(const char *kinematic)
   f1->SetLineColor(kRed);
   f1->Draw("SAMES");
   c5->cd(4);
-  //h_pN->Draw();
+  h_pN->Draw();
 
   c5->Print(outputfile);
 
