@@ -138,8 +138,8 @@ void QA_QE(const char *kinematic)
     dx_n_sigma = 0.5;
     dx_p_mean = -1.541;
     dx_p_sigma = 0.365;
-    dy_mean = 0.336;
-    dy_sigma = 0.913;
+    dy_mean = -0.057;
+    dy_sigma = 0.374;
     firstRun = 2506;
     lastRun = 3250;
     totRun = 255;
@@ -373,6 +373,9 @@ void QA_QE(const char *kinematic)
   TH1D* h_pN = new TH1D("h_pN", "Expected HCal Momentum", 100.0, 0.0, 6.0);
   h_pN->GetXaxis()->SetTitle("Expected Scattered Nucleon Momentum [GeV]");
 
+  TH1D* h_Sf = new TH1D("h_Sf", "HCal Sampling Fraction", 100.0, 0.0, 1.0);
+  h_Sf->GetXaxis()->SetTitle("Sampling Fraction (sbs.hcal.e*2*Mp/Q2) [GeV]");
+
 
   // ~~~~~~~~~~~~~~~~~~~~ GEM plots ~~~~~~~~~~~~~~~~~~~~
 
@@ -458,7 +461,7 @@ void QA_QE(const char *kinematic)
   h2_shTH_atime_y->SetTitle("(TH-SH) Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   int QE_check = 0;
-  double hodo_hcal_coin, hodo_sh_coin, hodo_ps_coin;
+  double hodo_hcal_coin, hodo_sh_coin, hodo_ps_coin, Sf;
 
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
@@ -590,6 +593,9 @@ void QA_QE(const char *kinematic)
                   h2_hcalTH_atime_y->Fill(sbs_hcal_y,hodo_hcal_coin);
                   h2_psTH_atime_y->Fill(bb_tr_y,hodo_ps_coin);
                   h2_shTH_atime_y->Fill(bb_tr_y,hodo_sh_coin);
+
+                  Sf = 2 * sbs_hcal_e * Mp / e_kine_Q2;
+                  h_Sf->Fill(Sf);
 
                 }// end spot cuts
 
@@ -737,6 +743,19 @@ void QA_QE(const char *kinematic)
   h2_hodo_time_hcal_e->Draw("colz");
 
   cHCal->Print(outputfile);
+
+  TCanvas *cHCal_2 = new TCanvas("cHCal_2","sbsHCal_2", 1200, 1000);
+  cHCal_2->Divide(2,2);
+  cHCal_2->cd(1);
+  h_Sf->Draw();
+  cHCal_2->cd(2);
+  
+  cHCal_2->cd(3);
+  
+  cHCal_2->cd(4);
+  
+
+  cHCal_2->Print(outputfile);
 
   TCanvas *c5 = new TCanvas("c5","bbTr", 1200, 1000);
   c5->Divide(2,2);
