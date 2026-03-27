@@ -603,7 +603,7 @@ void QA_QE(const char *kinematic)
                   Sf = 2 * sbs_hcal_e * Mp / e_kine_Q2;
                   h_Sf->Fill(Sf);
 
-                  measE = sbs_hcal_e / (TMath::Sqrt((Mp * Mp) + (pN * pN)) - Mp);
+                  measE = sbs_hcal_e / (TMath::Sqrt((Mp * Mp) + (p_N * p_N)) - Mp);
                   h_measE->Fill(measE);
 
                 }// end spot cuts
