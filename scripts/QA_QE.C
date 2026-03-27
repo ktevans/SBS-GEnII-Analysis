@@ -649,9 +649,9 @@ void QA_QE(const char *kinematic)
                   h2_delta_Sf_measE->Fill(measE,Sf);
                   h_delta_Sf_measE->Fill(deltaEfrac);
 
-                  h2_ps_dx->Fill(bb_ps_y,bb_ps_x);
-                  h2_sh_dx->Fill(bb_sh_y,bb_sh_x);
-                  h2_hcal_dx->Fill(sbs_hcal_y,sbs_hcal_x);
+                  h2_ps_xy->Fill(bb_ps_y,bb_ps_x);
+                  h2_sh_xy->Fill(bb_sh_y,bb_sh_x);
+                  h2_hcal_xy->Fill(sbs_hcal_y,sbs_hcal_x);
 
                 }// end spot cuts
 
