@@ -954,13 +954,13 @@ void QA_QE(const char *kinematic)
   cHCal_5->Divide(1,3);
   cHCal_5->cd(1);
   h2_hcal_primFrac_blkID->Draw("colz");
-  prof_hcal_primFrac_blkID->Draw("SAMES");
+  prof_hcal_primFrac_blkID->Draw("SAMES")
   cHCal_5->cd(2);
   h2_hcal_primFrac_x->Draw("colz");
-  prof_hcal_primFrac_x->Draw("SAMES");
+  prof_hcal_primFrac_x->Draw("SAMES")
   cHCal_5->cd(3);
   h2_hcal_primFrac_y->Draw("colz");
-  prof_hcal_primFrac_y->Draw("SAMES");
+  prof_hcal_primFrac_y->Draw("SAMES")
 
   cHCal_5->Print(outputfile);
 
@@ -1069,38 +1069,67 @@ void QA_QE(const char *kinematic)
 
   T_data->Write("", TObject::kOverwrite);
 
-  h_dx->Write();
-  h_dy->Write();
-  //->Write();
   h_tr_vz->Write();
-  h_ps_e->Write();
+  h_ps_e_raw->Write();
+  h2_coin_W2->Write();
   h2_pse_grclus->Write();
   h_W2->Write();
-  h2_coin_W2->Write();
+  h_W2_raw->Write();
+  h_dx->Write();
+  h_dy->Write();
+  h2_dxdy->Write();
   h_eovp->Write();
   h2_eovp_runnum->Write();
+  h2_eovp_trx->Write();
+  h2_eovp_try->Write();
+  h2_ps_tot->Write();
+  h_ps_e->Write();
+  h_ps_e_anti->Write();
+  h_ps_e_qe->Write();
   h2_pse_trx->Write();
   h2_pse_try->Write();
+  h2_pse_pstime->Write();
   h2_she_trx->Write();
   h2_she_try->Write();
-  h_ps_e_qe->Write();
-  h_ps_e_anti->Write();
-  h2_pse_pstime->Write();
+  h2_she_shtime->Write();
+  h_sh_e->Write();
+  h_sh_e_anti->Write();
+  h_sh_e_qe->Write();
+  h2_ps_xy->Write();
+  h2_sh_xy->Write();
+  h2_hcal_e_x->Write();
+  h2_hcal_e_y->Write();
+  h2_hcal_time_e->Write();
+  h2_hodo_time_hcal_e->Write();
+  h_pN->Write();
+  h_Sf->Write();
+  h_measE->Write();
+  h2_delta_Sf_measE->Write();
+  h_delta_Sf_measE->Write();
+  h2_Sf_x->Write();
+  h2_Sf_y->Write();
+  h2_hcal_xy->Write();
+  h_hcal_prim_tot_e->Write();
+  h_hcal_sec_prim_e->Write();
+  h2_hcal_primFrac_blkID->Write();
+  h2_hcal_primFrac_x->Write();
+  h2_hcal_primFrac_y->Write();
   h2_trp_trx->Write();
   h2_trp_try->Write();
+  h2_trp_bbcalE->Write();
   h_coin->Write();
   h2_hcal_atime_x->Write();
-  h2_hcal_atime_y->Write();
+  h2_hcal_atime_y ->Write();
   h2_ps_atime_x->Write();
   h2_ps_atime_y->Write();
   h2_sh_atime_x->Write();
   h2_sh_atime_y->Write();
-  h2_shTH_atime_x->Write();
-  h2_psTH_atime_x->Write();
   h2_hcalTH_atime_x->Write();
-  h2_shTH_atime_y->Write();
-  h2_psTH_atime_y->Write();
+  h2_psTH_atime_x->Write();
+  h2_shTH_atime_x->Write();
   h2_hcalTH_atime_y->Write();
+  h2_psTH_atime_y->Write();
+  h2_shTH_atime_y->Write();
 
   fout->Write();
   T_data->Delete();
