@@ -878,7 +878,7 @@ void QA_QE(const char *kinematic)
   c4_2->Print(outputfile);
 
   TCanvas *c4_3 = new TCanvas("c4_3","bbSH", 1200, 1000);
-  c4_3->Divide(2,2);
+  c4_3->Divide(1,2);
   c4_3->cd(1);
   h_sh_e->Draw();
   h_sh_e_anti->Draw("same");
