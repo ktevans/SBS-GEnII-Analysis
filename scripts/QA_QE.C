@@ -705,13 +705,20 @@ void QA_QE(const char *kinematic)
   c3->cd(2);
   h_eovp->Draw();
   c3->cd(3);
-  h2_eovp_runnum->Draw("colz");
-  h2_eovp_runnum_prof->Draw("SAMES");
+  //h2_eovp_runnum->Draw("colz");
+  //h2_eovp_runnum_prof->Draw("SAMES");
   c3->cd(4);
   h2_ps_tot->Draw("colz");
 
   //Save the canvas to a pdf
   c3->Print(outputfile);
+
+  TCanvas *cEp = new TCanvas("cEp", "E/p", 1200, 1000);
+  cEp->cd();
+  h2_eovp_runnum->Draw("colz");
+  h2_eovp_runnum_prof->Draw("SAMES");
+
+  cEp->Print(outputfile);
 
   TCanvas *c4 = new TCanvas("c4","bbE", 1200, 1000);
   c4->Divide(2,2);
