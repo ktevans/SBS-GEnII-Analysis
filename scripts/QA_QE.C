@@ -882,7 +882,7 @@ void QA_QE(const char *kinematic)
   cHCal_4->Print(outputfile);
 
   TCanvas* cHCal_5 = new TCanvas("cHCal_5", "sbsHCal_5", 1200, 1000);
-  cHCal_5->Divide(3,1);
+  cHCal_5->Divide(1,3);
   cHCal_5->cd(1);
   h2_hcal_primFrac_blkID->Draw("colz");
   cHCal_5->cd(2);
