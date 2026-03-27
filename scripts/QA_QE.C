@@ -39,12 +39,12 @@ void QA_QE(const char *kinematic)
 
   TTree *T_data = new TTree("T_data", "Analysis Data Tree");
 
-  double dx_out, dy_out, W2_out;
-  int helicity_out;
-  T_data->Branch("dx", &dx_out, "dx/D");
-  T_data->Branch("dy", &dy_out, "dy/D");
-  T_data->Branch("W2", &W2_out, "W2/D");
-  T_data->Branch("helicity", &helicity_out, "helicity/I");
+  //double dx_out, dy_out, W2_out;
+  //int helicity_out;
+  //T_data->Branch("dx", &dx_out, "dx/D");
+  //T_data->Branch("dy", &dy_out, "dy/D");
+  //T_data->Branch("W2", &W2_out, "W2/D");
+  //T_data->Branch("helicity", &helicity_out, "helicity/I");
 
   //TChain* T = new TChain("Parse");
   TChain* T = new TChain("Tout");
@@ -78,7 +78,7 @@ void QA_QE(const char *kinematic)
   Double_t sbs_hcal_e;            T->SetBranchAddress("sbs.hcal.e", &sbs_hcal_e);
   Double_t sbs_hcal_x;            T->SetBranchAddress("sbs.hcal.x", &sbs_hcal_x);
   Double_t sbs_hcal_y;            T->SetBranchAddress("sbs.hcal.y", &sbs_hcal_y);
-  Double_t sbs_hcal_atimeblk;     T->SetBranchAddress("sbs.hcal.atimeblk", &sbs_hcal_atimeblk); 
+  Double_t sbs_hcal_atimeblk;     T->SetBranchAddress("sbs.hcal.atimeblk", &sbs_hcal_atimeblk);
   Double_t sbs_hcal_prim_e;       T->SetBranchAddress("sbs.hcal.primary_blk.e", &sbs_hcal_prim_e);
   Double_t sbs_hcal_prim_id;      T->SetBranchAddress("sbs.hcal.primary_blk.id", &sbs_hcal_prim_id);
   Double_t sbs_hcal_sec_e;        T->SetBranchAddress("sbs.hcal.secondary_blk.e", &sbs_hcal_sec_e);
@@ -117,9 +117,7 @@ void QA_QE(const char *kinematic)
   {
     optics_valid_min = -0.35;
     optics_valid_max = 0.34;
-    //coin_mean = 129.1;
     coin_mean = -0.978;
-    //coin_sigma = 5.6;
     coin_sigma = 2.4;
     IHWP_flip = -1;
     dx_n_mean = -0.147;
@@ -130,7 +128,7 @@ void QA_QE(const char *kinematic)
     dy_sigma = 0.580;
     firstRun = 2130;
     lastRun = 2322;
-    totRun = 100;
+    totRun = 130;
     Trp_max = 3.5;
     Trp_min = 2.0;
     pN_min = 0.0;
@@ -140,9 +138,7 @@ void QA_QE(const char *kinematic)
   {
     optics_valid_min = -0.35;
     optics_valid_max = 0.33;
-    //coin_mean = 120.3;
     coin_mean = -0.382;
-    //coin_sigma = 6.0;
     coin_sigma = 2.2;
     IHWP_flip = 1;
     dx_n_mean = 0.0;
@@ -163,9 +159,7 @@ void QA_QE(const char *kinematic)
   {
     optics_valid_min = -0.36;
     optics_valid_max = 0.30;
-    //coin_mean = 121.4;
     coin_mean = -0.589;
-    //coin_sigma = 5.8;
     coin_sigma = 2.3;
     IHWP_flip = 1;
     dx_n_mean = 0.0;
@@ -176,7 +170,7 @@ void QA_QE(const char *kinematic)
     dy_sigma = 0.773;
     firstRun = 3510;
     lastRun = 4587;
-    totRun = 354;
+    totRun = 500;
     Trp_max = 4.0;
     Trp_min = 2.5;
     pN_min = 4.0;
@@ -186,9 +180,7 @@ void QA_QE(const char *kinematic)
   {
     optics_valid_min = -0.37;
     optics_valid_max = 0.32;
-    //coin_mean = 185.5;
     coin_mean = -0.568;
-    //coin_sigma = 7.0;
     coin_sigma = 2.2;
     IHWP_flip = 1;
     dx_n_mean = 0.0;
@@ -199,7 +191,7 @@ void QA_QE(const char *kinematic)
     dy_sigma = 0.769;
     firstRun = 5044;
     lastRun = 6083;
-    totRun = 354;
+    totRun = 480;
     Trp_max = 4.0;
     Trp_min = 2.5;
     pN_min = 4.0;
@@ -420,7 +412,7 @@ void QA_QE(const char *kinematic)
   TH1D* h_delta_Sf_measE = new TH1D("h_delta_Sf_measE", "Measured Energy Fraction - Sampling Fraction", 100.0, -0.2, 0.2);
   h_delta_Sf_measE->GetXaxis()->SetTitle("Measured Energy Fraction - Sampling Fraction");
   h_delta_Sf_measE->SetTitle("Measured Energy Fraction - Sampling Fraction with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-  
+
   TH2D* h2_Sf_x = new TH2D("h2_Sf_x", "Sampling Fraction vs HCal x", 24.0, -2.6, 1.1, 100.0, 0.0, 0.5);
   h2_Sf_x->GetXaxis()->SetTitle("sbs.hcal.x [m]");
   h2_Sf_x->GetYaxis()->SetTitle("Sampling Fraction");
@@ -430,7 +422,7 @@ void QA_QE(const char *kinematic)
   h2_Sf_y->GetXaxis()->SetTitle("sbs.hcal.y [m]");
   h2_Sf_y->GetYaxis()->SetTitle("Sampling Fraction");
   h2_Sf_y->SetTitle("Sampling Fraction vs HCal y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
-  
+
   TH2D* h2_hcal_xy = new TH2D("h2_hcal_xy", "Shower Position", 12.0, -0.85, 0.85, 24.0, -2.6, 1.1);
   h2_hcal_xy->GetXaxis()->SetTitle("sbs.hcal.y [m]");
   h2_hcal_xy->GetYaxis()->SetTitle("sbs.hcal.x [m]");
@@ -449,15 +441,30 @@ void QA_QE(const char *kinematic)
   h2_hcal_primFrac_blkID->GetYaxis()->SetTitle("sbs.hcal.clusblk.e[0] / sbs.hcal.e");
   h2_hcal_primFrac_blkID->SetTitle("Energy of Primary HCal Block / Total Cluster Energy vs Primary Block ID with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
 
+  TProfile* prof_hcal_primFrac_blkID = new TProfile("prof_hcal_primFrac_blkID", "Prof primFracBLID", 288.0, 0.0, 288.0, 0.0, 1.0);
+  prof_hcal_primFrac_blkID->SetMarkerColor(kRed);
+  prof_hcal_primFrac_blkID->SetMarkerStyle(20);
+  prof_hcal_primFrac_blkID->SetMarkerSize(2);
+
   TH2D* h2_hcal_primFrac_x = new  TH2D("h2_hcal_primFrac_x", "HCal Frac per X", 24.0, -2.6, 1.1, 100.0, 0.0, 1.0);
   h2_hcal_primFrac_x->GetXaxis()->SetTitle("sbs.hcal.x [m]");
   h2_hcal_primFrac_x->GetYaxis()->SetTitle("sbs.hcal.clusblk.e[0] / sbs.hcal.e");
   h2_hcal_primFrac_x->SetTitle("Energy of Primary HCal Block / Total Cluster Energy vs x with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
 
+  TProfile* prof_hcal_primFrac_x = new TProfile("prof_hcal_primFrac_x", "Prof primFracX", 24.0, -2.6, 1.1, 0.0, 1.0);
+  prof_hcal_primFrac_x->SetMarkerColor(kRed);
+  prof_hcal_primFrac_x->SetMarkerStyle(20);
+  prof_hcal_primFrac_x->SetMarkerSize(2);
+
   TH2D* h2_hcal_primFrac_y = new  TH2D("h2_hcal_primFrac_y", "HCal Frac per y", 12.0, -0.85, 0.85, 100.0, 0.0, 1.0);
   h2_hcal_primFrac_y->GetXaxis()->SetTitle("sbs.hcal.y [m]");
   h2_hcal_primFrac_y->GetYaxis()->SetTitle("sbs.hcal.clusblk.e[0] / sbs.hcal.e");
   h2_hcal_primFrac_y->SetTitle("Energy of Primary HCal Block / Total Cluster Energy vs y with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
+
+  TProfile* prof_hcal_primFrac_y = new TProfile("prof_hcal_primFrac_y", "Prof primFracY", 12.0, -0.85, 0.85, 0.0, 1.0);
+  prof_hcal_primFrac_y->SetMarkerColor(kRed);
+  prof_hcal_primFrac_y->SetMarkerStyle(20);
+  prof_hcal_primFrac_y->SetMarkerSize(2);
 
   // ~~~~~~~~~~~~~~~~~~~~ GEM plots ~~~~~~~~~~~~~~~~~~~~
 
@@ -487,30 +494,60 @@ void QA_QE(const char *kinematic)
   h2_hcal_atime_x->GetYaxis()->SetTitle("sbs.hcal.atimeblk [ns]");
   h2_hcal_atime_x->SetTitle("HCal ADC Time vs HCal x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
+  TProfile* prof_hcal_atime_x = new TProfile("prof_hcal_atime_x", "Prof hcalTimeX", 24.0, -2.6, 1.1, -10.0, 25.0);
+  prof_hcal_atime_x->SetMarkerColor(kRed);
+  prof_hcal_atime_x->SetMarkerStyle(20);
+  prof_hcal_atime_x->SetMarkerSize(2);
+
   TH2D* h2_hcal_atime_y = new TH2D("h2_hcal_atime_y", "HCal time vs HCal y", 12.0, -0.85, 0.85, 200.0, -10.0, 25.0);
   h2_hcal_atime_y->GetXaxis()->SetTitle("sbs.hcal.y [m]");
   h2_hcal_atime_y->GetYaxis()->SetTitle("sbs.hcal.atimeblk [ns]");
   h2_hcal_atime_y->SetTitle("HCal ADC Time vs HCal y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_ps_atime_x = new TH2D("h2_ps_atime_x", "PS Time vs Tr x", 105.0, -0.45, 0.6, 200.0, -10.0, 25.0);
+  TProfile* prof_hcal_atime_y = new TProfile("prof_hcal_atime_y", "Prof hcalTimeY", 12.0, -0.85, 0.85, -10.0, 25.0);
+  prof_hcal_atime_y->SetMarkerColor(kRed);
+  prof_hcal_atime_y->SetMarkerStyle(20);
+  prof_hcal_atime_y->SetMarkerSize(2);
+
+  TH2D* h2_ps_atime_x = new TH2D("h2_ps_atime_x", "PS Time vs Tr x", 50.0, -0.45, 0.6, 200.0, -10.0, 25.0);
   h2_ps_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
   h2_ps_atime_x->GetYaxis()->SetTitle("bb.ps.atimeblk [ns]");
   h2_ps_atime_x->SetTitle("PS ADC Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_ps_atime_y = new TH2D("h2_ps_atime_y", "PS Time vs Tr y", 35.0, -0.2, 0.15, 200.0, -10.0, 25.0);
+  TProfile* prof_ps_atime_x = new TProfile("prof_ps_atime_x", "Prof PSTimeX", 50.0, -0.45, 0.6, -10.0, 25.0);
+  prof_ps_atime_x->SetMarkerColor(kRed);
+  prof_ps_atime_x->SetMarkerStyle(20);
+  prof_ps_atime_x->SetMarkerSize(2);
+
+  TH2D* h2_ps_atime_y = new TH2D("h2_ps_atime_y", "PS Time vs Tr y", 50.0, -0.2, 0.2, 200.0, -10.0, 25.0);
   h2_ps_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_ps_atime_y->GetYaxis()->SetTitle("bb.ps.atimeblk [ns]");
   h2_ps_atime_y->SetTitle("PS ADC Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_sh_atime_x = new TH2D("h2_sh_atime_x", "SH Time vs Tr x", 105.0, -0.45, 0.6, 200.0, -10.0, 25.0);
+  TProfile* prof_ps_atime_y = new TProfile("prof_ps_atime_y", "Prof PSTimeY", 50.0, -0.2, 0.2, -10.0, 25.0);
+  prof_ps_atime_y->SetMarkerColor(kRed);
+  prof_ps_atime_y->SetMarkerStyle(20);
+  prof_ps_atime_y->SetMarkerSize(2);
+
+  TH2D* h2_sh_atime_x = new TH2D("h2_sh_atime_x", "SH Time vs Tr x", 50.0, -0.45, 0.6, 200.0, -10.0, 25.0);
   h2_sh_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
   h2_sh_atime_x->GetYaxis()->SetTitle("bb.sh.atimeblk [ns]");
   h2_sh_atime_x->SetTitle("SH ADC Time vs Track x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_sh_atime_y = new TH2D("h2_sh_atime_y", "SH Time vs Tr y", 35.0, -0.2, 0.15, 200.0, -10.0, 25.0);
+  TProfile* prof_sh_atime_x = new TProfile("prof_sh_atime_x", "Prof SHTimeX", 50.0, -0.45, 0.6, -10.0, 25.0);
+  prof_sh_atime_x->SetMarkerColor(kRed);
+  prof_sh_atime_x->SetMarkerStyle(20);
+  prof_sh_atime_x->SetMarkerSize(2);
+
+  TH2D* h2_sh_atime_y = new TH2D("h2_sh_atime_y", "SH Time vs Tr y", 50.0, -0.2, 0.15, 200.0, -10.0, 25.0);
   h2_sh_atime_y->GetXaxis()->SetTitle("bb.tr.y [m]");
   h2_sh_atime_y->GetYaxis()->SetTitle("bb.sh.atimeblk [ns]");
   h2_sh_atime_y->SetTitle("SH ADC Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TProfile* prof_sh_atime_y = new TProfile("prof_sh_atime_y", "Prof SHTimeY", 50.0, -0.2, 0.15, -10.0, 25.0);
+  prof_sh_atime_y->SetMarkerColor(kRed);
+  prof_sh_atime_y->SetMarkerStyle(20);
+  prof_sh_atime_y->SetMarkerSize(2);
 
   TH2D* h2_hcalTH_atime_x = new TH2D("h2_hcalTH_atime_x", "(TH-HCal) Time vs Tr x", 37.0, -2.6, 1.1, 200.0, -20.0, 15.0);
   h2_hcalTH_atime_x->GetXaxis()->SetTitle("bb.tr.x [m]");
@@ -622,10 +659,10 @@ void QA_QE(const char *kinematic)
                 h_dy->Fill(dy_hcal);
                 h2_dxdy->Fill(dy_hcal,dx_hcal);
 
-                dx_out = dx_hcal;
-                dy_out = dy_hcal;
+                //dx_out = dx_hcal;
+                //dy_out = dy_hcal;
 
-                T_data->Fill();
+                //T_data->Fill();
 
                 if (abs(dy_hcal-dy_mean)<dy_sigma && ((abs(dx_hcal-dx_n_mean)<dx_n_sigma)||(abs(dx_hcal-dx_p_mean)<dx_p_sigma)))
                 {
@@ -656,13 +693,19 @@ void QA_QE(const char *kinematic)
                   h2_hodo_time_hcal_e->Fill(bb_hodotdc_clus_tmean,sbs_hcal_e);
 
                   h2_hcal_atime_x->Fill(sbs_hcal_x,sbs_hcal_atimeblk);
+                  prof_hcal_atime_x->Fill(sbs_hcal_x,sbs_hcal_atimeblk,1);
                   h2_hcal_atime_y->Fill(sbs_hcal_y,sbs_hcal_atimeblk);
+                  prof_hcal_atime_y->Fill(sbs_hcal_y,sbs_hcal_atimeblk,1);
 
                   h2_ps_atime_x->Fill(bb_tr_x,bb_ps_atimeblk);
+                  prof_ps_atime_x->Fill(bb_tr_x,bb_ps_atimeblk,1);
                   h2_ps_atime_y->Fill(bb_tr_y,bb_ps_atimeblk);
+                  prof_ps_atime_y->Fill(bb_tr_y,bb_ps_atimeblk,1);
 
                   h2_sh_atime_x->Fill(bb_tr_x,bb_sh_atimeblk);
+                  prof_sh_atime_x->Fill(bb_tr_x,bb_sh_atimeblk,1);
                   h2_sh_atime_y->Fill(bb_tr_y,bb_sh_atimeblk);
+                  prof_sh_atime_y->Fill(bb_tr_y,bb_sh_atimeblk,1);
 
                   hodo_hcal_coin = bb_hodotdc_clus_tmean-sbs_hcal_atimeblk;
                   hodo_ps_coin = bb_hodotdc_clus_tmean-bb_ps_atimeblk;
@@ -697,8 +740,11 @@ void QA_QE(const char *kinematic)
                   h_hcal_prim_tot_e->Fill(hcalPrimTot);
                   h_hcal_sec_prim_e->Fill(hcalSecPrim);
                   h2_hcal_primFrac_blkID->Fill(sbs_hcal_prim_id,hcalPrimTot);
+                  prof_hcal_primFrac_blkID->Fill(sbs_hcal_prim_id,hcalPrimTot,1);
                   h2_hcal_primFrac_x->Fill(sbs_hcal_x,hcalPrimTot);
+                  prof_hcal_primFrac_x->Fill(sbs_hcal_x,hcalPrimTot,1);
                   h2_hcal_primFrac_y->Fill(sbs_hcal_y,hcalPrimTot);
+                  prof_hcal_primFrac_y->Fill(sbs_hcal_y,hcalPrimTot,1);
 
                 }// end spot cuts
 
@@ -908,10 +954,13 @@ void QA_QE(const char *kinematic)
   cHCal_5->Divide(1,3);
   cHCal_5->cd(1);
   h2_hcal_primFrac_blkID->Draw("colz");
+  prof_hcal_primFrac_blkID->Draw("SAMES")
   cHCal_5->cd(2);
   h2_hcal_primFrac_x->Draw("colz");
+  prof_hcal_primFrac_x->Draw("SAMES")
   cHCal_5->cd(3);
   h2_hcal_primFrac_y->Draw("colz");
+  prof_hcal_primFrac_y->Draw("SAMES")
 
   cHCal_5->Print(outputfile);
 
@@ -949,8 +998,10 @@ void QA_QE(const char *kinematic)
   c6->Divide(1,2);
   c6->cd(1);
   h2_hcal_atime_x->Draw("colz");
+  prof_hcal_atime_x->Draw("SAMES");
   c6->cd(2);
   h2_hcal_atime_y->Draw("colz");
+  prof_hcal_atime_y->Draw("SAMES");
 
   c6->Print(outputfile);
 
@@ -958,8 +1009,10 @@ void QA_QE(const char *kinematic)
   c7->Divide(1,2);
   c7->cd(1);
   h2_ps_atime_x->Draw("colz");
+  prof_ps_atime_x->Draw("SAMES");
   c7->cd(2);
   h2_ps_atime_y->Draw("colz");
+  prof_ps_atime_y->Draw("SAMES");
 
   c7->Print(outputfile);
 
@@ -967,8 +1020,10 @@ void QA_QE(const char *kinematic)
   c8->Divide(1,2);
   c8->cd(1);
   h2_sh_atime_x->Draw("colz");
+  prof_sh_atime_x->Draw("SAMES");
   c8->cd(2);
   h2_sh_atime_y->Draw("colz");
+  prof_sh_atime_y->Draw("SAMES");
 
   c8->Print(outputfile);
 
