@@ -136,8 +136,8 @@ void QA_QE(const char *kinematic)
     IHWP_flip = 1;
     dx_n_mean = 0.0;
     dx_n_sigma = 0.5;
-    dx_p_mean = -1.541;
-    dx_p_sigma = 0.365;
+    dx_p_mean = -1.445;
+    dx_p_sigma = 0.315;
     dy_mean = -0.057;
     dy_sigma = 0.374;
     firstRun = 2506;
@@ -372,9 +372,15 @@ void QA_QE(const char *kinematic)
 
   TH1D* h_pN = new TH1D("h_pN", "Expected HCal Momentum", 100.0, 0.0, 6.0);
   h_pN->GetXaxis()->SetTitle("Expected Scattered Nucleon Momentum [GeV]");
+  h_pN->SetTitle("Expected Nucleon Momentum with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH1D* h_Sf = new TH1D("h_Sf", "HCal Sampling Fraction", 100.0, 0.0, 1.0);
-  h_Sf->GetXaxis()->SetTitle("Sampling Fraction (sbs.hcal.e*2*Mp/Q2) [GeV]");
+  TH1D* h_Sf = new TH1D("h_Sf", "HCal Sampling Fraction", 100.0, 0.0, 0.5);
+  h_Sf->GetXaxis()->SetTitle("Sampling Fraction (sbs.hcal.e*2*Mp/Q2)");
+  h_Sf->SetTitle("Sampling Fraction with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH1D* h_measE = new TH1D("h_measE", "HCal Measured Fraction", 100.0, 0.0, 0.5);
+  h_measE->GetXaxis()->SetTitle("Measured Energy / Actual Energy (sbs.hcal.e/(sqrt(Mp*Mp+pN*pN)-Mp)");
+  h_measE->SetTitle("Measured Energy Fraction with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
 
   // ~~~~~~~~~~~~~~~~~~~~ GEM plots ~~~~~~~~~~~~~~~~~~~~
@@ -461,7 +467,7 @@ void QA_QE(const char *kinematic)
   h2_shTH_atime_y->SetTitle("(TH-SH) Time vs Track y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   int QE_check = 0;
-  double hodo_hcal_coin, hodo_sh_coin, hodo_ps_coin, Sf;
+  double hodo_hcal_coin, hodo_sh_coin, hodo_ps_coin, Sf, measE;
 
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
@@ -596,6 +602,9 @@ void QA_QE(const char *kinematic)
 
                   Sf = 2 * sbs_hcal_e * Mp / e_kine_Q2;
                   h_Sf->Fill(Sf);
+
+                  measE = sbs_hcal_e / (TMath::Sqrt((Mp * Mp) + (pN * pN)) - Mp);
+                  h_measE->Fill(measE);
 
                 }// end spot cuts
 
@@ -749,9 +758,9 @@ void QA_QE(const char *kinematic)
   cHCal_2->cd(1);
   h_Sf->Draw();
   cHCal_2->cd(2);
-  
+  h_pN->Draw();
   cHCal_2->cd(3);
-  
+  h_measE->Draw();
   cHCal_2->cd(4);
   
 
@@ -769,7 +778,7 @@ void QA_QE(const char *kinematic)
   f1->SetLineColor(kRed);
   f1->Draw("SAMES");
   c5->cd(4);
-  h_pN->Draw();
+  //h_pN->Draw();
 
   c5->Print(outputfile);
 
