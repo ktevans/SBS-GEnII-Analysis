@@ -740,7 +740,7 @@ void QA_QE(const char *kinematic)
                   h_hcal_prim_tot_e->Fill(hcalPrimTot);
                   h_hcal_sec_prim_e->Fill(hcalSecPrim);
                   h2_hcal_primFrac_blkID->Fill(sbs_hcal_prim_id,hcalPrimTot);
-                  prof_hcal_primFrac_blkID->Fill(sbs_hcal_prim_id,hcalPrimTot,1);
+                  //prof_hcal_primFrac_blkID->Fill(sbs_hcal_prim_id,hcalPrimTot,1);
                   h2_hcal_primFrac_x->Fill(sbs_hcal_x,hcalPrimTot);
                   prof_hcal_primFrac_x->Fill(sbs_hcal_x,hcalPrimTot,1);
                   h2_hcal_primFrac_y->Fill(sbs_hcal_y,hcalPrimTot);
