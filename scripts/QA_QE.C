@@ -367,12 +367,12 @@ void QA_QE(const char *kinematic)
 
   // ~~~~~~~~~~~~~~~~~~~~ HCal plots ~~~~~~~~~~~~~~~~~~~~
 
-  TH2D* h2_hcal_e_x = new TH2D("h2_hcal_e_x", "HCal energy vs HCal x", 74.0, -2.6, 1.1, 200.0, 0.0, 1.5);
+  TH2D* h2_hcal_e_x = new TH2D("h2_hcal_e_x", "HCal energy vs HCal x", 24.0, -2.6, 1.1, 200.0, 0.0, 1.5);
   h2_hcal_e_x->GetXaxis()->SetTitle("sbs.hcal.x [m]");
   h2_hcal_e_x->GetYaxis()->SetTitle("sbs.hcal.e [GeV]");
   h2_hcal_e_x->SetTitle("HCal Energy vs HCal x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_hcal_e_y = new TH2D("h2_hcal_e_y", "HCal energy vs HCal y", 36.0, -0.9, 0.9, 200.0, 0.0, 1.5);
+  TH2D* h2_hcal_e_y = new TH2D("h2_hcal_e_y", "HCal energy vs HCal y", 12.0, -0.9, 0.9, 200.0, 0.0, 1.5);
   h2_hcal_e_y->GetXaxis()->SetTitle("sbs.hcal.y [m]");
   h2_hcal_e_y->GetYaxis()->SetTitle("sbs.hcal.e [GeV]");
   h2_hcal_e_y->SetTitle("HCal Energy vs HCal y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
@@ -408,12 +408,12 @@ void QA_QE(const char *kinematic)
   h_delta_Sf_measE->GetXaxis()->SetTitle("Measured Energy Fraction - Sampling Fraction");
   h_delta_Sf_measE->SetTitle("Measured Energy Fraction - Sampling Fraction with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
   
-  TH2D* h2_Sf_x = new TH2D("h2_Sf_x", "Sampling Fraction vs HCal x", 74.0, -2.6, 1.1, 100.0, 0.0, 0.5);
+  TH2D* h2_Sf_x = new TH2D("h2_Sf_x", "Sampling Fraction vs HCal x", 24.0, -2.6, 1.1, 100.0, 0.0, 0.5);
   h2_Sf_x->GetXaxis()->SetTitle("sbs.hcal.x [m]");
   h2_Sf_x->GetYaxis()->SetTitle("Sampling Fraction");
   h2_Sf_x->SetTitle("Sampling Fraction vs HCal x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_Sf_y = new TH2D("h2_Sf_y", "Sampling Fraction vs HCal y", 36.0, -0.9, 0.9, 100.0, 0.0, 0.5);
+  TH2D* h2_Sf_y = new TH2D("h2_Sf_y", "Sampling Fraction vs HCal y", 12.0, -0.9, 0.9, 100.0, 0.0, 0.5);
   h2_Sf_y->GetXaxis()->SetTitle("sbs.hcal.y [m]");
   h2_Sf_y->GetYaxis()->SetTitle("Sampling Fraction");
   h2_Sf_y->SetTitle("Sampling Fraction vs HCal y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
@@ -423,13 +423,28 @@ void QA_QE(const char *kinematic)
   h2_hcal_xy->GetYaxis()->SetTitle("sbs.hcal.x [m]");
   h2_hcal_xy->SetTitle("HCal Position with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH1D* h_hcal_prim_tot_e = new TH1D("h_hcal_prim_tot_e", "HCal Prim Energy Fraction", 100.0, 0.0, 1.0);
+  TH1D* h_hcal_prim_tot_e = new TH1D("h_hcal_prim_tot_e", "HCal Prim Energy Fraction", 100.0, 0.0, 1.1);
   h_hcal_prim_tot_e->GetXaxis()->SetTitle("sbs.hcal.clusblk.e[0] / sbs.hcal.e");
   h_hcal_prim_tot_e->SetTitle("Energy of Primary HCal Block / Total Cluster Energy with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH1D* h_hcal_sec_prim_e = new TH1D("h_hcal_sec_prim_e", "HCal Prim Sec Energy Fraction", 100.0, 0.0, 1.2);
+  TH1D* h_hcal_sec_prim_e = new TH1D("h_hcal_sec_prim_e", "HCal Prim Sec Energy Fraction", 100.0, 0.0, 1.1);
   h_hcal_sec_prim_e->GetXaxis()->SetTitle("sbs.hcal.clusblk.e[1] / sbs.hcal.clusblk.e[0]");
   h_hcal_sec_prim_e->SetTitle("Energy of Secondary HCal Block / Primary HCal Block with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_hcal_primFrac_blkID = new  TH2D("h2_hcal_primFrac_blkID", "HCal Frac per Block", 288.0, 0.0, 288.0, 100.0, 0.0, 1.0);
+  h2_hcal_primFrac_blkID->GetXaxis()->SetTitle("sbs.hcal.clusblk.id[0]");
+  h2_hcal_primFrac_blkID->GetYaxis()->SetTitle("sbs.hcal.clusblk.e[0] / sbs.hcal.e");
+  h2_hcal_primFrac_blkID->SetTitle("Energy of Primary HCal Block / Total Cluster Energy vs Primary Block ID with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_hcal_primFrac_x = new  TH2D("h2_hcal_primFrac_x", "HCal Frac per X", 24.0, -2.6, 1.1, 100.0, 0.0, 1.0);
+  h2_hcal_primFrac_x->GetXaxis()->SetTitle("sbs.hcal.x [m]");
+  h2_hcal_primFrac_x->GetYaxis()->SetTitle("sbs.hcal.clusblk.e[0] / sbs.hcal.e");
+  h2_hcal_primFrac_x->SetTitle("Energy of Primary HCal Block / Total Cluster Energy vs x with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_hcal_primFrac_y = new  TH2D("h2_hcal_primFrac_y", "HCal Frac per y", 12.0, -0.85, 0.85, 100.0, 0.0, 1.0);
+  h2_hcal_primFrac_y->GetXaxis()->SetTitle("sbs.hcal.y [m]");
+  h2_hcal_primFrac_y->GetYaxis()->SetTitle("sbs.hcal.clusblk.e[0] / sbs.hcal.e");
+  h2_hcal_primFrac_y->SetTitle("Energy of Primary HCal Block / Total Cluster Energy vs y with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
 
   // ~~~~~~~~~~~~~~~~~~~~ GEM plots ~~~~~~~~~~~~~~~~~~~~
 
@@ -454,12 +469,12 @@ void QA_QE(const char *kinematic)
   h_coin->GetXaxis()->SetTitle("Coincidence Time [ns]");
   h_coin->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_hcal_atime_x = new TH2D("h2_hcal_atime_x", "HCal time vs HCal x", 37.0, -2.6, 1.1, 200.0, -10.0, 25.0);
+  TH2D* h2_hcal_atime_x = new TH2D("h2_hcal_atime_x", "HCal time vs HCal x", 24.0, -2.6, 1.1, 200.0, -10.0, 25.0);
   h2_hcal_atime_x->GetXaxis()->SetTitle("sbs.hcal.x [m]");
   h2_hcal_atime_x->GetYaxis()->SetTitle("sbs.hcal.atimeblk [ns]");
   h2_hcal_atime_x->SetTitle("HCal ADC Time vs HCal x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_hcal_atime_y = new TH2D("h2_hcal_atime_y", "HCal time vs HCal y", 18.0, -0.9, 0.9, 200.0, -10.0, 25.0);
+  TH2D* h2_hcal_atime_y = new TH2D("h2_hcal_atime_y", "HCal time vs HCal y", 12.0, -0.85, 0.85, 200.0, -10.0, 25.0);
   h2_hcal_atime_y->GetXaxis()->SetTitle("sbs.hcal.y [m]");
   h2_hcal_atime_y->GetYaxis()->SetTitle("sbs.hcal.atimeblk [ns]");
   h2_hcal_atime_y->SetTitle("HCal ADC Time vs HCal y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
@@ -668,6 +683,9 @@ void QA_QE(const char *kinematic)
                   hcalSecPrim = sbs_hcal_sec_e / sbs_hcal_prim_e;
                   h_hcal_prim_tot_e->Fill(hcalPrimTot);
                   h_hcal_sec_prim_e->Fill(hcalSecPrim);
+                  h2_hcal_primFrac_blkID->Fill(sbs_hcal_prim_id,hcalPrimTot);
+                  h2_hcal_primFrac_x->Fill(sbs_hcal_x,hcalPrimTot);
+                  h2_hcal_primFrac_y->Fill(sbs_hcal_y,hcalPrimTot);
 
                 }// end spot cuts
 
@@ -862,6 +880,17 @@ void QA_QE(const char *kinematic)
   h_hcal_sec_prim_e->Draw();
 
   cHCal_4->Print(outputfile);
+
+  TCanvas* cHCal_5 = new TCanvas("cHCal_5", "sbsHCal_5", 1200, 1000);
+  cHCal_5->Divide(3,1);
+  cHCal_5->cd(1);
+  h2_hcal_primFrac_blkID->Draw("colz");
+  cHCal_5->cd(2);
+  h2_hcal_primFrac_x->Draw("colz");
+  cHCal_5->cd(3);
+  h2_hcal_primFrac_y->Draw("colz");
+
+  cHCal_5->Print(outputfile);
 
   TCanvas *c5 = new TCanvas("c5","bbTr", 1200, 1000);
   c5->Divide(2,2);
