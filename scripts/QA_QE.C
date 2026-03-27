@@ -954,13 +954,13 @@ void QA_QE(const char *kinematic)
   cHCal_5->Divide(1,3);
   cHCal_5->cd(1);
   h2_hcal_primFrac_blkID->Draw("colz");
-  prof_hcal_primFrac_blkID->Draw("SAMES")
+  prof_hcal_primFrac_blkID->Draw("SAMES");
   cHCal_5->cd(2);
   h2_hcal_primFrac_x->Draw("colz");
-  prof_hcal_primFrac_x->Draw("SAMES")
+  prof_hcal_primFrac_x->Draw("SAMES");
   cHCal_5->cd(3);
   h2_hcal_primFrac_y->Draw("colz");
-  prof_hcal_primFrac_y->Draw("SAMES")
+  prof_hcal_primFrac_y->Draw("SAMES");
 
   cHCal_5->Print(outputfile);
 
