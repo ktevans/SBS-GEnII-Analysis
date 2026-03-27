@@ -79,9 +79,9 @@ void QA_QE(const char *kinematic)
   Double_t sbs_hcal_x;            T->SetBranchAddress("sbs.hcal.x", &sbs_hcal_x);
   Double_t sbs_hcal_y;            T->SetBranchAddress("sbs.hcal.y", &sbs_hcal_y);
   Double_t sbs_hcal_atimeblk;     T->SetBranchAddress("sbs.hcal.atimeblk", &sbs_hcal_atimeblk); 
-  Double_t sbs_hcal_prim_e;       T->SetBranchAddress("sbs.hcal.primary_blk.e", &sbs_hcal_prim_e)
-  Double_t sbs_hcal_prim_id;      T->SetBranchAddress("sbs.hcal.primary_blk.id", &sbs_hcal_prim_id)
-  Double_t sbs_hcal_sec_e;        T->SetBranchAddress("sbs.hcal.secondary_blk.e", &sbs_hcal_sec_e)
+  Double_t sbs_hcal_prim_e;       T->SetBranchAddress("sbs.hcal.primary_blk.e", &sbs_hcal_prim_e);
+  Double_t sbs_hcal_prim_id;      T->SetBranchAddress("sbs.hcal.primary_blk.id", &sbs_hcal_prim_id);
+  Double_t sbs_hcal_sec_e;        T->SetBranchAddress("sbs.hcal.secondary_blk.e", &sbs_hcal_sec_e);
   //Double_t sbs_hcal_clus_blk_id;  T->SetBranchAddress("sbs.hcal.idblk", &sbs_hcal_clus_blk_id);
   Double_t dx_hcal;               T->SetBranchAddress("dx", &dx_hcal);
   Double_t dy_hcal;               T->SetBranchAddress("dy", &dy_hcal);
@@ -425,11 +425,11 @@ void QA_QE(const char *kinematic)
 
   TH1D* h_hcal_prim_tot_e = new TH1D("h_hcal_prim_tot_e", "HCal Prim Energy Fraction", 100.0, 0.0, 1.0);
   h_hcal_prim_tot_e->GetXaxis()->SetTitle("sbs.hcal.clusblk.e[0] / sbs.hcal.e");
-  h_hcal_prim_tot_e->setTitle("Energy of Primary HCal Block / Total Cluster Energy with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
+  h_hcal_prim_tot_e->SetTitle("Energy of Primary HCal Block / Total Cluster Energy with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
 
   TH1D* h_hcal_sec_prim_e = new TH1D("h_hcal_sec_prim_e", "HCal Prim Sec Energy Fraction", 100.0, 0.0, 1.0);
   h_hcal_sec_prim_e->GetXaxis()->SetTitle("sbs.hcal.clusblk.e[1] / sbs.hcal.clusblk.e[0]");
-  h_hcal_sec_prim_e->setTitle("Energy of Secondary HCal Block / Primary HCal Block with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
+  h_hcal_sec_prim_e->SetTitle("Energy of Secondary HCal Block / Primary HCal Block with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
 
   // ~~~~~~~~~~~~~~~~~~~~ GEM plots ~~~~~~~~~~~~~~~~~~~~
 
