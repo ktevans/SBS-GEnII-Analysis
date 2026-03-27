@@ -103,6 +103,8 @@ void QA_QE(const char *kinematic)
   int totRun;
   double Trp_max;
   double Trp_min;
+  double pN_min;
+  double pN_max;
 
   int runindex = 0;
   int runTrack = 0;
@@ -131,6 +133,8 @@ void QA_QE(const char *kinematic)
     totRun = 100;
     Trp_max = 3.5;
     Trp_min = 2.0;
+    pN_min = 0.0;
+    pN_max = 6.0;
   }
   else if(kin==3)
   {
@@ -152,6 +156,8 @@ void QA_QE(const char *kinematic)
     totRun = 354;
     Trp_max = 3.5;
     Trp_min = 2.0;
+    pN_min = 3.5;
+    pN_max = 5.5;
   }
   else if(kin==4)
   {
@@ -173,6 +179,8 @@ void QA_QE(const char *kinematic)
     totRun = 354;
     Trp_max = 4.0;
     Trp_min = 2.5;
+    pN_min = 4.0;
+    pN_max = 8.0;
   }
   else if(kin==5)
   {
@@ -194,6 +202,8 @@ void QA_QE(const char *kinematic)
     totRun = 354;
     Trp_max = 4.0;
     Trp_min = 2.5;
+    pN_min = 4.0;
+    pN_max = 8.0;
   }
   else
   {
@@ -213,6 +223,8 @@ void QA_QE(const char *kinematic)
     totRun = 500;
     Trp_max = 3.5;
     Trp_min = 2.0;
+    pN_min = 0.0;
+    pN_max = 10.0;
   }
 
   //Scan through all the entries in the TChain T
@@ -388,7 +400,7 @@ void QA_QE(const char *kinematic)
   h2_hodo_time_hcal_e->GetYaxis()->SetTitle("sbs.hcal.e [GeV]");
   h2_hodo_time_hcal_e->SetTitle("HCal Energy vs Hodo Mean Time with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH1D* h_pN = new TH1D("h_pN", "Expected HCal Momentum", 100.0, 0.0, 6.0);
+  TH1D* h_pN = new TH1D("h_pN", "Expected HCal Momentum", 100.0, pN_min, pN_max);
   h_pN->GetXaxis()->SetTitle("Expected Scattered Nucleon Momentum [GeV]");
   h_pN->SetTitle("Expected Nucleon Momentum with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
@@ -804,7 +816,7 @@ void QA_QE(const char *kinematic)
   c4->Print(outputfile);
 
   TCanvas *c4_2 = new TCanvas("c4_2","bbPS", 1200, 1000);
-  c4_2->Divide(2,2);
+  c4_2->Divide(1,2);
   c4_2->cd(1);
   h_ps_e->Draw();
   h_ps_e_anti->Draw("same");
@@ -815,10 +827,6 @@ void QA_QE(const char *kinematic)
   legend_ps->AddEntry(h_ps_e_anti, "PS with Anti-QE Cuts", "l");
   legend_ps->Draw();
   c4_2->cd(2);
-  h2_pse_trx->Draw("colz");
-  c4_2->cd(3);
-  h2_pse_try->Draw("colz");
-  c4_2->cd(4);
   h2_pse_pstime->Draw("colz");
 
   c4_2->Print(outputfile);
@@ -835,10 +843,6 @@ void QA_QE(const char *kinematic)
   legend_sh->AddEntry(h_sh_e_anti, "PS with Anti-QE Cuts", "l");
   legend_sh->Draw();
   c4_3->cd(2);
-  h2_she_trx->Draw("colz");
-  c4_3->cd(3);
-  h2_she_try->Draw("colz");
-  c4_3->cd(4);
   h2_she_shtime->Draw("colz");
 
   c4_3->Print(outputfile);
@@ -876,8 +880,18 @@ void QA_QE(const char *kinematic)
   cHCal_3->Divide(1,2);
   cHCal_3->cd(1);
   h2_Sf_x->Draw("colz");
+  cHCal_3->Update();
+  TLine *SfxL = new TLine(-2.6, 0.0795, 1.1, 0.0795);
+  SfxL->SetLineColor(kRed);
+  SfxL->SetLineWidth(3);
+  SfxL->Draw();
   cHCal_3->cd(2);
   h2_Sf_y->Draw("colz");
+  cHCal_3->Update();
+  TLine *SfyL = new TLine(-0.85, 0.0795, 0.85, 0.0795);
+  SfyL->SetLineColor(kRed);
+  SfyL->SetLineWidth(3);
+  SfyL->Draw();
 
   cHCal_3->Print(outputfile);
 
