@@ -348,6 +348,16 @@ void QA_QE(const char *kinematic)
   h_sh_e_qe->SetTitle("Shower Energy with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
   h_sh_e_qe->SetLineColor(kBlue);
 
+  TH2D* h2_ps_xy = new TH2D("h2_ps_xy", "PreShower Position", 2.0, -0.26, 0.26, 26.0, -1.1, 1.1);
+  h2_ps_xy->GetXaxis()->SetTitle("bb.ps.y [m]");
+  h2_ps_xy->GetYaxis()->SetTitle("bb.ps.x [m]");
+  h2_ps_xy->SetTitle("PreShower Position with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_sh_xy = new TH2D("h2_sh_xy", "Shower Position", 7.0, -0.26, 0.26, 27.0, -1.1, 1.1);
+  h2_sh_xy->GetXaxis()->SetTitle("bb.sh.y [m]");
+  h2_sh_xy->GetYaxis()->SetTitle("bb.sh.x [m]");
+  h2_sh_xy->SetTitle("Shower Position with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
+
   // ~~~~~~~~~~~~~~~~~~~~ HCal plots ~~~~~~~~~~~~~~~~~~~~
 
   TH2D* h2_hcal_e_x = new TH2D("h2_hcal_e_x", "HCal energy vs HCal x", 74.0, -2.6, 1.1, 200.0, 0.0, 1.5);
@@ -401,7 +411,10 @@ void QA_QE(const char *kinematic)
   h2_Sf_y->GetYaxis()->SetTitle("Sampling Fraction");
   h2_Sf_y->SetTitle("Sampling Fraction vs HCal y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
   
-
+  TH2D* h2_hcal_xy = new TH2D("h2_hcal_xy", "Shower Position", 12.0, -0.85, 0.85, 24.0, -2.6, 1.1);
+  h2_hcal_xy->GetXaxis()->SetTitle("sbs.hcal.y [m]");
+  h2_hcal_xy->GetYaxis()->SetTitle("sbs.hcal.x [m]");
+  h2_hcal_xy->SetTitle("HCal Position with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
 
   // ~~~~~~~~~~~~~~~~~~~~ GEM plots ~~~~~~~~~~~~~~~~~~~~
 
@@ -632,6 +645,10 @@ void QA_QE(const char *kinematic)
                   h2_delta_Sf_measE->Fill(measE,Sf);
                   h_delta_Sf_measE->Fill(deltaEfrac);
 
+                  h2_ps_dx->Fill(bb_ps_y,bb_ps_x);
+                  h2_sh_dx->Fill(bb_sh_y,bb_sh_x);
+                  h2_hcal_dx->Fill(sbs_hcal_y,sbs_hcal_x);
+
                 }// end spot cuts
 
               }// end W2 cut
@@ -644,8 +661,6 @@ void QA_QE(const char *kinematic)
 
       }// end vertex cut
 
-      //W2_out = e_kine_W2;
-      //helicity_out = helicity * (IHWP * IHWP_flip); //* IHWP;//-1* IHWP * helicity * IHWP_flip;
    }// end global cuts
 
   }//end event loop
@@ -712,6 +727,17 @@ void QA_QE(const char *kinematic)
 
   //Save the canvas to a pdf
   c3->Print(outputfile);
+
+  TCanvas* cPos = new TCanvas("cPos", "Cal Positions", 1200, 1000);
+  cPos->Divide(3,1);
+  cPos->cd(1);
+  h2_ps_xy->Draw("colz");
+  cPos->cd(2);
+  h2_sh_xy->Draw("colz");
+  cPos->cd(3);
+  h2_hcal_xy->Draw("colz");
+
+  cPos->Print(outputfile);
 
   TCanvas *cEp = new TCanvas("cEp", "E/p", 1200, 1000);
   cEp->cd();
