@@ -390,6 +390,17 @@ void QA_QE(const char *kinematic)
   TH1D* h_delta_Sf_measE = new TH1D("h_delta_Sf_measE", "Measured Energy Fraction - Sampling Fraction", 100.0, -0.2, 0.2);
   h_delta_Sf_measE->GetXaxis()->SetTitle("Measured Energy Fraction - Sampling Fraction");
   h_delta_Sf_measE->SetTitle("Measured Energy Fraction - Sampling Fraction with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+  
+  TH2D* h2_Sf_x = new TH2D("h2_Sf_x", "Sampling Fraction vs HCal x", 74.0, -2.6, 1.1, 100.0, 0.0, 0.5);
+  h2_Sf_x->GetXaxis()->SetTitle("sbs.hcal.x [m]");
+  h2_Sf_x->GetYaxis()->SetTitle("Sampling Fraction");
+  h2_Sf_x->SetTitle("Sampling Fraction vs HCal x with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_Sf_y = new TH2D("h2_Sf_y", "Sampling Fraction vs HCal y", 36.0, -0.9, 0.9, 100.0, 0.0, 0.5);
+  h2_Sf_y->GetXaxis()->SetTitle("sbs.hcal.y [m]");
+  h2_Sf_y->GetYaxis()->SetTitle("Sampling Fraction");
+  h2_Sf_y->SetTitle("Sampling Fraction vs HCal y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+  
 
 
   // ~~~~~~~~~~~~~~~~~~~~ GEM plots ~~~~~~~~~~~~~~~~~~~~
@@ -611,6 +622,8 @@ void QA_QE(const char *kinematic)
 
                   Sf = 2 * sbs_hcal_e * Mp / e_kine_Q2;
                   h_Sf->Fill(Sf);
+                  h2_Sf_x->Fill(sbs_hcal_x,Sf);
+                  h2_Sf_y->Fill(sbs_hcal_y,Sf);
 
                   measE = sbs_hcal_e / (TMath::Sqrt((Mp * Mp) + (p_N * p_N)) - Mp);
                   h_measE->Fill(measE);
@@ -778,6 +791,15 @@ void QA_QE(const char *kinematic)
   h2_delta_Sf_measE->Draw("colz");
 
   cHCal_2->Print(outputfile);
+
+  TCanvas *cHCal_3 = new TCanvas("cHCal_3","sbsHCal_3", 1200, 1000);
+  cHCal_3->Divide(1,2);
+  cHCal_3->cd(1);
+  h2_Sf_x->Draw("colz");
+  cHCal_3->cd(2);
+  h2_Sf_y->Draw("colz");
+
+  cHCal_3->Print(outputfile);
 
   TCanvas *c5 = new TCanvas("c5","bbTr", 1200, 1000);
   c5->Divide(2,2);
