@@ -864,7 +864,7 @@ void QA_QE(const char *kinematic)
   h_delta_Sf_measE->Draw();
   cHCal_2->cd(4);
   h2_delta_Sf_measE->Draw("colz");
-  TF1 *f2 = new TF1("f2", "x",0.0,0.5);
+  TF1 *f2 = new TF1("f2", "x",0.0,0.4);
   f2->SetLineColor(kRed);
   f2->Draw("SAMES");
 
