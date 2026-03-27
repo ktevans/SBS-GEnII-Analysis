@@ -280,7 +280,7 @@ void QA_QE(const char *kinematic)
 
   TProfile* h2_eovp_runnum_prof = new TProfile("h2_eovp_runnum_prof", "Prof E/p", totRun, 0, totRun, 0.8, 1.2);
   h2_eovp_runnum_prof->SetMarkerColor(kRed);
-  h2_eovp_runnum_prof->SetMarkerStyle(20);
+  h2_eovp_runnum_prof->SetMarkerStyle(30);
 
   TH2D* h2_eovp_trx = new TH2D("h2_eovp_trx", "E/p vs trx", 100, -0.45, 0.6, 100.0, 0.5, 1.5);
   h2_eovp_trx->GetYaxis()->SetTitle("E/p");
@@ -784,6 +784,7 @@ void QA_QE(const char *kinematic)
   cEp->Update();
   TLine *Ep1 = new TLine(0.0, 1.0, totRun, 1.0);
   Ep1->SetLineColor(kRed);
+  Ep1->SetLineWidth(30);
   Ep1->Draw();
 
   cEp->Print(outputfile);
