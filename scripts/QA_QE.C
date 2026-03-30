@@ -98,6 +98,8 @@ void QA_QE(const char *kinematic)
   double Trp_min;
   double pN_min;
   double pN_max;
+  double W2_cut_min;
+  double W2_cut_max;
 
   int runindex = 0;
   int runTrack = 0;
@@ -126,6 +128,8 @@ void QA_QE(const char *kinematic)
     Trp_min = 2.0;
     pN_min = 0.0;
     pN_max = 6.0;
+    W2_cut_min = 0.0;
+    W2_cut_max = 1.6;
   }
   else if(kin==3)
   {
@@ -147,6 +151,8 @@ void QA_QE(const char *kinematic)
     Trp_min = 2.0;
     pN_min = 3.5;
     pN_max = 5.5;
+    W2_cut_min = 0.0;
+    W2_cut_max = 2.0;
   }
   else if(kin==4)
   {
@@ -168,6 +174,8 @@ void QA_QE(const char *kinematic)
     Trp_min = 2.5;
     pN_min = 5.0;
     pN_max = 7.0;
+    W2_cut_min = -1.0;
+    W2_cut_max = 2.0;
   }
   else if(kin==5)
   {
@@ -189,6 +197,8 @@ void QA_QE(const char *kinematic)
     Trp_min = 2.5;
     pN_min = 5.0;
     pN_max = 7.0;
+    W2_cut_min = -1.0;
+    W2_cut_max = 2.0;
   }
   else
   {
@@ -210,6 +220,8 @@ void QA_QE(const char *kinematic)
     Trp_min = 2.0;
     pN_min = 0.0;
     pN_max = 10.0;
+    W2_cut_min = -2.0;
+    W2_cut_max = 8.0;
   }
 
   //Scan through all the entries in the TChain T
@@ -1078,7 +1090,7 @@ void QA_QE(const char *kinematic)
   summary->cd();
   TPaveText *pt = new TPaveText(.05,.1,.95,.8);
   pt->AddText("Global Cuts: ");
-  pt->AddText("bb.ps.e>0.0 && bb.gem.track.nhits>=3 && bb.gem.track.chi2ndf[0]<=15 && sbs.hcal.e>0.025");
+  pt->AddText(Form("bb.ps.e>0.0 && bb.gem.track.nhits>=3 && bb.gem.track.chi2ndf[0]<=15 && sbs.hcal.e>0.025 && %.1f<e.kine.W2<%.1f",W2_cut_min,W2_cut_max));
   pt->AddText("(IHWP==-1.0 || IHWP==1.0) && optics_valid_min<(bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0");
   pt->AddText("Vertex Cut: abs(bb.tr.vz)<0.27");
   pt->AddText("PreShower Cut: bb.ps.e>0.2");
