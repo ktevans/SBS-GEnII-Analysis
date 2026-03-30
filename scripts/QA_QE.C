@@ -877,10 +877,10 @@ void QA_QE(const char *kinematic)
   h_ps_e->Draw();
   h_ps_e_anti->Draw("same");
   h_ps_e_qe->Draw("same");
-  auto legend_ps = new TLegend(0.55,0.7,0.9,0.9);
-  legend_ps->AddEntry(h_ps_e, "PS with Global Cuts", "l");
-  legend_ps->AddEntry(h_ps_e_qe, "PS with QE Cuts", "l");
-  legend_ps->AddEntry(h_ps_e_anti, "PS with Anti-QE Cuts", "l");
+  auto legend_ps = new TLegend(0.55,0.7,0.95,0.9);
+  legend_ps->AddEntry(h_ps_e, "PS with Global, Vertex, and W2 Cuts", "l");
+  legend_ps->AddEntry(h_ps_e_qe, "(PS with Global, Vertex, and W2 Cuts) + QE Cuts", "l");
+  legend_ps->AddEntry(h_ps_e_anti, "(PS with Global, Vertex, and W2 Cuts) + Anti-QE Cuts", "l");
   legend_ps->Draw();
   c4_2->cd(2);
   h2_pse_pstime->Draw("colz");
@@ -893,10 +893,10 @@ void QA_QE(const char *kinematic)
   h_sh_e->Draw();
   h_sh_e_anti->Draw("same");
   h_sh_e_qe->Draw("same");
-  auto legend_sh = new TLegend(0.55,0.7,0.9,0.9);
-  legend_sh->AddEntry(h_sh_e, "SH with Global Cuts", "l");
-  legend_sh->AddEntry(h_sh_e_qe, "SH with QE Cuts", "l");
-  legend_sh->AddEntry(h_sh_e_anti, "SH with Anti-QE Cuts", "l");
+  auto legend_sh = new TLegend(0.55,0.7,0.95,0.9);
+  legend_sh->AddEntry(h_sh_e, "SH with Global, Vertex, and W2 Cuts", "l");
+  legend_sh->AddEntry(h_sh_e_qe, "(SH with Global, Vertex, and W2 Cuts) + QE Cuts", "l");
+  legend_sh->AddEntry(h_sh_e_anti, "(SH with Global, Vertex, and W2 Cuts) + Anti-QE Cuts", "l");
   legend_sh->Draw();
   c4_3->cd(2);
   h2_she_shtime->Draw("colz");
@@ -909,10 +909,10 @@ void QA_QE(const char *kinematic)
   h_hcal_e->Draw();
   h_hcal_e_anti->Draw("same");
   h_hcal_e_qe->Draw("same");
-  auto legend_hcal = new TLegend(0.55,0.7,0.9,0.9);
-  legend_hcal->AddEntry(h_hcal_e, "HCal with Global Cuts", "l");
-  legend_hcal->AddEntry(h_hcal_e_qe, "HCal with QE Cuts", "l");
-  legend_hcal->AddEntry(h_hcal_e_anti, "HCal with Anti-QE Cuts", "l");
+  auto legend_hcal = new TLegend(0.55,0.7,0.95,0.9);
+  legend_hcal->AddEntry(h_hcal_e, "HCal with Global, Vertex, and W2 Cuts", "l");
+  legend_hcal->AddEntry(h_hcal_e_qe, "(HCal with Global, Vertex, and W2 Cuts) + QE Cuts", "l");
+  legend_hcal->AddEntry(h_hcal_e_anti, "(HCal with Global, Vertex, and W2 Cuts) + Anti-QE Cuts", "l");
   legend_hcal->Draw();
   //c4_4->cd(2);
 
