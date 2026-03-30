@@ -663,7 +663,7 @@ void QA_QE(const char *kinematic)
         h2_coin_W2->Fill(e_kine_W2,adc_coin);
 
 
-        if (bb_ps_e>0.15)
+        if (bb_ps_e>0.2)
         {
 
           if (abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
