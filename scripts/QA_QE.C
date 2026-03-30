@@ -126,8 +126,8 @@ void QA_QE(const char *kinematic)
     totRun = 130;
     Trp_max = 3.5;
     Trp_min = 2.0;
-    pN_min = 0.0;
-    pN_max = 6.0;
+    pN_min = 1.5;
+    pN_max = 3.5;
     W2_cut_min = 0.0;
     W2_cut_max = 1.6;
   }
