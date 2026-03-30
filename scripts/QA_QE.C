@@ -39,13 +39,6 @@ void QA_QE(const char *kinematic)
 
   TTree *T_data = new TTree("T_data", "Analysis Data Tree");
 
-  //double dx_out, dy_out, W2_out;
-  //int helicity_out;
-  //T_data->Branch("dx", &dx_out, "dx/D");
-  //T_data->Branch("dy", &dy_out, "dy/D");
-  //T_data->Branch("W2", &W2_out, "W2/D");
-  //T_data->Branch("helicity", &helicity_out, "helicity/I");
-
   //TChain* T = new TChain("Parse");
   TChain* T = new TChain("Tout");
   T->Add(inputfile);
@@ -344,7 +337,7 @@ void QA_QE(const char *kinematic)
   TH2D* h2_she_shtime = new TH2D("h2_she_shtime", "SHe vs SHtime", 100.0, 0.0, 3.0, 200.0, -10.0, 25.0);
   h2_she_shtime->GetXaxis()->SetTitle("bb.sh.e [GeV]");
   h2_she_shtime->GetYaxis()->SetTitle("bb.sh.atimeblk [ns]");
-  h2_she_shtime->SetTitle("Shower Energy vs PreShower ADC Time with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
+  h2_she_shtime->SetTitle("Shower Energy vs Shower ADC Time with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
   TH1D* h_sh_e = new TH1D("h_sh_e", "Shower Energy", 100.0, 0.0, 3.0);
   h_sh_e->GetXaxis()->SetTitle("bb.sh.e [GeV]");
@@ -465,6 +458,20 @@ void QA_QE(const char *kinematic)
   prof_hcal_primFrac_y->SetMarkerColor(kRed);
   prof_hcal_primFrac_y->SetMarkerStyle(20);
   prof_hcal_primFrac_y->SetMarkerSize(2);
+
+  TH1D* h_hcal_e = new TH1D("h_hcal_e", "HCal Energy", 100.0, 0.0, 1.0);
+  h_hcal_e->GetXaxis()->SetTitle("sbs.hcal.e [GeV]");
+  h_hcal_e->SetTitle("HCal Energy with Global, Vertex, and W2 Cuts");
+
+  TH1D* h_hcal_e_anti = new TH1D("h_hcal_e_anti", "HCal Energy (anti-QE cuts)", 100.0, 0.0, 1.0);
+  h_hcal_e_anti->GetXaxis()->SetTitle("sbs.hcal.e [GeV]");
+  h_hcal_e_anti->SetTitle("HCal Energy with Global, Vertex, and W2 Cuts and Anti - (E/p, Coin, GRINCH and Spot) Cuts");
+  h_hcal_e_anti->SetLineColor(kRed);
+
+  TH1D* h_hcal_e_qe = new TH1D("h_hcal_e_qe", "HCal Energy (QE cuts)", 100.0, 0.0, 1.0);
+  h_hcal_e_qe->GetXaxis()->SetTitle("bb.ps.e [GeV]");
+  h_hcal_e_qe->SetTitle("HCal Energy with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
+  h_hcal_e_qe->SetLineColor(kBlue);
 
   // ~~~~~~~~~~~~~~~~~~~~ GEM plots ~~~~~~~~~~~~~~~~~~~~
 
@@ -618,11 +625,13 @@ void QA_QE(const char *kinematic)
         {
           h_ps_e->Fill(bb_ps_e);
           h_sh_e->Fill(bb_sh_e);
+          h_hcal_e->Fill(sbs_hcal_e);
 
           if (abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2 && ((abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_n_mean)<dx_n_sigma) || (abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_p_mean)<dx_p_sigma)) && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
           {
             h_ps_e_qe->Fill(bb_ps_e);
             h_sh_e_qe->Fill(bb_sh_e);
+            h_hcal_e_qe->Fill(sbs_hcal_e);
             QE_check = 1;
           } // end QE cuts
 
@@ -630,6 +639,7 @@ void QA_QE(const char *kinematic)
           {
             h_ps_e_anti->Fill(bb_ps_e);
             h_sh_e_anti->Fill(bb_sh_e);
+            h_hcal_e_anti->Fill(sbs_hcal_e);
           } // en anti-QE check
         }
 
@@ -884,14 +894,29 @@ void QA_QE(const char *kinematic)
   h_sh_e_anti->Draw("same");
   h_sh_e_qe->Draw("same");
   auto legend_sh = new TLegend(0.55,0.7,0.9,0.9);
-  legend_sh->AddEntry(h_sh_e, "PS with Global Cuts", "l");
-  legend_sh->AddEntry(h_sh_e_qe, "PS with QE Cuts", "l");
-  legend_sh->AddEntry(h_sh_e_anti, "PS with Anti-QE Cuts", "l");
+  legend_sh->AddEntry(h_sh_e, "SH with Global Cuts", "l");
+  legend_sh->AddEntry(h_sh_e_qe, "SH with QE Cuts", "l");
+  legend_sh->AddEntry(h_sh_e_anti, "SH with Anti-QE Cuts", "l");
   legend_sh->Draw();
   c4_3->cd(2);
   h2_she_shtime->Draw("colz");
 
   c4_3->Print(outputfile);
+
+  TCanvas *c4_4 = new TCanvas("c4_4","sbsHCalE", 1200, 1000);
+  c4_4->Divide(1,2);
+  c4_4->cd(1);
+  h_hcal_e->Draw();
+  h_hcal_e_anti->Draw("same");
+  h_hcal_e_qe->Draw("same");
+  auto legend_hcal = new TLegend(0.55,0.7,0.9,0.9);
+  legend_hcal->AddEntry(h_hcal_e, "HCal with Global Cuts", "l");
+  legend_hcal->AddEntry(h_hcal_e_qe, "HCal with QE Cuts", "l");
+  legend_hcal->AddEntry(h_hcal_e_anti, "HCal with Anti-QE Cuts", "l");
+  legend_hcal->Draw();
+  //c4_4->cd(2);
+
+  c4_4->Print(outputfile);
 
   TCanvas *cHCal = new TCanvas("cHCal","sbsHCal", 1200, 1000);
   cHCal->Divide(2,2);
@@ -1130,6 +1155,9 @@ void QA_QE(const char *kinematic)
   h2_hcalTH_atime_y->Write();
   h2_psTH_atime_y->Write();
   h2_shTH_atime_y->Write();
+  h_hcal_e->Write();
+  h_hcal_e_qe->Write();
+  h_hcal_e_anti->Write();
 
   fout->Write();
   T_data->Delete();
