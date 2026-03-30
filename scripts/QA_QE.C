@@ -893,7 +893,7 @@ void QA_QE(const char *kinematic)
   h_sh_e->Draw();
   h_sh_e_anti->Draw("same");
   h_sh_e_qe->Draw("same");
-  auto legend_sh = new TLegend(0.55,0.7,0.95,0.9);
+  auto legend_sh = new TLegend(0.05,0.7,0.4,0.9);
   legend_sh->AddEntry(h_sh_e, "SH with Global, Vertex, and W2 Cuts", "l");
   legend_sh->AddEntry(h_sh_e_qe, "(SH with Global, Vertex, and W2 Cuts) + QE Cuts", "l");
   legend_sh->AddEntry(h_sh_e_anti, "(SH with Global, Vertex, and W2 Cuts) + Anti-QE Cuts", "l");
