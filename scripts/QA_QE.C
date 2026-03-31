@@ -27,19 +27,17 @@
 void QA_QE(const char *kinematic)
 {
 
-  int kin = 5;
+  int kin = 2;
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
   TString inputfile = Form("/volatile/halla/sbs/ktevans/QA/QE_data_%s_sbs100p_nucleon_np_model2.root",kinematic);
-  //TString inputfile = Form("/volatile/halla/sbs/ktevans/KateJackSBSAnalysis/KJ_parsed_GEn_pass2_%s_He3_100.root",kinematic);
   TString outputfile = Form("plots/QA_parsed_GEn_pass3_%s_He3_dxdy.pdf",kinematic);
   TString outfile = Form("outfiles/QA_parsed_GEn_pass3_%s_He3_dxdy.root",kinematic);
   TFile *fout = new TFile(outfile,"RECREATE");
 
   TTree *T_data = new TTree("T_data", "Analysis Data Tree");
 
-  //TChain* T = new TChain("Parse");
   TChain* T = new TChain("Tout");
   T->Add(inputfile);
 
@@ -78,7 +76,6 @@ void QA_QE(const char *kinematic)
   //Double_t sbs_hcal_clus_blk_id;  T->SetBranchAddress("sbs.hcal.idblk", &sbs_hcal_clus_blk_id);
   Double_t dx_hcal;               T->SetBranchAddress("dx", &dx_hcal);
   Double_t dy_hcal;               T->SetBranchAddress("dy", &dy_hcal);
-  //Double_t IHWP;                  T->SetBranchAddress("IHWP", &IHWP);
   Int_t IHWP;                     T->SetBranchAddress("IHWP", &IHWP);
 
   double optics_valid_min;
@@ -428,10 +425,20 @@ void QA_QE(const char *kinematic)
   h2_Sf_y->GetYaxis()->SetTitle("Sampling Fraction");
   h2_Sf_y->SetTitle("Sampling Fraction vs HCal y with Global, Vertex, E/p, PSe, Coin, GRINCH, W2, and Spot Cuts");
 
-  TH2D* h2_hcal_xy = new TH2D("h2_hcal_xy", "Shower Position", 12.0, -0.85, 0.85, 24.0, -2.6, 1.1);
+  TH2D* h2_hcal_xy = new TH2D("h2_hcal_xy", "HCal Position", 12.0, -0.85, 0.85, 24.0, -2.6, 1.1);
   h2_hcal_xy->GetXaxis()->SetTitle("sbs.hcal.y [m]");
   h2_hcal_xy->GetYaxis()->SetTitle("sbs.hcal.x [m]");
   h2_hcal_xy->SetTitle("HCal Position with Global, Vertex, E/p, Coin, GRINCH, W2, and Spot Cuts");
+
+  TH2D* h2_hcal_xy_proton = new TH2D("h2_hcal_xy_proton", "HCal Position", 12.0, -0.85, 0.85, 24.0, -2.6, 1.1);
+  h2_hcal_xy_proton->GetXaxis()->SetTitle("sbs.hcal.y [m]");
+  h2_hcal_xy_proton->GetYaxis()->SetTitle("sbs.hcal.x [m]");
+  h2_hcal_xy_proton->SetTitle("HCal Position with Global, Vertex, E/p, Coin, GRINCH, W2, and Proton Spot Cuts");
+
+  TH2D* h2_hcal_xy_neutron = new TH2D("h2_hcal_xy_neutron", "HCal Position", 12.0, -0.85, 0.85, 24.0, -2.6, 1.1);
+  h2_hcal_xy_neutron->GetXaxis()->SetTitle("sbs.hcal.y [m]");
+  h2_hcal_xy_neutron->GetYaxis()->SetTitle("sbs.hcal.x [m]");
+  h2_hcal_xy_neutron->SetTitle("HCal Position with Global, Vertex, E/p, Coin, GRINCH, W2, and Neutron Spot Cuts");
 
   TH1D* h_hcal_prim_tot_e = new TH1D("h_hcal_prim_tot_e", "HCal Prim Energy Fraction", 100.0, 0.0, 1.1);
   h_hcal_prim_tot_e->GetXaxis()->SetTitle("sbs.hcal.clusblk.e[0] / sbs.hcal.e");
@@ -685,6 +692,16 @@ void QA_QE(const char *kinematic)
                 //dy_out = dy_hcal;
 
                 //T_data->Fill();
+
+                if (abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_p_mean)<dx_p_sigma)
+                {
+                  h2_hcal_xy_proton->Fill(sbs_hcal_y,sbs_hcal_x);
+                }
+
+                if (abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_n_mean)<dx_n_sigma)
+                {
+                  h2_hcal_xy_neutron->Fill(sbs_hcal_y,sbs_hcal_x);
+                }
 
                 if (abs(dy_hcal-dy_mean)<dy_sigma && ((abs(dx_hcal-dx_n_mean)<dx_n_sigma)||(abs(dx_hcal-dx_p_mean)<dx_p_sigma)))
                 {
@@ -1016,6 +1033,15 @@ void QA_QE(const char *kinematic)
   h_pN->Draw();
 
   c5->Print(outputfile);
+
+  TCanvas *c5_2 = new TCanvas("c5_2","HCalPos", 1200, 1000);
+  c5_2->Divide(2,1);
+  c5_2->cd(1);
+  h2_hcal_xy_proton->Draw("colz");
+  c5_2->cd(2);
+  h2_hcal_xy_neutron->Draw("colz");
+
+  c5_2->Print(outputfile);
 
   TCanvas *coinTime = new TCanvas("coinTime", "Coincidence Time", 1200, 1000);
   coinTime->cd();
