@@ -245,6 +245,7 @@ void MissingMom(const char *kinematic, int kin)
   
   TF1 *f = new TF1("f",[=](double *x, double */*p*/){return h_prof_pol_p->Interpolate(x[0]);},h_prof_pol_p->GetXaxis()->GetXmin(), h_prof_pol_p->GetXaxis()->GetXmax(), 0);
   f->Draw("same");
+  f->Write();
 
   TSpline3 *spline3 = nullptr;
   delete spline3;
