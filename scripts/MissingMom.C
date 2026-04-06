@@ -23,6 +23,11 @@
 #include <math.h>
 #include <stack>
 
+//Doubl_t myfunction(Double_t *x, Double_t *par)
+//{
+  //return par[0] + par[1]*cos(x[0]) + par[2]*sin(x[0]) + par[3]*cos(2*x[0]) + par[4]*sin(2*x[0]) + par[5]*cos(3*x[0]) + par[6]*sin(3*x[0]);  
+//}
+
 void MissingMom(const char *kinematic, int kin)
 {
 
@@ -253,6 +258,19 @@ void MissingMom(const char *kinematic, int kin)
   spline3 = new TSpline3(h_prof_pol_p, "b1e1", f->Derivative(-3.5), f->Derivative(3.0));
   spline3->SetLineColor(kGreen);
   spline3->Draw("same");
+
+  TCanvas *c4 = new TCanvas("c4", "Profile Fitting", 100,100,700,700);
+  c4->cd();
+
+  TF1 *fit1 = new TF1("fit1", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x) + [5]*cos(3*x) + [6]*sin(3*x)", -3.5, 3.0);
+  fit1->SetParameters(1,2,3,4,5,6,7);
+  fit1->SetLineColor(kRed);
+
+  h_prof_pol_p->Fit("fit1");
+
+  h_prof_pol_p->Draw();
+  fit1->Draw("SAMES");
+  gStyle->SetOptFit(1111);
   
   fout->Write();
 }
