@@ -262,7 +262,7 @@ void MissingMom(const char *kinematic, int kin)
   TCanvas *c4 = new TCanvas("c4", "Profile Fitting", 100,100,700,700);
   c4->cd();
 
-  TF1 *fit1 = new TF1("fit1", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x) + [5]*cos(3*x) + [6]*sin(3*x)", -3.5, 3.0);
+  TF1 *fit1 = new TF1("fit1", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)", -3.5, 3.0); // + [5]*cos(3*x) + [6]*sin(3*x)
   fit1->SetParameters(1,2,3,4,5,6,7);
   fit1->SetLineColor(kRed);
 
