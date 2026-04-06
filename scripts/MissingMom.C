@@ -244,32 +244,39 @@ void MissingMom(const char *kinematic, int kin)
   //c1->Print(outputfile);
   c2->Print(outputfile);
 
-  TCanvas *c3 = new TCanvas("c3", "Profile Fitting", 100,100,700,700);
+  TCanvas *c3 = new TCanvas("c3", "Neutron Profile Fitting", 100,100,700,700);
   c3->cd();
-  h_prof_pol_p->Draw();
+  h_prof_pol_n->Draw();
+
+  TF1 *fitn = new TF1("fitn", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x) + [5]*cos(3*x) + [6]*sin(3*x) + [7]*cos(4*x) + [8]*sin(4*x)", -3.5, 3.0); // + [5]*cos(3*x) + [6]*sin(3*x)
+  fitn->SetParameters(1,2,3,4,5,6,7,8,9);
+  fitn->SetLineColor(kRed);
+
+  h_prof_pol_n->Fit("fitn");
+  fitn->Draw("SAMES");
+  gStyle->SetOptFit(1111);
   
-  TF1 *f = new TF1("f",[=](double *x, double */*p*/){return h_prof_pol_p->Interpolate(x[0]);},h_prof_pol_p->GetXaxis()->GetXmin(), h_prof_pol_p->GetXaxis()->GetXmax(), 0);
-  f->Draw("same");
-  f->Write();
+  //TF1 *f = new TF1("f",[=](double *x, double */*p*/){return h_prof_pol_p->Interpolate(x[0]);},h_prof_pol_p->GetXaxis()->GetXmin(), h_prof_pol_p->GetXaxis()->GetXmax(), 0);
+  //f->Draw("same");
+  //f->Write();
 
-  TSpline3 *spline3 = nullptr;
-  delete spline3;
+  //TSpline3 *spline3 = nullptr;
+  //delete spline3;
+  //spline3 = new TSpline3(h_prof_pol_p, "b1e1", f->Derivative(-3.5), f->Derivative(3.0));
+  //spline3->SetLineColor(kGreen);
+  //spline3->Draw("same");
 
-  spline3 = new TSpline3(h_prof_pol_p, "b1e1", f->Derivative(-3.5), f->Derivative(3.0));
-  spline3->SetLineColor(kGreen);
-  spline3->Draw("same");
-
-  TCanvas *c4 = new TCanvas("c4", "Profile Fitting", 100,100,700,700);
+  TCanvas *c4 = new TCanvas("c4", "Proton Profile Fitting", 100,100,700,700);
   c4->cd();
 
-  TF1 *fit1 = new TF1("fit1", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x) + [5]*cos(3*x) + [6]*sin(3*x) + [7]*cos(4*x) + [8]*sin(4*x)", -3.5, 3.0); // + [5]*cos(3*x) + [6]*sin(3*x)
-  fit1->SetParameters(1,2,3,4,5,6,7,8,9);
-  fit1->SetLineColor(kRed);
+  TF1 *fitp = new TF1("fitp", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x) + [5]*cos(3*x) + [6]*sin(3*x) + [7]*cos(4*x) + [8]*sin(4*x)", -3.5, 3.0); // + [5]*cos(3*x) + [6]*sin(3*x)
+  fitp->SetParameters(1,2,3,4,5,6,7,8,9);
+  fitp->SetLineColor(kRed);
 
-  h_prof_pol_p->Fit("fit1");
+  h_prof_pol_p->Fit("fitp");
 
   h_prof_pol_p->Draw();
-  fit1->Draw("SAMES");
+  fitp->Draw("SAMES");
   gStyle->SetOptFit(1111);
   
   fout->Write();
