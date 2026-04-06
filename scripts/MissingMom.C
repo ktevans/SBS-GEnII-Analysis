@@ -239,5 +239,19 @@ void MissingMom(const char *kinematic, int kin)
   //c1->Print(outputfile);
   c2->Print(outputfile);
 
+  TCanvas *c3 = new TCanvas("c3", "Profile Fitting", 100,100,700,700);
+  c3->cd();
+  h_prof_pol_p->Draw();
+  
+  TF1 *f = new TF1("f",[=](double *x, double */*p*/){return h_prof_pol_p->Interpolate(x[0]);},h_prof_pol_p->GetXaxis()->GetXmin(), h_prof_pol_p->GetXaxis()->GetXmax(), 0);
+  f->Draw("same");
+
+  TSpline3 *spline3 = nullptr;
+  delete spline3;
+
+  spline3 = new TSpline3(h_prof_pol_p, "b1e1", f->Derivative(-3.5), f->Derivative(3.0));
+  spline3->SetLineColor(kGreen);
+  spline3->Draw("same");
+  
   fout->Write();
 }
