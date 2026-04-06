@@ -249,8 +249,8 @@ void MissingMom(const char *kinematic, int kin)
   h_prof_pol_n->Draw();
 
   //TF1 *fitn = new TF1("fitn", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x) + [5]*cos(3*x) + [6]*sin(3*x) + [7]*cos(4*x) + [8]*sin(4*x) + [9]*cos(5*x) + [10]*sin(5*x)", -3.5, 3.0);
-  TF1 *fitn = new TF1("fitn", "[0] + [1]*x + [2]*x*x + [3]*x*x*x + [4]*x*x*x*x + [5]*x*x*x*x*x + [6]*x*x*x*x*x*x + [7]*x*x*x*x*x*x*x + [8]*x*x*x*x*x*x*x*x", -3.5, 3.0);
-  fitn->SetParameters(1,2,3,4,5,6,7,8,9);
+  TF1 *fitn = new TF1("fitn", "[0] + [1]*x + [2]*TMath::Power(x,2) + [3]*TMath::Power(x,3) + [4]*TMath::Power(x,4) + [5]*TMath::Power(x,5) + [6]*TMath::Power(x,6) + [7]*TMath::Power(x,7) + [8]*TMath::Power(x,8) + [9]*TMath::Power(x,9)", -3.5, 3.0);
+  fitn->SetParameters(1,2,3,4,5,6,7,8,9,10);
   fitn->SetLineColor(kRed);
 
   h_prof_pol_n->Fit("fitn");
