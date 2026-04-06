@@ -94,14 +94,14 @@ void MissingMom(const char *kinematic, int kin)
     n_max = 0.3;
   }
 
-  else
-  {
-    dx_p_shift = 0.0;
-    dx_n_shift = 0.0;
-    beam_e = 20.0;
-    n_min = -2.0;
-    n_max = 2.0;
-  }
+  //else
+  //{
+    //dx_p_shift = 0.0;
+    //dx_n_shift = 0.0;
+    //beam_e = 20.0;
+    //n_min = -2.0;
+    //n_max = 2.0;
+  //}
 
   //Scan through all the entries in the TChain T
   //If the rootfiles are empty or don't exist, there will be 0 entries
