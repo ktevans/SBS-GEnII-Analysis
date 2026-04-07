@@ -241,10 +241,14 @@ void coin_accidentals(const char *kinematic)
   h_acc_low->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, dy, and W2 Cuts");
   h_acc_low->SetFillColor(kBlue);
 
-  TH1D* h_acc_high = new TH1D("h_acc_high", "lowCoinCut", 320.0, -40.0, 40.0);
+  TH1D* h_acc_low_mean = new TH1D("h_acc_low_mean", "lowCoinCut", 320.0, -30.0, -20.0);
+
+  TH1D* h_acc_high = new TH1D("h_acc_high", "highCoinCut", 320.0, -40.0, 40.0);
   h_acc_high->GetXaxis()->SetTitle("Coincidence Time [ns]");
   h_acc_high->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, dy, and W2 Cuts");
   h_acc_high->SetFillColor(kRed);
+
+  TH1D* h_acc_high_mean = new TH1D("h_acc_high_mean", "highCoinCut", 320.0, 20.0, 30.0);
 
   int QE_check = 0;
   double hodo_hcal_coin, hodo_sh_coin, hodo_ps_coin, Sf, measE, deltaEfrac, hcalPrimTot, hcalSecPrim;
@@ -282,8 +286,8 @@ void coin_accidentals(const char *kinematic)
 
   coin1->Print(outputfile+"(");
 
-  std::cout << "\nLower Mean: " << h_acc_low->GetMean(2) << " +/- " << h_acc_low->GetMean(12) << "\n";
-  std::cout << "\nUpper Mean: " << h_acc_high->GetMean(2) << " +/- " << h_acc_high->GetMean(12) << "\n";
+  std::cout << "\nLower Mean: " << h_acc_low_mean->GetMean(2) << " +/- " << h_acc_low_mean->GetMean(12) << "\n";
+  std::cout << "\nUpper Mean: " << h_acc_high_mean->GetMean(2) << " +/- " << h_acc_high_mean->GetMean(12) << "\n";
 
   //TCanvas *coin2 = new TCanvas("coin2", "coincidence", 1200, 1000);
   //coin2->cd();
