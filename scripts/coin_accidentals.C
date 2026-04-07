@@ -238,12 +238,12 @@ void coin_accidentals(const char *kinematic)
   TH1D* h_acc_low = new TH1D("h_acc_low", "lowCoinCut", 320.0, -40.0, 40.0);
   h_acc_low->GetXaxis()->SetTitle("Coincidence Time [ns]");
   h_acc_low->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, dy, and W2 Cuts");
-  h_acc_low->SetFillAlpha(kBlue,0.5);
+  h_acc_low->SetColors(kBlue,-1,kBlue);
 
   TH1D* h_acc_high = new TH1D("h_acc_high", "lowCoinCut", 320.0, -40.0, 40.0);
   h_acc_high->GetXaxis()->SetTitle("Coincidence Time [ns]");
   h_acc_high->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, dy, and W2 Cuts");
-  h_acc_high->SetFillAlpha(kRed,0.5);
+  h_acc_high->SetColors(kRed,-1,kRed);
 
   int QE_check = 0;
   double hodo_hcal_coin, hodo_sh_coin, hodo_ps_coin, Sf, measE, deltaEfrac, hcalPrimTot, hcalSecPrim;
