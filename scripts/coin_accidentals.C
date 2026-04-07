@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <TH1.h>
 #include <TH2.h>
 #include <TStyle.h>
 #include <TGraph.h>
