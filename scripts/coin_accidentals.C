@@ -277,7 +277,7 @@ void coin_accidentals(const char *kinematic)
   coin1->SetLogy();
   h_coin->Draw();
 
-  coin1->Print("("+outputfile);
+  coin1->Print(outputfile+"(");
 
   TCanvas *coin2 = new TCanvas("coin2", "coincidence", 1200, 1000);
   coin2->cd();
