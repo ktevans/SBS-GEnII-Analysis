@@ -266,11 +266,13 @@ void coin_accidentals(const char *kinematic)
       if(adc_coin<30 && adc_coin>20)
       {
         h_acc_high->Fill(adc_coin);
+        h_acc_high_mean->Fill(adc_coin);
       }
 
       if(adc_coin<-20 && adc_coin>-30)
       {
         h_acc_low->Fill(adc_coin);
+        h_acc_low_mean->Fill(adc_coin);
       }
 
     }// end global cuts
