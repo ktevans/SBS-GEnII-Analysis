@@ -277,6 +277,8 @@ void coin_accidentals(const char *kinematic)
   coin1->cd();
   coin1->SetLogy();
   h_coin->Draw();
+  h_acc_low->Draw("SAMES");
+  h_acc_high->Draw("SAMES");
 
   coin1->Print(outputfile+"(");
 
