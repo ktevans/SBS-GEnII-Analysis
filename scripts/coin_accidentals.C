@@ -281,7 +281,7 @@ void coin_accidentals(const char *kinematic)
 
       if(abs(adc_coin-coin_mean)>coin_sigma)
       {
-        h_dx_anti_coin->Fill(adc_coin);
+        h_dx_anti_coin->Fill(dx_hcal);
       }
 
     }// end global cuts
