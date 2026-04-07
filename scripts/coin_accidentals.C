@@ -282,13 +282,16 @@ void coin_accidentals(const char *kinematic)
 
   coin1->Print(outputfile+"(");
 
-  TCanvas *coin2 = new TCanvas("coin2", "coincidence", 1200, 1000);
-  coin2->cd();
-  coin2->SetLogy();
-  h_acc_low->Draw();
-  h_acc_high->Draw("SAMES");
+  std::cout << "\nLower Mean: " << h_acc_low->GetMean(2) << " +/- " << h_acc_low->GetMean(12) << "\n";
+  std::cout << "\nUpper Mean: " << h_acc_high->GetMean(2) << " +/- " << h_acc_high->GetMean(12) << "\n";
 
-  coin2->Print(outputfile);
+  //TCanvas *coin2 = new TCanvas("coin2", "coincidence", 1200, 1000);
+  //coin2->cd();
+  //coin2->SetLogy();
+  //h_acc_low->Draw();
+  //h_acc_high->Draw("SAMES");
+
+  //coin2->Print(outputfile);
 
   TCanvas *summary = new TCanvas("summary", "summary", 1200, 1000);
   summary->cd();
