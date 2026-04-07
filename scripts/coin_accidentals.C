@@ -255,7 +255,7 @@ void coin_accidentals(const char *kinematic)
       runTrack++;
     }
 
-    if(abs(dy_hcal-dy_mean)<(3*dy_sigma) && (IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.2 && abs(bb_tr_vz)<0.27 && abs(e_kine_W2-1.0)<0.5 && bb_gr_clus_size>2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
+    if(abs(dy_hcal-dy_mean)<(2*dy_sigma) && (IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.2 && abs(bb_tr_vz)<0.27 && abs(e_kine_W2-1.0)<0.5 && bb_gr_clus_size>2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
     {
 
       h_coin->Fill(adc_coin);
