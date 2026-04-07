@@ -250,7 +250,7 @@ void coin_accidentals(const char *kinematic)
 
   TH1D* h_acc_high_mean = new TH1D("h_acc_high_mean", "highCoinCut", 320.0, 20.0, 30.0);
 
-  TH1D* h_dx_anti_coin = new TH1D("h_dx_anti_coin", "AntiCoinCut", 160.0, -4.0, 4.0);
+  TH1D* h_dx_anti_coin = new TH1D("h_dx_anti_coin", "AntiCoinCut", 200.0, -6.0, 4.0);
   h_dx_anti_coin->GetXaxis()->SetTitle("dx [m]");
   h_dx_anti_coin->SetTitle("dx with Global, Vertex, E/p, PSe, GRINCH, dy, W2, and anti-coin Cuts");
 
