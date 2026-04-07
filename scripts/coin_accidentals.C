@@ -250,6 +250,10 @@ void coin_accidentals(const char *kinematic)
 
   TH1D* h_acc_high_mean = new TH1D("h_acc_high_mean", "highCoinCut", 320.0, 20.0, 30.0);
 
+  TH1D* h_dx_anti_coin = new TH1D("h_dx_anti_coin", "AntiCoinCut", 160.0, -4.0, 4.0);
+  h_dx_anti_coin->GetXaxis()->SetTitle("dx [m]");
+  h_dx_anti_coin->SetTitle("dx with Global, Vertex, E/p, PSe, GRINCH, dy, W2, and anti-coin Cuts");
+
   int QE_check = 0;
   double hodo_hcal_coin, hodo_sh_coin, hodo_ps_coin, Sf, measE, deltaEfrac, hcalPrimTot, hcalSecPrim;
 
@@ -275,6 +279,11 @@ void coin_accidentals(const char *kinematic)
         h_acc_low_mean->Fill(adc_coin);
       }
 
+      if(abs(adc_coin-coin_mean)>coin_sigma)
+      {
+        h_dx_anti_coin->Fill(adc_coin);
+      }
+
     }// end global cuts
 
   }//end event loop
@@ -291,13 +300,11 @@ void coin_accidentals(const char *kinematic)
   std::cout << "\nLower Mean: " << h_acc_low_mean->GetMean(2) << " +/- " << h_acc_low_mean->GetMean(12) << "\n";
   std::cout << "\nUpper Mean: " << h_acc_high_mean->GetMean(2) << " +/- " << h_acc_high_mean->GetMean(12) << "\n";
 
-  //TCanvas *coin2 = new TCanvas("coin2", "coincidence", 1200, 1000);
-  //coin2->cd();
-  //coin2->SetLogy();
-  //h_acc_low->Draw();
-  //h_acc_high->Draw("SAMES");
+  TCanvas *coin2 = new TCanvas("coin2", "anti-coincidence", 1200, 1000);
+  coin2->cd();
+  h_dx_anti_coin->Draw();
 
-  //coin2->Print(outputfile);
+  coin2->Print(outputfile);
 
   TCanvas *summary = new TCanvas("summary", "summary", 1200, 1000);
   summary->cd();
