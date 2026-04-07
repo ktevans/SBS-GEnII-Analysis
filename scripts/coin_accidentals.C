@@ -234,6 +234,17 @@ void coin_accidentals(const char *kinematic)
   TH1D* h_coin = new TH1D("h_coin", "coin", 320.0, -40.0, 40.0);
   h_coin->GetXaxis()->SetTitle("Coincidence Time [ns]");
   h_coin->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, dy, and W2 Cuts");
+
+  TH1D* h_acc_low = new TH1D("h_acc_low", "lowCoinCut", 320.0, -40.0, 40.0);
+  h_acc_low->GetXaxis()->SetTitle("Coincidence Time [ns]");
+  h_acc_low->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, dy, and W2 Cuts");
+  h_acc_low->SetFillAlpha(kBlue,0.5);
+
+  TH1D* h_acc_high = new TH1D("h_acc_high", "lowCoinCut", 320.0, -40.0, 40.0);
+  h_acc_high->GetXaxis()->SetTitle("Coincidence Time [ns]");
+  h_acc_high->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, dy, and W2 Cuts");
+  h_acc_high->SetFillAlpha(kRed,0.5);
+
   int QE_check = 0;
   double hodo_hcal_coin, hodo_sh_coin, hodo_ps_coin, Sf, measE, deltaEfrac, hcalPrimTot, hcalSecPrim;
 
@@ -242,23 +253,20 @@ void coin_accidentals(const char *kinematic)
   {
     T->GetEntry(iev);
 
-    QE_check = 0;
-
-    if (runindex == 0)
-    {
-      runindex = runnum;
-    }
-
-    if (runindex != 0 && runindex !=runnum)
-    {
-      runindex = runnum;
-      runTrack++;
-    }
-
     if(abs(dy_hcal-dy_mean)<(2*dy_sigma) && (IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.2 && abs(bb_tr_vz)<0.27 && abs(e_kine_W2-1.0)<0.5 && bb_gr_clus_size>2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
     {
 
       h_coin->Fill(adc_coin);
+
+      if(adc_coin<30 && adc_coin>20)
+      {
+        h_acc_high->Fill(adc_coin);
+      }
+
+      if(adc_coin<-20 && adc_coin>-30)
+      {
+        h_acc_low->Fill(adc_coin);
+      }
 
     }// end global cuts
 
@@ -270,6 +278,14 @@ void coin_accidentals(const char *kinematic)
   h_coin->Draw();
 
   coin1->Print("("+outputfile);
+
+  TCanvas *coin2 = new TCanvas("coin2", "coincidence", 1200, 1000);
+  coin2->cd();
+  coin2->SetLogy();
+  h_acc_low->Draw();
+  h_acc_high->Draw("SAMES");
+
+  coin2->Print(outputfile);
 
   TCanvas *summary = new TCanvas("summary", "summary", 1200, 1000);
   summary->cd();
