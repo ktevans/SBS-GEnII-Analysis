@@ -231,7 +231,7 @@ void coin_accidentals(const char *kinematic)
   }
   else std::cout << "\nFound " << T->GetEntries() << " events. Starting analysis.. \n";
 
-  TH1D* h_coin = new TH1D("h_coin", "coin", 200.0, -10.0, 10.0);
+  TH1D* h_coin = new TH1D("h_coin", "coin", 320.0, -40.0, 40.0);
   h_coin->GetXaxis()->SetTitle("Coincidence Time [ns]");
   h_coin->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, and W2 Cuts");
   int QE_check = 0;
