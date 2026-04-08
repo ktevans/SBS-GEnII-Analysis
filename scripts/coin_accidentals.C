@@ -273,6 +273,10 @@ void coin_accidentals(const char *kinematic)
   h_dx_coin_negHel->SetTitle("dx with Global, Vertex, E/p, PSe, GRINCH, dy, W2, and anti-coin Cuts");
   h_dx_coin_negHel->SetMarkerColor(kRed);
 
+  TH1D* h_dx_anticoin_asym = new TH1D("h_dx_anticoin_asym", "Asymmetry", 200.0, -6.0, 4.0);
+  h_dx_anticoin_asym->GetXaxis()->SetTitle("dx [m]");
+  h_dx_anticoin_asym->SetTitle("Asymmetry with Global, Vertex, E/p, PSe, GRINCH, dy, W2, and anti-coin Cuts");
+
   double hel;
 
   //Loop over all events to fill the histogram
@@ -357,10 +361,17 @@ void coin_accidentals(const char *kinematic)
 
   TCanvas *coin4 = new TCanvas("coin4", "anti-coincidence dx", 1200, 1000);
   coin4->cd();
-  h_dx_coin_posHel->Draw();
-  h_dx_coin_negHel->Draw("SAMES");
+  h_dx_coin_posHel->Draw("E");
+  h_dx_coin_negHel->Draw("E SAMES");
 
   coin4->Print(outputfile);
+
+  TCanvas *coin5 = new TCanvas("coin5", "anti-coincidence dx", 1200, 1000);
+  coin5->cd();
+  h_dx_anticoin_asym = h_dx_coin_posHel - h_dx_coin_negHel;
+  h_dx_anticoin_asym->Draw();
+
+  coin5->Print(outputfile);
 
   TCanvas *summary = new TCanvas("summary", "summary", 1200, 1000);
   summary->cd();
