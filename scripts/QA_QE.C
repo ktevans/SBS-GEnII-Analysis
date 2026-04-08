@@ -875,17 +875,17 @@ void QA_QE(const char *kinematic)
 
   cPos->Print(outputfile);
 
-  TCanvas *cEp = new TCanvas("cEp", "E/p", 1200, 1000);
-  cEp->cd();
-  h2_eovp_runnum->Draw("colz");
-  h2_eovp_runnum_prof->Draw("SAMES");
-  cEp->Update();
-  TLine *Ep1 = new TLine(0.0, 1.0, totRun, 1.0);
+  //TCanvas *cEp = new TCanvas("cEp", "E/p", 1200, 1000);
+  //cEp->cd();
+  //h2_eovp_runnum->Draw("colz");
+  //h2_eovp_runnum_prof->Draw("SAMES");
+  //cEp->Update();
+  //TLine *Ep1 = new TLine(0.0, 1.0, totRun, 1.0);
   //Ep1->SetLineColor(kRed);
-  Ep1->SetLineWidth(5);
-  Ep1->Draw();
+  //Ep1->SetLineWidth(5);
+  //Ep1->Draw();
 
-  cEp->Print(outputfile);
+  //cEp->Print(outputfile);
 
   TCanvas *c4 = new TCanvas("c4","bbE", 1200, 1000);
   c4->Divide(2,2);
