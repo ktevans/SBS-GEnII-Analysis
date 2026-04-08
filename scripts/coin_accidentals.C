@@ -236,6 +236,10 @@ void coin_accidentals(const char *kinematic)
   h_coin->GetXaxis()->SetTitle("Coincidence Time [ns]");
   h_coin->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, dy, and W2 Cuts");
 
+  TH1D* h_coin_antiW2 = new TH1D("h_coin_antiW2", "coin", 320.0, -40.0, 40.0);
+  h_coin_antiW2->GetXaxis()->SetTitle("Coincidence Time [ns]");
+  h_coin_antiW2->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, dy, and anti-W2 Cuts");
+
   TH1D* h_acc_low = new TH1D("h_acc_low", "lowCoinCut", 320.0, -40.0, 40.0);
   h_acc_low->GetXaxis()->SetTitle("Coincidence Time [ns]");
   h_acc_low->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, dy, and W2 Cuts");
@@ -257,10 +261,19 @@ void coin_accidentals(const char *kinematic)
 
   TH1D* h_dx_coin = new TH1D("h_dx_coin", "CoinCut", 200.0, -6.0, 4.0);
   h_dx_coin->GetXaxis()->SetTitle("dx [m]");
-  h_dx_coin->SetTitle("dx with Global, Vertex, E/p, PSe, GRINCH, dy, W2, and anti-coin Cuts");
+  h_dx_coin->SetTitle("dx with Global, Vertex, E/p, PSe, GRINCH, dy, W2, and coin Cuts");
 
-  int QE_check = 0;
-  double hodo_hcal_coin, hodo_sh_coin, hodo_ps_coin, Sf, measE, deltaEfrac, hcalPrimTot, hcalSecPrim;
+  TH1D* h_dx_coin_posHel = new TH1D("h_dx_coin_posHel", "Positive Helicity", 200.0, -6.0, 4.0);
+  h_dx_coin_posHel->GetXaxis()->SetTitle("dx [m]");
+  h_dx_coin_posHel->SetTitle("dx with Global, Vertex, E/p, PSe, GRINCH, dy, W2, and anti-coin Cuts");
+  h_dx_coin_posHel->SetMarkerColor(kBlue);
+
+  TH1D* h_dx_coin_negHel = new TH1D("h_dx_coin_negHel", "Negative Helicity", 200.0, -6.0, 4.0);
+  h_dx_coin_negHel->GetXaxis()->SetTitle("dx [m]");
+  h_dx_coin_negHel->SetTitle("dx with Global, Vertex, E/p, PSe, GRINCH, dy, W2, and anti-coin Cuts");
+  h_dx_coin_negHel->SetMarkerColor(kRed);
+
+  double hel;
 
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
@@ -287,6 +300,18 @@ void coin_accidentals(const char *kinematic)
       if(abs(adc_coin-coin_mean)>coin_sigma)
       {
         h_dx_anti_coin->Fill(dx_hcal);
+
+        hel = helicity*IHWP*IHWP_flip;
+
+        if(hel==1)
+        {
+          h_dx_coin_posHel->Fill(dx_hcal);
+        }
+
+        if(hel==-1)
+        {
+          h_dx_coin_negHel->Fill(dx_hcal);
+        }
       }
 
       if(abs(adc_coin-coin_mean)<coin_sigma)
@@ -295,6 +320,11 @@ void coin_accidentals(const char *kinematic)
       }
 
     }// end global cuts
+
+    if(abs(dy_hcal-dy_mean)<(2*dy_sigma) && (IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.2 && abs(bb_tr_vz)<0.27 && e_kine_W2>4.0 && bb_gr_clus_size>2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
+    {
+      h_coin_antiW2->Fill(adc_coin);
+    }
 
   }//end event loop
 
@@ -316,6 +346,21 @@ void coin_accidentals(const char *kinematic)
   h_dx_anti_coin->Draw("SAMES");
 
   coin2->Print(outputfile);
+
+  TCanvas *coin3 = new TCanvas("coin3", "anti-W2 coincidence", 1200, 1000);
+  coin3->cd();
+  coin3->SetLogy();
+  h_coin->Draw();
+  h_coin_antiW2->Draw("SAMES");
+
+  coin3->Print(outputfile);
+
+  TCanvas *coin4 = new TCanvas("coin4", "anti-coincidence dx", 1200, 1000);
+  coin4->cd();
+  h_dx_coin_posHel->Draw();
+  h_dx_coin_negHel->Draw("SAMES");
+
+  coin4->Print(outputfile);
 
   TCanvas *summary = new TCanvas("summary", "summary", 1200, 1000);
   summary->cd();
