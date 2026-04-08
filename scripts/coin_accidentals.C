@@ -368,7 +368,7 @@ void coin_accidentals(const char *kinematic)
 
   TCanvas *coin5 = new TCanvas("coin5", "anti-coincidence dx", 1200, 1000);
   coin5->cd();
-  h_dx_anticoin_asym = h_dx_coin_posHel - h_dx_coin_negHel;
+  h_dx_anticoin_asym = h_dx_coin_posHel->Add(-h_dx_coin_negHel);
   h_dx_anticoin_asym->Draw();
 
   coin5->Print(outputfile);
