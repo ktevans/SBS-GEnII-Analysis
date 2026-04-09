@@ -415,6 +415,15 @@ void SimDataComp(int kin)
   h_asym->SetTitle("Raw Asymmetry (N+ - N-)/(N+ + N-)");
   //h_asym->Sumw2();
 
+  TH1D* hAsymDiff = (TH1D*) h_pos_hel_dx->Clone("hAsymDiff");
+  hAsymDiff->Add(h_neg_hel_dx, -1.0);
+
+  TH1D* hAsymSum = (TH1D*) h_pos_hel_dx->Clone("hAsymSum");
+  hAsymSum->Add(h_neg_hel_dx);
+
+  TH1D* hAsym = (TH1D*) hAsymDiff->Clone("hAsym");
+  hAsym->Divide(hAsymSum);
+
   double A_array[numberBins];
   double A_err_array[numberBins];
 
@@ -474,15 +483,6 @@ void SimDataComp(int kin)
     cout<<"Negative helicity content for "<< bin <<" bin: "<< c_neg <<"\n";
     double c_neg_err  = h_neg_hel_dx->GetBinError(bin);
     cout<<"Negative helicity error for "<< bin <<" bin: "<< c_neg_err <<"\n";
-
-    TH1D* hAsymDiff = (TH1D*) h_pos_hel_dx->Clone("hAsymDiff");
-    hAsymDiff->Add(h_neg_hel_dx, -1.0);
-
-    TH1D* hAsymSum = (TH1D*) h_pos_hel_dx->Clone("hAsymSum");
-    hAsymSum->Add(h_neg_hel_dx);
-
-    TH1D* hAsym = (TH1D*) hAsymDiff->Clone("hAsym");
-    hAsym->Divide(hAsymSum);
 
     A_array[bin] = (helPosArray[bin] - helNegArray[bin])*1.0 / (helPosArray[bin] + helNegArray[bin]);
     A_err_array[bin] = std::sqrt(std::max(0.0,(4.0*helPosArray[bin]*helNegArray[bin])/std::pow((helPosArray[bin] + helNegArray[bin]),3)));
