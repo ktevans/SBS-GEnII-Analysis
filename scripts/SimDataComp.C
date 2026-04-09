@@ -526,7 +526,8 @@ void SimDataComp(int kin)
   AsymFitFunc->SetParLimits(1,0.0,0.1);  // neutron asymmetry
   AsymFitFunc->SetParLimits(2,-0.1,0.1); // background asymmetry
 
-  h_asym->Fit(AsymFitFunc,"0","",h_minX,h_maxX);
+  //h_asym->Fit(AsymFitFunc,"0","",h_minX,h_maxX);
+  hAsym->Fit(AsymFitFunc,"0","",h_minX,h_maxX);
 
   TH1D* scaled_proton_prob  = (TH1D*)h_prob_proton_dx->Clone("scaled_proton_prob");
   TH1D* scaled_neutron_prob = (TH1D*)h_prob_neutron_dx->Clone("scaled_neutron_prob");
