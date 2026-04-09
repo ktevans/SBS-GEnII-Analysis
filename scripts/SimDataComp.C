@@ -16,7 +16,7 @@
 
 //To run script:
 // Go to SBS-GEnII-Analysis directory and type "root"
-// Type ".L scripts/SimDataComp.C" 
+// Type ".L scripts/SimDataComp.C"
 //   This will compile the code and show any errors but will not run the code.
 // To run the code, type one of the following commands:
 //  for GEN2:  "SimDataComp(2)"
@@ -304,7 +304,7 @@ void SimDataComp(int kin)
   TF1 *FitFunc = new TF1("FitFunc",&fitsim,dx_min_i,dx_max_i,6); //-6,4,6
 
   FitFunc->SetNpx(numberBins);
-  
+
   //----- GEN2 -----
   double startpar[] = {1.0,-0.5,0.5,-0.7,0.1,-1.0};
   FitFunc->SetParameters(startpar);
@@ -474,6 +474,15 @@ void SimDataComp(int kin)
     cout<<"Negative helicity content for "<< bin <<" bin: "<< c_neg <<"\n";
     double c_neg_err  = h_neg_hel_dx->GetBinError(bin);
     cout<<"Negative helicity error for "<< bin <<" bin: "<< c_neg_err <<"\n";
+
+    TH1D* hAsymDiff = (TH1D*) h_pos_hel_dx->Clone("hAsymDiff");
+    hAsymDiff->Add(h_neg_hel_dx, -1.0);
+
+    TH1D* hAsymSum = (TH1D*) h_pos_hel_dx->Clone("hAsymSum");
+    hAsymSum->Add(h_neg_hel_dx);
+
+    TH1D* hAsym = (TH1D*) hAsymDiff->Clone("hAsym");
+    hAsym->Divide(hAsymSum);
 
     A_array[bin] = (helPosArray[bin] - helNegArray[bin])*1.0 / (helPosArray[bin] + helNegArray[bin]);
     A_err_array[bin] = std::sqrt(std::max(0.0,(4.0*helPosArray[bin]*helNegArray[bin])/std::pow((helPosArray[bin] + helNegArray[bin]),3)));
@@ -651,6 +660,12 @@ void SimDataComp(int kin)
   h_asym->Draw("E");
   c4->SetGrid();
   c4->Update();
+
+  TCanvas *c5 = new TCanvas("c5","AsymmetryHistOperator",100,100,1000,1000);
+  c5->cd();
+  hAsym->Draw("E");
+  c5->SetGrid();
+  c5->Update();
 
   delete T_data;
   delete T_sim;
