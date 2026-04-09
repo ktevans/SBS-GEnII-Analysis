@@ -155,7 +155,7 @@ void SimDataComp(int kin)
 
   //gErrorIgnoreLevel = kError;
 
-  int numberBins = 150;
+  int numberBins = 100;
 
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
@@ -426,7 +426,7 @@ void SimDataComp(int kin)
   TH1D* hAsym = (TH1D*) hAsymDiff->Clone("hAsym");
   hAsym->Divide(hAsymSum);
   hAsym->Sumw2();
-  hAsym->Rebin(4);
+  hAsym->Rebin();
 
   double A_array[numberBins];
   double A_err_array[numberBins];
