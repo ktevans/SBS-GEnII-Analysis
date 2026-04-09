@@ -426,7 +426,7 @@ void SimDataComp(int kin)
   TH1D* hAsym = (TH1D*) hAsymDiff->Clone("hAsym");
   hAsym->Divide(hAsymSum);
   hAsym->Sumw2();
-  hAsym->Rebin();
+  hAsym->Rebin(4);
 
   double A_array[numberBins];
   double A_err_array[numberBins];
