@@ -423,7 +423,7 @@ void SimDataComp(int kin)
 
   TH1D* hAsym = (TH1D*) hAsymDiff->Clone("hAsym");
   hAsym->Divide(hAsymSum);
-  hAsym->Rebin(3);
+  hAsym->Rebin();
 
   double A_array[numberBins];
   double A_err_array[numberBins];
@@ -623,13 +623,14 @@ void SimDataComp(int kin)
   legendHEL->Draw();
 
   c3->cd(2);
-  h_asym->Draw("E");
+  //h_asym->Draw("E");
   //h_Asym_dx->Draw("SAMES");
+  hAsym->Draw("E");
   AsymFitFunc->Draw("SAMES");
 
   auto legendA = new TLegend(0.1,0.8,0.9,0.9);
   legendA->SetTextSize(0.02);
-  legendA->AddEntry(h_asym,"Data","lep");
+  legendA->AddEntry(hAsym,"Data","lep");
   //legendA->AddEntry(h_Asym_dx,"Scaled Fit","l");
   //legendA->AddEntry(AsymFitFunc,"Fit","l");
   legendA->AddEntry(AsymFitFunc,Form("A(dx) = %.4gPp(dx) + %.4gPn(dx) + %.4gPbg(dx)",AsymFitFunc->GetParameter(0),AsymFitFunc->GetParameter(1),AsymFitFunc->GetParameter(2)),"l");
