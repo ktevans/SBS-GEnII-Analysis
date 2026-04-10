@@ -370,7 +370,14 @@ void coin_accidentals(const char *kinematic)
   coin5->cd();
   TH1D* hDiff = (TH1D*) h_dx_coin_posHel->Clone("hDiff");
   hDiff->Add(h_dx_coin_negHel,-1.0);
-  hDiff->Draw();
+  TH1D* hSum = (TH1D*) h_dx_coin_posHel->Clone("hSum");
+  hSum->Add(h_dx_coin_negHel);
+
+  TH1D* hAsym = (TH1D*) hDiff->Clone("hAsym");
+  hAsym->Divide(hSum);
+  //hAsym->Sumw2();
+  hAsym->Rebin();
+  hAsym->Draw();
 
   coin5->Print(outputfile);
 
