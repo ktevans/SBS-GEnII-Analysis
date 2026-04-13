@@ -640,7 +640,7 @@ void QA_QE(const char *kinematic)
 
         h_ps_e_raw->Fill(bb_ps_e);
 
-        if (abs(e_kine_W2-1.0)<0.5)
+        if (abs(e_kine_W2-1.0)<0.2)
         {
           h_ps_e->Fill(bb_ps_e);
           h_sh_e->Fill(bb_sh_e);
@@ -662,7 +662,7 @@ void QA_QE(const char *kinematic)
           } // en anti-QE check
         }
 
-        if(abs(e_kine_W2-1.0)<0.5 && bb_gr_clus_size>2 && ((abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_n_mean)<dx_n_sigma) || (abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_p_mean)<dx_p_sigma)) && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
+        if(abs(e_kine_W2-1.0)<0.2 && bb_gr_clus_size>2 && ((abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_n_mean)<dx_n_sigma) || (abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_p_mean)<dx_p_sigma)) && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
         {
           h_coin->Fill(adc_coin);
         }
@@ -682,7 +682,7 @@ void QA_QE(const char *kinematic)
             {
               h_W2->Fill(e_kine_W2);
 
-              if (abs(e_kine_W2-1.0)<0.5)
+              if (abs(e_kine_W2-1.0)<0.2)
               {
                 h_dx->Fill(dx_hcal);
                 h_dy->Fill(dy_hcal);
@@ -1121,11 +1121,11 @@ void QA_QE(const char *kinematic)
   pt->AddText("Vertex Cut: abs(bb.tr.vz)<0.27");
   pt->AddText("PreShower Cut: bb.ps.e>0.2");
   pt->AddText("E/p Cut: abs(E/p - 1.0)<0.2");
-  pt->AddText("W2 Cut: abs(e.kine.W2 - 1.0)<0.5");
+  pt->AddText("W2 Cut: abs(e.kine.W2 - 1.0)<0.2");
   pt->AddText(Form("Coincidence Cut: abs(adc.coin - %.3f)<%.3f",coin_mean,coin_sigma));
   pt->AddText("GRINCH cut: bb.grinch_tdc.clus.size>2");
-  pt->AddText(Form("Proton Spot Cut: %.3f<dx<%.3f && %.3f<dy<%.3f",(dx_p_mean-dx_p_sigma),(dx_p_mean+dx_p_sigma),(dy_mean-dy_sigma),(dy_mean-dy_sigma)));
-  pt->AddText(Form("Neutron Spot Cut: %.3f<dx<%.3f && %.3f<dy<%.3f",(dx_n_mean-dx_n_sigma),(dx_n_mean+dx_n_sigma),(dy_mean-dy_sigma),(dy_mean-dy_sigma)));
+  pt->AddText(Form("Proton Spot Cut: %.3f<dx<%.3f && %.3f<dy<%.3f",(dx_p_mean-dx_p_sigma),(dx_p_mean+dx_p_sigma),(dy_mean-dy_sigma),(dy_mean+dy_sigma)));
+  pt->AddText(Form("Neutron Spot Cut: %.3f<dx<%.3f && %.3f<dy<%.3f",(dx_n_mean-dx_n_sigma),(dx_n_mean+dx_n_sigma),(dy_mean-dy_sigma),(dy_mean+dy_sigma)));
   pt->Draw();
 
   summary->Print(outputfile+")");
