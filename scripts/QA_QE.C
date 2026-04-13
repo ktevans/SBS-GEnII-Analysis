@@ -77,6 +77,8 @@ void QA_QE(const char *kinematic)
   Double_t dx_hcal;               T->SetBranchAddress("dx", &dx_hcal);
   Double_t dy_hcal;               T->SetBranchAddress("dy", &dy_hcal);
   Int_t IHWP;                     T->SetBranchAddress("IHWP", &IHWP);
+  Double_t gem_tr_ngoodhits;      T->SetBranchAddress("bb.gem.track.ngoodhits", &gem_tr_ngoodhits);
+  Double_t gem_tr_chi2ndf;        T->SetBranchAddress("bb.gem.track.chi2ndf", &gem_tr_chi2ndf);
 
   double optics_valid_min;
   double optics_valid_max;
@@ -629,7 +631,7 @@ void QA_QE(const char *kinematic)
     // && abs(adc_coin-coin_mean)<coin_sigma && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>2.0 && abs(bb_tr_vz)<0.27
     // pass_global==1 && (IHWP==-1.0 || IHWP==1.0)
 
-    if((IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.0)
+    if((IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.0 && gem_tr_ngoodhits>=3 && gem_tr_chi2ndf<=15 && bb_gr_clus_track==0)
     {
 
       h_tr_vz->Fill(bb_tr_vz);
