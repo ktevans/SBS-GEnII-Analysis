@@ -206,11 +206,11 @@ void MissingMom(const char *kinematic, int kin)
 
         pol_p_w = TMath::Sqrt((TMath::Power(missing_mom,8)*a_err) + (TMath::Power(missing_mom,6)*b_err) + (TMath::Power(missing_mom,4)*c_err) + (TMath::Power(missing_mom,2)*d_err) + e_err + (16*a*a*TMath::Power(missing_mom,6)*weight*weight) + (24*a*b*TMath::Power(missing_mom,5)*weight*weight) + ((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*weight*weight) + ((8*a*d + 12*b*c)*TMath::Power(missing_mom,3)*weight*weight) + ((6*b*d + 4*c*c)*TMath::Power(missing_mom,2)*weight*weight) + (4*c*d*missing_mom*weight*weight) + (d*d*weight*weight));
 
-        h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,pol_p_w);
-        h_prof_pol_p->Fill(dx-dx_p_shift,pol_p,pol_p_w);
+        h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
+        h_prof_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
         if (dx-dx_p_shift<n_max&&dx-dx_p_shift>n_min)
         {
-          h_dx_pol_p_inWindow->Fill(dx-dx_p_shift,pol_p,pol_p_w);
+          h_dx_pol_p_inWindow->Fill(dx-dx_p_shift,pol_p,weight);
         }
       }
 
@@ -250,11 +250,11 @@ void MissingMom(const char *kinematic, int kin)
 
         pol_n_w = TMath::Sqrt((TMath::Power(missing_mom,8)*a_err) + (TMath::Power(missing_mom,6)*b_err) + (TMath::Power(missing_mom,4)*c_err) + (TMath::Power(missing_mom,2)*d_err) + e_err + (16*a*a*TMath::Power(missing_mom,6)*weight*weight) + (24*a*b*TMath::Power(missing_mom,5)*weight*weight) + ((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*weight*weight) + ((8*a*d + 12*b*c)*TMath::Power(missing_mom,3)*weight*weight) + ((6*b*d + 4*c*c)*TMath::Power(missing_mom,2)*weight*weight) + (4*c*d*missing_mom*weight*weight) + (d*d*weight*weight));
 
-        h_dx_pol_n->Fill(dx-dx_n_shift,pol_n,pol_n_w);
-        h_prof_pol_n->Fill(dx-dx_n_shift,pol_n,pol_n_w);
+        h_dx_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
+        h_prof_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
         if (dx-dx_n_shift<n_max&&dx-dx_n_shift>n_min)
         {
-          h_dx_pol_n_inWindow->Fill(dx-dx_n_shift,pol_n,pol_n_w);
+          h_dx_pol_n_inWindow->Fill(dx-dx_n_shift,pol_n,weight);
         }
       }
 
