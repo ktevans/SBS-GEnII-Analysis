@@ -254,19 +254,6 @@ void MissingMom(const char *kinematic, int kin)
           e =  2.1343364619401908 ;
           e_err =  TMath::Power(0.8406721498772978,2) ;
         }
-        else
-        {
-          a =  0.0 ;
-          a_err =  0.0 ;
-          b =  0.0 ;
-          b_err =  0.0 ;
-          c =  0.0 ;
-          c_err =  0.0 ;
-          d =  0.0 ;
-          d_err =  0.0 ;
-          e =  0.0 ;
-          e_err =  0.0 ;
-        }
         pol_n =
         (a * TMath::Power(missing_mom,4)) +
         (b * TMath::Power(missing_mom,3)) +
