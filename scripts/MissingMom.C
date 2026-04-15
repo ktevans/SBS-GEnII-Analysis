@@ -215,7 +215,11 @@ void MissingMom(const char *kinematic, int kin)
           e =  0.0 ;
           e_err =  0.0 ;
         }
-        pol_p = (a * TMath::Power(missing_mom,4)) + (b * TMath::Power(missing_mom,3)) + (c * TMath::Power(missing_mom,2)) + (d * missing_mom) + e;
+        pol_p =
+        (a * TMath::Power(missing_mom,4)) +
+        (b * TMath::Power(missing_mom,3)) +
+        (c * TMath::Power(missing_mom,2)) +
+        (d * missing_mom) + e;
 
         pol_p_w = TMath::Sqrt(
         (TMath::Power(missing_mom,8)*a_err) +
@@ -285,8 +289,26 @@ void MissingMom(const char *kinematic, int kin)
           e =  0.0 ;
           e_err =  0.0 ;
         }
-        pol_n = (a * TMath::Power(missing_mom,4)) + (b * TMath::Power(missing_mom,3)) + (c * TMath::Power(missing_mom,2)) + (d * missing_mom) + e;
-        pol_n_w = TMath::Sqrt((TMath::Power(missing_mom,8)*a_err) + (TMath::Power(missing_mom,6)*b_err) + (TMath::Power(missing_mom,4)*c_err) + (TMath::Power(missing_mom,2)*d_err) + e_err + (16*a*a*TMath::Power(missing_mom,6)*weight*weight) + (24*a*b*TMath::Power(missing_mom,5)*weight*weight) + ((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*weight*weight) + ((8*a*d + 12*b*c)*TMath::Power(missing_mom,3)*weight*weight) + ((6*b*d + 4*c*c)*TMath::Power(missing_mom,2)*weight*weight) + (4*c*d*missing_mom*weight*weight) + (d*d*weight*weight));
+        pol_n =
+        (a * TMath::Power(missing_mom,4)) +
+        (b * TMath::Power(missing_mom,3)) +
+        (c * TMath::Power(missing_mom,2)) +
+        (d * missing_mom) + e;
+
+        pol_n_w = TMath::Sqrt(
+        (TMath::Power(missing_mom,8)*a_err) +
+        (TMath::Power(missing_mom,6)*b_err) +
+        (TMath::Power(missing_mom,4)*c_err) +
+        (TMath::Power(missing_mom,2)*d_err) +
+        e_err +
+        (16*a*a*TMath::Power(missing_mom,6)*weight*weight) +
+        (24*a*b*TMath::Power(missing_mom,5)*weight*weight) +
+        ((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*weight*weight) +
+        ((8*a*d + 12*b*c)*TMath::Power(missing_mom,3)*weight*weight) +
+        ((6*b*d + 4*c*c)*TMath::Power(missing_mom,2)*weight*weight) +
+        (4*c*d*missing_mom*weight*weight) +
+        (d*d*weight*weight)
+        );
 
         h_dx_pol_n->Fill(dx-dx_n_shift,pol_n,pol_n_w);
         h_prof_pol_n->Fill(dx-dx_n_shift,pol_n,pol_n_w);
