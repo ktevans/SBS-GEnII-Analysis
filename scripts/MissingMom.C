@@ -25,7 +25,7 @@
 
 //Doubl_t myfunction(Double_t *x, Double_t *par)
 //{
-  //return par[0] + par[1]*cos(x[0]) + par[2]*sin(x[0]) + par[3]*cos(2*x[0]) + par[4]*sin(2*x[0]) + par[5]*cos(3*x[0]) + par[6]*sin(3*x[0]);  
+  //return par[0] + par[1]*cos(x[0]) + par[2]*sin(x[0]) + par[3]*cos(2*x[0]) + par[4]*sin(2*x[0]) + par[5]*cos(3*x[0]) + par[6]*sin(3*x[0]);
 //}
 
 void MissingMom(const char *kinematic, int kin)
@@ -45,10 +45,12 @@ void MissingMom(const char *kinematic, int kin)
   T_out->Branch("dy",     &dy_out,     "dy/D");
   T_out->Branch("W2",     &W2_out,     "W2/D");
 
-  double missing_mom, pol_p, pol_n;
+  double missing_mom, pol_p, pol_n, pol_p_w, pol_n_w;
   T_out->Branch("missing_mom",   &missing_mom,   "missing_mom/D");
   T_out->Branch("pol_p",         &pol_p,         "pol_p/D");
   T_out->Branch("pol_n",         &pol_n,         "pol_n/D");
+  T_out->Branch("pol_p_w",       &pol_p_w,       "pol_p_w/D");
+  T_out->Branch("pol_n_w",       &pol_n_w,       "pol_n_w/D");
 
   TChain* T = new TChain("T_sim");
   T->Add(inputfile);
@@ -159,6 +161,8 @@ void MissingMom(const char *kinematic, int kin)
   h_dx_pol_n_inWindow->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_n_inWindow->SetTitle("Neutron Effective Polarization in the Neutron Window");
 
+  double a, a_err, b, b_err, c, c_err, d, d_err, e, e_err;
+
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
   {
@@ -172,17 +176,53 @@ void MissingMom(const char *kinematic, int kin)
         h_dx_missing_mom_p->Fill(dx-dx_p_shift,missing_mom,weight);
         if (missing_mom<0.2)
         {
-          pol_p = (191.16 * TMath::Power(missing_mom,4)) - (111.53 * TMath::Power(missing_mom,3)) + (18.734 * TMath::Power(missing_mom,2)) - (0.1466 * missing_mom) - 0.0934;
+          //pol_p = (191.16 * TMath::Power(missing_mom,4)) - (111.53 * TMath::Power(missing_mom,3)) + (18.734 * TMath::Power(missing_mom,2)) - (0.1466 * missing_mom) - 0.0934;
+          a =  198.53995712204684 ;
+          a_err =  TMath::Power(24.594485711656095,2) ;
+          b =  -112.1798011587985 ;
+          b_err =  TMath::Power(10.642529332523253,2) ;
+          c =  18.35846646718483 ;
+          c_err =  TMath::Power(1.6103041867447094,2) ;
+          d =  -0.09501747239412166 ;
+          d_err =  TMath::Power(0.1018222797267054,2) ;
+          e =  -0.0946833878842563 ;
+          e_err =  TMath::Power(0.002402729508830831,2) ;
         }
         if (missing_mom>=0.2)
         {
-          pol_p = (585.36 * TMath::Power(missing_mom,4)) - (617.45 * TMath::Power(missing_mom,3)) + (228.85 * TMath::Power(missing_mom,2)) - (36.301 * missing_mom) - 2.1489;
+          //pol_p = (585.36 * TMath::Power(missing_mom,4)) - (617.45 * TMath::Power(missing_mom,3)) + (228.85 * TMath::Power(missing_mom,2)) - (36.301 * missing_mom) - 2.1489;
+          a =  408.547770052618 ;
+          a_err =  TMath::Power(36.453926608120966,2) ;
+          b =  -426.06473793939705 ;
+          b_err =  TMath::Power(37.76476287606027,2) ;
+          c =  152.68913846154405 ;
+          c_err =  TMath::Power(14.507465096982482,2) ;
+          d =  -23.07351286601611 ;
+          d_err =  TMath::Power(2.450405880413825,2) ;
+          e =  1.3017802399082927 ;
+          e_err =  TMath::Power(0.15359726205698873,2) ;
         }
-        h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
-        h_prof_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
+        else
+        {
+          a =  0.0 ;
+          a_err =  0.0 ;
+          b =  0.0 ;
+          b_err =  0.0 ;
+          c =  0.0 ;
+          c_err =  0.0 ;
+          d =  0.0 ;
+          d_err =  0.0 ;
+          e =  0.0 ;
+          e_err =  0.0 ;
+        }
+        pol_p = (a * TMath::Power(missing_mom,4)) + (b * TMath::Power(missing_mom,3)) + (c * TMath::Power(missing_mom,2)) + (d * missing_mom) + e;
+        pol_p_w = TMath::Sqrt((TMath::Power(missing_mom,8)*a_err) + (TMath::Power(missing_mom,6)*b_err) + (TMath::Power(missing_mom,4)*c_err) + (TMath::Power(missing_mom,2)*d_err) + e_err + (16*a*a*TMath::Power(missing_mom,6)*weight*weight) + (24*a*b*TMath::Power(missing_mom,5)*weight*weight) + ((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*weight*weight) + ((8*a*d + 12*b*c)TMath::Power(missing_mom,3)*weight*weight) + ((6*b*d + 4*c*c)TMath::Power(missing_mom,2)*weight*weight) + (4*c*d*missing_mom*weight*weight) + (d*d*weight*weight));
+
+        h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,pol_p_w);
+        h_prof_pol_p->Fill(dx-dx_p_shift,pol_p,pol_p_w);
         if (dx-dx_p_shift<n_max&&dx-dx_p_shift>n_min)
         {
-          h_dx_pol_p_inWindow->Fill(dx-dx_p_shift,pol_p,weight);
+          h_dx_pol_p_inWindow->Fill(dx-dx_p_shift,pol_p,pol_p_w);
         }
       }
 
@@ -192,17 +232,53 @@ void MissingMom(const char *kinematic, int kin)
         h_dx_missing_mom_n->Fill(dx-dx_n_shift,missing_mom,weight);
         if (missing_mom<0.2)
         {
-          pol_n = (-149.54 * TMath::Power(missing_mom,4)) + (26.742 * TMath::Power(missing_mom,3)) - (3.1007 * TMath::Power(missing_mom,2)) + (0.064 * missing_mom) + 0.9999;
+          //pol_n = (-149.54 * TMath::Power(missing_mom,4)) + (26.742 * TMath::Power(missing_mom,3)) - (3.1007 * TMath::Power(missing_mom,2)) + (0.064 * missing_mom) + 0.9999;
+          a =  -206.6702353176982 ;
+          a_err =  TMath::Power(5.515059269519871,2) ;
+          b =  54.385593370006745 ;
+          b_err =  TMath::Power(2.922097091242897,2) ;
+          c =  -7.751073896982325 ;
+          c_err =  TMath::Power(0.5568231435537595,2) ;
+          d =  0.37912363572302266 ;
+          d_err =  TMath::Power(0.04496132325371255,2) ;
+          e =  0.9928502121808195 ;
+          e_err =  TMath::Power(0.0012929231472295886,2) ;
         }
         if (missing_mom>=0.2)
         {
-          pol_n = (-409.23 * TMath::Power(missing_mom,4)) + (660.3 * TMath::Power(missing_mom,3)) - (364.59 * TMath::Power(missing_mom,2)) + (77.325 * missing_mom) - 4.6319;
+          //pol_n = (-409.23 * TMath::Power(missing_mom,4)) + (660.3 * TMath::Power(missing_mom,3)) - (364.59 * TMath::Power(missing_mom,2)) + (77.325 * missing_mom) - 4.6319;
+          a =  883.3727552389017 ;
+          a_err =  TMath::Power(130.37671654356538,2) ;
+          b =  -792.0583539603548 ;
+          b_err =  TMath::Power(151.20956516982548,2) ;
+          c =  230.03074404947085 ;
+          c_err =  TMath::Power(64.81973223961523,2) ;
+          d =  -27.750236381289398 ;
+          d_err =  TMath::Power(12.155125256774213,2) ;
+          e =  2.1343364619401908 ;
+          e_err =  TMath::Power(0.8406721498772978,2) ;
         }
-        h_dx_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
-        h_prof_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
+        else
+        {
+          a =  0.0 ;
+          a_err =  0.0 ;
+          b =  0.0 ;
+          b_err =  0.0 ;
+          c =  0.0 ;
+          c_err =  0.0 ;
+          d =  0.0 ;
+          d_err =  0.0 ;
+          e =  0.0 ;
+          e_err =  0.0 ;
+        }
+        pol_n = (a * TMath::Power(missing_mom,4)) + (b * TMath::Power(missing_mom,3)) + (c * TMath::Power(missing_mom,2)) + (d * missing_mom) + e;
+        pol_n_w = TMath::Sqrt((TMath::Power(missing_mom,8)*a_err) + (TMath::Power(missing_mom,6)*b_err) + (TMath::Power(missing_mom,4)*c_err) + (TMath::Power(missing_mom,2)*d_err) + e_err + (16*a*a*TMath::Power(missing_mom,6)*weight*weight) + (24*a*b*TMath::Power(missing_mom,5)*weight*weight) + ((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*weight*weight) + ((8*a*d + 12*b*c)TMath::Power(missing_mom,3)*weight*weight) + ((6*b*d + 4*c*c)TMath::Power(missing_mom,2)*weight*weight) + (4*c*d*missing_mom*weight*weight) + (d*d*weight*weight));
+
+        h_dx_pol_n->Fill(dx-dx_n_shift,pol_n,pol_n_w);
+        h_prof_pol_n->Fill(dx-dx_n_shift,pol_n,pol_n_w);
         if (dx-dx_n_shift<n_max&&dx-dx_n_shift>n_min)
         {
-          h_dx_pol_n_inWindow->Fill(dx-dx_n_shift,pol_n,weight);
+          h_dx_pol_n_inWindow->Fill(dx-dx_n_shift,pol_n,pol_n_w);
         }
       }
 
@@ -210,7 +286,7 @@ void MissingMom(const char *kinematic, int kin)
       dy_out = dy;
       W2_out = W2;
 
-    T_out->Fill();
+      T_out->Fill();
 
   }//end event loop
 
@@ -256,7 +332,7 @@ void MissingMom(const char *kinematic, int kin)
   h_prof_pol_n->Fit("fitn");
   fitn->Draw("SAMES");
   gStyle->SetOptFit(1111);
-  
+
   //TF1 *f = new TF1("f",[=](double *x, double */*p*/){return h_prof_pol_p->Interpolate(x[0]);},h_prof_pol_p->GetXaxis()->GetXmin(), h_prof_pol_p->GetXaxis()->GetXmax(), 0);
   //f->Draw("same");
   //f->Write();
@@ -279,6 +355,6 @@ void MissingMom(const char *kinematic, int kin)
   h_prof_pol_p->Draw();
   fitp->Draw("SAMES");
   gStyle->SetOptFit(1111);
-  
+
   fout->Write();
 }
