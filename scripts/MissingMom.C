@@ -23,11 +23,6 @@
 #include <math.h>
 #include <stack>
 
-//Doubl_t myfunction(Double_t *x, Double_t *par)
-//{
-  //return par[0] + par[1]*cos(x[0]) + par[2]*sin(x[0]) + par[3]*cos(2*x[0]) + par[4]*sin(2*x[0]) + par[5]*cos(3*x[0]) + par[6]*sin(3*x[0]);
-//}
-
 void MissingMom(const char *kinematic, int kin)
 {
 
@@ -101,15 +96,6 @@ void MissingMom(const char *kinematic, int kin)
     n_max = 0.3;
   }
 
-  //else
-  //{
-    //dx_p_shift = 0.0;
-    //dx_n_shift = 0.0;
-    //beam_e = 20.0;
-    //n_min = -2.0;
-    //n_max = 2.0;
-  //}
-
   //Scan through all the entries in the TChain T
   //If the rootfiles are empty or don't exist, there will be 0 entries
   //If there are entries, then print out how many
@@ -176,7 +162,6 @@ void MissingMom(const char *kinematic, int kin)
         h_dx_missing_mom_p->Fill(dx-dx_p_shift,missing_mom,weight);
         if (missing_mom<0.2)
         {
-          //pol_p = (191.16 * TMath::Power(missing_mom,4)) - (111.53 * TMath::Power(missing_mom,3)) + (18.734 * TMath::Power(missing_mom,2)) - (0.1466 * missing_mom) - 0.0934;
           a =  198.53995712204684 ;
           a_err =  TMath::Power(24.594485711656095,2) ;
           b =  -112.1798011587985 ;
@@ -190,7 +175,6 @@ void MissingMom(const char *kinematic, int kin)
         }
         if (missing_mom>=0.2)
         {
-          //pol_p = (585.36 * TMath::Power(missing_mom,4)) - (617.45 * TMath::Power(missing_mom,3)) + (228.85 * TMath::Power(missing_mom,2)) - (36.301 * missing_mom) - 2.1489;
           a =  408.547770052618 ;
           a_err =  TMath::Power(36.453926608120966,2) ;
           b =  -426.06473793939705 ;
@@ -220,7 +204,6 @@ void MissingMom(const char *kinematic, int kin)
         h_dx_missing_mom_n->Fill(dx-dx_n_shift,missing_mom,weight);
         if (missing_mom<0.2)
         {
-          //pol_n = (-149.54 * TMath::Power(missing_mom,4)) + (26.742 * TMath::Power(missing_mom,3)) - (3.1007 * TMath::Power(missing_mom,2)) + (0.064 * missing_mom) + 0.9999;
           a =  -206.6702353176982 ;
           a_err =  TMath::Power(5.515059269519871,2) ;
           b =  54.385593370006745 ;
@@ -234,7 +217,6 @@ void MissingMom(const char *kinematic, int kin)
         }
         if (missing_mom>=0.2)
         {
-          //pol_n = (-409.23 * TMath::Power(missing_mom,4)) + (660.3 * TMath::Power(missing_mom,3)) - (364.59 * TMath::Power(missing_mom,2)) + (77.325 * missing_mom) - 4.6319;
           a =  883.3727552389017 ;
           a_err =  TMath::Power(130.37671654356538,2) ;
           b =  -792.0583539603548 ;
@@ -260,8 +242,6 @@ void MissingMom(const char *kinematic, int kin)
 
       dx_out = dx-dx_n_shift;
       dy_out = dy;
-      //W2_out = W2;
-
       T_out->Fill();
 
   }//end event loop
@@ -292,27 +272,21 @@ void MissingMom(const char *kinematic, int kin)
   printf("Mean Neutron Effective Polarization in Neutron Window = %f \n", mean_n);
   printf("You've completed the script!\n");
 
-  //Save the canvas to a pdf
-  //c1->Print(outputfile);
   c2->Print(outputfile);
 
   TCanvas *c3 = new TCanvas("c3", "Neutron Profile Fitting", 100,100,700,700);
   c3->cd();
   h_prof_pol_n->Draw();
 
-  //************
-  //TF1 *fitn = new TF1("fitn", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x) + [5]*cos(3*x) + [6]*sin(3*x) + [7]*cos(4*x) + [8]*sin(4*x) + [9]*cos(5*x) + [10]*sin(5*x)", -3.5, 3.0);
-  //************
+  TF1 *fitn = new TF1("fitn", "[0] + [1]*x + [2]*TMath::Power(x,2) + [3]*TMath::Power(x,3) + [4]*TMath::Power(x,4) + [5]*TMath::Power(x,5) + [6]*TMath::Power(x,6) + [7]*TMath::Power(x,7) + [8]*TMath::Power(x,8) + [9]*TMath::Power(x,9)", -3.5, 3.0);
+  fitn->SetParameters(1,2,3,4,5,6,7,8,9,10);
+  fitn->SetLineColor(kRed);
 
+  h_prof_pol_n->Fit("fitn");
+  fitn->Draw("SAMES");
+  gStyle->SetOptFit(1111);
 
-  //TF1 *fitn = new TF1("fitn", "[0] + [1]*x + [2]*TMath::Power(x,2) + [3]*TMath::Power(x,3) + [4]*TMath::Power(x,4) + [5]*TMath::Power(x,5) + [6]*TMath::Power(x,6) + [7]*TMath::Power(x,7) + [8]*TMath::Power(x,8) + [9]*TMath::Power(x,9)", -3.5, 3.0);
-  //fitn->SetParameters(1,2,3,4,5,6,7,8,9,10);
-  //fitn->SetLineColor(kRed);
-
-  //h_prof_pol_n->Fit("fitn");
-  //fitn->Draw("SAMES");
-  //gStyle->SetOptFit(1111);
-
+  //*** Testing Fits ***
   //************
   //TF1 *f = new TF1("f",[=](double *x, double */*p*/){return h_prof_pol_p->Interpolate(x[0]);},h_prof_pol_p->GetXaxis()->GetXmin(), h_prof_pol_p->GetXaxis()->GetXmax(), 0);
   //f->Draw("same");
@@ -328,14 +302,13 @@ void MissingMom(const char *kinematic, int kin)
   c4->cd();
   h_prof_pol_p->Draw();
 
-  //TF1 *fitp = new TF1("fitp", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x) + [5]*cos(3*x) + [6]*sin(3*x) + [7]*cos(4*x) + [8]*sin(4*x)", -3.5, 3.0); // + [5]*cos(3*x) + [6]*sin(3*x)
-  //fitp->SetParameters(1,2,3,4,5,6,7,8,9);
-  //fitp->SetLineColor(kRed);
+  TF1 *fitp = new TF1("fitp", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x) + [5]*cos(3*x) + [6]*sin(3*x) + [7]*cos(4*x) + [8]*sin(4*x)", -3.5, 3.0); // + [5]*cos(3*x) + [6]*sin(3*x)
+  fitp->SetParameters(1,2,3,4,5,6,7,8,9);
+  fitp->SetLineColor(kRed);
 
-  //h_prof_pol_p->Fit("fitp");
-
-  //fitp->Draw("SAMES");
-  //gStyle->SetOptFit(1111);
+  h_prof_pol_p->Fit("fitp");
+  fitp->Draw("SAMES");
+  gStyle->SetOptFit(1111);
 
   fout->Write();
 }
