@@ -202,32 +202,9 @@ void MissingMom(const char *kinematic, int kin)
           e =  1.3017802399082927 ;
           e_err =  TMath::Power(0.15359726205698873,2) ;
         }
-        else
-        {
-          a =  0.0 ;
-          a_err =  0.0 ;
-          b =  0.0 ;
-          b_err =  0.0 ;
-          c =  0.0 ;
-          c_err =  0.0 ;
-          d =  0.0 ;
-          d_err =  0.0 ;
-          e =  0.0 ;
-          e_err =  0.0 ;
-        }
-        pol_p =
-        (a * TMath::Power(missing_mom,4)) +
-        (b * TMath::Power(missing_mom,3)) +
-        (c * TMath::Power(missing_mom,2)) +
-        (d * missing_mom) + e;
+        pol_p = (a * TMath::Power(missing_mom,4)) + (b * TMath::Power(missing_mom,3)) + (c * TMath::Power(missing_mom,2)) + (d * missing_mom) + e;
 
-        pol_p_w = TMath::Sqrt(
-        (TMath::Power(missing_mom,8)*a_err) +
-        (TMath::Power(missing_mom,6)*b_err) +
-        (TMath::Power(missing_mom,4)*c_err) +
-        (TMath::Power(missing_mom,2)*d_err) +
-        e_err +
-        0.0);
+        pol_p_w = TMath::Sqrt((TMath::Power(missing_mom,8)*a_err) + (TMath::Power(missing_mom,6)*b_err) + (TMath::Power(missing_mom,4)*c_err) + (TMath::Power(missing_mom,2)*d_err) + e_err);
         //(16*a*a*TMath::Power(missing_mom,6)*weight*weight) +
         //(24*a*b*TMath::Power(missing_mom,5)*weight*weight) +
         //((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*weight*weight) +
