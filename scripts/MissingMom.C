@@ -227,7 +227,7 @@ void MissingMom(const char *kinematic, int kin)
         (TMath::Power(missing_mom,4)*c_err) +
         (TMath::Power(missing_mom,2)*d_err) +
         e_err +
-        );
+        0.0);
         //(16*a*a*TMath::Power(missing_mom,6)*weight*weight) +
         //(24*a*b*TMath::Power(missing_mom,5)*weight*weight) +
         //((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*weight*weight) +
