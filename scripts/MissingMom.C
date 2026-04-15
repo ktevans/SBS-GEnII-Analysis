@@ -40,10 +40,10 @@ void MissingMom(const char *kinematic, int kin)
 
   TTree *T_out = new TTree("Tout", "Simulation Data Tree");
 
-  double dx_out, dy_out, W2_out, ePS_out, epx_out, epy_out, epz_out, fnucl_out, npx_out, npy_out, npz_out, weight_out;
+  double dx_out, dy_out, epx_out, epy_out, epz_out, fnucl_out, npx_out, npy_out, npz_out, weight_out;
   T_out->Branch("dx",     &dx_out,     "dx/D");
   T_out->Branch("dy",     &dy_out,     "dy/D");
-  T_out->Branch("W2",     &W2_out,     "W2/D");
+  //T_out->Branch("W2",     &W2_out,     "W2/D");
 
   double missing_mom, pol_p, pol_n, pol_p_w, pol_n_w;
   T_out->Branch("missing_mom",   &missing_mom,   "missing_mom/D");
@@ -57,8 +57,8 @@ void MissingMom(const char *kinematic, int kin)
 
   double dx;         T->SetBranchAddress("dx", &dx);
   double dy;         T->SetBranchAddress("dy", &dy);
-  double W2;         T->SetBranchAddress("W2", &W2);
-  double ePS;        T->SetBranchAddress("ePS", &ePS);
+  //double W2;         T->SetBranchAddress("W2", &W2);
+  //double ePS;        T->SetBranchAddress("ePS", &ePS);
   double epx;        T->SetBranchAddress("epx", &epx);
   double epy;        T->SetBranchAddress("epy", &epy);
   double epz;        T->SetBranchAddress("epz", &epz);
@@ -321,7 +321,7 @@ void MissingMom(const char *kinematic, int kin)
 
       dx_out = dx-dx_n_shift;
       dy_out = dy;
-      W2_out = W2;
+      //W2_out = W2;
 
       T_out->Fill();
 
