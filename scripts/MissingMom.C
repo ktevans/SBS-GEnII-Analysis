@@ -227,14 +227,15 @@ void MissingMom(const char *kinematic, int kin)
         (TMath::Power(missing_mom,4)*c_err) +
         (TMath::Power(missing_mom,2)*d_err) +
         e_err +
-        (16*a*a*TMath::Power(missing_mom,6)*weight*weight) +
-        (24*a*b*TMath::Power(missing_mom,5)*weight*weight) +
-        ((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*weight*weight) +
-        ((8*a*d + 12*b*c)*TMath::Power(missing_mom,3)*weight*weight) +
-        ((6*b*d + 4*c*c)*TMath::Power(missing_mom,2)*weight*weight) +
-        (4*c*d*missing_mom*weight*weight) +
-        (d*d*weight*weight)
         );
+        //(16*a*a*TMath::Power(missing_mom,6)*weight*weight) +
+        //(24*a*b*TMath::Power(missing_mom,5)*weight*weight) +
+        //((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*weight*weight) +
+        //((8*a*d + 12*b*c)*TMath::Power(missing_mom,3)*weight*weight) +
+        //((6*b*d + 4*c*c)*TMath::Power(missing_mom,2)*weight*weight) +
+        //(4*c*d*missing_mom*weight*weight) +
+        //(d*d*weight*weight)
+        //);
 
         h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,pol_p_w);
         h_prof_pol_p->Fill(dx-dx_p_shift,pol_p,pol_p_w);
