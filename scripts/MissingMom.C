@@ -147,7 +147,7 @@ void MissingMom(const char *kinematic, int kin)
   h_dx_pol_n_inWindow->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_n_inWindow->SetTitle("Neutron Effective Polarization in the Neutron Window");
 
-  double a, a_err, b, b_err, c, c_err, d, d_err, e, e_err;
+  double a, a_err, b, b_err, c, c_err, d, d_err, e, e_err, sigma;
 
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
@@ -155,6 +155,7 @@ void MissingMom(const char *kinematic, int kin)
     T->GetEntry(iev);
 
     missing_mom = TMath::Sqrt(TMath::Power((-beam_e)+(npz)+(epz),2)+TMath::Power((npx)+(epx),2)+TMath::Power((npy)+(epy),2));
+    sigma = 1.0/weight;
 
       if (fnucl==1.0)
       {
@@ -188,13 +189,13 @@ void MissingMom(const char *kinematic, int kin)
         }
         pol_p = (a * TMath::Power(missing_mom,4)) + (b * TMath::Power(missing_mom,3)) + (c * TMath::Power(missing_mom,2)) + (d * missing_mom) + e;
 
-        pol_p_w = TMath::Sqrt((TMath::Power(missing_mom,8)*a_err) + (TMath::Power(missing_mom,6)*b_err) + (TMath::Power(missing_mom,4)*c_err) + (TMath::Power(missing_mom,2)*d_err) + e_err + (16*a*a*TMath::Power(missing_mom,6)*weight*weight) + (24*a*b*TMath::Power(missing_mom,5)*weight*weight) + ((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*weight*weight) + ((8*a*d + 12*b*c)*TMath::Power(missing_mom,3)*weight*weight) + ((6*b*d + 4*c*c)*TMath::Power(missing_mom,2)*weight*weight) + (4*c*d*missing_mom*weight*weight) + (d*d*weight*weight));
+        pol_p_w = 1.0/((TMath::Power(missing_mom,8)*a_err) + (TMath::Power(missing_mom,6)*b_err) + (TMath::Power(missing_mom,4)*c_err) + (TMath::Power(missing_mom,2)*d_err) + e_err + (16*a*a*TMath::Power(missing_mom,6)*sigma) + (24*a*b*TMath::Power(missing_mom,5)*sigma) + ((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*sigma) + ((8*a*d + 12*b*c)*TMath::Power(missing_mom,3)*sigma) + ((6*b*d + 4*c*c)*TMath::Power(missing_mom,2)*sigma) + (4*c*d*missing_mom*sigma) + (d*d*sigma));
 
-        h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
-        h_prof_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
+        h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,pol_p_w);
+        h_prof_pol_p->Fill(dx-dx_p_shift,pol_p,pol_p_w);
         if (dx-dx_p_shift<n_max&&dx-dx_p_shift>n_min)
         {
-          h_dx_pol_p_inWindow->Fill(dx-dx_p_shift,pol_p,weight);
+          h_dx_pol_p_inWindow->Fill(dx-dx_p_shift,pol_p,pol_p_w);
         }
       }
 
@@ -230,13 +231,13 @@ void MissingMom(const char *kinematic, int kin)
         }
         pol_n = (a * TMath::Power(missing_mom,4)) + (b * TMath::Power(missing_mom,3)) + (c * TMath::Power(missing_mom,2)) + (d * missing_mom) + e;
 
-        pol_n_w = TMath::Sqrt((TMath::Power(missing_mom,8)*a_err) + (TMath::Power(missing_mom,6)*b_err) + (TMath::Power(missing_mom,4)*c_err) + (TMath::Power(missing_mom,2)*d_err) + e_err + (16*a*a*TMath::Power(missing_mom,6)*weight*weight) + (24*a*b*TMath::Power(missing_mom,5)*weight*weight) + ((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*weight*weight) + ((8*a*d + 12*b*c)*TMath::Power(missing_mom,3)*weight*weight) + ((6*b*d + 4*c*c)*TMath::Power(missing_mom,2)*weight*weight) + (4*c*d*missing_mom*weight*weight) + (d*d*weight*weight));
+        pol_n_w = 1.0/((TMath::Power(missing_mom,8)*a_err) + (TMath::Power(missing_mom,6)*b_err) + (TMath::Power(missing_mom,4)*c_err) + (TMath::Power(missing_mom,2)*d_err) + e_err + (16*a*a*TMath::Power(missing_mom,6)*sigma) + (24*a*b*TMath::Power(missing_mom,5)*sigma) + ((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*sigma) + ((8*a*d + 12*b*c)*TMath::Power(missing_mom,3)*sigma) + ((6*b*d + 4*c*c)*TMath::Power(missing_mom,2)*sigma) + (4*c*d*missing_mom*sigma) + (d*d*sigma));
 
-        h_dx_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
-        h_prof_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
+        h_dx_pol_n->Fill(dx-dx_n_shift,pol_n,pol_n_w);
+        h_prof_pol_n->Fill(dx-dx_n_shift,pol_n,pol_n_w);
         if (dx-dx_n_shift<n_max&&dx-dx_n_shift>n_min)
         {
-          h_dx_pol_n_inWindow->Fill(dx-dx_n_shift,pol_n,weight);
+          h_dx_pol_n_inWindow->Fill(dx-dx_n_shift,pol_n,pol_n_w);
         }
       }
 
