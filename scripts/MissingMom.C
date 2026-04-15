@@ -237,11 +237,11 @@ void MissingMom(const char *kinematic, int kin)
         //(d*d*weight*weight)
         //);
 
-        h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,pol_p_w);
-        h_prof_pol_p->Fill(dx-dx_p_shift,pol_p,pol_p_w);
+        h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
+        h_prof_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
         if (dx-dx_p_shift<n_max&&dx-dx_p_shift>n_min)
         {
-          h_dx_pol_p_inWindow->Fill(dx-dx_p_shift,pol_p,pol_p_w);
+          h_dx_pol_p_inWindow->Fill(dx-dx_p_shift,pol_p,weight);
         }
       }
 
