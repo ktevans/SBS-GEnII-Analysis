@@ -78,7 +78,7 @@ void MissingMom(const char *kinematic, int kin)
     beam_e = 4.291;
     n_min = -0.95;
     n_max = 0.95;
-    dx_p_cut = 0.0;
+    dx_p_cut = -0.4;
     dx_n_cut = -1.0;
   }
 
