@@ -68,6 +68,8 @@ void MissingMom(const char *kinematic, int kin)
   double beam_e;
   double n_min;
   double n_max;
+  double dx_p_cut;
+  double dx_n_cut;
 
   if (kin == 2)
   {
@@ -76,6 +78,8 @@ void MissingMom(const char *kinematic, int kin)
     beam_e = 4.291;
     n_min = -0.95;
     n_max = 0.95;
+    dx_p_cut = 0.0;
+    dx_n_cut = -1.0;
   }
 
   if (kin == 3)
@@ -85,6 +89,8 @@ void MissingMom(const char *kinematic, int kin)
     beam_e = 6.373;
     n_min = -0.5;
     n_max = 0.5;
+    dx_p_cut = 0.0;
+    dx_n_cut = -1.0;
   }
 
   if (kin == 4)
@@ -94,6 +100,8 @@ void MissingMom(const char *kinematic, int kin)
     beam_e = 8.448;
     n_min = -0.3;
     n_max = 0.3;
+    dx_p_cut = 0.0;
+    dx_n_cut = -1.0;
   }
 
   //Scan through all the entries in the TChain T
@@ -129,13 +137,23 @@ void MissingMom(const char *kinematic, int kin)
   h_dx_pol_p->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_p->SetTitle("dx for Protons");
 
-  TProfile* h_prof_pol_p = new TProfile("h_prof_pol_p", "pol_prof_p", 35.0, -3.5, 3.0, -0.5, 1.5);
-  TProfile* h_prof_pol_n = new TProfile("h_prof_pol_n", "pol_prof_n", 35.0, -3.5, 3.0, -0.5, 1.5);
+  TH2D* h_dx_pol_p_low = new TH2D("h_dx_pol_p_low", ";h_dx_pol_p_low", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
+  TH2D* h_dx_pol_p_high = new TH2D("h_dx_pol_p_high", ";h_dx_pol_p_high", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
+  TProfile* h_prof_pol_p_low = new TProfile("h_prof_pol_p_low", "pol_prof_p_low", 70.0, -3.5, 3.0, -0.5, 1.5);
+  TProfile* h_prof_pol_p_high = new TProfile("h_prof_pol_p_high", "pol_prof_p_high", 70.0, -3.5, 3.0, -0.5, 1.5);
 
   TH2D* h_dx_pol_n = new TH2D("h_dx_pol_n", ";h_dx_pol_n", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
   h_dx_pol_n->GetXaxis()->SetTitle("dx [m]");
   h_dx_pol_n->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_n->SetTitle("dx for Neutrons");
+
+  TH2D* h_dx_pol_n_low = new TH2D("h_dx_pol_n_low", ";h_dx_pol_n_low", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
+  TH2D* h_dx_pol_n_high = new TH2D("h_dx_pol_n_high", ";h_dx_pol_n_high", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
+  TProfile* h_prof_pol_n_low = new TProfile("h_prof_pol_n_low", "pol_prof_n_low", 70.0, -3.5, 3.0, -0.5, 1.5);
+  TProfile* h_prof_pol_n_high = new TProfile("h_prof_pol_n_high", "pol_prof_n_high", 70.0, -3.5, 3.0, -0.5, 1.5);
+
+  TProfile* h_prof_pol_p = new TProfile("h_prof_pol_p", "pol_prof_p", 70.0, -3.5, 3.0, -0.5, 1.5);
+  TProfile* h_prof_pol_n = new TProfile("h_prof_pol_n", "pol_prof_n", 70.0, -3.5, 3.0, -0.5, 1.5);
 
   TH2D* h_dx_pol_p_inWindow = new TH2D("h_dx_pol_p_inWindow", ";h_dx_pol_p_inWindow", 200.0, n_min-0.05, n_max+0.05, 200.0, -0.5, 1.5);
   h_dx_pol_p_inWindow->GetXaxis()->SetTitle("dx [m]");
@@ -199,6 +217,16 @@ void MissingMom(const char *kinematic, int kin)
         {
           h_dx_pol_p_inWindow->Fill(dx-dx_p_shift,pol_p,weight);
         }
+        if (dx-dx_p_shift<dx_p_cut)
+        {
+          h_dx_pol_p_low->Fill(dx-dx_p_shift,pol_p,weight);
+          h_prof_pol_p_low->Fill(dx-dx_p_shift,pol_p,weight);
+        }
+        if (dx-dx_p_shift>=dx_p_cut)
+        {
+          h_dx_pol_p_high->Fill(dx-dx_p_shift,pol_p,weight);
+          h_prof_pol_p_high->Fill(dx-dx_p_shift,pol_p,weight);
+        }
       }
 
       if (fnucl==0.0)
@@ -241,6 +269,16 @@ void MissingMom(const char *kinematic, int kin)
         {
           h_dx_pol_n_inWindow->Fill(dx-dx_n_shift,pol_n,weight);
         }
+        if (dx-dx_n_shift<dx_n_cut)
+        {
+          h_dx_pol_n_low->Fill(dx-dx_n_shift,pol_n,weight);
+          h_prof_pol_n_low->Fill(dx-dx_n_shift,pol_n,weight);
+        }
+        if (dx-dx_n_shift>=dx_n_cut)
+        {
+          h_dx_pol_n_high->Fill(dx-dx_n_shift,pol_n,weight);
+          h_prof_pol_n_high->Fill(dx-dx_n_shift,pol_n,weight);
+        }
       }
 
       dx_out = dx-dx_n_shift;
@@ -248,6 +286,16 @@ void MissingMom(const char *kinematic, int kin)
       T_out->Fill();
 
   }//end event loop
+
+  for (size_t iev = 0; iev < T->GetEntries(); iev++)
+  {
+    T->GetEntry(iev);
+
+    missing_mom = TMath::Sqrt(TMath::Power((-beam_e)+(npz)+(epz),2)+TMath::Power((npx)+(epx),2)+TMath::Power((npy)+(epy),2));
+
+
+
+  }// end second event loop
 
   double mean_p = 0.0;
   double mean_n = 0.0;
@@ -288,6 +336,18 @@ void MissingMom(const char *kinematic, int kin)
   //h_prof_pol_n->Fit("fitn");
   //fitn->Draw("SAMES");
   //gStyle->SetOptFit(1111);
+
+  TF1 *fitn_low = new TF1("fitn_low", "[0] - [1]*TMath::Exp([2]x)", -3.5, 3.0);
+  fitn_low->SetParameters(1.0,2.0,3.0);
+  fitn_low->SetLineColor(kBlue);
+  h_prof_pol_n_low->Fit("fitn_low");
+  fitn_low->Draw("SAMES");
+
+  TF1 *fitn_high = new TF1("fitn_high", "[0]*x*x + [1]*x + [2]", -3.5, 3.0);
+  fitn_high->SetParameters(1.0,2.0,3.0);
+  fitn_high->SetLineColor(kBlue);
+  h_prof_pol_n_high->Fit("fitn_high");
+  fitn_high->Draw("SAMES");
 
   //*** Testing Fits ***
   //************
