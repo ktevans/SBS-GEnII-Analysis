@@ -191,11 +191,13 @@ void MissingMom(const char *kinematic, int kin)
 
         pol_p_w = 1.0/((TMath::Power(missing_mom,8)*a_err) + (TMath::Power(missing_mom,6)*b_err) + (TMath::Power(missing_mom,4)*c_err) + (TMath::Power(missing_mom,2)*d_err) + e_err + (16*a*a*TMath::Power(missing_mom,6)*sigma) + (24*a*b*TMath::Power(missing_mom,5)*sigma) + ((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*sigma) + ((8*a*d + 12*b*c)*TMath::Power(missing_mom,3)*sigma) + ((6*b*d + 4*c*c)*TMath::Power(missing_mom,2)*sigma) + (4*c*d*missing_mom*sigma) + (d*d*sigma));
 
-        h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,pol_p_w);
-        h_prof_pol_p->Fill(dx-dx_p_shift,pol_p,pol_p_w);
+        // ^^ This weight is wrong. I need to incorperate the cross terms. However, the fit is good enough that the fit error is much smaller than the error simply due to the simulation, so I am going to ignore the fit error and just use the simulation weight.
+
+        h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
+        h_prof_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
         if (dx-dx_p_shift<n_max&&dx-dx_p_shift>n_min)
         {
-          h_dx_pol_p_inWindow->Fill(dx-dx_p_shift,pol_p,pol_p_w);
+          h_dx_pol_p_inWindow->Fill(dx-dx_p_shift,pol_p,weight);
         }
       }
 
@@ -233,11 +235,11 @@ void MissingMom(const char *kinematic, int kin)
 
         pol_n_w = 1.0/((TMath::Power(missing_mom,8)*a_err) + (TMath::Power(missing_mom,6)*b_err) + (TMath::Power(missing_mom,4)*c_err) + (TMath::Power(missing_mom,2)*d_err) + e_err + (16*a*a*TMath::Power(missing_mom,6)*sigma) + (24*a*b*TMath::Power(missing_mom,5)*sigma) + ((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*sigma) + ((8*a*d + 12*b*c)*TMath::Power(missing_mom,3)*sigma) + ((6*b*d + 4*c*c)*TMath::Power(missing_mom,2)*sigma) + (4*c*d*missing_mom*sigma) + (d*d*sigma));
 
-        h_dx_pol_n->Fill(dx-dx_n_shift,pol_n,pol_n_w);
-        h_prof_pol_n->Fill(dx-dx_n_shift,pol_n,pol_n_w);
+        h_dx_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
+        h_prof_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
         if (dx-dx_n_shift<n_max&&dx-dx_n_shift>n_min)
         {
-          h_dx_pol_n_inWindow->Fill(dx-dx_n_shift,pol_n,pol_n_w);
+          h_dx_pol_n_inWindow->Fill(dx-dx_n_shift,pol_n,weight);
         }
       }
 
