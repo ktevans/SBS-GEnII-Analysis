@@ -153,7 +153,9 @@ void MissingMom(const char *kinematic, int kin)
   TProfile* h_prof_pol_n_high = new TProfile("h_prof_pol_n_high", "pol_prof_n_high", 70.0, -3.5, 3.0, -0.5, 1.5);
 
   TProfile* h_prof_pol_p = new TProfile("h_prof_pol_p", "pol_prof_p", 70.0, -3.5, 3.0, -0.5, 1.5);
+  h_prof_pol_p->SetMarkerColor(kRed);
   TProfile* h_prof_pol_n = new TProfile("h_prof_pol_n", "pol_prof_n", 70.0, -3.5, 3.0, -0.5, 1.5);
+  h_prof_pol_n->SetMarkerColor(kRed);
 
   TH2D* h_dx_pol_p_inWindow = new TH2D("h_dx_pol_p_inWindow", ";h_dx_pol_p_inWindow", 200.0, n_min-0.05, n_max+0.05, 200.0, -0.5, 1.5);
   h_dx_pol_p_inWindow->GetXaxis()->SetTitle("dx [m]");
@@ -312,12 +314,14 @@ void MissingMom(const char *kinematic, int kin)
   h_dx_pol_p->Draw();
   h_dx_pol_n->Draw("SAMES");
 
-  TCanvas *c2 = new TCanvas("c2","Effective Polarization in Neutron Window",100,100,700,700);
+  TCanvas *c2 = new TCanvas("c2","Effective Polarization with Prof",100,100,700,700);
   c2->Divide(1,2);
   c2->cd(1);
-  h_dx_pol_p_inWindow->Draw();
+  h_dx_pol_p->Draw();
+  h_prof_pol_p->Draw("SAMES");
   c2->cd(2);
-  h_dx_pol_n_inWindow->Draw();
+  h_dx_pol_n->Draw();
+  h_prof_pol_n->Draw("SAMES");
 
   printf("Mean Proton Effective Polarization in Neutron Window = %f \n", mean_p);
   printf("Mean Neutron Effective Polarization in Neutron Window = %f \n", mean_n);
