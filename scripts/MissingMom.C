@@ -337,17 +337,19 @@ void MissingMom(const char *kinematic, int kin)
   //fitn->Draw("SAMES");
   //gStyle->SetOptFit(1111);
 
-  TF1 *fitn_low = new TF1("fitn_low", "[0] - [1]*TMath::Exp([2]x)", -3.5, 3.0);
+  TF1 *fitn_low = new TF1("fitn_low", "[0] - [1]*TMath::Exp([2]x)", -3.5, dx_n_cut);
   fitn_low->SetParameters(1.0,2.0,3.0);
   fitn_low->SetLineColor(kBlue);
   h_prof_pol_n_low->Fit("fitn_low");
   fitn_low->Draw("SAMES");
 
-  TF1 *fitn_high = new TF1("fitn_high", "[0]*x*x + [1]*x + [2]", -3.5, 3.0);
+  TF1 *fitn_high = new TF1("fitn_high", "[0]*x*x + [1]*x + [2]", dx_n_cut, 3.0);
   fitn_high->SetParameters(1.0,2.0,3.0);
   fitn_high->SetLineColor(kBlue);
   h_prof_pol_n_high->Fit("fitn_high");
   fitn_high->Draw("SAMES");
+
+  //h_prof_pol_n->Draw("SAMES");
 
   //*** Testing Fits ***
   //************
