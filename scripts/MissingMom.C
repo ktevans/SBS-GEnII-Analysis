@@ -326,7 +326,7 @@ void MissingMom(const char *kinematic, int kin)
   c2->Print(outputfile);
 
   TCanvas *c3 = new TCanvas("c3", "Neutron Profile Fitting", 100,100,700,700);
-  c3->cd(1,2);
+  c3->Divide(1,2);
   c3->cd(1);
   h_prof_pol_n_low->Draw();
 
