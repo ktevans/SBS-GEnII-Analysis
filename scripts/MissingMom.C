@@ -374,8 +374,8 @@ void MissingMom(const char *kinematic, int kin)
   c4->cd(1);
   h_prof_pol_p_low->Draw();
 
-  TF1 *fitp_low = new TF1("fitp_low", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)", -3.5, dx_p_cut);
-  fitp_low->SetParameters(1.0,2.0,3.0,4.0,5.0);
+  TF1 *fitp_low = new TF1("fitp_low", "[0]*x*x*x + [1]*x*x + [2]*x + [3]", -3.5, dx_p_cut);
+  fitp_low->SetParameters(1.0,2.0,3.0,4.0);
   fitp_low->SetLineColor(kBlue);
   h_prof_pol_p_low->Fit("fitp_low");
   fitp_low->Draw("SAMES");
