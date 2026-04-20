@@ -370,8 +370,24 @@ void MissingMom(const char *kinematic, int kin)
   //************
 
   TCanvas *c4 = new TCanvas("c4", "Proton Profile Fitting", 100,100,700,700);
-  c4->cd();
-  h_prof_pol_p->Draw();
+  c4->Divide(1,2);
+  c4->cd(1);
+  h_prof_pol_p_low->Draw();
+
+  TF1 *fitp_low = new TF1("fitp_low", "[0]*x*x*x + [1]*x*x + [2]*x + [3]", -3.5, dx_p_cut);
+  fitp_low->SetParameters(1.0,2.0,3.0,4.0);
+  fitp_low->SetLineColor(kBlue);
+  h_prof_pol_p_low->Fit("fitp_low");
+  fitp_low->Draw("SAMES");
+
+  c4->cd(2);
+  h_prof_pol_p_high->Draw();
+
+  TF1 *fitp_high = new TF1("fitp_high", "[0]", dx_p_cut, 3.0);
+  fitp_high->SetParameters(0.05);
+  fitp_high->SetLineColor(kRed);
+  h_prof_pol_p_high->Fit("fitp_high");
+  fitp_high->Draw("SAMES");
 
   //TF1 *fitp = new TF1("fitp", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x) + [5]*cos(3*x) + [6]*sin(3*x) + [7]*cos(4*x) + [8]*sin(4*x)", -3.5, 3.0); // + [5]*cos(3*x) + [6]*sin(3*x)
   //fitp->SetParameters(1,2,3,4,5,6,7,8,9);
