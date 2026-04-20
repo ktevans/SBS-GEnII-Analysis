@@ -345,7 +345,7 @@ void MissingMom(const char *kinematic, int kin)
 
   TF1 *fitn_high = new TF1("fitn_high", "[0]*x*x + [1]*x + [2]", dx_n_cut, 3.0);
   fitn_high->SetParameters(1.0,2.0,3.0);
-  fitn_high->SetLineColor(kBlue);
+  fitn_high->SetLineColor(kRed);
   h_prof_pol_n_high->Fit("fitn_high");
   fitn_high->Draw("SAMES");
 
