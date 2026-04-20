@@ -295,6 +295,8 @@ void MissingMom(const char *kinematic, int kin)
   //TSpline3 *spline3 = nullptr;
   //delete spline3;
   //spline3 = new TSpline3(h_prof_pol_p, "b1e1", f->Derivative(-3.5), f->Derivative(3.0));
+  // "b1" check first derivative exists for beginning point (f->Derivative(-3.5))
+  // "e1" check first derivative exists for ending point (f->Derivative(3.0))
   //spline3->SetLineColor(kGreen);
   //spline3->Draw("same");
   //************
