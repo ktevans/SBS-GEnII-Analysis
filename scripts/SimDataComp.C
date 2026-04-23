@@ -295,9 +295,13 @@ void SimDataComp(int kin)
   }//end loop over events
 
   //std::unique_ptr<TFile> polFile(TFile::Open(pol_func_file, "READ"));
-  std::unique_ptr<TFile> polFile(TFile::Open(pol_func_file));
-  std::unique_ptr<TF1> fit_p(polFile->Get<TF1>(fitp));
-  std::unique_ptr<TF1> fit_n(polFile->Get<TF1>(fitn));
+  TFile *polFile = TFile::Open(pol_func_file);
+  TF1 *fitp = nullptr;
+  TF1 *fitn = nullptr;
+  polFile->GetObject("fitp", fitp);
+  polFile->GetObject("fitn", fitn);
+  //std::unique_ptr<TF1> fit_p(polFile->Get<TF1>(fitp));
+  //std::unique_ptr<TF1> fit_n(polFile->Get<TF1>(fitn));
 
   //std::cout << "sqrt(n) error " << h_simIN_dx->GetBinError(250) << std::endl;
   //std::cout << "Get Sumw2 Error: " << h_simIN_dx->GetSumw2() << std::endl;
