@@ -334,9 +334,12 @@ void MissingMom(const char *kinematic, int kin)
   c2->Print(outputfile);
 
   TCanvas *c3 = new TCanvas("c3", "Neutron Profile Fitting", 100,100,700,700);
-  c3->Divide(1,2);
-  c3->cd(1);
-  h_prof_pol_n_low->Draw();
+  c3->cd();
+  // ----- come back to this ----
+  //c3->Divide(1,2);
+  //c3->cd(1);
+  //h_prof_pol_n_low->Draw();
+  // ----- come back to this ----
 
   //TF1 *fitn = new TF1("fitn", "[0] + [1]*x + [2]*TMath::Power(x,2) + [3]*TMath::Power(x,3) + [4]*TMath::Power(x,4) + [5]*TMath::Power(x,5) + [6]*TMath::Power(x,6) + [7]*TMath::Power(x,7) + [8]*TMath::Power(x,8) + [9]*TMath::Power(x,9)", -3.5, 3.0);
   //fitn->SetParameters(1,2,3,4,5,6,7,8,9,10);
@@ -346,22 +349,29 @@ void MissingMom(const char *kinematic, int kin)
   //fitn->Draw("SAMES");
   //gStyle->SetOptFit(1111);
 
-  TF1 *fitn_low = new TF1("fitn_low", "[0]", -4.0, dx_n_cut);
-  fitn_low->SetParameters(1.0);
-  fitn_low->SetLineColor(kBlue);
-  h_prof_pol_n_low->Fit("fitn_low");
-  fitn_low->Draw("SAMES");
+  // ----- come back to this ----
+  //TF1 *fitn_low = new TF1("fitn_low", "[0]", -4.0, dx_n_cut);
+  //fitn_low->SetParameters(1.0);
+  //fitn_low->SetLineColor(kBlue);
+  //h_prof_pol_n_low->Fit("fitn_low");
+  //fitn_low->Draw("SAMES");
 
-  c3->cd(2);
-  h_prof_pol_n_high->Draw();
+  //c3->cd(2);
+  //h_prof_pol_n_high->Draw();
 
-  TF1 *fitn_high = new TF1("fitn_high", "[0]*x*x + [1]*x + [2]", dx_n_cut, 3.0);
-  fitn_high->SetParameters(1.0,2.0,3.0);
-  fitn_high->SetLineColor(kRed);
-  h_prof_pol_n_high->Fit("fitn_high");
-  fitn_high->Draw("SAMES");
+  //TF1 *fitn_high = new TF1("fitn_high", "[0]*x*x + [1]*x + [2]", dx_n_cut, 3.0);
+  //fitn_high->SetParameters(1.0,2.0,3.0);
+  //fitn_high->SetLineColor(kRed);
+  //h_prof_pol_n_high->Fit("fitn_high");
+  //fitn_high->Draw("SAMES");
 
-  //h_prof_pol_n->Draw("SAMES");
+  // ----- ^^ come back to this ----
+
+  h_prof_pol_n->Draw();
+  TF1 *fitn = new TF1("fitn", "(x>dx_n_cut)*([0]*x*x + [1]*x + [2]) + (x<=dx_n_cut)*([3])", -4.0, 3.0);
+  fitn->SetParameters(1.0,2.0,3.0,1.0);
+  h_prof_pol_n->Fit("fitn");
+  fitn->Draw("SAMES");
 
   //*** Testing Fits ***
   //************
