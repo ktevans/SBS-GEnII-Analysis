@@ -149,8 +149,8 @@ void MissingMom(const char *kinematic, int kin)
 
   TH2D* h_dx_pol_n_low = new TH2D("h_dx_pol_n_low", ";h_dx_pol_n_low", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
   TH2D* h_dx_pol_n_high = new TH2D("h_dx_pol_n_high", ";h_dx_pol_n_high", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
-  TProfile* h_prof_pol_n_low = new TProfile("h_prof_pol_n_low", "pol_prof_n_low", 70.0, -4.0, 3.0, -0.5, 1.5);
-  h_prof_pol_n_low->SetErrorOption(option='i');
+  TProfile* h_prof_pol_n_low = new TProfile("h_prof_pol_n_low", "pol_prof_n_low", 70.0, -4.0, 3.0, -0.5, 1.5,option='i');
+  //h_prof_pol_n_low->SetErrorOption(option='i');
   //'i' Errors are as in default case (standard errors of the bin contents) The only difference is for the case when the spread in Y is zero. In this case for N > 0 the error is 1./SQRT(12.*N)
   TProfile* h_prof_pol_n_high = new TProfile("h_prof_pol_n_high", "pol_prof_n_high", 70.0, -4.0, 3.0, -0.5, 1.5);
 
