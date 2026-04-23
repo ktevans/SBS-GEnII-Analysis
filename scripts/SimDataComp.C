@@ -83,7 +83,7 @@ void SimDataComp(int kin)
   TString data_file;
   TString nucleon_sim_file;
   TString inel_sim_file;
-  TStrig pol_func_file;
+  TString pol_func_file;
   TString title_words;
 
   int npar = 6;
