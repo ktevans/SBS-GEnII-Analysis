@@ -336,7 +336,7 @@ void MissingMom(const char *kinematic, int kin)
   TCanvas *c3 = new TCanvas("c3", "Neutron Profile Fitting", 100,100,700,700);
   c3->Divide(1,2);
   c3->cd(1);
-  h_prof_pol_n_low->Draw('i');
+  h_prof_pol_n_low->Draw();
 
   //TF1 *fitn = new TF1("fitn", "[0] + [1]*x + [2]*TMath::Power(x,2) + [3]*TMath::Power(x,3) + [4]*TMath::Power(x,4) + [5]*TMath::Power(x,5) + [6]*TMath::Power(x,6) + [7]*TMath::Power(x,7) + [8]*TMath::Power(x,8) + [9]*TMath::Power(x,9)", -3.5, 3.0);
   //fitn->SetParameters(1,2,3,4,5,6,7,8,9,10);
@@ -407,3 +407,4 @@ void MissingMom(const char *kinematic, int kin)
 
   fout->Write();
 }
+w
