@@ -149,13 +149,17 @@ void MissingMom(const char *kinematic, int kin)
 
   TH2D* h_dx_pol_n_low = new TH2D("h_dx_pol_n_low", ";h_dx_pol_n_low", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
   TH2D* h_dx_pol_n_high = new TH2D("h_dx_pol_n_high", ";h_dx_pol_n_high", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
-  TProfile* h_prof_pol_n_low = new TProfile("h_prof_pol_n_low", "pol_prof_n_low", 30.0, -4.0, 3.0, -0.5, 1.5);
+  TProfile* h_prof_pol_n_low = new TProfile("h_prof_pol_n_low", "pol_prof_n_low", 70.0, -4.0, 3.0, -0.5, 1.5);
+  h_prof_pol_n_low->SetErrorOption('i');
+  //'i' Errors are as in default case (standard errors of the bin contents) The only difference is for the case when the spread in Y is zero. In this case for N > 0 the error is 1./SQRT(12.*N)
   TProfile* h_prof_pol_n_high = new TProfile("h_prof_pol_n_high", "pol_prof_n_high", 70.0, -4.0, 3.0, -0.5, 1.5);
 
   TProfile* h_prof_pol_p = new TProfile("h_prof_pol_p", "pol_prof_p", 70.0, -4.0, 3.0, -0.5, 1.5);
   h_prof_pol_p->SetMarkerColor(kRed);
+  h_prof_pol_p->SetMarkerStyle(20);
   TProfile* h_prof_pol_n = new TProfile("h_prof_pol_n", "pol_prof_n", 70.0, -4.0, 3.0, -0.5, 1.5);
   h_prof_pol_n->SetMarkerColor(kRed);
+  h_prof_pol_n->SetMarkerStyle(20);
 
   TH2D* h_dx_pol_p_inWindow = new TH2D("h_dx_pol_p_inWindow", ";h_dx_pol_p_inWindow", 200.0, n_min-0.05, n_max+0.05, 200.0, -0.5, 1.5);
   h_dx_pol_p_inWindow->GetXaxis()->SetTitle("dx [m]");
@@ -378,8 +382,8 @@ void MissingMom(const char *kinematic, int kin)
   c4->cd(1);
   h_prof_pol_p_low->Draw();
 
-  TF1 *fitp_low = new TF1("fitp_low", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)", -4.0, dx_p_cut);
-  fitp_low->SetParameters(1.0,2.0,3.0,4.0,5.0);
+  TF1 *fitp_low = new TF1("fitp_low", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x)", -4.0, dx_p_cut);
+  fitp_low->SetParameters(1.0,2.0,3.0,4.0,5.0,6.0,7.0);
   fitp_low->SetLineColor(kBlue);
   h_prof_pol_p_low->Fit("fitp_low");
   fitp_low->Draw("SAMES");
