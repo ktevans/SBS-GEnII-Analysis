@@ -415,8 +415,9 @@ void MissingMom(const char *kinematic, int kin)
   //fitp->Draw("SAMES");
   //gStyle->SetOptFit(1111);
 
-  fitn_low->Write();
-  fitn_high->Write();
+  //fitn_low->Write();
+  //fitn_high->Write();
+  fitn->Write();
   fitp_low->Write();
   fitp_high->Write();
 
