@@ -33,6 +33,12 @@ TH1D *h_sim_neutron_dx;
 TH1D *h_prob_proton_dx;
 TH1D *h_prob_neutron_dx;
 TH1D *h_prob_bckgrnd_dx;
+TH1D *h_prob_proton_dx_polW;
+TH1D *h_prob_neutron_dx_polW;
+//TF1 *fitn_low_in;
+//TF1 *fitn_high_in;
+//TF1 *fitp_low_in;
+//TF1 *fitp_high_in;
 
 double fitsim( double *x, double *par)
 {
@@ -77,6 +83,7 @@ void SimDataComp(int kin)
   TString data_file;
   TString nucleon_sim_file;
   TString inel_sim_file;
+  TStrig pol_func_file;
   TString title_words;
 
   int npar = 6;
@@ -90,6 +97,7 @@ void SimDataComp(int kin)
     //data_file = "outfiles/sean_GEn_pass2_GEN2_He3_dxdy.root";
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN2_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN2_He3_dxdy.root";
+    pol_func_file = "outfiles/parsed_GEn_pass2_GEN2_simulation.root";
     title_words = "GEN2";
     dx_min_d = -6.0;
     dx_min_i = -6;
@@ -105,6 +113,7 @@ void SimDataComp(int kin)
     data_file = "outfiles/parsed_GEn_pass2_GEN3_He3_dxdy.root";
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN3_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN3_He3_dxdy.root";
+    pol_func_file = "outfiles/parsed_GEn_pass2_GEN3_simulation.root";
     title_words = "GEN3";
     dx_min_d = -6.0;
     dx_min_i = -6;
@@ -119,6 +128,7 @@ void SimDataComp(int kin)
     data_file = "outfiles/parsed_GEn_pass2_GEN4a_He3_dxdy.root";
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN4_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
+    pol_func_file = "outfiles/parsed_GEn_pass2_GEN4a_simulation.root";
     title_words = "GEN4a";
     dx_min_d = -3.0;
     dx_min_i = -3;
@@ -133,6 +143,7 @@ void SimDataComp(int kin)
     data_file = "outfiles/parsed_GEn_pass2_GEN4b_He3_dxdy.root";
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN4_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
+    pol_func_file = "outfiles/parsed_GEn_pass2_GEN4b_simulation.root";
     title_words = "GEN4b";
     dx_min_d = -3.0;
     dx_min_i = -3;
@@ -283,6 +294,11 @@ void SimDataComp(int kin)
 
   }//end loop over events
 
+  //std::unique_ptr<TFile> polFile(TFile::Open(pol_func_file, "READ"));
+  std::unique_ptr<TFile> polFile(TFile::Open(pol_func_file));
+  std::unique_ptr<TF1> fit_p(polFile->Get<TF1>(fitp));
+  std::unique_ptr<TF1> fit_n(polFile->Get<TF1>(fitn));
+
   //std::cout << "sqrt(n) error " << h_simIN_dx->GetBinError(250) << std::endl;
   //std::cout << "Get Sumw2 Error: " << h_simIN_dx->GetSumw2() << std::endl;
 
@@ -428,9 +444,6 @@ void SimDataComp(int kin)
   hAsym->Sumw2();
   hAsym->Rebin();
 
-  double A_array[numberBins];
-  double A_err_array[numberBins];
-
   for (int bin = 0; bin < h_Nbins; bin++)
   {
 
@@ -479,46 +492,15 @@ void SimDataComp(int kin)
     h_prob_bckgrnd_dx->SetBinContent(bin,P_bg);
     h_prob_bckgrnd_dx->SetBinError(bin,P_bg_err);
 
-    double c_pos      = h_pos_hel_dx->GetBinContent(bin);
-    cout<<"Positive helicity content for "<< bin <<" bin: "<< c_pos <<"\n";
-    double c_pos_err  = h_pos_hel_dx->GetBinError(bin);
-    cout<<"Positive helicity error for "<< bin <<" bin: "<< c_pos_err <<"\n";
-    double c_neg      = h_neg_hel_dx->GetBinContent(bin);
-    cout<<"Negative helicity content for "<< bin <<" bin: "<< c_neg <<"\n";
-    double c_neg_err  = h_neg_hel_dx->GetBinError(bin);
-    cout<<"Negative helicity error for "<< bin <<" bin: "<< c_neg_err <<"\n";
-
-    A_array[bin] = (helPosArray[bin] - helNegArray[bin])*1.0 / (helPosArray[bin] + helNegArray[bin]);
-    A_err_array[bin] = std::sqrt(std::max(0.0,(4.0*helPosArray[bin]*helNegArray[bin])/std::pow((helPosArray[bin] + helNegArray[bin]),3)));
-    //TMath::Sqrt((1 - A_array[bin]*A_array[bin])/(helPosArray[bin]+helNegArray[bin]));
-
-    double Asym_tot = c_pos + c_neg;
-    double Asym_diff = c_pos - c_neg;
-
-    double Asym_raw = 0.0;
-    double Asym_raw_err = 1.0;
-    //if counts add up to zero then the stat error should be infinity, but in order to avoid the code exploding, i'll just make the error really large if we dont have any counts in that bin. this is just for safety. every bin should have counts.
-
-    if (Asym_tot != 0.0)
-    {
-      Asym_raw = Asym_diff / Asym_tot;
-      //Asym_raw_err = 2 * TMath::Sqrt( c_neg*c_neg*c_pos_err*c_pos_err + c_pos*c_pos*c_neg_err*c_neg_err ) / ( (c_pos+c_neg)*(c_pos+c_neg) );
-      Asym_raw_err = std::sqrt(std::max(0.0,(4.0*c_pos*c_neg)/std::pow(Asym_tot,3)));
-      //^^method from JAck's code
-    }//end if the total asym is nonzero
-
-    h_asym->SetBinContent(bin, Asym_raw);
-    //h_asym->SetBinContent(bin, A_array[bin]);
-    h_asym->SetBinError(bin, Asym_raw_err);
-    //h_asym->SetBinError(bin, A_err_array[bin]);
-
   }//end loop over bins
 
   h_resid           -> SetEntries(totalentries);
   h_prob_proton_dx  -> SetEntries(totalentries);
   h_prob_neutron_dx -> SetEntries(totalentries);
   h_prob_bckgrnd_dx -> SetEntries(totalentries);
-  h_asym            -> SetEntries(totalentries);
+
+  h_prob_proton_dx  -> Multiply(fit_p);
+  h_prob_neutron_dx -> Multiply(fit_n);
 
   TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,dx_min_i,dx_max_i,3); //-6,3,3
 
@@ -529,7 +511,6 @@ void SimDataComp(int kin)
   AsymFitFunc->SetParLimits(1,0.0,0.1);  // neutron asymmetry
   AsymFitFunc->SetParLimits(2,-0.1,0.1); // background asymmetry
 
-  //h_asym->Fit(AsymFitFunc,"0","",h_minX,h_maxX);
   hAsym->Fit(AsymFitFunc,"0","",h_minX,h_maxX);
 
   TH1D* scaled_proton_prob  = (TH1D*)h_prob_proton_dx->Clone("scaled_proton_prob");
@@ -543,15 +524,6 @@ void SimDataComp(int kin)
   std::cout << "Proton Asymmetry: " << AsymFitFunc->GetParameter(0) << std::endl;
   std::cout << "Neutron Asymmetry: " << AsymFitFunc->GetParameter(1) << std::endl;
   std::cout << "Background Asymmetry: " << AsymFitFunc->GetParameter(2) << std::endl;
-
-  //TH1F* h_Asym_dx = new TH1F("h_Asym_dx","",h_Nbins,h_minX,h_maxX);
-
-  //for(int ibin = 0; ibin < h_Nbins; ibin++)
-  //{
-    //h_Asym_dx->SetBinContent(ibin, scaled_proton_prob->GetBinContent(ibin) + scaled_neutron_prob->GetBinContent(ibin) + scaled_bckgrnd_prob->GetBinContent(ibin));
-  //}
-
-  //h_Asym_dx->Scale(scale);
 
   //Create canvas and draw all the histograms
 
@@ -626,16 +598,12 @@ void SimDataComp(int kin)
   legendHEL->Draw();
 
   c3->cd(2);
-  //h_asym->Draw("E");
-  //h_Asym_dx->Draw("SAMES");
   hAsym->Draw("E");
   AsymFitFunc->Draw("SAMES");
 
   auto legendA = new TLegend(0.1,0.8,0.9,0.9);
   legendA->SetTextSize(0.02);
   legendA->AddEntry(hAsym,"Data","lep");
-  //legendA->AddEntry(h_Asym_dx,"Scaled Fit","l");
-  //legendA->AddEntry(AsymFitFunc,"Fit","l");
   legendA->AddEntry(AsymFitFunc,Form("A(dx) = %.4gPp(dx) + %.4gPn(dx) + %.4gPbg(dx)",AsymFitFunc->GetParameter(0),AsymFitFunc->GetParameter(1),AsymFitFunc->GetParameter(2)),"l");
   legendA->Draw();
 
@@ -660,12 +628,11 @@ void SimDataComp(int kin)
   legendProb->AddEntry(scaled_bckgrnd_prob, "Background", "l");
   legendProb->Draw();
 
-  TCanvas *c4 = new TCanvas("c4","Asymmetry",100,100,1000,1000);
-  c4->cd();
-  //h_asym->GetYaxis()->SetRangeUser(-0.4,0.6);
-  h_asym->Draw("E");
-  c4->SetGrid();
-  c4->Update();
+  //TCanvas *c4 = new TCanvas("c4","Asymmetry",100,100,1000,1000);
+  //c4->cd();
+  //h_asym->Draw("E");
+  //c4->SetGrid();
+  //c4->Update();
 
   TCanvas *c5 = new TCanvas("c5","AsymmetryHistOperator",100,100,1000,1000);
   c5->cd();
