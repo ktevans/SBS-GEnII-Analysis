@@ -149,7 +149,7 @@ void MissingMom(const char *kinematic, int kin)
 
   TH2D* h_dx_pol_n_low = new TH2D("h_dx_pol_n_low", ";h_dx_pol_n_low", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
   TH2D* h_dx_pol_n_high = new TH2D("h_dx_pol_n_high", ";h_dx_pol_n_high", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
-  TProfile* h_prof_pol_n_low = new TProfile("h_prof_pol_n_low", "pol_prof_n_low", 70.0, -4.0, 3.0, -0.5, 1.5,'i');
+  TProfile* h_prof_pol_n_low = new TProfile("h_prof_pol_n_low", "pol_prof_n_low", 70.0, -4.0, 3.0, -0.5, 1.5,"S");
   //h_prof_pol_n_low->SetErrorOption(option='i');
   //'i' Errors are as in default case (standard errors of the bin contents) The only difference is for the case when the spread in Y is zero. In this case for N > 0 the error is 1./SQRT(12.*N)
   TProfile* h_prof_pol_n_high = new TProfile("h_prof_pol_n_high", "pol_prof_n_high", 70.0, -4.0, 3.0, -0.5, 1.5);
@@ -336,7 +336,7 @@ void MissingMom(const char *kinematic, int kin)
   TCanvas *c3 = new TCanvas("c3", "Neutron Profile Fitting", 100,100,700,700);
   c3->Divide(1,2);
   c3->cd(1);
-  h_prof_pol_n_low->Draw();
+  h_prof_pol_n_low->Draw('i');
 
   //TF1 *fitn = new TF1("fitn", "[0] + [1]*x + [2]*TMath::Power(x,2) + [3]*TMath::Power(x,3) + [4]*TMath::Power(x,4) + [5]*TMath::Power(x,5) + [6]*TMath::Power(x,6) + [7]*TMath::Power(x,7) + [8]*TMath::Power(x,8) + [9]*TMath::Power(x,9)", -3.5, 3.0);
   //fitn->SetParameters(1,2,3,4,5,6,7,8,9,10);
