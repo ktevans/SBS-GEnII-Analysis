@@ -637,6 +637,7 @@ void SimDataComp(int kin)
   c4->Divide(3,1);
   c4->cd(1);
   shifted_h_sim_proton_dx->Draw("E");
+  shifted_h_sim_proton_dx->SetOptStat(11001111);
   c4->cd(2);
   shifted_h_sim_neutron_dx->Draw("E");
   c4->cd(3);
