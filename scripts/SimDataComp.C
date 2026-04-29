@@ -637,14 +637,16 @@ void SimDataComp(int kin)
   c4->Divide(3,1);
   c4->cd(1);
   shifted_h_sim_proton_dx->Draw("E");
-  shifted_h_sim_proton_dx->SetOptStat(11001111);
+  gStyle->SetOptStat(11001111);
+  gPad->Update();
   c4->cd(2);
   shifted_h_sim_neutron_dx->Draw("E");
+  gStyle->SetOptStat(11001111);
+  gPad->Update();
   c4->cd(3);
   shifted_h_simIN_dx->Draw("E");
-  //h_asym->Draw("E");
-  //c4->SetGrid();
-  //c4->Update();
+  gStyle->SetOptStat(11001111);
+  gPad->Update();
 
   TCanvas *c5 = new TCanvas("c5","AsymmetryHistOperator",100,100,1000,1000);
   c5->cd();
