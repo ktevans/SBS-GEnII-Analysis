@@ -156,7 +156,7 @@ void dy_cut()
   TF1 *fit_dy = new TF1("fit_dy", "[0] + [1]*x + [2]*TMath::Power(x,2) + [3]*TMath::Power(x,3) + [4]*TMath::Power(x,4)", -3.0, 3.0);
   fit_dy->SetParameters(1,2,3,4,5);
   fit_dy->SetLineColor(kRed);
-  h_dy_anti->Fit("fit_dy");
+  h_dy_anti->Fit("fit_dy","W");
   fit_dy->Draw("SAMES");
 
   h_dy->Write();
