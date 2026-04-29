@@ -289,6 +289,7 @@ void SimDataComp(int kin)
     T_simIN->GetEntry(iev);
 
     h_simIN_dx->GetSumw2();
+    weight_IN = weight_IN * 1e31;
 
     h_simIN_dx->Fill(dx_simIN,weight_IN);
 
