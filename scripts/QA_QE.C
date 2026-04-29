@@ -112,7 +112,7 @@ void QA_QE(const char *kinematic)
     optics_valid_min = -0.35;
     optics_valid_max = 0.34;
     coin_mean = -0.978;
-    coin_sigma = 2.4;
+    coin_sigma = 3.6;
     IHWP_flip = -1;
     dx_n_mean = -0.121;
     dx_n_sigma = 0.551;
@@ -135,7 +135,7 @@ void QA_QE(const char *kinematic)
     optics_valid_min = -0.35;
     optics_valid_max = 0.33;
     coin_mean = -0.382;
-    coin_sigma = 2.2;
+    coin_sigma = 3.3;
     IHWP_flip = 1;
     dx_n_mean = 0.0;
     dx_n_sigma = 0.5;
@@ -158,7 +158,7 @@ void QA_QE(const char *kinematic)
     optics_valid_min = -0.36;
     optics_valid_max = 0.30;
     coin_mean = -0.589;
-    coin_sigma = 2.3;
+    coin_sigma = 3.5;
     IHWP_flip = 1;
     dx_n_mean = 0.0;
     dx_n_sigma = 0.5;
@@ -181,7 +181,7 @@ void QA_QE(const char *kinematic)
     optics_valid_min = -0.37;
     optics_valid_max = 0.32;
     coin_mean = -0.568;
-    coin_sigma = 2.2;
+    coin_sigma = 3.3;
     IHWP_flip = 1;
     dx_n_mean = 0.0;
     dx_n_sigma = 0.5;
@@ -628,10 +628,7 @@ void QA_QE(const char *kinematic)
       runTrack++;
     }
 
-    // && abs(adc_coin-coin_mean)<coin_sigma && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && bb_gr_clus_size>2.0 && abs(bb_tr_vz)<0.27
-    // pass_global==1 && (IHWP==-1.0 || IHWP==1.0)
-
-    if((IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.0 && gem_tr_ngoodhits>=3 && gem_tr_chi2ndf<=15 && bb_gr_clus_track==0)
+    if((IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.0 && gem_tr_ngoodhits>=3 && gem_tr_chi2ndf<=15)
     {
 
       h_tr_vz->Fill(bb_tr_vz);
@@ -642,7 +639,7 @@ void QA_QE(const char *kinematic)
 
         h_ps_e_raw->Fill(bb_ps_e);
 
-        if (abs(e_kine_W2-1.0)<0.2)
+        if (abs(e_kine_W2-1.0)<0.5)
         {
           h_ps_e->Fill(bb_ps_e);
           h_sh_e->Fill(bb_sh_e);
@@ -664,7 +661,7 @@ void QA_QE(const char *kinematic)
           } // en anti-QE check
         }
 
-        if(abs(e_kine_W2-1.0)<0.2 && bb_gr_clus_size>2 && ((abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_n_mean)<dx_n_sigma) || (abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_p_mean)<dx_p_sigma)) && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
+        if(abs(e_kine_W2-1.0)<0.5 && bb_gr_clus_size>2 && ((abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_n_mean)<dx_n_sigma) || (abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_p_mean)<dx_p_sigma)) && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
         {
           h_coin->Fill(adc_coin);
         }
@@ -684,16 +681,11 @@ void QA_QE(const char *kinematic)
             {
               h_W2->Fill(e_kine_W2);
 
-              if (abs(e_kine_W2-1.0)<0.2)
+              if (abs(e_kine_W2-1.0)<0.5)
               {
                 h_dx->Fill(dx_hcal);
                 h_dy->Fill(dy_hcal);
                 h2_dxdy->Fill(dy_hcal,dx_hcal);
-
-                //dx_out = dx_hcal;
-                //dy_out = dy_hcal;
-
-                //T_data->Fill();
 
                 if (abs(dy_hcal-dy_mean)<dy_sigma && abs(dx_hcal-dx_p_mean)<dx_p_sigma)
                 {
@@ -1118,12 +1110,12 @@ void QA_QE(const char *kinematic)
   summary->cd();
   TPaveText *pt = new TPaveText(.05,.1,.95,.8);
   pt->AddText("Global Cuts: ");
-  pt->AddText(Form("bb.ps.e>0.0 && bb.gem.track.nhits>=3 && bb.gem.track.chi2ndf[0]<=15 && sbs.hcal.e>0.025 && %.1f<e.kine.W2<%.1f",W2_cut_min,W2_cut_max));
-  pt->AddText("(IHWP==-1.0 || IHWP==1.0) && optics_valid_min<(bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0");
-  pt->AddText("Vertex Cut: abs(bb.tr.vz)<0.27");
+  pt->AddText("bb.ps.e>0.0 && bb.gem.track.ngoodhits[0]>=3 && bb.gem.track.chi2ndf[0]<=15 && sbs.hcal.e>0.025 && abs(bb.tr.vz[0])<0.27");
+  pt->AddText("(IHWP==-1.0 || IHWP==1.0) && optics_valid_min<(bb.tr.r_x-0.9*bb.tr.r_th)<optics_valid_max && bb.grinch_tdc.clus.trackindex==0");
+  pt->AddText("Vertex Cut: abs(bb.tr.vz[0])<0.27");
   pt->AddText("PreShower Cut: bb.ps.e>0.2");
   pt->AddText("E/p Cut: abs(E/p - 1.0)<0.2");
-  pt->AddText("W2 Cut: abs(e.kine.W2 - 1.0)<0.2");
+  pt->AddText("W2 Cut: abs(e.kine.W2 - 1.0)<0.5");
   pt->AddText(Form("Coincidence Cut: abs(adc.coin - %.3f)<%.3f",coin_mean,coin_sigma));
   pt->AddText("GRINCH cut: bb.grinch_tdc.clus.size>2");
   pt->AddText(Form("Proton Spot Cut: %.3f<dx<%.3f && %.3f<dy<%.3f",(dx_p_mean-dx_p_sigma),(dx_p_mean+dx_p_sigma),(dy_mean-dy_sigma),(dy_mean+dy_sigma)));
