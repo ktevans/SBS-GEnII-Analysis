@@ -147,7 +147,7 @@ void dy_cut()
   c1->cd(2);
   h_dy->Draw();
   c1->cd(3);
-  h_dy_anti->Draw();
+  h_dx_anti->Draw();
 
   TCanvas *c2 = new TCanvas("c2","dy ant-cut fit",100,100,700,700);
   c2->cd();
