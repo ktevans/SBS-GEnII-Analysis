@@ -112,13 +112,13 @@ void dy_cut()
   }
   else std::cout << "\nFound " << T->GetEntries() << " events. Starting analysis.. \n";
 
-  TH1D* h_dy = new TH1D("h_dy", ";h_dy", 90.0, -6.0, 3.0);
+  TH1D* h_dy = new TH1D("h_dy", ";h_dy", 100.0, -6.0, 4.0);
   h_dy->GetXaxis()->SetTitle("dy [m]");
 
-  TH1D* h_dx_anti = new TH1D("h_dx_anti", ";h_dx_anti", 90.0, -6.0, 3.0);
+  TH1D* h_dx_anti = new TH1D("h_dx_anti", ";h_dx_anti", 100.0, -6.0, 4.0);
   h_dx_anti->GetXaxis()->SetTitle("dx [m]");
 
-  TH2D* h_dxdy = new TH2D("h_dxdy", ";h_dxdy", 90.0, -6.0, 3.0, 90.0, -6.0, 3.0);
+  TH2D* h_dxdy = new TH2D("h_dxdy", ";h_dxdy", 100.0, -6.0, 4.0, 100.0, -6.0, 4.0);
   h_dxdy->GetXaxis()->SetTitle("dy [m]");
   h_dxdy->GetYaxis()->SetTitle("dx [m]");
 
@@ -132,7 +132,7 @@ void dy_cut()
       //h_dxdy->Fill(dy_hcal,dx_hcal);
       //h_dy->Fill(dy_hcal);
 
-      if (dy_hcal>(dy_mean+(5*dy_sigma)) || dy_hcal<(dy_mean-(5*dy_sigma)))
+      if (dy_hcal>(dy_mean+(5*dy_sigma)) || dy_hcal<(dy_mean-(5.5*dy_sigma)))
       {
         h_dxdy->Fill(dy_hcal,dx_hcal);
         h_dy->Fill(dy_hcal);
@@ -155,7 +155,7 @@ void dy_cut()
   c2->cd();
   h_dx_anti->Draw("E");
 
-  TF1 *fit_dx = new TF1("fit_dx", "[0] + [1]*x + [2]*TMath::Power(x,2) + [3]*TMath::Power(x,3) + [4]*TMath::Power(x,4)", -6.0, 3.0);
+  TF1 *fit_dx = new TF1("fit_dx", "[0] + [1]*x + [2]*TMath::Power(x,2) + [3]*TMath::Power(x,3) + [4]*TMath::Power(x,4)", -6.0, 4.0);
   fit_dx->SetParameters(1,2,3,4,5);
   fit_dx->SetLineColor(kRed);
   h_dx_anti->Fit("fit_dx"); //"W" //Fit using the chi-square method and ignoring the bin uncertainties and skip empty bins.
