@@ -132,7 +132,7 @@ void dy_cut()
       //h_dxdy->Fill(dy_hcal,dx_hcal);
       //h_dy->Fill(dy_hcal);
 
-      if (dy_hcal>(dy_mean+(3*dy_sigma)) || dy_hcal<(dy_mean-(3*dy_sigma)))
+      if (dy_hcal>(dy_mean+(3*dy_sigma)) || dy_hcal<(dy_mean-(4*dy_sigma)))
       {
         h_dxdy->Fill(dy_hcal,dx_hcal);
         h_dy->Fill(dy_hcal);
