@@ -149,90 +149,19 @@ void dy_cut()
   c1->cd(3);
   h_dy_anti->Draw();
 
-  // ----- come back to this ----
-  //c3->Divide(1,2);
-  //c3->cd(1);
-  //h_prof_pol_n_low->Draw();
-  // ----- come back to this ----
+  TCanvas *c2 = new TCanvas("c2","dy ant-cut fit",100,100,700,700);
+  c2->cd();
+  h_dy_anti->Draw("E");
 
-  //TF1 *fitn = new TF1("fitn", "[0] + [1]*x + [2]*TMath::Power(x,2) + [3]*TMath::Power(x,3) + [4]*TMath::Power(x,4) + [5]*TMath::Power(x,5) + [6]*TMath::Power(x,6) + [7]*TMath::Power(x,7) + [8]*TMath::Power(x,8) + [9]*TMath::Power(x,9)", -3.5, 3.0);
-  //fitn->SetParameters(1,2,3,4,5,6,7,8,9,10);
-  //fitn->SetLineColor(kRed);
-
-  //h_prof_pol_n->Fit("fitn");
-  //fitn->Draw("SAMES");
-  //gStyle->SetOptFit(1111);
-
-  // ----- come back to this ----
-  //TF1 *fitn_low = new TF1("fitn_low", "[0]", -4.0, dx_n_cut);
-  //fitn_low->SetParameters(1.0);
-  //fitn_low->SetLineColor(kBlue);
-  //h_prof_pol_n_low->Fit("fitn_low");
-  //fitn_low->Draw("SAMES");
-
-  //c3->cd(2);
-  //h_prof_pol_n_high->Draw();
-
-  //TF1 *fitn_high = new TF1("fitn_high", "[0]*x*x + [1]*x + [2]", dx_n_cut, 3.0);
-  //fitn_high->SetParameters(1.0,2.0,3.0);
-  //fitn_high->SetLineColor(kRed);
-  //h_prof_pol_n_high->Fit("fitn_high");
-  //fitn_high->Draw("SAMES");
-
-  // ----- ^^ come back to this ----
-
-
-  //*** Testing Fits ***
-  //************
-  //TF1 *f = new TF1("f",[=](double *x, double */*p*/){return h_prof_pol_p->Interpolate(x[0]);},h_prof_pol_p->GetXaxis()->GetXmin(), h_prof_pol_p->GetXaxis()->GetXmax(), 0);
-  //f->Draw("same");
-  //f->Write();
-  //TSpline3 *spline3 = nullptr;
-  //delete spline3;
-  //spline3 = new TSpline3(h_prof_pol_p, "b1e1", f->Derivative(-3.5), f->Derivative(3.0));
-  // "b1" check first derivative exists for beginning point (f->Derivative(-3.5))
-  // "e1" check first derivative exists for ending point (f->Derivative(3.0))
-  //spline3->SetLineColor(kGreen);
-  //spline3->Draw("same");
-  //************
-  // ----- come back to this ----
-  //c4->Divide(1,2);
-  //c4->cd(1);
-  //h_prof_pol_p_low->Draw();
-  // ----- come back to this ----
-
-  // ----- come back to this ----
-  //TF1 *fitp_low = new TF1("fitp_low", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x)", -4.0, dx_p_cut);
-  //fitp_low->SetParameters(1.0,2.0,3.0,4.0,5.0,6.0,7.0);
-  //fitp_low->SetLineColor(kBlue);
-  //h_prof_pol_p_low->Fit("fitp_low");
-  //fitp_low->Draw("SAMES");
-
-  //c4->cd(2);
-  //h_prof_pol_p_high->Draw();
-
-  //TF1 *fitp_high = new TF1("fitp_high", "[0]", dx_p_cut, 3.0);
-  //fitp_high->SetParameters(0.05);
-  //fitp_high->SetLineColor(kRed);
-  //h_prof_pol_p_high->Fit("fitp_high");
-  //fitp_high->Draw("SAMES");
-  // ----- come back to this ----
-
-
-  //TF1 *fitp = new TF1("fitp", "[0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x) + [5]*cos(3*x) + [6]*sin(3*x) + [7]*cos(4*x) + [8]*sin(4*x)", -3.5, 3.0); // + [5]*cos(3*x) + [6]*sin(3*x)
-  //fitp->SetParameters(1,2,3,4,5,6,7,8,9);
-  //fitp->SetLineColor(kRed);
-
-  //h_prof_pol_p->Fit("fitp");
-  //fitp->Draw("SAMES");
-  //gStyle->SetOptFit(1111);
-
-  //fitn_low->Write();
-  //fitn_high->Write();
-  //fitp_low->Write();
-  //fitp_high->Write();
+  TF1 *fit_dy = new TF1("fit_dy", "[0] + [1]*x + [2]*TMath::Power(x,2) + [3]*TMath::Power(x,3) + [4]*TMath::Power(x,4)", -3.0, 3.0);
+  fit_dy->SetParameters(1,2,3,4,5);
+  fit_dy->SetLineColor(kRed);
+  h_dy_anti->Fit("fit_dy");
+  fit_dy->Draw("SAMES");
 
   h_dy->Write();
+  h_dy_anti->Write();
+  fit_dy->Write();
 
   fout->Write();
 }
