@@ -614,7 +614,7 @@ void SimDataComp(int kin)
   c3->cd(3);
   scaled_proton_prob->SetTitle("Scaled Probabilities");
 
-  gPad->DrawFrame(dx_min_d, -0.01, dx_max_d, 0.05);
+  gPad->DrawFrame(dx_min_d, -0.05, dx_max_d, 0.1);
 
   scaled_neutron_prob->SetLineColor(kBlue);
   scaled_neutron_prob->Draw("E SAME");
@@ -632,8 +632,14 @@ void SimDataComp(int kin)
   legendProb->AddEntry(scaled_bckgrnd_prob, "Background", "l");
   legendProb->Draw();
 
-  //TCanvas *c4 = new TCanvas("c4","Asymmetry",100,100,1000,1000);
-  //c4->cd();
+  TCanvas *c4 = new TCanvas("c4","Asymmetry",100,100,1000,1000);
+  c4->Divide(3,1);
+  c4->cd(1);
+  shifted_h_sim_proton_dx->Draw("E");
+  c4->cd(2);
+  shifted_h_sim_neutron_dx->Draw("E");
+  c4->cd(3);
+  shifted_h_simIN_dx->Draw("E");
   //h_asym->Draw("E");
   //c4->SetGrid();
   //c4->Update();
