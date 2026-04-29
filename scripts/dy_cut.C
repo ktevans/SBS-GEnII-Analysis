@@ -158,7 +158,7 @@ void dy_cut()
   TF1 *fit_dx = new TF1("fit_dx", "[0] + [1]*x + [2]*TMath::Power(x,2) + [3]*TMath::Power(x,3) + [4]*TMath::Power(x,4)", -3.0, 3.0);
   fit_dx->SetParameters(1,2,3,4,5);
   fit_dx->SetLineColor(kRed);
-  h_dx_anti->Fit("fit_dy"); //"W" //Fit using the chi-square method and ignoring the bin uncertainties and skip empty bins.
+  h_dx_anti->Fit("fit_dx"); //"W" //Fit using the chi-square method and ignoring the bin uncertainties and skip empty bins.
   fit_dx->Draw("SAMES");
 
   h_dy->Write();
