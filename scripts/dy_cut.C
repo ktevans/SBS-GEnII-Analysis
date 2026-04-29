@@ -115,8 +115,8 @@ void dy_cut()
   TH1D* h_dy = new TH1D("h_dy", ";h_dy", 60.0, -3.0, 3.0);
   h_dy->GetXaxis()->SetTitle("dy [m]");
 
-  TH1D* h_dy_anti = new TH1D("h_dy_anti", ";h_dy_anti", 60.0, -3.0, 3.0);
-  h_dy_anti->GetXaxis()->SetTitle("dy [m]");
+  TH1D* h_dx_anti = new TH1D("h_dx_anti", ";h_dx_anti", 90.0, -6.0, 3.0);
+  h_dx_anti->GetXaxis()->SetTitle("dx [m]");
 
   TH2D* h_dxdy = new TH2D("h_dxdy", ";h_dxdy", 90.0, -6.0, 3.0, 60.0, -3.0, 3.0);
   h_dxdy->GetXaxis()->SetTitle("dy [m]");
@@ -127,14 +127,14 @@ void dy_cut()
   {
     T->GetEntry(iev);
 
-    if ((IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.2 && gem_tr_ngoodhits>=3 && gem_tr_chi2ndf<=15 && abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-0.97)<0.2 && abs(e_kine_W2-1.0)<0.5 && (abs(dx_hcal-dx_n_mean)<dx_n_sigma || abs(dx_hcal-dx_p_mean)<dx_p_sigma))
+    if ((IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.2 && gem_tr_ngoodhits>=3 && gem_tr_chi2ndf<=15 && abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-0.97)<0.2 && abs(e_kine_W2-1.0)<0.5)
     {
       h_dxdy->Fill(dy_hcal,dx_hcal);
       h_dy->Fill(dy_hcal);
 
       if (dy_hcal>(dy_mean+dy_sigma)||dy_hcal<(dy_mean-dy_sigma))
       {
-        h_dy_anti->Fill(dy_hcal);
+        h_dx_anti->Fill(dx_hcal);
       }
     }
 
@@ -151,17 +151,17 @@ void dy_cut()
 
   TCanvas *c2 = new TCanvas("c2","dy ant-cut fit",100,100,700,700);
   c2->cd();
-  h_dy_anti->Draw("E");
+  h_dx_anti->Draw("E");
 
-  TF1 *fit_dy = new TF1("fit_dy", "[0] + [1]*x + [2]*TMath::Power(x,2) + [3]*TMath::Power(x,3) + [4]*TMath::Power(x,4)", -3.0, 3.0);
-  fit_dy->SetParameters(1,2,3,4,5);
-  fit_dy->SetLineColor(kRed);
-  h_dy_anti->Fit("fit_dy","W");
-  fit_dy->Draw("SAMES");
+  TF1 *fit_dx = new TF1("fit_dx", "[0] + [1]*x + [2]*TMath::Power(x,2) + [3]*TMath::Power(x,3) + [4]*TMath::Power(x,4)", -3.0, 3.0);
+  fit_dx->SetParameters(1,2,3,4,5);
+  fit_dx->SetLineColor(kRed);
+  h_dx_anti->Fit("fit_dy"); //"W" //Fit using the chi-square method and ignoring the bin uncertainties and skip empty bins.
+  fit_dx->Draw("SAMES");
 
   h_dy->Write();
-  h_dy_anti->Write();
-  fit_dy->Write();
+  h_dx_anti->Write();
+  fit_dx->Write();
 
   fout->Write();
 }
