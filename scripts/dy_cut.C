@@ -85,8 +85,8 @@ void dy_cut()
   double dx_n_sigma = 0.551;
   double dx_p_mean = -2.752;
   double dx_p_sigma = 0.539;
-  double dy_mean = -0.066;
-  double dy_sigma = 0.569;
+  double dy_mean = -0.057;
+  double dy_sigma = 0.565;
   int firstRun = 2130;
   int lastRun = 2322;
   int totRun = 130;
@@ -115,6 +115,9 @@ void dy_cut()
   TH1D* h_dy = new TH1D("h_dy", ";h_dy", 60.0, -3.0, 3.0);
   h_dy->GetXaxis()->SetTitle("dy [m]");
 
+  TH1D* h_dy_anti = new TH1D("h_dy_anti", ";h_dy_anti", 60.0, -3.0, 3.0);
+  h_dy_anti->GetXaxis()->SetTitle("dy [m]");
+
   TH2D* h_dxdy = new TH2D("h_dxdy", ";h_dxdy", 90.0, -6.0, 3.0, 60.0, -3.0, 3.0);
   h_dxdy->GetXaxis()->SetTitle("dy [m]");
   h_dxdy->GetYaxis()->SetTitle("dx [m]");
@@ -128,16 +131,23 @@ void dy_cut()
     {
       h_dxdy->Fill(dy_hcal,dx_hcal);
       h_dy->Fill(dy_hcal);
+
+      if (dy>(dy_mean+dy_sigma)||dy<(dy_mean-dy_sigma))
+      {
+        h_dy_anti->Fill(dy_hcal);
+      }
     }
 
   }//end event loop
 
   TCanvas *c1 = new TCanvas("c1","dy cut data",100,100,700,700);
-  c1->Divide(1,2);
+  c1->Divide(1,3);
   c1->cd(1);
   h_dxdy->Draw();
   c1->cd(2);
   h_dy->Draw();
+  c1->cd(3);
+  h_dy_anti->Draw();
 
   // ----- come back to this ----
   //c3->Divide(1,2);
