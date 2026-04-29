@@ -127,12 +127,12 @@ void dy_cut()
   {
     T->GetEntry(iev);
 
-    if ((IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.2 && gem_tr_ngoodhits>=3 && gem_tr_chi2ndf<=15 && abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-0.97)<0.2 && abs(e_kine_W2-1.0)<0.5)
+    if ((IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.2 && gem_tr_ngoodhits>=3 && gem_tr_chi2ndf<=15 && abs(adc_coin-coin_mean)<(coin_sigma) && bb_gr_clus_size>2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-0.97)<0.2 && abs(e_kine_W2-1.0)<0.8)
     {
       //h_dxdy->Fill(dy_hcal,dx_hcal);
       //h_dy->Fill(dy_hcal);
 
-      if (dy_hcal>(dy_mean+(3*dy_sigma)) || dy_hcal<(dy_mean-(4*dy_sigma)))
+      if (dy_hcal>(dy_mean+(4*dy_sigma)) || dy_hcal<(dy_mean-(4*dy_sigma)))
       {
         h_dxdy->Fill(dy_hcal,dx_hcal);
         h_dy->Fill(dy_hcal);
