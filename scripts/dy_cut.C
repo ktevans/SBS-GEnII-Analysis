@@ -28,9 +28,9 @@ void dy_cut()
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
-  TString inputfile = Form("/volatile/halla/sbs/ktevans/QA/QE_data_%s_sbs100p_nucleon_np_model2.root",kinematic);
-  TString outputfile = Form("plots/dyCut_GEn_pass3_%s.pdf",kinematic);
-  TString outfile = Form("outfiles/dyCut_GEn_pass3_%s.root",kinematic);
+  TString inputfile = "/volatile/halla/sbs/ktevans/QA/QE_data_GEN2_sbs100p_nucleon_np_model2.root";
+  TString outputfile = "plots/dyCut_GEn_pass3_GEN2.pdf";
+  TString outfile = "outfiles/dyCut_GEn_pass3_GEN2.root";
   TFile *fout = new TFile(outfile,"RECREATE");
 
   TTree *T_out = new TTree("T_out", "Analysis Data Tree");
