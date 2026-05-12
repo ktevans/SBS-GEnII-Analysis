@@ -31,7 +31,7 @@ void QA_QE(const char *kinematic)
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
-  TString inputfile = Form("/volatile/halla/sbs/ktevans/QA/QE_data_%s_sbs100p_nucleon_np_model2.root",kinematic);
+  TString inputfile = Form("/volatile/halla/sbs/ktevans/pass3/test/QE_data_%s_sbs100p_nucleon_np_model2.root",kinematic);
   TString outputfile = Form("plots/QA_parsed_GEn_pass3_%s_He3_dxdy.pdf",kinematic);
   TString outfile = Form("outfiles/QA_parsed_GEn_pass3_%s_He3_dxdy.root",kinematic);
   TFile *fout = new TFile(outfile,"RECREATE");
