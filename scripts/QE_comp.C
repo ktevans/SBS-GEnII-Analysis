@@ -28,10 +28,10 @@ void QE_comp(const char *kinematic, int kin)
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
-  TString inputfile = Form("/volatile/halla/sbs/ktevans/QA/QE_data_%s_sbs100p_nucleon_np_model2.root",kinematic);
+  TString inputfile = Form("/volatile/halla/sbs/ktevans/pass3/test/QE_data_%s_sbs100p_nucleon_np_model2.root",kinematic);
   //outfiles/QE_data_%s_sbs100p_nucleon_np_model2.root
-  TString outputfile = Form("plots/parsed_GEn_pass2_%s_He3_dxdy.pdf",kinematic);
-  TString outfile = Form("outfiles/parsed_GEn_pass2_%s_He3_dxdy.root",kinematic);
+  TString outputfile = Form("plots/parsed_GEn_pass3_%s_He3_dxdy.pdf",kinematic);
+  TString outfile = Form("outfiles/parsed_GEn_pass3_%s_He3_dxdy.root",kinematic);
   TFile *fout = new TFile(outfile,"RECREATE");
 
   TTree *T_data = new TTree("T_data", "Analysis Data Tree");
