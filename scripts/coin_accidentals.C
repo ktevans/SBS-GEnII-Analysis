@@ -311,7 +311,7 @@ void coin_accidentals(const char *kinematic)
         h_acc_low_mean->Fill(adc_coin);
       }
 
-      if(abs(adc_coin-coin_mean)>2*coin_sigma)
+      if(abs(adc_coin-coin_mean)>2.5*coin_sigma)
       {
         h_dx_anti_coin->Fill(dx_hcal);
 
@@ -386,7 +386,7 @@ void coin_accidentals(const char *kinematic)
   TCanvas *coin2_3 = new TCanvas("coin2_3", "anti-coincidence", 1200, 1000);
   coin2_3->cd();
   h_dx_coin->Draw();
-  h_dx_anti_coin->Scale(0.00195);
+  h_dx_anti_coin->Scale(dilution);
   h_dx_anti_coin->Draw("SAMES");
 
   coin2_3->Print(outputfile);
