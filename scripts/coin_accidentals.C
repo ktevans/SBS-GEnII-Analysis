@@ -242,7 +242,7 @@ void coin_accidentals(const char *kinematic)
   h_coin->GetXaxis()->SetTitle("Coincidence Time [ns]");
   h_coin->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, dy, and W2 Cuts");
 
-  TH1D* h_coin = new TH1D("h_coin_cut", "coin_cut", 320.0, -40.0, 40.0);
+  TH1D* h_coin_cut = new TH1D("h_coin_cut", "coin_cut", 320.0, -40.0, 40.0);
   h_coin_cut->GetXaxis()->SetTitle("Coincidence Time [ns]");
   h_coin_cut->SetTitle("Coin Time (HCal-BBCal) with Global, Vertex, E/p, PSe, GRINCH, dy, W2, and Coin Cuts");
 
@@ -331,7 +331,7 @@ void coin_accidentals(const char *kinematic)
       if(abs(adc_coin-coin_mean)<coin_sigma)
       {
         h_dx_coin->Fill(dx_hcal);
-        h_coin->Fill(adc_coin);
+        h_coin_cut->Fill(adc_coin);
       }
 
     }// end global cuts
@@ -372,7 +372,7 @@ void coin_accidentals(const char *kinematic)
 
   TCanvas *coin2_2 = new TCanvas("coin2_2", "coincidence", 1200, 1000);
   coin2_2->cd();
-  h_coin->Draw();
+  h_coin_cut->Draw();
 
   coin2_2->Print(outputfile);
 
