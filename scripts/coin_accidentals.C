@@ -363,6 +363,9 @@ void coin_accidentals(const char *kinematic)
   std::cout << "\nLower Mean: " << fitlow->GetParameter(0) << " +/- " << fitlow->GetParError(0) << "\n";
   std::cout << "\nUpper Mean: " << fithigh->GetParameter(0) << " +/- " << fithigh->GetParError(0) << "\n";
 
+  double avg_acc = (fitlow->GetParameter(0)+fithigh->GetParameter(0))/2;
+  double acc_area = avg_acc*coin_sigma*2.0;
+
   TCanvas *coin2 = new TCanvas("coin2", "anti-coincidence", 1200, 1000);
   coin2->cd();
   h_dx_coin->Draw();
@@ -374,7 +377,19 @@ void coin_accidentals(const char *kinematic)
   coin2_2->cd();
   h_coin_cut->Draw();
 
+  double coin_int = h_coin_cut->Integral();
+  double dilution = acc_area/coin_int;
+  std::cout << dilution << "\n";
+
   coin2_2->Print(outputfile);
+
+  TCanvas *coin2_3 = new TCanvas("coin2_3", "anti-coincidence", 1200, 1000);
+  coin2_3->cd();
+  h_dx_coin->Draw();
+  h_dx_anti_coin->Multiply(0.00195);
+  h_dx_anti_coin->Draw("SAMES");
+
+  coin2_3->Print(outputfile);
 
   TCanvas *coin3 = new TCanvas("coin3", "anti-W2 coincidence", 1200, 1000);
   coin3->cd();
