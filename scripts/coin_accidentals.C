@@ -386,7 +386,7 @@ void coin_accidentals(const char *kinematic)
   TCanvas *coin2_3 = new TCanvas("coin2_3", "anti-coincidence", 1200, 1000);
   coin2_3->cd();
   h_dx_coin->Draw();
-  h_dx_anti_coin->Multiply(0.00195);
+  h_dx_anti_coin->Scale(0.00195);
   h_dx_anti_coin->Draw("SAMES");
 
   coin2_3->Print(outputfile);
