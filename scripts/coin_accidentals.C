@@ -100,7 +100,6 @@ void coin_accidentals(const char *kinematic)
   double W2_cut_max;
   double EovP_mean;
 
-
   int runindex = 0;
   int runTrack = 0;
 
@@ -397,7 +396,7 @@ _mean)<0.2)
   pt->AddText("(IHWP==-1.0 || IHWP==1.0) && optics_valid_min<(bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0");
   pt->AddText("Vertex Cut: abs(bb.tr.vz)<0.27");
   pt->AddText("PreShower Cut: bb.ps.e>0.2");
-  pt->AddText("E/p Cut: abs(E/p - 1.0)<0.2");
+  pt->AddText(Form("E/p Cut: abs(E/p - %0.2f)<0.2",EovP_mean));
   pt->AddText("W2 Cut: abs(e.kine.W2 - 1.0)<0.5");
   pt->AddText(Form("Coincidence Cut: abs(adc.coin - %.3f)<%.3f",coin_mean,coin_sigma));
   pt->AddText("GRINCH cut: bb.grinch_tdc.clus.size>2");
