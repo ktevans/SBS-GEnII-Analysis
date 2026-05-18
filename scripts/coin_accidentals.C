@@ -347,14 +347,16 @@ void coin_accidentals(const char *kinematic)
 
   coin1->Print(outputfile+"(");
 
-  std::cout << "\nLower Mean: " << h_acc_low->GetMean(2) << " +/- " << h_acc_low->GetMean(12) << "\n";
-  std::cout << "\nUpper Mean: " << h_acc_high->GetMean(2) << " +/- " << h_acc_high->GetMean(12) << "\n";
-
-  //h_prof_pol_p->Draw();
-  TF1 *fitlow = new TF1("fitlow", "[0]", -30.0, 20.0);
+  TF1 *fitlow = new TF1("fitlow", "[0]", -30.0, -20.0);
   fitlow->SetParameters(1.0);
   h_acc_low->Fit("fitlow");
-  //fitlow->Draw("SAMES");
+
+  TF1 *fithigh = new TF1("fithigh", "[0]", 20.0, 30.0);
+  fithigh->SetParameters(1.0);
+  h_acc_high->Fit("fithigh");
+
+  std::cout << "\nLower Mean: " << fitlow->GetParameter(0) << " +/- " << fitlow->GetParError(0) << "\n";
+  std::cout << "\nUpper Mean: " << fithigh->GetParameter(0) << " +/- " << fithigh->GetParError(0) << "\n";
 
   TCanvas *coin2 = new TCanvas("coin2", "anti-coincidence", 1200, 1000);
   coin2->cd();
