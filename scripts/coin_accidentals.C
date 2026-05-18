@@ -98,6 +98,8 @@ void coin_accidentals(const char *kinematic)
   double pN_max;
   double W2_cut_min;
   double W2_cut_max;
+  double EovP_mean;
+
 
   int runindex = 0;
   int runTrack = 0;
@@ -128,6 +130,7 @@ void coin_accidentals(const char *kinematic)
     pN_max = 3.5;
     W2_cut_min = 0.0;
     W2_cut_max = 1.6;
+    EovP_mean = 0.96;
   }
   else if(kin==3)
   {
@@ -151,6 +154,7 @@ void coin_accidentals(const char *kinematic)
     pN_max = 5.5;
     W2_cut_min = 0.0;
     W2_cut_max = 2.0;
+    EovP_mean = 1.0;
   }
   else if(kin==4)
   {
@@ -174,6 +178,7 @@ void coin_accidentals(const char *kinematic)
     pN_max = 7.0;
     W2_cut_min = -1.0;
     W2_cut_max = 2.0;
+    EovP_mean = 0.96;
   }
   else if(kin==5)
   {
@@ -197,6 +202,7 @@ void coin_accidentals(const char *kinematic)
     pN_max = 7.0;
     W2_cut_min = -1.0;
     W2_cut_max = 2.0;
+    EovP_mean = 0.975;
   }
   else
   {
@@ -220,6 +226,7 @@ void coin_accidentals(const char *kinematic)
     pN_max = 10.0;
     W2_cut_min = -2.0;
     W2_cut_max = 8.0;
+    EovP_mean = 1.0;
   }
 
   //Scan through all the entries in the TChain T
@@ -284,7 +291,8 @@ void coin_accidentals(const char *kinematic)
   {
     T->GetEntry(iev);
 
-    if(abs(dy_hcal-dy_mean)<(2*dy_sigma) && (IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.2 && abs(bb_tr_vz)<0.27 && abs(e_kine_W2-1.0)<0.5 && bb_gr_clus_size>2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
+    if(abs(dy_hcal-dy_mean)<(2*dy_sigma) && (IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.2 && abs(bb_tr_vz)<0.27 && abs(e_kine_W2-1.0)<0.5 && bb_gr_clus_size>2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-EovP
+_mean)<0.2)
     {
 
       h_coin->Fill(adc_coin);
@@ -325,7 +333,7 @@ void coin_accidentals(const char *kinematic)
 
     }// end global cuts
 
-    if(abs(dy_hcal-dy_mean)<(2*dy_sigma) && (IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.2 && abs(bb_tr_vz)<0.27 && e_kine_W2>4.0 && bb_gr_clus_size>2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2)
+    if(abs(dy_hcal-dy_mean)<(2*dy_sigma) && (IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && bb_ps_e>0.2 && abs(bb_tr_vz)<0.27 && e_kine_W2>4.0 && bb_gr_clus_size>2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-EovP_mean)<0.2)
     {
       h_coin_antiW2->Fill(adc_coin);
     }
