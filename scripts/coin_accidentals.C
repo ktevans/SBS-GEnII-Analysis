@@ -312,7 +312,7 @@ void coin_accidentals(const char *kinematic)
       }
 
       //if(abs(adc_coin-coin_mean)>8*coin_sigma)
-      if(adc_coin>10 && adc_coin<15)
+      if(adc_coin>15 && adc_coin<20)
       {
         h_dx_anti_coin->Fill(dx_hcal);
 
