@@ -82,8 +82,8 @@ void QE_comp(const char *kinematic, int kin)
   {
     optics_valid_min = -0.35;
     optics_valid_max = 0.33;
-    coin_mean = -0.382;
-    coin_sigma = 2.2;
+    coin_mean = -0.0115;
+    coin_sigma = 1.298;
     IHWP_flip = 1;
     std::cout << "\nYou are replaying GEN3!\n";
   }
@@ -138,7 +138,7 @@ void QE_comp(const char *kinematic, int kin)
   {
     T->GetEntry(iev);
 
-    if(bb_gr_clus_track==0 && abs(e_kine_W2-1.0)<0.5 && bb_gr_clus_size>=2.0 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<(3*coin_sigma) && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-0.97)<0.2 && abs(bb_tr_vz)<0.27)
+    if(bb_gr_clus_track==0 && abs(e_kine_W2-1.0)<0.5 && bb_gr_clus_size>=2.0 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<(3*coin_sigma) && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1.0)<0.2 && abs(bb_tr_vz)<0.27)
     {
 	    h_dx->Fill(dx_hcal);
         h_dy->Fill(dy_hcal);
