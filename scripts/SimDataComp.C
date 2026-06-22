@@ -117,7 +117,7 @@ void SimDataComp(int kin)
     title_words = "GEN3";
     dx_min_d = -2.5;
     dx_min_i = -3;
-    dx_max_d = 2.0;
+    dx_max_d = 1.7;
     dx_max_i = 2;
 
   }
