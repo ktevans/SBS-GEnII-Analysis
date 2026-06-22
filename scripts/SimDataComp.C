@@ -31,6 +31,7 @@ TH1D *h_simIN_dx;
 TH1D *h_sim_proton_dx;
 TH1D *h_sim_neutron_dx;
 TH1D *h_prob_proton_dx;
+TH1D *corr_h_prob_proton_dx;
 TH1D *h_prob_neutron_dx;
 TH1D *h_prob_bckgrnd_dx;
 TH1D *h_prob_proton_dx_polW;
@@ -69,7 +70,7 @@ double fitAsym(double *xA, double *parA)
   const double Abg  = parA[2];
 
   //condition ? expression_if_true : expression_if_false
-  const double Prob_p  = (h_prob_proton_dx  ? h_prob_proton_dx->Interpolate(dxA)  :0.0);
+  const double Prob_p  = (corr_h_prob_proton_dx  ? corr_h_prob_proton_dx->Interpolate(dxA)  :0.0);
   const double Prob_n  = (h_prob_neutron_dx ? h_prob_neutron_dx->Interpolate(dxA) :0.0);
   const double Prob_bg = (h_prob_bckgrnd_dx ? h_prob_bckgrnd_dx->Interpolate(dxA) :0.0);
 
@@ -499,13 +500,15 @@ void SimDataComp(int kin)
 
   }//end loop over bins
 
-  h_prob_proton_dx  -> Multiply(fitp);
-  h_prob_neutron_dx -> Multiply(fitn);
-
   h_resid           -> SetEntries(totalentries);
   h_prob_proton_dx  -> SetEntries(totalentries);
   h_prob_neutron_dx -> SetEntries(totalentries);
   h_prob_bckgrnd_dx -> SetEntries(totalentries);
+
+  h_prob_proton_dx  -> Multiply(fitp);
+  h_prob_neutron_dx -> Multiply(fitn);
+
+  corr_h_prob_proton_dx = (TH1D*)h_prob_proton_dx->Clone("corr_h_prob_proton_dx");
 
   TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,dx_min_i,dx_max_i,3); //-6,3,3
 
