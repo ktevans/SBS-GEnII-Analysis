@@ -110,7 +110,7 @@ void SimDataComp(int kin)
   if(kin == 3)
   {
 
-    data_file = "outfiles/parsed_GEn_pass2_GEN3_He3_dxdy.root";
+    data_file = "outfiles/parsed_GEn_pass3_GEN3_He3_dxdy.root";
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN3_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN3_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN3_simulation.root";
