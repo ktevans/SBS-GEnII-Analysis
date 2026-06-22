@@ -499,13 +499,13 @@ void SimDataComp(int kin)
 
   }//end loop over bins
 
+  h_prob_proton_dx  -> Multiply(fitp);
+  h_prob_neutron_dx -> Multiply(fitn);
+
   h_resid           -> SetEntries(totalentries);
   h_prob_proton_dx  -> SetEntries(totalentries);
   h_prob_neutron_dx -> SetEntries(totalentries);
   h_prob_bckgrnd_dx -> SetEntries(totalentries);
-
-  h_prob_proton_dx  -> Multiply(fitp);
-  h_prob_neutron_dx -> Multiply(fitn);
 
   TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,dx_min_i,dx_max_i,3); //-6,3,3
 
