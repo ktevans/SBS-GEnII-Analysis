@@ -101,8 +101,8 @@ void SimDataComp(int kin)
     title_words = "GEN2";
     dx_min_d = -3.5;
     dx_min_i = -4;
-    dx_max_d = 1.4;
-    dx_max_i = 2;
+    dx_max_d = 2.5;
+    dx_max_i = 3;
     cout<<"\nHi!\n";
 
   }
