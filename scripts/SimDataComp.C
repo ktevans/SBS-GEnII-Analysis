@@ -447,7 +447,7 @@ void SimDataComp(int kin)
   TH1D* hAsym = (TH1D*) hAsymDiff->Clone("hAsym");
   hAsym->Divide(hAsymSum);
   hAsym->Sumw2();
-  hAsym->Rebin();
+  hAsym->Rebin(3);
 
   for (int bin = 0; bin < h_Nbins; bin++)
   {
