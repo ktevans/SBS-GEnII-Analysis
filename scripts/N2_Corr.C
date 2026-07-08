@@ -155,6 +155,7 @@ void N2_Corr(const char *kinematic)
 
   TH1D* hN2dilution = (TH1D*) hN2frac->Clone("hN2dilution");
   hN2dilution->Divide(hHe3frac);
+  hN2dilution->SetTitle("N2 Dilution Simulation Scaling");
 
   TCanvas *c1 = new TCanvas("c1","N2 Dilution as a Function of dx",100,100,700,700);
   c1->cd();
