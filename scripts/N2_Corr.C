@@ -148,10 +148,11 @@ void N2_Corr(const char *kinematic)
 
   TH1D* hN2frac = (TH1D*) h_N2_QE_dx->Clone("hN2frac");
   hN2frac->Divide(h_N2_tot_dx);
+  hN2frac->Scale(3.0);
 
   TH1D* hHe3frac = (TH1D*) h_He3_QE_dx->Clone("hHe3frac");
   hHe3frac->Divide(h_He3_tot_dx);
-  hHe3frac->Scale(14.0);
+  hHe3frac->Scale(28.0);
 
   TH1D* hN2dilution = (TH1D*) hN2frac->Clone("hN2dilution");
   hN2dilution->Divide(hHe3frac);
