@@ -59,7 +59,7 @@ void N2_Corr(const char *kinematic)
   h_He3_QE_dx->GetXaxis()->SetTitle("dx [m]");
 
   TChain* T_He3 = new TChain("Tout");
-  T_He3->Add(inputfile);
+  T_He3->Add(inputfile_He3);
 
   double e_kine_W2_He3;         T_He3->SetBranchAddress("W2", &e_kine_W2_He3);
   double bb_ps_e_He3;           T_He3->SetBranchAddress("ePS", &bb_ps_e_He3);
@@ -103,7 +103,7 @@ void N2_Corr(const char *kinematic)
   }//end event loop
 
   TChain* T_N2 = new TChain("Tout");
-  T_N2->Add(inputfile);
+  T_N2->Add(inputfile_N2);
 
   double e_kine_W2_N2;         T_N2->SetBranchAddress("W2", &e_kine_W2_N2);
   double bb_ps_e_N2;           T_N2->SetBranchAddress("ePS", &bb_ps_e_N2);
