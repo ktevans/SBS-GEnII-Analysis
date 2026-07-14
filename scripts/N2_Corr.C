@@ -28,7 +28,7 @@ void N2_Corr(const char *kinematic)
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
-  TString inputfile_He3 = Form("/volatile/halla/sbs/ktevans/QE_sim/QE_sim_%s_sbs100p_nucleon_np_model2_elastic.root",kinematic);
+  TString inputfile_He3 = Form("/volatile/halla/sbs/ktevans/2026SIM/QE_sim_%s_sbs100p_nucleon_np_model2.root",kinematic);
   TString inputfile_N2 = Form("/volatile/halla/sbs/ktevans/2026SIM/QE_sim_%s_sbs100p_nucleon_np_model2_N2_elastic.root",kinematic);
   TString outputfile = Form("plots/N2_Corr_SIM_GEn_%s_He3_dxdy.pdf",kinematic);
   TString outfile = Form("outfiles/N2_Corr_SIM_GEn_%s_He3_dxdy.root",kinematic);
