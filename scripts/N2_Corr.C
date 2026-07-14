@@ -229,7 +229,7 @@ void N2_Corr(const char *kinematic)
   c2->cd();
   hN2dilution_n->Scale(0.1747);
   hN2dilution_p->Scale(0.0957);
-  //gPad->Update();
+  gPad->Update();
   hN2dilution_p->Draw();
   hN2dilution_n->Draw("SAMES");
 
