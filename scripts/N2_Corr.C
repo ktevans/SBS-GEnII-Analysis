@@ -226,8 +226,8 @@ void N2_Corr(const char *kinematic)
 
   TCanvas *c2 = new TCanvas("c2","N2 Scaled Dilution as a Function of dx",100,100,700,700);
   c2->cd();
-  hN2dilution_n->Scale(0.1747);
-  hN2dilution_p->Scale(0.0957);
+  //hN2dilution_n->Scale(0.1747);
+  //hN2dilution_p->Scale(0.0957);
   hN2dilution_p->Draw();
   hN2dilution_n->Draw("SAMES");
 
