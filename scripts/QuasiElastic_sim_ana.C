@@ -26,7 +26,7 @@
 
 #include "../include/gen-ana.h"
 
-int QuasiElastic_sim_ana(const std::string configfilename, std::string filebase="/volatile/halla/sbs/ktevans/QE_sim/QE_sim")
+int QuasiElastic_sim_ana(const std::string configfilename, std::string filebase="/volatile/halla/sbs/ktevans/2026SIM/kte_QE_sim")
 {
 
   string configdir = "../config/";
