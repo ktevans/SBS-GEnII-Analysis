@@ -112,7 +112,7 @@ void N2_Corr(const char *kinematic)
       h_He3_tot_dx_n->Fill(dx_hcal_He3,weight_hcal_He3);
     }
 
-    if(abs(e_kine_W2_He3-1.0)<0.5 && bb_ps_e_He3>0.2 && abs(((bb_ps_e_He3+bb_sh_e_He3)/bb_tr_p_He3)-0.97)<0.2 && abs(bb_tr_vz_He3)<0.27 && sbs_hcal_e_He3>0.025)
+    if(abs(e_kine_W2_He3-1.0)<0.5 && bb_ps_e_He3>0.2 && abs(((bb_ps_e_He3+bb_sh_e_He3)/bb_tr_p_He3)-0.97)<0.2 && abs(bb_tr_vz_He3)<0.27 && sbs_hcal_e_He3>0.025 && abs(dy_hcal_He3)<0.5)
     {
 
       if(fnucl_hcal_He3==1.0)
@@ -174,7 +174,7 @@ void N2_Corr(const char *kinematic)
       h_N2_tot_dx_n->Fill(dx_hcal_N2,weight_hcal_N2);
     }
 
-    if(abs(e_kine_W2_N2-1.0)<0.5 && bb_ps_e_N2>0.2 && abs(((bb_ps_e_N2+bb_sh_e_N2)/bb_tr_p_N2)-0.97)<0.2 && abs(bb_tr_vz_N2)<0.27 && sbs_hcal_e_N2>0.025)
+    if(abs(e_kine_W2_N2-1.0)<0.5 && bb_ps_e_N2>0.2 && abs(((bb_ps_e_N2+bb_sh_e_N2)/bb_tr_p_N2)-0.97)<0.2 && abs(bb_tr_vz_N2)<0.27 && sbs_hcal_e_N2>0.025 && abs(dy_hcal_N2)<0.5)
     {
 
       if(fnucl_hcal_N2==1.0)
