@@ -99,7 +99,7 @@ void SimDataComp(int kin)
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN2_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN2_simulation.root";
     title_words = "GEN2";
-    dx_min_d = -3.4;
+    dx_min_d = -4.0;
     dx_min_i = -4;
     dx_max_d = 2.0;
     dx_max_i = 2;
