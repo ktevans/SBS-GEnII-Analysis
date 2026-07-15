@@ -221,11 +221,14 @@ void N2_Corr(const char *kinematic)
 
   TCanvas *c1 = new TCanvas("c1","N2 Dilution as a Function of dx",100,100,700,700);
   c1->cd();
-  hN2dilution_p->Scale(0.0957)->Rebin();
-  hN2dilution_n->Scale(0.1747)->Rebin();
+  hN2dilution_p->Scale(0.0957);
+  hN2dilution_p->Rebin();
+  hN2dilution_n->Scale(0.1747);
+  hN2dilution_n->Rebin();
   gPad->Update();
+  hN2dilution_p->Add(hN2dilution_n);
   hN2dilution_p->Draw();
-  hN2dilution_n->Draw("SAMES");
+  //hN2dilution_n->Draw("SAMES");
   //gPad->Update();
 
   printf("You've completed the script!\n");
