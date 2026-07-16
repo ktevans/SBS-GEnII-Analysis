@@ -100,7 +100,7 @@ void SimDataComp(int kin)
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN2_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN2_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN2_simulation.root";
-    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN2_He3_dxdy.root":
+    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN2_He3_dxdy.root";
     title_words = "GEN2";
     dx_min_d = -3.2;
     dx_min_i = -4;
@@ -121,7 +121,7 @@ void SimDataComp(int kin)
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN3_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN3_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN3_simulation.root";
-    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN3_He3_dxdy.root":
+    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN3_He3_dxdy.root";
     title_words = "GEN3";
     dx_min_d = -2.5;
     dx_min_i = -3;
@@ -142,7 +142,7 @@ void SimDataComp(int kin)
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN4_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN4a_simulation.root";
-    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN4_He3_dxdy.root":
+    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN4_He3_dxdy.root";
     title_words = "GEN4a";
     dx_min_d = -3.0;
     dx_min_i = -3;
@@ -163,7 +163,7 @@ void SimDataComp(int kin)
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN4_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN4b_simulation.root";
-    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN4_He3_dxdy.root":
+    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN4_He3_dxdy.root";
     title_words = "GEN4b";
     dx_min_d = -3.0;
     dx_min_i = -3;
@@ -441,7 +441,7 @@ void SimDataComp(int kin)
   scaled_h_sim_nucleons->Add(shifted_h_sim_neutron_dx);
 
   TH1D* scaled_hN2dilution = (TH1D*)hN2dilution->Clone("scaled_hN2dilution");
-  scaled_hN2dilution->SetColors(kRed, kRed, kRed); //line, marker, fill
+  scaled_hN2dilution->SetLineColor(kRed); //line, marker, fill
   scaled_hN2dilution->Multiply(scaled_h_sim_nucleons);
 
   //Create residual and probability plots
@@ -706,4 +706,3 @@ void SimDataComp(int kin)
   delete T_simIN;
 
 }//end main
- 
