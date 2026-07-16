@@ -554,12 +554,12 @@ void SimDataComp(int kin)
   double pol_combo = pol_beam * pol_targ;
   h_fullProb->Add(hN2dilution_p,-1.0);
 
-  //Apply effective nucleon polarization
-  h_prob_proton_dx  -> Multiply(fitp);
-  h_prob_neutron_dx -> Multiply(fitn);
-  //Subtract off dilution and apply beam and target polarization
-  h_prob_proton_dx  -> Multiply(h_fullProb, pol_combo);
-  h_prob_neutron_dx -> Multiply(h_fullProb, pol_combo);
+  //Apply effective nucleon polarization and beam+target polarization
+  h_prob_proton_dx  -> Multiply(fitp, pol_combo);
+  h_prob_neutron_dx -> Multiply(fitn, pol_combo);
+  //Subtract off dilution
+  h_prob_proton_dx  -> Multiply(h_fullProb);
+  h_prob_neutron_dx -> Multiply(h_fullProb);
 
   TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,dx_min_i,dx_max_i,3); //-6,3,3
 
