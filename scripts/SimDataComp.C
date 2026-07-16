@@ -330,8 +330,8 @@ void SimDataComp(int kin)
   //std::unique_ptr<TF1> fit_n(polFile->Get<TF1>(fitn));
 
   TFile *N2File = TFile::Open(N2_dilution_file);
-  TH1D *hN2dilution = nullptr;
-  N2File->GetObject("hN2dilution", hN2dilution_p);
+  TH1D *hN2dilution_p = nullptr;
+  N2File->GetObject("hN2dilution_p", hN2dilution_p);
 
   //std::cout << "sqrt(n) error " << h_simIN_dx->GetBinError(250) << std::endl;
   //std::cout << "Get Sumw2 Error: " << h_simIN_dx->GetSumw2() << std::endl;
@@ -440,7 +440,7 @@ void SimDataComp(int kin)
   TH1D* scaled_h_sim_nucleons = (TH1D*)shifted_h_sim_proton_dx->Clone("scaled_h_sim_nucleons");
   scaled_h_sim_nucleons->Add(shifted_h_sim_neutron_dx);
 
-  TH1D* scaled_hN2dilution = (TH1D*)hN2dilution->Clone("scaled_hN2dilution");
+  TH1D* scaled_hN2dilution = (TH1D*)hN2dilution_p->Clone("scaled_hN2dilution");
   scaled_hN2dilution->SetLineColor(kRed); //line, marker, fill
   scaled_hN2dilution->Multiply(scaled_h_sim_nucleons);
 
