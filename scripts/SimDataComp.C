@@ -338,6 +338,7 @@ void SimDataComp(int kin)
 
   //******************************************************
 
+  //Normalize each distribution using the sum of the dataset
   double scale = h_data_dx->Integral();
   //h_data_dx->Scale(1.0/h_data_dx->Integral());
   h_data_dx->Scale(1.0/scale);
@@ -488,6 +489,8 @@ void SimDataComp(int kin)
   hAsym->Sumw2();
   hAsym->Rebin();
 
+  TH1D* h_fullProb = new TH1D("h_fullProb","100 Percent",numberBins,dx_max_d,dx_max_d);
+
   for (int bin = 0; bin < h_Nbins; bin++)
   {
 
@@ -539,6 +542,7 @@ void SimDataComp(int kin)
     h_prob_neutron_dx->SetBinError(bin,P_n_err);
     h_prob_bckgrnd_dx->SetBinContent(bin,P_bg);
     h_prob_bckgrnd_dx->SetBinError(bin,P_bg_err);
+    h_fullProb->SetBinContent(bin,1.0);
 
   }//end loop over bins
 
@@ -548,9 +552,14 @@ void SimDataComp(int kin)
   h_prob_bckgrnd_dx -> SetEntries(totalentries);
 
   double pol_combo = pol_beam * pol_targ;
+  h_fullProb->Add(hN2dilution_p,-1.0);
 
-  h_prob_proton_dx  -> Multiply(fitp,pol_combo);
-  h_prob_neutron_dx -> Multiply(fitn,pol_combo);
+  //Apply effective nucleon polarization
+  h_prob_proton_dx  -> Multiply(fitp);
+  h_prob_neutron_dx -> Multiply(fitn);
+  //Subtract off dilution and apply beam and target polarization
+  h_prob_proton_dx  -> Multiply(h_fullProb, pol_combo);
+  h_prob_neutron_dx -> Multiply(h_fullProb, pol_combo);
 
   TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,dx_min_i,dx_max_i,3); //-6,3,3
 
@@ -567,12 +576,12 @@ void SimDataComp(int kin)
   TH1D* scaled_neutron_prob = (TH1D*)h_prob_neutron_dx->Clone("scaled_neutron_prob");
   TH1D* scaled_bckgrnd_prob = (TH1D*)h_prob_bckgrnd_dx->Clone("scaled_bckgrnd_prob");
 
-  scaled_proton_prob->Scale(AsymFitFunc->GetParameter(0));
-  scaled_neutron_prob->Scale(AsymFitFunc->GetParameter(1));
-  scaled_bckgrnd_prob->Scale(AsymFitFunc->GetParameter(2));
+  scaled_proton_prob  -> Scale(AsymFitFunc->GetParameter(0));
+  scaled_neutron_prob -> Scale(AsymFitFunc->GetParameter(1));
+  scaled_bckgrnd_prob -> Scale(AsymFitFunc->GetParameter(2));
 
-  std::cout << "Proton Asymmetry: " << AsymFitFunc->GetParameter(0) << std::endl;
-  std::cout << "Neutron Asymmetry: " << AsymFitFunc->GetParameter(1) << std::endl;
+  std::cout << "Proton Asymmetry: "     << AsymFitFunc->GetParameter(0) << std::endl;
+  std::cout << "Neutron Asymmetry: "    << AsymFitFunc->GetParameter(1) << std::endl;
   std::cout << "Background Asymmetry: " << AsymFitFunc->GetParameter(2) << std::endl;
 
   //Create canvas and draw all the histograms
