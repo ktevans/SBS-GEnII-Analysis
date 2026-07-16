@@ -442,6 +442,7 @@ void SimDataComp(int kin)
 
   TH1D* scaled_hN2dilution = (TH1D*)hN2dilution_p->Clone("scaled_hN2dilution");
   scaled_hN2dilution->SetLineColor(kRed); //line, marker, fill
+
   scaled_hN2dilution->Multiply(scaled_h_sim_nucleons);
 
   //Create residual and probability plots
@@ -546,8 +547,10 @@ void SimDataComp(int kin)
   h_prob_neutron_dx -> SetEntries(totalentries);
   h_prob_bckgrnd_dx -> SetEntries(totalentries);
 
-  h_prob_proton_dx  -> Multiply(fitp);
-  h_prob_neutron_dx -> Multiply(fitn);
+  double pol_combo = pol_beam * pol_targ;
+
+  h_prob_proton_dx  -> Multiply(fitp,pol_combo);
+  h_prob_neutron_dx -> Multiply(fitn,pol_combo);
 
   TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,dx_min_i,dx_max_i,3); //-6,3,3
 
@@ -696,17 +699,10 @@ void SimDataComp(int kin)
   c5->SetGrid();
   c5->Update();
 
-  TCanvas *c6 = new TCanvas("c6","DilutionDX",100,100,1000,1000);
-  c6->Divide(1,3);
-  c6->cd(1);
+  TCanvas *c6 = new TCanvas("c6","DilutionDX",100,100,1600,800);
+  c6->cd();
   scaled_h_sim_nucleons->Draw("HIST");
   scaled_hN2dilution->Draw("HIST SAMES");
-  c6->cd(2);
-  hN2dilution_p->Draw("HIST");
-  c6->cd(3);
-  hN2dilution_p->Multiply(scaled_h_sim_nucleons);
-  gPad->Update();
-  hN2dilution_p->Draw();
 
   delete T_data;
   delete T_sim;
