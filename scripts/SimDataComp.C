@@ -697,12 +697,16 @@ void SimDataComp(int kin)
   c5->Update();
 
   TCanvas *c6 = new TCanvas("c6","DilutionDX",100,100,1000,1000);
-  c6->Divide(1,2);
+  c6->Divide(1,3);
   c6->cd(1);
   scaled_h_sim_nucleons->Draw("HIST");
   scaled_hN2dilution->Draw("HIST SAMES");
   c6->cd(2);
   hN2dilution_p->Draw("HIST");
+  c6->cd(3);
+  hN2dilution_p->Multiply(scaled_h_sim_nucleons);
+  gPad->Update();
+  hN2dilution_p->Draw();
 
   delete T_data;
   delete T_sim;
