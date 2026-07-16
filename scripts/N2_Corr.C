@@ -28,6 +28,10 @@ void N2_Corr(const char *kinematic)
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
+  double numberBins = 200;
+  double dx_min_d = -3.2;
+  double dx_max_d = 2.0;
+
   TString inputfile_He3 = Form("/volatile/halla/sbs/ktevans/2026SIM/kte_QE_sim_%s_sbs100p_nucleon_np_model2_elastic.root",kinematic);
   TString inputfile_N2 = Form("/volatile/halla/sbs/ktevans/2026SIM/QE_sim_%s_sbs100p_nucleon_np_model2_N2_elastic.root",kinematic);
   TString outputfile = Form("plots/N2_Corr_SIM_GEn_%s_He3_dxdy.pdf",kinematic);
@@ -48,28 +52,28 @@ void N2_Corr(const char *kinematic)
   T_sim->Branch("fnucl.N2", &fnucl_out_N2, "fnucl.N2/D");
   T_sim->Branch("weight.N2", &weight_out_N2, "weight.N2/D");
 
-  TH1D* h_N2_tot_dx_p = new TH1D("h_N2_tot_dx_p","Total N2 Proton Events", 130, -6.0, 7.0);
+  TH1D* h_N2_tot_dx_p = new TH1D("h_N2_tot_dx_p","Total N2 Proton Events", numberBins, dx_min_d, dx_max_d);
   h_N2_tot_dx_p->GetXaxis()->SetTitle("dx [m]");
 
-  TH1D* h_N2_QE_dx_p = new TH1D("h_N2_QE_dx_p","QE N2 Proton Events", 130, -6.0, 7.0);
+  TH1D* h_N2_QE_dx_p = new TH1D("h_N2_QE_dx_p","QE N2 Proton Events", numberBins, dx_min_d, dx_max_d);
   h_N2_QE_dx_p->GetXaxis()->SetTitle("dx [m]");
 
-  TH1D* h_He3_tot_dx_p = new TH1D("h_He3_tot_dx_p","Total He3 Proton Events", 130, -6.0, 7.0);
+  TH1D* h_He3_tot_dx_p = new TH1D("h_He3_tot_dx_p","Total He3 Proton Events", numberBins, dx_min_d, dx_max_d);
   h_He3_tot_dx_p->GetXaxis()->SetTitle("dx [m]");
 
-  TH1D* h_He3_QE_dx_p = new TH1D("h_He3_QE_dx_p","QE He3 Proton Events", 130, -6.0, 7.0);
+  TH1D* h_He3_QE_dx_p = new TH1D("h_He3_QE_dx_p","QE He3 Proton Events", numberBins, dx_min_d, dx_max_d);
   h_He3_QE_dx_p->GetXaxis()->SetTitle("dx [m]");
 
-  TH1D* h_N2_tot_dx_n = new TH1D("h_N2_tot_dx_n","Total N2 Neutron Events", 130, -6.0, 7.0);
+  TH1D* h_N2_tot_dx_n = new TH1D("h_N2_tot_dx_n","Total N2 Neutron Events", numberBins, dx_min_d, dx_max_d);
   h_N2_tot_dx_n->GetXaxis()->SetTitle("dx [m]");
 
-  TH1D* h_N2_QE_dx_n = new TH1D("h_N2_QE_dx_n","QE N2 Neutron Events", 130, -6.0, 7.0);
+  TH1D* h_N2_QE_dx_n = new TH1D("h_N2_QE_dx_n","QE N2 Neutron Events", numberBins, dx_min_d, dx_max_d);
   h_N2_QE_dx_n->GetXaxis()->SetTitle("dx [m]");
 
-  TH1D* h_He3_tot_dx_n = new TH1D("h_He3_tot_dx_n","Total He3 Neutron Events", 130, -6.0, 7.0);
+  TH1D* h_He3_tot_dx_n = new TH1D("h_He3_tot_dx_n","Total He3 Neutron Events", numberBins, dx_min_d, dx_max_d);
   h_He3_tot_dx_n->GetXaxis()->SetTitle("dx [m]");
 
-  TH1D* h_He3_QE_dx_n = new TH1D("h_He3_QE_dx_n","QE He3 Neutron Events", 130, -6.0, 7.0);
+  TH1D* h_He3_QE_dx_n = new TH1D("h_He3_QE_dx_n","QE He3 Neutron Events", numberBins, dx_min_d, dx_max_d);
   h_He3_QE_dx_n->GetXaxis()->SetTitle("dx [m]");
 
 
