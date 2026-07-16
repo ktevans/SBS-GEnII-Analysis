@@ -710,7 +710,7 @@ void SimDataComp(int kin)
   c5->SetGrid();
   c5->Update();
 
-  TCanvas *c6 = new TCanvas("c6","DilutionDX",100,100,800,800);
+  TCanvas *c6 = new TCanvas("c6","testing",100,100,1500,500);
   c6->cd();
   h_fullProb->Draw("HIST");
   //scaled_h_sim_nucleons->Draw("HIST");
