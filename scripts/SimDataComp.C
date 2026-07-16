@@ -489,7 +489,8 @@ void SimDataComp(int kin)
   hAsym->Sumw2();
   hAsym->Rebin();
 
-  TH1D* h_fullProb = new TH1D("h_fullProb","100 Percent",numberBins,dx_max_d,dx_max_d);
+  TH1D* h_fullProb = new TH1D("h_fullProb","100 Percent",h_Nbins,h_minX,h_maxX);
+  h_fullProb->GetYaxis()->SetRangeUser(0.0,1.0);
 
   for (int bin = 0; bin < h_Nbins; bin++)
   {
@@ -550,6 +551,7 @@ void SimDataComp(int kin)
   h_prob_proton_dx  -> SetEntries(totalentries);
   h_prob_neutron_dx -> SetEntries(totalentries);
   h_prob_bckgrnd_dx -> SetEntries(totalentries);
+  h_fullProb        -> SetEntries(totalentries);
 
   double pol_combo = pol_beam * pol_targ;
   h_fullProb->Add(hN2dilution_p,-1.0);
