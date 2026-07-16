@@ -545,7 +545,7 @@ void SimDataComp(int kin)
     h_prob_neutron_dx->SetBinError(bin,P_n_err);
     h_prob_bckgrnd_dx->SetBinContent(bin,P_bg);
     h_prob_bckgrnd_dx->SetBinError(bin,P_bg_err);
-    h_fullProb->SetBinContent(bin,1.0);
+    h_fullProb->SetBinContent(bin,0.8);
 
   }//end loop over bins
 
