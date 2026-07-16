@@ -443,6 +443,7 @@ void SimDataComp(int kin)
 
   TH1D* scaled_hN2dilution = (TH1D*)hN2dilution_p->Clone("scaled_hN2dilution");
   scaled_hN2dilution->SetLineColor(kRed); //line, marker, fill
+  scaled_hN2dilution->Reset("ICESM");
 
   scaled_hN2dilution->Multiply(scaled_h_sim_nucleons);
 
@@ -491,6 +492,7 @@ void SimDataComp(int kin)
 
   TH1D* h_fullProb = new TH1D("h_fullProb","100 Percent",h_Nbins,h_minX,h_maxX);
   h_fullProb->GetYaxis()->SetRangeUser(0.0,1.0);
+  h_fullProb->Sumw2();
 
   for (int bin = 0; bin < h_Nbins; bin++)
   {
