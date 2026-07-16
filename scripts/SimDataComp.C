@@ -545,7 +545,7 @@ void SimDataComp(int kin)
     h_prob_neutron_dx->SetBinError(bin,P_n_err);
     h_prob_bckgrnd_dx->SetBinContent(bin,P_bg);
     h_prob_bckgrnd_dx->SetBinError(bin,P_bg_err);
-    h_fullProb->SetBinContent(bin,0.8);
+    h_fullProb->SetBinContent(bin,1.0);
 
   }//end loop over bins
 
@@ -563,8 +563,8 @@ void SimDataComp(int kin)
   h_prob_proton_dx  -> Multiply(fitp, pol_combo);
   h_prob_neutron_dx -> Multiply(fitn, pol_combo);
   //Subtract off dilution
-  h_prob_proton_dx  -> Multiply(h_fullProb);
-  h_prob_neutron_dx -> Multiply(h_fullProb);
+  h_prob_proton_dx  -> Divide(h_fullProb);
+  h_prob_neutron_dx -> Divide(h_fullProb);
 
   TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,dx_min_i,dx_max_i,3); //-6,3,3
 
