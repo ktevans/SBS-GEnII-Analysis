@@ -84,11 +84,13 @@ void SimDataComp(int kin)
   TString nucleon_sim_file;
   TString inel_sim_file;
   TString pol_func_file;
+  TString N2_dilution_file;
   TString title_words;
 
   int npar = 6;
   double dx_min_d, dx_max_d;
   int dx_min_i, dx_max_i;
+  double pol_beam, pol_beam_err, pol_targ, pol_targ_err;
 
   if(kin == 2)
   {
@@ -98,12 +100,17 @@ void SimDataComp(int kin)
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN2_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN2_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN2_simulation.root";
+    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN2_He3_dxdy.root":
     title_words = "GEN2";
     dx_min_d = -3.2;
     dx_min_i = -4;
     dx_max_d = 2.0;
     dx_max_i = 2;
-    cout<<"\nHi!\n";
+    pol_beam = 0.8409;
+    pol_beam_err = 0.0018;
+    pol_targ = 0.3557;
+    pol_targ_err = 0.0179;
+    cout<<"\nHi! You are analyzing GEN2!\n";
 
   }
 
@@ -114,11 +121,17 @@ void SimDataComp(int kin)
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN3_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN3_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN3_simulation.root";
+    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN3_He3_dxdy.root":
     title_words = "GEN3";
     dx_min_d = -2.5;
     dx_min_i = -3;
     dx_max_d = 1.7;
     dx_max_i = 2;
+    pol_beam = 0.8649;
+    pol_beam_err = 0.0008;
+    pol_targ = 0.4212;
+    pol_targ_err = 0.011;
+    cout<<"\nHi! You are analyzing GEN3!\n";
 
   }
 
@@ -129,11 +142,17 @@ void SimDataComp(int kin)
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN4_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN4a_simulation.root";
+    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN4_He3_dxdy.root":
     title_words = "GEN4a";
     dx_min_d = -3.0;
     dx_min_i = -3;
     dx_max_d = 2.0;
     dx_max_i = 2;
+    pol_beam = 0.8293;
+    pol_beam_err = 0.0010;
+    pol_targ = 0.4908;
+    pol_targ_err = 0.0202;
+    cout<<"\nHi! You are analyzing GEN4a!\n";
 
   }
 
@@ -144,11 +163,17 @@ void SimDataComp(int kin)
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN4_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN4b_simulation.root";
+    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN4_He3_dxdy.root":
     title_words = "GEN4b";
     dx_min_d = -3.0;
     dx_min_i = -3;
     dx_max_d = 2.0;
     dx_max_i = 2;
+    pol_beam = 0.8293;
+    pol_beam_err = 0.0010;
+    pol_targ = 0.4908;
+    pol_targ_err = 0.0202;
+    cout<<"\nHi! You are analyzing GEN4b!\n";
 
   }
 
@@ -304,6 +329,10 @@ void SimDataComp(int kin)
   //std::unique_ptr<TF1> fit_p(polFile->Get<TF1>(fitp));
   //std::unique_ptr<TF1> fit_n(polFile->Get<TF1>(fitn));
 
+  TFile *N2File = TFile::Open(N2_dilution_file);
+  TH1D *hN2dilution = nullptr;
+  N2File->GetObject("hN2dilution", hN2dilution_p);
+
   //std::cout << "sqrt(n) error " << h_simIN_dx->GetBinError(250) << std::endl;
   //std::cout << "Get Sumw2 Error: " << h_simIN_dx->GetSumw2() << std::endl;
 
@@ -406,6 +435,15 @@ void SimDataComp(int kin)
   shifted_h_simIN_dx       ->Scale(scale);
   h_total_dx               ->Scale(scale);
 
+  //Account for diluitions
+
+  TH1D* scaled_h_sim_nucleons = (TH1D*)shifted_h_sim_proton_dx->Clone("scaled_h_sim_nucleons");
+  scaled_h_sim_nucleons->Add(shifted_h_sim_neutron_dx);
+
+  TH1D* scaled_hN2dilution = (TH1D*)hN2dilution->Clone("scaled_hN2dilution");
+  scaled_hN2dilution->SetColors(kRed, kRed, kRed); //line, marker, fill
+  scaled_hN2dilution->Multiply(scaled_h_sim_nucleons);
+
   //Create residual and probability plots
 
   double totalentries = h_data_dx->GetEntries();
@@ -464,10 +502,14 @@ void SimDataComp(int kin)
     double c_p_err   = shifted_h_sim_proton_dx->GetBinError(bin);
     double c_n       = shifted_h_sim_neutron_dx->GetBinContent(bin);
     double c_n_err   = shifted_h_sim_neutron_dx->GetBinError(bin);
-    double c_bg      = shifted_h_simIN_dx->GetBinContent(bin);
+    double c_bg      = shifted_h_simIN_dx->GetBinContent(bin); //Backgrounds with asymmetry contributions
     double c_bg_err  = shifted_h_simIN_dx->GetBinError(bin);
+    double c_dil     = scaled_hN2dilution->GetBinContent(bin); //Backgrounds with no asymmetry contribution
+    double c_dil_err = scaled_hN2dilution->GetBinError(bin);
 
-    double P_tot = c_p + c_n + c_bg;
+    double P_tot = c_p + c_n + c_bg + c_dil;
+
+    //For asymmetry fit, we only care about if background contributes to asymmetry, so there is no need to track the probability of being a dilution particle. The total on the denominator should include dilution considerations.
 
     double P_p       = 0.0;
     double P_p_err   = 1.0;
@@ -483,9 +525,9 @@ void SimDataComp(int kin)
       P_n  = c_n / P_tot;
       P_bg = c_bg / P_tot;
 
-      P_p_err  = TMath::Sqrt( (c_n+c_bg)*(c_n+c_bg)*c_p_err*c_p_err + c_p*c_p*c_n_err*c_n_err + c_p*c_p*c_bg_err*c_bg_err ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
-      P_n_err  = TMath::Sqrt( (c_bg+c_p)*(c_bg+c_p)*c_n_err*c_n_err + c_n*c_n*c_p_err*c_p_err + c_n*c_n*c_bg_err*c_bg_err ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
-      P_bg_err = TMath::Sqrt( (c_n+c_p)*(c_n+c_p)*c_bg_err*c_bg_err + c_bg*c_bg*c_p_err*c_p_err + c_bg*c_bg*c_p_err*c_p_err ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
+      P_p_err  = TMath::Sqrt( (c_n+c_bg+c_dil)*(c_n+c_bg+c_dil)*c_p_err*c_p_err + c_p*c_p*c_n_err*c_n_err + c_p*c_p*c_bg_err*c_bg_err + c_p*c_p*c_dil_err*c_dil_err ) / ( (c_p+c_n+c_bg+c_dil)*(c_p+c_n+c_bg+c_dil) );
+      P_n_err  = TMath::Sqrt( (c_bg+c_p+c_dil)*(c_bg+c_p+c_dil)*c_n_err*c_n_err + c_n*c_n*c_p_err*c_p_err + c_n*c_n*c_bg_err*c_bg_err + c_n*c_n*c_dil_err*c_dil_err ) / ( (c_p+c_n+c_bg+c_dil)*(c_p+c_n+c_bg+c_dil) );
+      P_bg_err = TMath::Sqrt( (c_n+c_p+c_dil)*(c_n+c_p+c_dil)*c_bg_err*c_bg_err + c_bg*c_bg*c_p_err*c_p_err + c_bg*c_bg*c_p_err*c_p_err + c_bg*c_bg*c_dil_err*c_dil_err ) / ( (c_p+c_n+c_bg+c_dil)*(c_p+c_n+c_bg+c_dil) );
 
     }//end if total probability is nonzero
 
@@ -654,8 +696,14 @@ void SimDataComp(int kin)
   c5->SetGrid();
   c5->Update();
 
+  TCanvas *c6 = new TCanvas("c6","DilutionDX",100,100,1000,1000);
+  c6->cd();
+  scaled_h_sim_nucleons->Draw("HIST");
+  scaled_hN2dilution->Draw("HIST SAMES");
+
   delete T_data;
   delete T_sim;
   delete T_simIN;
 
 }//end main
+ 
