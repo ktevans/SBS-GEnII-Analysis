@@ -557,6 +557,7 @@ void SimDataComp(int kin)
 
   double pol_combo = pol_beam * pol_targ;
   h_fullProb->Add(hN2dilution_p,-1.0);
+  h_fullProb->Add(h_prob_bckgrnd_dx,-1.0);
 
   //Apply effective nucleon polarization and beam+target polarization
   h_prob_proton_dx  -> Multiply(fitp, pol_combo);
