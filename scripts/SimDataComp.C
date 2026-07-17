@@ -102,8 +102,8 @@ void SimDataComp(int kin)
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN2_simulation.root";
     N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN2_He3_dxdy.root";
     title_words = "GEN2";
-    dx_min_d = -3.2;
-    dx_min_i = -4;
+    dx_min_d = -3.0;
+    dx_min_i = -3;
     dx_max_d = 2.0;
     dx_max_i = 2;
     pol_beam = 0.8409;
