@@ -441,6 +441,10 @@ void SimDataComp(int kin)
   TH1D* scaled_h_sim_nucleons = (TH1D*)shifted_h_sim_proton_dx->Clone("scaled_h_sim_nucleons");
   scaled_h_sim_nucleons->Add(shifted_h_sim_neutron_dx);
 
+  TCanvas *step1 = new TCanvas("step1","testing",100,100,1500,500);
+  step1->cd();
+  scaled_h_sim_nucleons->Draw("HIST");
+
   TH1D* scaled_hN2dilution = (TH1D*)hN2dilution_p->Clone("scaled_hN2dilution");
   scaled_hN2dilution->SetLineColor(kRed); //line, marker, fill
   scaled_hN2dilution->Reset("ICESM");
@@ -557,14 +561,38 @@ void SimDataComp(int kin)
 
   double pol_combo = pol_beam * pol_targ;
   h_fullProb->Add(hN2dilution_p,-1.0);
+
+  TCanvas *step2 = new TCanvas("step2","1 - N2 Dilution",100,100,1500,500);
+  step2->cd();
+  h_fullProb->Draw("HIST");
+
   h_fullProb->Add(h_prob_bckgrnd_dx,-1.0);
+
+  TCanvas *step3 = new TCanvas("step3","1 - (N2 Dilution) - (Inel Prob)",100,100,1500,500);
+  step3->cd();
+  h_fullProb->Draw("HIST");
 
   //Apply effective nucleon polarization and beam+target polarization
   h_prob_proton_dx  -> Multiply(fitp, pol_combo);
   h_prob_neutron_dx -> Multiply(fitn, pol_combo);
+
+  TCanvas *step4 = new TCanvas("step4","Nucleon Probability Scaled by Polarization",100,100,1500,500);
+  step4->Divide(1,2);
+  step4->cd(1);
+  h_prob_proton_dx->Draw("HIST");
+  step4->cd(2);
+  h_prob_neutron_dx->Draw("HIST");
+
   //Subtract off dilution
   h_prob_proton_dx  -> Divide(h_fullProb);
   h_prob_neutron_dx -> Divide(h_fullProb);
+
+  TCanvas *step5 = new TCanvas("step5","Nucleon Probability Scaled by Polarization and Dilution",100,100,1500,500);
+  step5->Divide(1,2);
+  step5->cd(1);
+  h_prob_proton_dx->Draw("HIST");
+  step5->cd(2);
+  h_prob_neutron_dx->Draw("HIST");
 
   TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,dx_min_i,dx_max_i,3); //-6,3,3
 
@@ -713,9 +741,9 @@ void SimDataComp(int kin)
   c5->SetGrid();
   c5->Update();
 
-  TCanvas *c6 = new TCanvas("c6","testing",100,100,1500,500);
-  c6->cd();
-  h_fullProb->Draw("HIST");
+  //TCanvas *c6 = new TCanvas("c6","testing",100,100,1500,500);
+  //c6->cd();
+  //h_fullProb->Draw("HIST");
   //scaled_h_sim_nucleons->Draw("HIST");
   //scaled_hN2dilution->Draw("HIST SAMES");
 
