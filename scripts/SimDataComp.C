@@ -565,6 +565,7 @@ void SimDataComp(int kin)
   TCanvas *step2 = new TCanvas("step2","1 - N2 Dilution",100,100,1500,500);
   step2->cd();
   h_fullProb->Draw("HIST");
+  gPad->Update();
 
   h_fullProb->Add(h_prob_bckgrnd_dx,-1.0);
 
