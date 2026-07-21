@@ -122,8 +122,6 @@ int QE_Parse(const std::string configfilename, std::string filebase="../outfiles
   setrootvar::setbranch(C, "g", "evtime", &evtime);
   double evnum_T;  setrootvar::setbranch(C,"g","evnum",&evnum_T);
 
-  double trigbits; C->SetBranchAddress("g.trigbits", &trigbits);
-
   //double eSH, xSH, ySH, atimeSH;
   //setrootvar::setbranch(C, "bb.sh", std::vector<std::string>{"e","x","y","atimeblk"}, std::vector<void*>{&eSH, &xSH, &ySH, &atimeSH});
   // bbcal sh clus var
@@ -142,18 +140,18 @@ int QE_Parse(const std::string configfilename, std::string filebase="../outfiles
   std::vector<void*> bbcalpsclvar_mem = {&ePS,&xPS,&yPS,&atimePS,&idPS};
   setrootvar::setbranch(C,"bb.ps",bbcalpsclvar,bbcalpsclvar_mem);
 
-  //double eop;
-  //setrootvar::setbranch(C, "bb", std::vector<std::string>{"etot_over_p"}, std::vector<void*>{&eop});
+  double eop;
+  setrootvar::setbranch(C, "bb", std::vector<std::string>{"etot_over_p"}, std::vector<void*>{&eop});
 
   //double eHCAL[maxhcal], xHCAL[maxhcal], yHCAL[maxhcal], rblkHCAL[maxhcal], cblkHCAL[maxhcal], idblkHCAL[maxhcal], adctimeHCAL[maxhcal];
   //setrootvar::setbranch(C, "sbs.hcal", std::vector<std::string>{"e","x","y","rowblk","colblk","idblk","atimeblk"}, std::vector<void*>{&eHCAL, &xHCAL, &yHCAL, &rblkHCAL, &cblkHCAL, &idblkHCAL, &adctimeHCAL});
 
-  //double clusadcHCAL[maxhcal];
-  //setrootvar::setbranch(C, "sbs.hcal.clus", std::vector<std::string>{"adctime"}, std::vector<void*>{&clusadcHCAL});
+  double clusadcHCAL[maxhcal];
+  setrootvar::setbranch(C, "sbs.hcal.clus", std::vector<std::string>{"adctime"}, std::vector<void*>{&clusadcHCAL});
 
   // hcal clus var
-  double eHCAL[maxhcal], xHCAL[maxhcal], yHCAL[maxhcal], rblkHCAL[maxhcal], cblkHCAL[maxhcal], idblkHCAL[maxhcal],tdctimeHCAL[maxhcal],atimeHCAL[maxhcal];
-  std::vector<std::string> hcalclvar = {"e","x","y","rowblk","colblk","idblk","tdctimeblk","atimeblk"};
+  double eHCAL[maxhcal], xHCAL[maxhcal], yHCAL[maxhcal], rblkHCAL[maxhcal], cblkHCAL[maxhcal], idblkHCAL[maxhcal],tdctimeHCAL[maxhcal],adctimeHCAL[maxhcal];
+  std::vector<std::string> hcalclvar = {"e","x","y","rowblk","colblk","idblk","tdctimeblk","adctimeHCAL"};
   std::vector<void*> hcalclvar_mem = {&eHCAL,&xHCAL,&yHCAL,&rblkHCAL,&cblkHCAL,&idblkHCAL,&tdctimeHCAL,&atimeHCAL};
   setrootvar::setbranch(C, "sbs.hcal", hcalclvar, hcalclvar_mem);
   double hcal_blk_e[maxhcal], hcal_blk_id[maxhcal];
@@ -170,12 +168,13 @@ int QE_Parse(const std::string configfilename, std::string filebase="../outfiles
   double grinch_bestcluster;
   setrootvar::setbranch(C, "bb.grinch_tdc", std::vector<std::string>{"bestcluster"}, std::vector<void*>{&grinch_bestcluster});
 
-  //int nhodo_clus = 0;
-  //std::vector<double> HODO_bar(kMaxHodoHits), hodo_bartime(kMaxHodoHits), HODO_clus(kMaxHodoHits), hodo_clustime(kMaxHodoHits), hodo_tfinal(kMaxHodoHits);
-  //setrootvar::setbranch(C, "Ndata.bb.hodotdc.clus.bar.tdc", "meantime", &nhodo_clus);
-  //setrootvar::setbranch(C, "bb.hodotdc.clus.bar.tdc", {"id","meantime"}, {HODO_bar.data(), hodo_bartime.data()}, kMaxHodoHits);
-  //setrootvar::setbranch(C, "bb.hodotdc.clus", {"id","tmean","tfinal"}, {HODO_clus.data(), hodo_clustime.data(), hodo_tfinal.data()}, kMaxHodoHits);
-  // hodoscope
+  int nhodo_clus = 0;
+  std::vector<double> HODO_bar(kMaxHodoHits), hodo_bartime(kMaxHodoHits), HODO_clus(kMaxHodoHits), hodo_clustime(kMaxHodoHits), hodo_tfinal(kMaxHodoHits);
+  setrootvar::setbranch(C, "Ndata.bb.hodotdc.clus.bar.tdc", "meantime", &nhodo_clus);
+  setrootvar::setbranch(C, "bb.hodotdc.clus.bar.tdc", {"id","meantime"}, {HODO_bar.data(), hodo_bartime.data()}, kMaxHodoHits);
+  setrootvar::setbranch(C, "bb.hodotdc.clus", {"id","tmean","tfinal"}, {HODO_clus.data(), hodo_clustime.data(), hodo_tfinal.data()}, kMaxHodoHits);
+
+  // hodoscope - Kate
   const int maxClus = 1000;
   double hodo_time[maxClus], hodo_id[maxClus];
   int nhodo_clus;
@@ -229,8 +228,6 @@ int QE_Parse(const std::string configfilename, std::string filebase="../outfiles
   std::vector<std::string> sbstrvar ={"n","chi2","p","px","py","pz","vx","vy","vz","tg_y","tg_th","tg_ph","r_x","r_y","r_th","r_ph","x","y","th","ph"};
   std::vector<void*> sbstrvar_mem = {&ntrack_sbs,&chi2_sbs,&p_sbs,&px_sbs,&py_sbs,&pz_sbs,&vx_sbs,&vy_sbs,&vz_sbs,&ytgt_sbs,&thtgt_sbs,&phtgt_sbs,&xfp_sbs,&yfp_sbs,&thfp_sbs,&phfp_sbs,&xTr_sbs,&yTr_sbs,&thTr_sbs,&phTr_sbs};
   //setrootvar::setbranch(C,"sbs.tr",sbstrvar,sbstrvar_mem);
-
-
 
   //int tdcElemN; double tdcTrig[maxNtr], tdcElem[maxNtr];
   //setrootvar::setbranch(C, "bb.tdctrig", {"tdcelemID","tdcelemID","tdc"}, {&tdcElem, &tdcElemN, &tdcTrig}, 1);
