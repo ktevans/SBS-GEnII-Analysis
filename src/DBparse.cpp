@@ -1,5 +1,9 @@
 #include "../include/DBparse.h"
 #include "../include/Analysis.h"
+#include <unordered_set>
+#include <unordered_map>
+#include <fstream>
+#include <sstream>
 
 namespace DBparse {
 
