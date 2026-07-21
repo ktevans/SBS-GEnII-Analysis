@@ -95,8 +95,8 @@ void SimDataComp(int kin)
   if(kin == 2)
   {
 
-    //data_file = "outfiles/parsed_GEn_pass3_GEN2_He3_dxdy.root";
-    data_file = "outfiles/July_parsed_GEn_pass3_GEN2_He3_dxdy.root";
+    data_file = "outfiles/parsed_GEn_pass3_GEN2_He3_dxdy.root";
+    //data_file = "outfiles/July_parsed_GEn_pass3_GEN2_He3_dxdy.root";
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN2_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN2_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN2_simulation.root";
@@ -220,6 +220,14 @@ void SimDataComp(int kin)
   h_pos_hel_dx->SetLineColor(kBlue);
   h_pos_hel_dx->Sumw2();
 
+  h_data_asym_raw_early_sum = new TH1D("h_data_asym_raw_early_sum", ";dx", numberBins, dx_min_d, dx_max_d);
+  h_data_asym_raw_early_sum->GetXaxis()->SetTitle("dx [m]");
+  h_data_asym_raw_early_sum->Sumw2();
+
+  h_data_asym_raw_early = new TH1D("h_data_asym_raw_early", ";dx", numberBins, dx_min_d, dx_max_d);
+  h_data_asym_raw_early->GetXaxis()->SetTitle("dx [m]");
+  h_data_asym_raw_early->Sumw2();
+
   int helPosArray[numberBins];
   int helNegArray[numberBins];
 
@@ -252,6 +260,13 @@ void SimDataComp(int kin)
     }
 
   }//end loop over events
+
+  h_data_asym_raw_early = h_pos_hel_dx->Clone("h_data_asym_raw_early");
+  h_data_asym_raw_early->Add(h_neg_hel_dx,-1.0);
+  h_data_asym_raw_early_sum = h_pos_hel_dx->Clone("h_data_asym_raw_early_sum");
+  h_data_asym_raw_early_sum->Add(h_neg_hel_dx);
+  h_data_asym_raw_early->Divide(h_data_asym_raw_early_sum);
+  h_data_asym_raw_early->Rebin();
 
   TChain* T_sim = new TChain("T_sim");
   T_sim->Add(nucleon_sim_file);
@@ -729,11 +744,9 @@ void SimDataComp(int kin)
   c5->SetGrid();
   c5->Update();
 
-  //TCanvas *c6 = new TCanvas("c6","testing",100,100,1500,500);
-  //c6->cd();
-  //h_fullProb->Draw("HIST");
-  //scaled_h_sim_nucleons->Draw("HIST");
-  //scaled_hN2dilution->Draw("HIST SAMES");
+  TCanvas *c6 = new TCanvas("c6","testing",100,100,1500,500);
+  c6->cd();
+  h_data_asym_raw_early->Draw("HIST");
 
   delete T_data;
   delete T_sim;
