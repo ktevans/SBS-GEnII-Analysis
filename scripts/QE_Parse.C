@@ -74,7 +74,7 @@ int QE_Parse(const std::string configfilename, std::string filebase="../outfiles
     gSystem->Load("libanalyzer");
   }
 
-  std::string configdir = "../../config/";
+  std::string configdir = "../config/";
   gErrorIgnoreLevel = kError;
   TStopwatch sw; sw.Start();
 
