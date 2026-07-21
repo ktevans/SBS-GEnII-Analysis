@@ -1,9 +1,5 @@
 #include "../include/DBparse.h"
 #include "../include/Analysis.h"
-#include <unordered_set>
-#include <unordered_map>
-#include <fstream>
-#include <sstream>
 
 namespace DBparse {
 
@@ -63,56 +59,31 @@ namespace DBparse {
 	while (getline(ss, cell, ',')) {
 	  val.push_back(cell);  // Put one line into vectros
 	}
-	// if(it->first == "He3 Polarization"){// He3 polarization DB
-	//   if(iline == 1) continue;
-	//   request.He3Pol.insert(std::make_pair(Utilities::SetTime(val[0]),stod(val[1])));
-	// }// end He3 Pol
+	if(it->first == "He3 Polarization"){// He3 polarization DB
+	  if(iline == 1) continue;
+	  
+	  if (val.size() < 3) {
+            std::cerr << "DBparse warning: Skipping malformed line ► "
+              	      << line << "\n";
+            continue;                   // <-- avoid seg-fault here
+	  }
 
-	if(it->first == "He3 Polarization"){ // He3 polarization DB
-  if(iline == 1) continue;
+	  try {
+            double pol  = std::stod(val[1]);
+            double err  = std::stod(val[2]);
+            //time_t tkey = Utilities::SetTime(val[0]);
 
-  // Trim a small helper
-  auto trim = [](std::string &s){
-    size_t i=0, j=s.size();
-    while (i<j && std::isspace((unsigned char)s[i])) ++i;
-    while (j>i && std::isspace((unsigned char)s[j-1])) --j;
-    s = s.substr(i, j-i);
-  };
-  if (val.size() < 2) continue;
-  trim(val[0]); trim(val[1]);
-
-  // Parse the polarization value, allow % or fraction
-  double pol = 0.0;
-  try { pol = std::stod(val[1]); } catch(...) { continue; }
-  if (pol > 1.5) pol /= 100.0; // % → fraction
-
-  // Detect if val[0] is a raw Unix epoch (all digits)
-  bool all_digits = !val[0].empty()
-                    && std::all_of(val[0].begin(), val[0].end(),
-                                   [](unsigned char c){ return std::isdigit(c); });
-
-  TDatime t; // final key we will insert with
-  if (all_digits) {
-    // Convert epoch seconds → UTC calendar → TDatime
-    unsigned long long epoch_ll = 0ULL;
-    try { epoch_ll = std::stoull(val[0]); } catch(...) { epoch_ll = 0ULL; }
-    if (epoch_ll == 0ULL || epoch_ll > 0xFFFFFFFFULL) continue; // guard
-    time_t tt = (time_t)epoch_ll;
-#if defined(_WIN32)
-    tm gm{}; gmtime_s(&gm, &tt);
-#else
-    tm gm{}; gmtime_r(&tt, &gm);
-#endif
-    t.Set(gm.tm_year + 1900, gm.tm_mon + 1, gm.tm_mday,
-          gm.tm_hour, gm.tm_min, gm.tm_sec);
-  } else {
-    // Fall back to your original calendar-string parser
-    t = Utilities::SetTime(val[0]);
-  }
-
-  request.He3Pol.insert(std::make_pair(t, pol));
-} // end He3 Pol
-
+            // map<time_t, pair<double,double>>
+            request.He3Pol.emplace(Utilities::SetTime(val[0]), std::make_pair(pol, err));
+          }
+          catch (const std::exception& e) {
+            std::cerr << "DBparse error: " << e.what()
+                      << " while parsing line ► " << line << '\n';
+          }
+	  
+	  //request.He3Pol.emplace((Utilities::SetTime(val[0])),make_pair(stod(val[1]),stod(val[2])));
+	
+	}// end He3 Pol
 	else if(it->first == "Beam Polarization"){// Beam polarization DB
 	  if(iline == 1) continue;	 
 	  vector<TDatime*> beam_time;
