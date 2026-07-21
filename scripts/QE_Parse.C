@@ -379,7 +379,7 @@ int QE_Parse(const std::string configfilename, std::string filebase="../outfiles
     TDatime time_abs(run_time_unix + (int)(evtime * TI_TICK_SEC));
 
     auto it = DBInfo.He3Pol.find(time_abs);
-    T_He3Pol = (it == DBInfo.He3Pol.end()) ? -1.0 : it->second;
+    //T_He3Pol = (it == DBInfo.He3Pol.end()) ? -1.0 : it->second;
     T_IHWP = IHWP_run;
     T_helicity = (int)helicity;
 
