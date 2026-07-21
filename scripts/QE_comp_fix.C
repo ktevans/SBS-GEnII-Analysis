@@ -23,16 +23,15 @@
 #include <math.h>
 #include <stack>
 
-void QE_comp_fix(const char *kinematic, int kin)
+void QE_comp(const char *kinematic, int kin)
 {
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
-  //TString inputfile = Form("/volatile/halla/sbs/ktevans/KateJackSBSAnalysis/KJ_parsed_GEn_pass2_%s_He3_100.root",kinematic);
-  //TString inputfile = "/volatile/halla/sbs/cmjackso/Data/GEN2/QE_Parse_1_GEN2_sbs100p_nucleon_np_model2.root";
-  TString inputfile = "/volatile/halla/sbs/vimukthi/outfiles/thesis_final/He3/QE_data_GEN2_sbs100p_nucleon_np_model2_sbstrackingon.root";
-  TString outputfile = Form("plots/sean_GEn_pass2_%s_He3_dxdy.pdf",kinematic);
-  TString outfile = Form("outfiles/sean_GEn_pass2_%s_He3_dxdy.root",kinematic);
+  TString inputfile = Form("/volatile/halla/sbs/ktevans/pass3/QE_data_%s_sbs100p_nucleon_np_model2.root",kinematic);
+  //outfiles/QE_data_%s_sbs100p_nucleon_np_model2.root
+  TString outputfile = Form("plots/parsed_GEn_pass3_%s_He3_dxdy.pdf",kinematic);
+  TString outfile = Form("outfiles/parsed_GEn_pass3_%s_He3_dxdy.root",kinematic);
   TFile *fout = new TFile(outfile,"RECREATE");
 
   TTree *T_data = new TTree("T_data", "Analysis Data Tree");
@@ -47,17 +46,23 @@ void QE_comp_fix(const char *kinematic, int kin)
   TChain* T = new TChain("Tout");
   T->Add(inputfile);
 
-  double W2;         T->SetBranchAddress("W2", &W2);
-  double coin_time;          T->SetBranchAddress("coin_time", &coin_time);
+  double bb_tr_r_x;         T->SetBranchAddress("xfp", &bb_tr_r_x);
+  double bb_tr_r_th;        T->SetBranchAddress("thfp", &bb_tr_r_th);
+  double e_kine_W2;         T->SetBranchAddress("W2", &e_kine_W2);
+  double adc_coin;          T->SetBranchAddress("coin_time", &adc_coin);
   int helicity;             T->SetBranchAddress("helicity", &helicity);
-  double ePS;           T->SetBranchAddress("ePS", &ePS);
-  double eSH;           T->SetBranchAddress("eSH", &eSH);
-  double trP;           T->SetBranchAddress("trP", &trP);
-  double vz;          T->SetBranchAddress("vz", &vz);
+  double bb_ps_e;           T->SetBranchAddress("ePS", &bb_ps_e);
+  double bb_sh_e;           T->SetBranchAddress("eSH", &bb_sh_e);
+  double bb_tr_p;           T->SetBranchAddress("trP", &bb_tr_p);
+  double bb_tr_vz;          T->SetBranchAddress("vz", &bb_tr_vz);
+  double bb_gr_clus_track;  T->SetBranchAddress("grinch_track", &bb_gr_clus_track);
+  double bb_gr_clus_size;   T->SetBranchAddress("grinch_clus_size", &bb_gr_clus_size);
   double dx_hcal;           T->SetBranchAddress("dx", &dx_hcal);
   double dy_hcal;           T->SetBranchAddress("dy", &dy_hcal);
-  int IHWP;              T->SetBranchAddress("IHWP", &IHWP);
+  int IHWP;                 T->SetBranchAddress("IHWP", &IHWP);
 
+  double optics_valid_min;
+  double optics_valid_max;
   double coin_mean;
   double coin_sigma;
 
@@ -65,13 +70,44 @@ void QE_comp_fix(const char *kinematic, int kin)
 
   if(kin==2)
   {
-    coin_mean = 0.978;
-    coin_sigma = 1.179;
+    optics_valid_min = -0.35;
+    optics_valid_max = 0.34;
+    coin_mean = -0.47385;
+    coin_sigma = 1.18;
     IHWP_flip = -1;
     std::cout << "\nYou are replaying GEN2!\n";
   }
+  else if(kin==3)
+  {
+    optics_valid_min = -0.35;
+    optics_valid_max = 0.33;
+    coin_mean = -0.0115;
+    coin_sigma = 1.298;
+    IHWP_flip = 1;
+    std::cout << "\nYou are replaying GEN3!\n";
+  }
+  else if(kin==4)
+  {
+    optics_valid_min = -0.36;
+    optics_valid_max = 0.30;
+    coin_mean = -0.589;
+    coin_sigma = 2.3;
+    IHWP_flip = 1;
+    std::cout << "\nYou are replaying GEN4a!\n";
+  }
+  else if(kin==5)
+  {
+    optics_valid_min = -0.37;
+    optics_valid_max = 0.32;
+    coin_mean = -0.568;
+    coin_sigma = 2.2;
+    IHWP_flip = 1;
+    std::cout << "\nYou are replaying GEN4b!\n";
+  }
   else
   {
+    optics_valid_min = -2.0;
+    optics_valid_max = 2.0;
     coin_mean = 0.0;
     coin_sigma = 400.0;
     IHWP_flip = 1;
@@ -101,19 +137,19 @@ void QE_comp_fix(const char *kinematic, int kin)
   {
     T->GetEntry(iev);
 
-    if(abs(W2-1)<0.5 && abs(coin_time-coin_mean)<coin_sigma && ePS>0.2 && abs(((ePS+eSH)/trP)-1)<0.2 && abs(vz)<0.27)
+    if(abs(helicity)==1 && abs(dy_hcal)<0.99 && bb_gr_clus_track==0 && abs(e_kine_W2-1.0)<0.5 && bb_gr_clus_size>=2.0 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<(3*coin_sigma) && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1.0)<0.2 && abs(bb_tr_vz)<0.27)
     {
-      
-	  h_dx->Fill(dx_hcal);
-      h_dy->Fill(dy_hcal);
+	    h_dx->Fill(dx_hcal);
+        h_dy->Fill(dy_hcal);
 
-      dx_out = dx_hcal;
-      dy_out = dy_hcal;
-      
-      W2_out = W2;
-      helicity_out = helicity * IHWP_flip *IHWP;
-      T_data->Fill();
+        dx_out = dx_hcal;
+        dy_out = dy_hcal;
+
+        W2_out = e_kine_W2;
+        helicity_out = helicity * (IHWP * IHWP_flip);
+        T_data->Fill();
     }
+
 
   }//end event loop
 
