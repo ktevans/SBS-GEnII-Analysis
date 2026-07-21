@@ -220,11 +220,11 @@ void SimDataComp(int kin)
   h_pos_hel_dx->SetLineColor(kBlue);
   h_pos_hel_dx->Sumw2();
 
-  h_data_asym_raw_early_sum = new TH1D("h_data_asym_raw_early_sum", ";dx", numberBins, dx_min_d, dx_max_d);
+  TH1D* h_data_asym_raw_early_sum = new TH1D("h_data_asym_raw_early_sum", ";dx", numberBins, dx_min_d, dx_max_d);
   h_data_asym_raw_early_sum->GetXaxis()->SetTitle("dx [m]");
   h_data_asym_raw_early_sum->Sumw2();
 
-  h_data_asym_raw_early = new TH1D("h_data_asym_raw_early", ";dx", numberBins, dx_min_d, dx_max_d);
+  TH1D* h_data_asym_raw_early = new TH1D("h_data_asym_raw_early", ";dx", numberBins, dx_min_d, dx_max_d);
   h_data_asym_raw_early->GetXaxis()->SetTitle("dx [m]");
   h_data_asym_raw_early->Sumw2();
 
