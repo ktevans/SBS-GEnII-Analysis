@@ -28,8 +28,9 @@ void QE_comp(const char *kinematic, int kin)
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
-  TString inputfile = Form("/volatile/halla/sbs/ktevans/Data/%s/QE_Parse_pass3_%s_sbs100p_nucleon_np_model2.root",kinematic,kinematic);
+  //TString inputfile = Form("/volatile/halla/sbs/ktevans/Data/%s/QE_Parse_pass3_%s_sbs100p_nucleon_np_model2.root",kinematic,kinematic);
   //outfiles/QE_data_%s_sbs100p_nucleon_np_model2.root
+  TString inputfile = Form("/volatile/halla/sbs/cmjackso/Data/GEN2/QE_Parse_pass3_GEN2_sbs100p_nucleon_np_model2.root");
   TString outputfile = Form("plots/July_parsed_GEn_pass3_%s_He3_dxdy.pdf",kinematic);
   TString outfile = Form("outfiles/July_parsed_GEn_pass3_%s_He3_dxdy.root",kinematic);
   TFile *fout = new TFile(outfile,"RECREATE");
