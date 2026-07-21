@@ -261,9 +261,13 @@ void SimDataComp(int kin)
 
   }//end loop over events
 
-  h_data_asym_raw_early = h_pos_hel_dx->Clone("h_data_asym_raw_early");
+  //TH1D* h_data_asym_raw_early = (TH1D*)h_pos_hel_dx->Clone("h_data_asym_raw_early");
+  //shifted_h_sim_proton_dx->Reset("ICESM");
+  //shifted_h_sim_proton_dx->Sumw2();
+
+  h_data_asym_raw_early = (TH1D*)h_pos_hel_dx->Clone("h_data_asym_raw_early");
   h_data_asym_raw_early->Add(h_neg_hel_dx,-1.0);
-  h_data_asym_raw_early_sum = h_pos_hel_dx->Clone("h_data_asym_raw_early_sum");
+  h_data_asym_raw_early_sum = (TH1D*)h_pos_hel_dx->Clone("h_data_asym_raw_early_sum");
   h_data_asym_raw_early_sum->Add(h_neg_hel_dx);
   h_data_asym_raw_early->Divide(h_data_asym_raw_early_sum);
   h_data_asym_raw_early->Rebin();
