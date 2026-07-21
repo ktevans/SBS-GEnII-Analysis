@@ -220,14 +220,6 @@ void SimDataComp(int kin)
   h_pos_hel_dx->SetLineColor(kBlue);
   h_pos_hel_dx->Sumw2();
 
-  TH1D* h_data_asym_raw_early_sum = new TH1D("h_data_asym_raw_early_sum", ";dx", numberBins, dx_min_d, dx_max_d);
-  h_data_asym_raw_early_sum->GetXaxis()->SetTitle("dx [m]");
-  h_data_asym_raw_early_sum->Sumw2();
-
-  TH1D* h_data_asym_raw_early = new TH1D("h_data_asym_raw_early", ";dx", numberBins, dx_min_d, dx_max_d);
-  h_data_asym_raw_early->GetXaxis()->SetTitle("dx [m]");
-  h_data_asym_raw_early->Sumw2();
-
   int helPosArray[numberBins];
   int helNegArray[numberBins];
 
@@ -247,30 +239,19 @@ void SimDataComp(int kin)
 
     int binAt = (int) ((dx + 5.0) / binSize); // what???
 
-    if(helicity==-1)  //h_pos_hel_dx->Fill(dx);
+    if(helicity==-1 && abs(dx)<1.0)  //h_pos_hel_dx->Fill(dx);
     {
       h_pos_hel_dx->Fill(dx);
       helPosArray[binAt]++;
     }
 
-    if(helicity==1)  //h_neg_hel_dx->Fill(dx);
+    if(helicity==1 && abs(dx)<1.0)  //h_neg_hel_dx->Fill(dx);
     {
       h_neg_hel_dx->Fill(dx);
       helNegArray[binAt]++;
     }
 
   }//end loop over events
-
-  //TH1D* h_data_asym_raw_early = (TH1D*)h_pos_hel_dx->Clone("h_data_asym_raw_early");
-  //shifted_h_sim_proton_dx->Reset("ICESM");
-  //shifted_h_sim_proton_dx->Sumw2();
-
-  h_data_asym_raw_early = (TH1D*)h_pos_hel_dx->Clone("h_data_asym_raw_early");
-  h_data_asym_raw_early->Add(h_neg_hel_dx,-1.0);
-  h_data_asym_raw_early_sum = (TH1D*)h_pos_hel_dx->Clone("h_data_asym_raw_early_sum");
-  h_data_asym_raw_early_sum->Add(h_neg_hel_dx);
-  h_data_asym_raw_early->Divide(h_data_asym_raw_early_sum);
-  h_data_asym_raw_early->Rebin();
 
   TChain* T_sim = new TChain("T_sim");
   T_sim->Add(nucleon_sim_file);
