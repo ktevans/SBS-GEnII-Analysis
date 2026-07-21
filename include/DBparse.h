@@ -5,7 +5,7 @@
 namespace DBparse {
 
   std::map<TString, TString> DBFileMap {
-    {"He3 Polarization", "He3_pol_epoch.csv"},
+    {"He3 Polarization", "He3_pol.csv"},
     {"Beam Polarization", "Beam_pol.csv"},
     {"Helicity Quality", "Helicity_quality.csv"},
     {"Moller Quality", "Moller_quality.csv"},
