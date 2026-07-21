@@ -729,9 +729,9 @@ void SimDataComp(int kin)
   c5->SetGrid();
   c5->Update();
 
-  TCanvas *c6 = new TCanvas("c6","testing",100,100,1500,500);
-  c6->cd();
-  h_data_asym_raw_early->Draw();
+  //TCanvas *c6 = new TCanvas("c6","testing",100,100,1500,500);
+  //c6->cd();
+  //h_data_asym_raw_early->Draw();
 
   delete T_data;
   delete T_sim;
