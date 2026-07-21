@@ -152,7 +152,7 @@ int QE_Parse(const std::string configfilename, std::string filebase="../outfiles
   // hcal clus var
   double eHCAL[maxhcal], xHCAL[maxhcal], yHCAL[maxhcal], rblkHCAL[maxhcal], cblkHCAL[maxhcal], idblkHCAL[maxhcal],tdctimeHCAL[maxhcal],adctimeHCAL[maxhcal];
   std::vector<std::string> hcalclvar = {"e","x","y","rowblk","colblk","idblk","tdctimeblk","adctimeHCAL"};
-  std::vector<void*> hcalclvar_mem = {&eHCAL,&xHCAL,&yHCAL,&rblkHCAL,&cblkHCAL,&idblkHCAL,&tdctimeHCAL,&atimeHCAL};
+  std::vector<void*> hcalclvar_mem = {&eHCAL,&xHCAL,&yHCAL,&rblkHCAL,&cblkHCAL,&idblkHCAL,&tdctimeHCAL,&adctimeHCAL};
   setrootvar::setbranch(C, "sbs.hcal", hcalclvar, hcalclvar_mem);
   double hcal_blk_e[maxhcal], hcal_blk_id[maxhcal];
   setrootvar::setbranch(C, "sbs.hcal.clus_blk", "e", &hcal_blk_e);
@@ -177,7 +177,7 @@ int QE_Parse(const std::string configfilename, std::string filebase="../outfiles
   // hodoscope - Kate
   const int maxClus = 1000;
   double hodo_time[maxClus], hodo_id[maxClus];
-  int nhodo_clus;
+  //int nhodo_clus;
   setrootvar::setbranch(C,"bb.hodotdc.clus.bar.tdc","meantime",&hodo_time);
   setrootvar::setbranch(C,"bb.hodotdc.clus.bar.tdc","id",&hodo_id);
   setrootvar::setbranch(C,"bb.hodotdc.clus","tfinal",&hodo_time);
