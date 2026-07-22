@@ -492,7 +492,7 @@ void SimDataComp(int kin)
   TH1D* hAsym = (TH1D*) hAsymDiff->Clone("hAsym");
   hAsym->Divide(hAsymSum);
   hAsym->Sumw2();
-  hAsym->Rebin(3);
+  hAsym->Rebin(2);
 
   TH1D* h_fullProb = new TH1D("h_fullProb","100 Percent",h_Nbins,h_minX,h_maxX);
   h_fullProb->GetYaxis()->SetRangeUser(0.0,1.0);
