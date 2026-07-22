@@ -102,7 +102,7 @@ void SimDataComp(int kin)
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN2_simulation.root";
     N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN2_He3_dxdy.root";
     title_words = "GEN2";
-    dx_min_d = -2.95;
+    dx_min_d = -3.0;
     dx_min_i = -3;
     dx_max_d = 2.0;
     dx_max_i = 2;
@@ -191,7 +191,7 @@ void SimDataComp(int kin)
 
   //gErrorIgnoreLevel = kError;
 
-  int numberBins = 200;
+  int numberBins = 175;
 
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
@@ -492,7 +492,7 @@ void SimDataComp(int kin)
   TH1D* hAsym = (TH1D*) hAsymDiff->Clone("hAsym");
   hAsym->Divide(hAsymSum);
   hAsym->Sumw2();
-  hAsym->Rebin();
+  //hAsym->Rebin();
 
   TH1D* h_fullProb = new TH1D("h_fullProb","100 Percent",h_Nbins,h_minX,h_maxX);
   h_fullProb->GetYaxis()->SetRangeUser(0.0,1.0);
