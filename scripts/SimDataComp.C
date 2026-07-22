@@ -191,7 +191,7 @@ void SimDataComp(int kin)
 
   //gErrorIgnoreLevel = kError;
 
-  int numberBins = 135;
+  int numberBins = 255;
 
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
@@ -492,7 +492,7 @@ void SimDataComp(int kin)
   TH1D* hAsym = (TH1D*) hAsymDiff->Clone("hAsym");
   hAsym->Divide(hAsymSum);
   hAsym->Sumw2();
-  //hAsym->Rebin();
+  hAsym->Rebin(3);
 
   TH1D* h_fullProb = new TH1D("h_fullProb","100 Percent",h_Nbins,h_minX,h_maxX);
   h_fullProb->GetYaxis()->SetRangeUser(0.0,1.0);
