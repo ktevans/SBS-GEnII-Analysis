@@ -191,7 +191,7 @@ void SimDataComp(int kin)
 
   //gErrorIgnoreLevel = kError;
 
-  int numberBins = 255;
+  int numberBins = 195;
 
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
@@ -220,16 +220,16 @@ void SimDataComp(int kin)
   h_pos_hel_dx->SetLineColor(kBlue);
   h_pos_hel_dx->Sumw2();
 
-  int helPosArray[numberBins];
-  int helNegArray[numberBins];
+  //int helPosArray[numberBins];
+  //int helNegArray[numberBins];
 
   double binSize = 10.0 / numberBins;
 
-  for(int j = 0; j < numberBins; j++)
-  {
-    helPosArray[j] = 0;
-    helNegArray[j] = 0;
-  }
+  //for(int j = 0; j < numberBins; j++)
+  //{
+    //helPosArray[j] = 0;
+    //helNegArray[j] = 0;
+  //}
 
   for (size_t iev = 0; iev < T_data->GetEntries(); iev++)
   {
@@ -237,18 +237,18 @@ void SimDataComp(int kin)
 
     h_data_dx->Fill(dx);
 
-    int binAt = (int) ((dx + 5.0) / binSize); // what???
+    //int binAt = (int) ((dx + 5.0) / binSize); // what???
 
     if(helicity==-1)  //h_pos_hel_dx->Fill(dx);
     {
       h_pos_hel_dx->Fill(dx);
-      helPosArray[binAt]++;
+      //helPosArray[binAt]++;
     }
 
     if(helicity==1)  //h_neg_hel_dx->Fill(dx);
     {
       h_neg_hel_dx->Fill(dx);
-      helNegArray[binAt]++;
+      //helNegArray[binAt]++;
     }
 
   }//end loop over events
@@ -492,7 +492,7 @@ void SimDataComp(int kin)
   TH1D* hAsym = (TH1D*) hAsymDiff->Clone("hAsym");
   hAsym->Divide(hAsymSum);
   hAsym->Sumw2();
-  hAsym->Rebin(2);
+  //hAsym->Rebin(2);
 
   TH1D* h_fullProb = new TH1D("h_fullProb","100 Percent",h_Nbins,h_minX,h_maxX);
   h_fullProb->GetYaxis()->SetRangeUser(0.0,1.0);
