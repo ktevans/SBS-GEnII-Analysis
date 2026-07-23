@@ -608,7 +608,7 @@ void SimDataComp(int kin)
   h_data_dx->Draw("E SAMES");
   h_data_dx->GetXaxis()->SetTitle("dx [m]");
 
-  auto legend = new TLegend(0.55,0.75,0.99,0.99);
+  auto legend = new TLegend(0.55,0.70,0.99,0.99);
   legend->SetTextSize(0.03);
   legend->SetHeader("Fitting","C");
   legend->AddEntry(h_data_dx,"Data","lep");
