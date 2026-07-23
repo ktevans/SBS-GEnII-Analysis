@@ -220,35 +220,20 @@ void SimDataComp(int kin)
   h_pos_hel_dx->SetLineColor(kBlue);
   h_pos_hel_dx->Sumw2();
 
-  //int helPosArray[numberBins];
-  //int helNegArray[numberBins];
-
-  double binSize = 10.0 / numberBins;
-
-  //for(int j = 0; j < numberBins; j++)
-  //{
-    //helPosArray[j] = 0;
-    //helNegArray[j] = 0;
-  //}
-
   for (size_t iev = 0; iev < T_data->GetEntries(); iev++)
   {
     T_data->GetEntry(iev);
 
     h_data_dx->Fill(dx);
 
-    //int binAt = (int) ((dx + 5.0) / binSize); // what???
-
-    if(helicity==-1)  //h_pos_hel_dx->Fill(dx);
+    if(helicity==-1)
     {
       h_pos_hel_dx->Fill(dx);
-      //helPosArray[binAt]++;
     }
 
-    if(helicity==1)  //h_neg_hel_dx->Fill(dx);
+    if(helicity==1)
     {
       h_neg_hel_dx->Fill(dx);
-      //helNegArray[binAt]++;
     }
 
   }//end loop over events
@@ -320,14 +305,11 @@ void SimDataComp(int kin)
 
   }//end loop over events
 
-  //std::unique_ptr<TFile> polFile(TFile::Open(pol_func_file, "READ"));
   TFile *polFile = TFile::Open(pol_func_file);
   TF1 *fitp = nullptr;
   TF1 *fitn = nullptr;
   polFile->GetObject("fitp", fitp);
   polFile->GetObject("fitn", fitn);
-  //std::unique_ptr<TF1> fit_p(polFile->Get<TF1>(fitp));
-  //std::unique_ptr<TF1> fit_n(polFile->Get<TF1>(fitn));
 
   TFile *N2File = TFile::Open(N2_dilution_file);
   TH1D *hN2dilution_p = nullptr;
@@ -479,20 +461,22 @@ void SimDataComp(int kin)
   TH1D* h_asym = new TH1D("h_asym",";Raw Asymmetry",h_Nbins,h_minX,h_maxX);
   h_asym->GetXaxis()->SetTitle("dx [m]");
   h_asym->SetTitle("Raw Asymmetry (N+ - N-)/(N+ + N-)");
-  //h_asym->Sumw2();
 
   TH1D* hAsymDiff = (TH1D*) h_pos_hel_dx->Clone("hAsymDiff");
   hAsymDiff->Sumw2();
+  hAsymDiff->Reset("ICESM");
   hAsymDiff->Add(h_neg_hel_dx, -1.0);
 
   TH1D* hAsymSum = (TH1D*) h_pos_hel_dx->Clone("hAsymSum");
   hAsymSum->Sumw2();
+  hAsymSum->Reset("ICESM");
   hAsymSum->Add(h_neg_hel_dx);
 
   TH1D* hAsym = (TH1D*) hAsymDiff->Clone("hAsym");
   hAsym->Divide(hAsymSum);
   hAsym->Sumw2();
-  hAsym->Rebin();
+  hAsym->Reset("ICESM");
+  //hAsym->Rebin();
 
   TH1D* h_fullProb = new TH1D("h_fullProb","100 Percent",h_Nbins,h_minX,h_maxX);
   h_fullProb->GetYaxis()->SetRangeUser(0.0,1.0);
