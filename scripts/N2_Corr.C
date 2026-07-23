@@ -29,7 +29,7 @@ void N2_Corr(const char *kinematic)
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
   double numberBins = 200;
-  double dx_min_d = -3.0;
+  double dx_min_d = -2.8;
   double dx_max_d = 2.0;
 
   TString inputfile_He3 = Form("/volatile/halla/sbs/ktevans/2026SIM/kte_QE_sim_%s_sbs100p_nucleon_np_model2_elastic.root",kinematic);
