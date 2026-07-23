@@ -228,7 +228,7 @@ void SimDataComp(int kin)
 
     h_data_dx->Fill(dx);
 
-    if(helicity==-1)
+    if(helicity==1)
     {
       h_pos_hel_dx->Fill(dx);
 
@@ -239,7 +239,7 @@ void SimDataComp(int kin)
 
     }
 
-    if(helicity==1)
+    if(helicity==-1)
     {
       h_neg_hel_dx->Fill(dx);
 
