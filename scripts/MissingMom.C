@@ -337,7 +337,8 @@ void MissingMom(const char *kinematic, int kin)
   c3->cd();
 
   h_prof_pol_n->Draw();
-  TF1 *fitn = new TF1("fitn", "(x>-2.0 && x<=2.2)*([0]*x*x + [1]*x + [2]) + (x<=-2.0)*([3]) + (x>-2.0)*([4])", -4.0, 3.0);
+  //TF1 *fitn = new TF1("fitn", "(x>-2.0 && x<=2.2)*([0]*x*x + [1]*x + [2]) + (x<=-2.0)*([3]) + (x>-2.0)*([4])", -4.0, 3.0);
+  TF1 *fitn = new TF1("fitn", "(x>-2.0 && x<=2.2)*([0]*exp(-0.5*((x-[1])/[2])**2)) + (x<=-2.0)*([3]) + (x>-2.0)*([4])", -4.0, 3.0);
   fitn->SetParameters(1.0,2.0,3.0,1.0,1.0);
   h_prof_pol_n->Fit("fitn");
   fitn->Draw("SAMES");
