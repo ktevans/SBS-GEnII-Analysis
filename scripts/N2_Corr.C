@@ -28,7 +28,7 @@ void N2_Corr(const char *kinematic)
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
-  double numberBins = 200;
+  double numberBins = 185;
   double dx_min_d = -2.8;
   double dx_max_d = 2.0;
 
