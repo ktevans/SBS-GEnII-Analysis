@@ -642,22 +642,20 @@ void SimDataComp(int kin)
   c2->cd(3);
   h_prob_bckgrnd_dx->Draw();
 
-  TCanvas *c3 = new TCanvas("c3","Asymmetry",100,100,1500,500);
-  c3->Divide(3,1);
-
+  TCanvas *c3 = new TCanvas("c3","Asymmetry Fit",100,100,800,500);
+  //c3->Divide(3,1);
+  c3->cd();
   gStyle->SetOptStat(0);
+  c3->Update();
 
-  c3->cd(1);
-  h_pos_hel_dx->Draw("E");
-  h_neg_hel_dx->Draw("E SAMES");
+  //h_pos_hel_dx->Draw("E");
+  //h_neg_hel_dx->Draw("E SAMES");
+  //auto legendHEL = new TLegend(0.7,0.8,0.99,0.99);
+  //legendHEL->SetTextSize(0.03);
+  //legendHEL->AddEntry(h_pos_hel_dx,"Positive Helicity","lep");
+  //legendHEL->AddEntry(h_neg_hel_dx,"Negative Helicity","lep");
+  //legendHEL->Draw();
 
-  auto legendHEL = new TLegend(0.7,0.8,0.99,0.99);
-  legendHEL->SetTextSize(0.03);
-  legendHEL->AddEntry(h_pos_hel_dx,"Positive Helicity","lep");
-  legendHEL->AddEntry(h_neg_hel_dx,"Negative Helicity","lep");
-  legendHEL->Draw();
-
-  c3->cd(2);
   hAsym->Draw("E");
   AsymFitFunc->Draw("SAMES");
 
@@ -667,26 +665,21 @@ void SimDataComp(int kin)
   legendA->AddEntry(AsymFitFunc,Form("A(dx) = %.4gPp(dx) + %.4gPn(dx) + %.4gPbg(dx)",AsymFitFunc->GetParameter(0),AsymFitFunc->GetParameter(1),AsymFitFunc->GetParameter(2)),"l");
   legendA->Draw();
 
-  c3->cd(3);
-  scaled_proton_prob->SetTitle("Scaled Probabilities");
-
-  gPad->DrawFrame(dx_min_d, -0.05, dx_max_d, 0.1);
-
-  scaled_neutron_prob->SetLineColor(kBlue);
-  scaled_neutron_prob->Draw("E SAME");
-
-  scaled_proton_prob->SetLineColor(kRed);
-  scaled_proton_prob->Draw("E SAME");
-
-  scaled_bckgrnd_prob->SetLineColor(kGreen);
-  scaled_bckgrnd_prob->Draw("E SAME");
-
-  auto legendProb = new TLegend(0.7,0.8,0.9,0.9);
-  legendProb->SetTextSize(0.02);
-  legendProb->AddEntry(scaled_proton_prob, "Proton", "l");
-  legendProb->AddEntry(scaled_neutron_prob, "Neutron", "l");
-  legendProb->AddEntry(scaled_bckgrnd_prob, "Background", "l");
-  legendProb->Draw();
+  //c3->cd(3);
+  //scaled_proton_prob->SetTitle("Scaled Probabilities");
+  //gPad->DrawFrame(dx_min_d, -0.05, dx_max_d, 0.1);
+  //scaled_neutron_prob->SetLineColor(kBlue);
+  //scaled_neutron_prob->Draw("E SAME");
+  //scaled_proton_prob->SetLineColor(kRed);
+  //scaled_proton_prob->Draw("E SAME");
+  //scaled_bckgrnd_prob->SetLineColor(kGreen);
+  //scaled_bckgrnd_prob->Draw("E SAME");
+  //auto legendProb = new TLegend(0.7,0.8,0.9,0.9);
+  //legendProb->SetTextSize(0.02);
+  //legendProb->AddEntry(scaled_proton_prob, "Proton", "l");
+  //legendProb->AddEntry(scaled_neutron_prob, "Neutron", "l");
+  //legendProb->AddEntry(scaled_bckgrnd_prob, "Background", "l");
+  //legendProb->Draw();
 
   TCanvas *c4 = new TCanvas("c4","Asymmetry",100,100,1000,1000);
   c4->Divide(3,1);
