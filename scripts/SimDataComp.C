@@ -196,6 +196,7 @@ void SimDataComp(int kin)
   T_data->Add(data_file);
 
   Double_t dx;      T_data->SetBranchAddress("dx", &dx);
+  Double_t dy;      T_data->SetBranchAddress("dy", &dy);
   int helicity;     T_data->SetBranchAddress("helicity", &helicity);
 
   if(T_data->GetEntries()==0)
