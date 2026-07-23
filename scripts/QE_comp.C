@@ -28,8 +28,8 @@ void QE_comp(const char *kinematic, int kin)
 
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
-  TString inputfile = Form("/volatile/halla/sbs/ktevans/pass3/QE_data_%s_sbs100p_nucleon_np_model2.root",kinematic);
-  //outfiles/QE_data_%s_sbs100p_nucleon_np_model2.root
+  //TString inputfile = Form("/volatile/halla/sbs/ktevans/pass3/QE_data_%s_sbs100p_nucleon_np_model2.root",kinematic);
+  TString inputfile = Form("outfiles/QE_data_%s_sbs100p_nucleon_np_model2.root",kinematic);
   TString outputfile = Form("plots/parsed_GEn_pass3_%s_He3_dxdy.pdf",kinematic);
   TString outfile = Form("outfiles/parsed_GEn_pass3_%s_He3_dxdy.root",kinematic);
   TFile *fout = new TFile(outfile,"RECREATE");
@@ -138,7 +138,7 @@ void QE_comp(const char *kinematic, int kin)
   {
     T->GetEntry(iev);
 
-    if(abs(helicity)==1 && abs(dy_hcal)<0.7 && bb_gr_clus_track==0 && abs(e_kine_W2-1.0)<0.5 && bb_gr_clus_size>=2.0 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<(3*coin_sigma) && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1.0)<0.2 && abs(bb_tr_vz)<0.27)
+    if(abs(helicity)==1 && abs(dy_hcal)<0.99 && bb_gr_clus_track==0 && abs(e_kine_W2-1.0)<0.5 && bb_gr_clus_size>=2.0 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<(3*coin_sigma) && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1.0)<0.2 && abs(bb_tr_vz)<0.27)
     {
 	    h_dx->Fill(dx_hcal);
         h_dy->Fill(dy_hcal);
