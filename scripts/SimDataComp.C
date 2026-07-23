@@ -219,6 +219,9 @@ void SimDataComp(int kin)
   h_pos_hel_dx->SetLineColor(kBlue);
   h_pos_hel_dx->Sumw2();
 
+  double Npos = 0.0;
+  double Nneg = 0.0;
+
   for (size_t iev = 0; iev < T_data->GetEntries(); iev++)
   {
     T_data->GetEntry(iev);
@@ -228,14 +231,28 @@ void SimDataComp(int kin)
     if(helicity==-1)
     {
       h_pos_hel_dx->Fill(dx);
+
+      if(abs(dx)<0.99)
+      {
+        Npos++;
+      }
+
     }
 
     if(helicity==1)
     {
       h_neg_hel_dx->Fill(dx);
+
+      if(abs(dx)<0.99)
+      {
+        Nneg++;
+      }
     }
 
   }//end loop over events
+
+  std::cout << "\nFound " << Npos << " positive helicity events in the neutron window. \n";
+  std::cout << "\nFound " << Nneg << " negative helicity events in the neutron window. \n";
 
   TChain* T_sim = new TChain("T_sim");
   T_sim->Add(nucleon_sim_file);
