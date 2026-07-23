@@ -210,12 +210,12 @@ void SimDataComp(int kin)
   h_data_dx->GetXaxis()->SetTitle("dx [m]");
   h_data_dx->Sumw2();
 
-  TH1D* h_neg_hel_dx = new TH1D("h_neg_hel_dx",";-hel", numberBins/2, dx_min_d, dx_max_d);
+  TH1D* h_neg_hel_dx = new TH1D("h_neg_hel_dx",";-hel", numberBins, dx_min_d, dx_max_d);
   h_neg_hel_dx->GetXaxis()->SetTitle("dx [m]");
   h_neg_hel_dx->SetLineColor(kRed);
   h_neg_hel_dx->Sumw2();
 
-  TH1D* h_pos_hel_dx = new TH1D("h_pos_hel_dx",";+hel", numberBins/2, dx_min_d, dx_max_d);
+  TH1D* h_pos_hel_dx = new TH1D("h_pos_hel_dx",";+hel", numberBins, dx_min_d, dx_max_d);
   h_pos_hel_dx->GetXaxis()->SetTitle("dx [m]");
   h_pos_hel_dx->SetLineColor(kBlue);
   h_pos_hel_dx->Sumw2();
