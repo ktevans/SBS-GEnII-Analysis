@@ -190,7 +190,7 @@ void SimDataComp(int kin)
 
   //gErrorIgnoreLevel = kError;
 
-  int numberBins = 200;
+  int numberBins = 185;
 
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
