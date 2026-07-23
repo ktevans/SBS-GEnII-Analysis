@@ -464,19 +464,16 @@ void SimDataComp(int kin)
 
   TH1D* hAsymDiff = (TH1D*) h_pos_hel_dx->Clone("hAsymDiff");
   hAsymDiff->Sumw2();
-  //hAsymDiff->Reset("ICESM");
   hAsymDiff->Add(h_neg_hel_dx, -1.0);
 
   TH1D* hAsymSum = (TH1D*) h_pos_hel_dx->Clone("hAsymSum");
   hAsymSum->Sumw2();
-  //hAsymSum->Reset("ICESM");
   hAsymSum->Add(h_neg_hel_dx);
 
   TH1D* hAsym = (TH1D*) hAsymDiff->Clone("hAsym");
   hAsym->Divide(hAsymSum);
   hAsym->Sumw2();
-  //hAsym->Reset("ICESM");
-  //hAsym->Rebin();
+  hAsym->Rebin(5);
 
   TH1D* h_fullProb = new TH1D("h_fullProb","100 Percent",h_Nbins,h_minX,h_maxX);
   h_fullProb->GetYaxis()->SetRangeUser(0.0,1.0);
