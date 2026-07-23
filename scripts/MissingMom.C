@@ -73,8 +73,8 @@ void MissingMom(const char *kinematic, int kin)
 
   if (kin == 2)
   {
-    dx_p_shift = -0.08;//0.475;
-    dx_n_shift = 0.01;//0.112;
+    dx_p_shift = 0.08;//0.475;
+    dx_n_shift = -0.01;//0.112;
     beam_e = 4.291;
     n_min = -0.95;
     n_max = 0.95;
