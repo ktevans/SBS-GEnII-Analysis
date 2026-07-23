@@ -464,12 +464,12 @@ void SimDataComp(int kin)
 
   TH1D* hAsymDiff = (TH1D*) h_pos_hel_dx->Clone("hAsymDiff");
   hAsymDiff->Sumw2();
-  hAsymDiff->Reset("ICESM");
+  //hAsymDiff->Reset("ICESM");
   hAsymDiff->Add(h_neg_hel_dx, -1.0);
 
   TH1D* hAsymSum = (TH1D*) h_pos_hel_dx->Clone("hAsymSum");
   hAsymSum->Sumw2();
-  hAsymSum->Reset("ICESM");
+  //hAsymSum->Reset("ICESM");
   hAsymSum->Add(h_neg_hel_dx);
 
   TH1D* hAsym = (TH1D*) hAsymDiff->Clone("hAsym");
