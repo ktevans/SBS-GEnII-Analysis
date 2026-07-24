@@ -86,6 +86,7 @@ void SimDataComp(int kin)
   TString pol_func_file;
   TString N2_dilution_file;
   TString title_words;
+  TString output_file;
 
   int npar = 6;
   double dx_min_d, dx_max_d;
@@ -100,6 +101,7 @@ void SimDataComp(int kin)
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN2_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN2_simulation.root";
     N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN2_He3_dxdy.root";
+    output_file = "outfiles/AnalysisResults_GEN2.root";
     title_words = "GEN2";
     dx_min_d = -2.8;
     dx_min_i = -3;
@@ -121,6 +123,7 @@ void SimDataComp(int kin)
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN3_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN3_simulation.root";
     N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN3_He3_dxdy.root";
+    output_file = "outfiles/AnalysisResults_GEN3.root";
     title_words = "GEN3";
     dx_min_d = -2.5;
     dx_min_i = -3;
@@ -142,6 +145,7 @@ void SimDataComp(int kin)
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN4a_simulation.root";
     N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN4_He3_dxdy.root";
+    output_file = "outfiles/AnalysisResults_GEN4a.root";
     title_words = "GEN4a";
     dx_min_d = -3.0;
     dx_min_i = -3;
@@ -163,6 +167,7 @@ void SimDataComp(int kin)
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN4b_simulation.root";
     N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN4_He3_dxdy.root";
+    output_file = "outfiles/AnalysisResults_GEN4b.root";
     title_words = "GEN4b";
     dx_min_d = -3.0;
     dx_min_i = -3;
@@ -189,6 +194,14 @@ void SimDataComp(int kin)
   //}
 
   //gErrorIgnoreLevel = kError;
+
+  TFile *fout = new TFile(output_file,"RECREATE");
+  TTree *T_out = new TTree("T_out", "Analyzed Data");
+
+  double dx_data_out, dx_pos_hel_out, dx_neg_hel_out;
+  T_out->Branch("dx_data",    &dx_data_out,    "dx_data/D");
+  T_out->Branch("dx_pos_hel", &dx_pos_hel_out, "dx_pos_hel/D");
+  T_out->Branch("dx_neg_hel", &dx_neg_hel_out, "dx_neg_hel/D");
 
   int numberBins = 185;
   int asymBinning = 96;
@@ -232,6 +245,8 @@ void SimDataComp(int kin)
 
     h_data_dx->Fill(dx);
     dxEllipse = (((dx-0.0)*(dx-0.0))/(0.99*0.99)) + (((dy-0.0)*(dy-0.0))/(0.99*0.99));
+    dx_data_out = dx;
+    T_out->Fill();
 
     if(helicity==1)
     {
@@ -240,6 +255,8 @@ void SimDataComp(int kin)
       if(dxEllipse<=1.0)
       {
         Npos++;
+        dx_pos_hel_out = dx;
+        T_out->Fill();
       }
 
     }
@@ -251,6 +268,8 @@ void SimDataComp(int kin)
       if(dxEllipse<=1.0)
       {
         Nneg++;
+        dx_neg_hel_out = dx;
+        T_out->Fill();
       }
     }
 
@@ -496,10 +515,6 @@ void SimDataComp(int kin)
   hAsym->Sumw2();
   //hAsym->Rebin();
 
-  double yieldBins[2] = {-1.0,1.0};
-  TH1D* hAsym_yield = (TH1D*) hAsym->Clone("hAsym_yield");
-  hAsym->Rebin(1,"hAsym_yield",yieldBins);
-
   TH1D* h_fullProb = new TH1D("h_fullProb","100 Percent",h_Nbins,h_minX,h_maxX);
   h_fullProb->GetYaxis()->SetRangeUser(0.0,1.0);
   h_fullProb->Sumw2();
@@ -634,6 +649,12 @@ void SimDataComp(int kin)
   h_data_dx->Draw("E SAMES");
   h_data_dx->GetXaxis()->SetTitle("dx [m]");
 
+  h_total_dx->Write();
+  shifted_h_simIN_dx->Write();
+  shifted_h_sim_proton_dx->Write();
+  shifted_h_sim_neutron_dx->Write();
+  h_data_dx->Write();
+
   auto legend = new TLegend(0.55,0.70,0.99,0.99);
   legend->SetTextSize(0.03);
   legend->SetHeader("Fitting","C");
@@ -648,6 +669,8 @@ void SimDataComp(int kin)
   h_resid->Draw("E");
   h_resid->GetXaxis()->SetTitle("dx [m]");
   h_resid->GetYaxis()->SetTitle("Residuals (Data - Fit)");
+
+  h_resid->Write();
 
   c1->cd();  // c1 is the TCanvas
   TPad *pad5 = new TPad("all","all",0,0,1,1);
@@ -668,6 +691,10 @@ void SimDataComp(int kin)
   c2->cd(3);
   h_prob_bckgrnd_dx->Draw();
 
+  h_prob_proton_dx->Write();
+  h_prob_neutron_dx->Write();
+  h_prob_bckgrnd_dx->Write();
+
   TCanvas *c3 = new TCanvas("c3","Asymmetry Fit",100,100,800,500);
   //c3->Divide(3,1);
   c3->cd();
@@ -682,6 +709,9 @@ void SimDataComp(int kin)
   //legendHEL->AddEntry(h_neg_hel_dx,"Negative Helicity","lep");
   //legendHEL->Draw();
 
+  h_pos_hel_dx->Write();
+  h_neg_hel_dx->Write();
+
   hAsym->Draw("E");
   AsymFitFunc->Draw("SAMES");
 
@@ -690,6 +720,9 @@ void SimDataComp(int kin)
   legendA->AddEntry(hAsym,"Data","lep");
   legendA->AddEntry(AsymFitFunc,Form("A(dx) = %.4gPp(dx) + %.4gPn(dx) + %.4gPbg(dx)",AsymFitFunc->GetParameter(0),AsymFitFunc->GetParameter(1),AsymFitFunc->GetParameter(2)),"l");
   legendA->Draw();
+
+  hAsym->Write();
+  AsymFitFunc->Write();
 
   //c3->cd(3);
   //scaled_proton_prob->SetTitle("Scaled Probabilities");
@@ -707,6 +740,10 @@ void SimDataComp(int kin)
   //legendProb->AddEntry(scaled_bckgrnd_prob, "Background", "l");
   //legendProb->Draw();
 
+  scaled_neutron_prob->Write();
+  scaled_proton_prob->Write();
+  scaled_bckgrnd_prob->Write();
+
   TCanvas *c4 = new TCanvas("c4","Asymmetry",100,100,1000,1000);
   c4->Divide(3,1);
   c4->cd(1);
@@ -722,18 +759,24 @@ void SimDataComp(int kin)
   gStyle->SetOptStat(11001111);
   gPad->Update();
 
+  shifted_h_sim_proton_dx->Write();
+  shifted_h_sim_neutron_dx->Write();
+  shifted_h_simIN_dx->Write();
+
   TCanvas *c5 = new TCanvas("c5","AsymmetryHistOperator",100,100,1000,1000);
   c5->cd();
   hAsym->Draw("E");
   c5->SetGrid();
   c5->Update();
 
-  TCanvas *c6 = new TCanvas("c6","testingYields",100,100,1500,500);
-  c6->cd();
-  hAsym_yield->Draw();
+  //TCanvas *c6 = new TCanvas("c6","testingYields",100,100,1500,500);
+  //c6->cd();
+  //hAsym_yield->Draw();
 
   delete T_data;
   delete T_sim;
   delete T_simIN;
+
+  fout->Write();
 
 }//end main
