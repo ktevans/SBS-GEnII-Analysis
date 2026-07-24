@@ -257,6 +257,11 @@ void SimDataComp(int kin)
         dx_pos_hel_out = dx;
       }
 
+      else
+      {
+        dx_pos_hel_out = 10.0;
+      }
+
     }
 
     else if(helicity==-1)
@@ -267,6 +272,11 @@ void SimDataComp(int kin)
       {
         Nneg++;
         dx_neg_hel_out = dx;
+      }
+
+      else
+      {
+        dx_neg_hel_out = 10.0;
       }
 
     }
