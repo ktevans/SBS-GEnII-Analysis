@@ -512,6 +512,14 @@ void SimDataComp(int kin)
   hAsym->Sumw2();
   //hAsym->Rebin();
 
+  hAsym->Write();
+
+  TH1D* hAsym_Eff = (TH1D*) hAsym->Clone("hAsym_Eff");
+  hAsym_Eff->Sumw2();
+  hAsym_Eff->Multiply(fitn);
+
+  hAsym_Eff->Write();
+
   TH1D* h_fullProb = new TH1D("h_fullProb","100 Percent",h_Nbins,h_minX,h_maxX);
   h_fullProb->GetYaxis()->SetRangeUser(0.0,1.0);
   h_fullProb->Sumw2();
@@ -766,9 +774,9 @@ void SimDataComp(int kin)
   c5->SetGrid();
   c5->Update();
 
-  //TCanvas *c6 = new TCanvas("c6","testingYields",100,100,1500,500);
-  //c6->cd();
-  //hAsym_yield->Draw();
+  TCanvas *c6 = new TCanvas("c6","EffectiveAsym",100,100,800,800);
+  c6->cd();
+  hAsym_Eff->Draw();
 
   fout->Write();
 
