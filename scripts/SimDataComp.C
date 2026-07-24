@@ -271,6 +271,12 @@ void SimDataComp(int kin)
 
     }
 
+    else
+    {
+      dx_pos_hel_out = 10.0;
+      dx_neg_hel_out = 10.0;
+    }
+
     T_out->Fill();
 
   }//end loop over events
