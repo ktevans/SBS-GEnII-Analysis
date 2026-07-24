@@ -256,12 +256,12 @@ void SimDataComp(int kin)
       {
         Npos++;
         dx_pos_hel_out = dx;
-        T_out->Fill();
+        //T_out->Fill();
       }
 
     }
 
-    if(helicity==-1)
+    else if(helicity==-1)
     {
       h_neg_hel_dx->Fill(dx);
 
@@ -269,11 +269,11 @@ void SimDataComp(int kin)
       {
         Nneg++;
         dx_neg_hel_out = dx;
-        T_out->Fill();
+        //T_out->Fill();
       }
     }
 
-  //T_out->Fill();
+  T_out->Fill();
 
   }//end loop over events
 
