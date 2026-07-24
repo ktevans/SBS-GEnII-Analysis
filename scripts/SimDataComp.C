@@ -496,6 +496,11 @@ void SimDataComp(int kin)
   hAsym->Sumw2();
   //hAsym->Rebin();
 
+  double yieldBins[1] = {-1.0,1.0}
+  TH1D* hAsym_yield = (TH1D*) hAsym->Clone("hAsym_yield");
+  hAsym->Rebin(1,"hAsym_yield",yieldBins);
+  hAsym_yield->Draw();
+
   TH1D* h_fullProb = new TH1D("h_fullProb","100 Percent",h_Nbins,h_minX,h_maxX);
   h_fullProb->GetYaxis()->SetRangeUser(0.0,1.0);
   h_fullProb->Sumw2();
