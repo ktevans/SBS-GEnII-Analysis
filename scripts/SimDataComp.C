@@ -256,7 +256,7 @@ void SimDataComp(int kin)
       {
         Npos++;
         dx_pos_hel_out = dx;
-        //T_out->Fill();
+        T_out->Fill();
       }
 
     }
@@ -269,11 +269,11 @@ void SimDataComp(int kin)
       {
         Nneg++;
         dx_neg_hel_out = dx;
-        //T_out->Fill();
+        T_out->Fill();
       }
     }
 
-  T_out->Fill();
+  //T_out->Fill();
 
   }//end loop over events
 
