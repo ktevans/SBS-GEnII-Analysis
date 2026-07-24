@@ -246,7 +246,7 @@ void SimDataComp(int kin)
     h_data_dx->Fill(dx);
     dxEllipse = (((dx-0.0)*(dx-0.0))/(0.99*0.99)) + (((dy-0.0)*(dy-0.0))/(0.99*0.99));
     dx_data_out = dx;
-    //T_out->Fill();
+    dx_data_out->Fill();
 
     if(helicity==1)
     {
@@ -256,7 +256,7 @@ void SimDataComp(int kin)
       {
         Npos++;
         dx_pos_hel_out = dx;
-        //T_out->Fill();
+        dx_pos_hel_out->Fill();
       }
 
     }
@@ -269,11 +269,11 @@ void SimDataComp(int kin)
       {
         Nneg++;
         dx_neg_hel_out = dx;
-        //T_out->Fill();
+        dx_neg_hel_out->Fill();
       }
     }
 
-  T_out->Fill();
+  //T_out->Fill();
 
   }//end loop over events
 
