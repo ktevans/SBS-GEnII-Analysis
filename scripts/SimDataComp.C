@@ -649,10 +649,10 @@ void SimDataComp(int kin)
   h_data_dx->Draw("E SAMES");
   h_data_dx->GetXaxis()->SetTitle("dx [m]");
 
-  h_total_dx->Write();
-  shifted_h_simIN_dx->Write();
-  shifted_h_sim_proton_dx->Write();
-  shifted_h_sim_neutron_dx->Write();
+  //h_total_dx->Write();
+  //shifted_h_simIN_dx->Write();
+  //shifted_h_sim_proton_dx->Write();
+  //shifted_h_sim_neutron_dx->Write();
   h_data_dx->Write();
 
   auto legend = new TLegend(0.55,0.70,0.99,0.99);
@@ -670,7 +670,7 @@ void SimDataComp(int kin)
   h_resid->GetXaxis()->SetTitle("dx [m]");
   h_resid->GetYaxis()->SetTitle("Residuals (Data - Fit)");
 
-  h_resid->Write();
+  //h_resid->Write();
 
   c1->cd();  // c1 is the TCanvas
   TPad *pad5 = new TPad("all","all",0,0,1,1);
@@ -691,9 +691,9 @@ void SimDataComp(int kin)
   c2->cd(3);
   h_prob_bckgrnd_dx->Draw();
 
-  h_prob_proton_dx->Write();
-  h_prob_neutron_dx->Write();
-  h_prob_bckgrnd_dx->Write();
+  //h_prob_proton_dx->Write();
+  //h_prob_neutron_dx->Write();
+  //h_prob_bckgrnd_dx->Write();
 
   TCanvas *c3 = new TCanvas("c3","Asymmetry Fit",100,100,800,500);
   //c3->Divide(3,1);
@@ -740,9 +740,9 @@ void SimDataComp(int kin)
   //legendProb->AddEntry(scaled_bckgrnd_prob, "Background", "l");
   //legendProb->Draw();
 
-  scaled_neutron_prob->Write();
-  scaled_proton_prob->Write();
-  scaled_bckgrnd_prob->Write();
+  //scaled_neutron_prob->Write();
+  //scaled_proton_prob->Write();
+  //scaled_bckgrnd_prob->Write();
 
   TCanvas *c4 = new TCanvas("c4","Asymmetry",100,100,1000,1000);
   c4->Divide(3,1);
@@ -759,9 +759,9 @@ void SimDataComp(int kin)
   gStyle->SetOptStat(11001111);
   gPad->Update();
 
-  shifted_h_sim_proton_dx->Write();
-  shifted_h_sim_neutron_dx->Write();
-  shifted_h_simIN_dx->Write();
+  //shifted_h_sim_proton_dx->Write();
+  //shifted_h_sim_neutron_dx->Write();
+  //shifted_h_simIN_dx->Write();
 
   TCanvas *c5 = new TCanvas("c5","AsymmetryHistOperator",100,100,1000,1000);
   c5->cd();
