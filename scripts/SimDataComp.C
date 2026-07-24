@@ -775,10 +775,10 @@ void SimDataComp(int kin)
   //c6->cd();
   //hAsym_yield->Draw();
 
+  fout->Write();
+
   delete T_data;
   delete T_sim;
   delete T_simIN;
-
-  fout->Write();
 
 }//end main
