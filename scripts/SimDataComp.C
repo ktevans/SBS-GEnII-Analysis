@@ -198,10 +198,10 @@ void SimDataComp(int kin)
   TFile *fout = new TFile(output_file,"RECREATE");
   TTree *T_out = new TTree("T_out", "Analyzed Data");
 
-  double dx_data_out, dx_pos_hel_out, dx_neg_hel_out;
+  double dx_data_out; 
+  int helicity_out;
   T_out->Branch("dx_data",    &dx_data_out,    "dx_data/D");
-  T_out->Branch("dx_pos_hel", &dx_pos_hel_out, "dx_pos_hel/D");
-  T_out->Branch("dx_neg_hel", &dx_neg_hel_out, "dx_neg_hel/D");
+  T_out->Branch("helicity",   &helicity_out,   "helicity/I");
 
   int numberBins = 185;
   int asymBinning = 96;
@@ -246,6 +246,7 @@ void SimDataComp(int kin)
     h_data_dx->Fill(dx);
     dxEllipse = (((dx-0.0)*(dx-0.0))/(0.99*0.99)) + (((dy-0.0)*(dy-0.0))/(0.99*0.99));
     dx_data_out = dx;
+    helicity_out = helicity;
 
     if(helicity==1)
     {
@@ -254,14 +255,7 @@ void SimDataComp(int kin)
       if(dxEllipse<=1.0)
       {
         Npos++;
-        dx_pos_hel_out = dx;
       }
-
-      else
-      {
-        dx_pos_hel_out = 10.0;
-      }
-
     }
 
     else if(helicity==-1)
@@ -271,14 +265,7 @@ void SimDataComp(int kin)
       if(dxEllipse<=1.0)
       {
         Nneg++;
-        dx_neg_hel_out = dx;
       }
-
-      else
-      {
-        dx_neg_hel_out = 10.0;
-      }
-
     }
 
     T_out->Fill();
