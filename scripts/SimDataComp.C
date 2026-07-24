@@ -234,6 +234,16 @@ void SimDataComp(int kin)
   h_pos_hel_dx->SetLineColor(kBlue);
   h_pos_hel_dx->Sumw2();
 
+  TH1D* h_neg_hel_dx_nwin = new TH1D("h_neg_hel_dx_nwin",";-hel", 20, -1.0, 1.0);
+  h_neg_hel_dx_nwin->GetXaxis()->SetTitle("dx [m]");
+  h_neg_hel_dx_nwin->SetLineColor(kRed);
+  h_neg_hel_dx_nwin->Sumw2();
+
+  TH1D* h_pos_hel_dx_nwin = new TH1D("h_pos_hel_dx_nwin",";+hel", 20, -1.0, 1.0);
+  h_pos_hel_dx_nwin->GetXaxis()->SetTitle("dx [m]");
+  h_pos_hel_dx_nwin->SetLineColor(kBlue);
+  h_pos_hel_dx_nwin->Sumw2();
+
   double Npos = 0.0;
   double Nneg = 0.0;
 
@@ -255,6 +265,7 @@ void SimDataComp(int kin)
       if(dxEllipse<=1.0)
       {
         Npos++;
+        h_pos_hel_dx_nwin->Fill(dx);
       }
     }
 
@@ -265,6 +276,7 @@ void SimDataComp(int kin)
       if(dxEllipse<=1.0)
       {
         Nneg++;
+        h_neg_hel_dx_nwin->Fill(dx);
       }
     }
 
@@ -454,6 +466,8 @@ void SimDataComp(int kin)
   shifted_h_sim_neutron_dx ->Scale(scale);
   shifted_h_simIN_dx       ->Scale(scale);
   h_total_dx               ->Scale(scale);
+  h_pos_hel_dx_nwin        ->Scale(scale);
+  h_neg_hel_dx_nwin        ->Scale(scale);
 
   //Account for diluitions
 
@@ -512,13 +526,25 @@ void SimDataComp(int kin)
   hAsym->Sumw2();
   //hAsym->Rebin();
 
-  hAsym->Write();
+  TH1D* hAsymDiff_nwin = (TH1D*) h_pos_hel_dx_nwin->Clone("hAsymDiff_nwin");
+  hAsymDiff_nwin->Sumw2();
+  hAsymDiff_nwin->Add(h_neg_hel_dx_nwin, -1.0);
+
+  TH1D* hAsymSum_nwin = (TH1D*) h_pos_hel_dx_nwin->Clone("hAsymSum_nwin");
+  hAsymSum_nwin->Sumw2();
+  hAsymSum_nwin->Add(h_neg_hel_dx_nwin);
+
+  TH1D* hAsym_nwin = (TH1D*) hAsymDiff_nwin->Clone("hAsym_nwin");
+  hAsym_nwin->Divide(hAsymSum_nwin);
+  hAsym_nwin->Sumw2();
 
   TH1D* hAsym_Eff = (TH1D*) hAsym->Clone("hAsym_Eff");
   hAsym_Eff->Sumw2();
   hAsym_Eff->Multiply(fitn);
 
-  hAsym_Eff->Write();
+  TH1D* hAsym_nwin_Eff = (TH1D*) hAsym_nwin->Clone("hAsym_nwin_Eff");
+  hAsym_nwin_Eff->Sumw2();
+  hAsym_nwin_Eff->Multiply(fitn);
 
   TH1D* h_fullProb = new TH1D("h_fullProb","100 Percent",h_Nbins,h_minX,h_maxX);
   h_fullProb->GetYaxis()->SetRangeUser(0.0,1.0);
@@ -775,8 +801,11 @@ void SimDataComp(int kin)
   c5->Update();
 
   TCanvas *c6 = new TCanvas("c6","EffectiveAsym",100,100,800,800);
-  c6->cd();
-  hAsym_Eff->Draw();
+  c6->Divide(1,2);
+  c6->cd(1);
+  hAsym_nwin->Draw();
+  c6->cd(2);
+  hAsym_nwin_Eff->Draw();
 
   fout->Write();
 
