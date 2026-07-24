@@ -496,7 +496,7 @@ void SimDataComp(int kin)
   hAsym->Sumw2();
   //hAsym->Rebin();
 
-  double yieldBins[1] = {-1.0,1.0};
+  double yieldBins[2] = {-1.0,1.0};
   TH1D* hAsym_yield = (TH1D*) hAsym->Clone("hAsym_yield");
   hAsym->Rebin(1,"hAsym_yield",yieldBins);
   hAsym_yield->Draw();
