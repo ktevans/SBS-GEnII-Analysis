@@ -499,7 +499,6 @@ void SimDataComp(int kin)
   double yieldBins[2] = {-1.0,1.0};
   TH1D* hAsym_yield = (TH1D*) hAsym->Clone("hAsym_yield");
   hAsym->Rebin(1,"hAsym_yield",yieldBins);
-  hAsym_yield->Draw();
 
   TH1D* h_fullProb = new TH1D("h_fullProb","100 Percent",h_Nbins,h_minX,h_maxX);
   h_fullProb->GetYaxis()->SetRangeUser(0.0,1.0);
@@ -729,9 +728,9 @@ void SimDataComp(int kin)
   c5->SetGrid();
   c5->Update();
 
-  //TCanvas *c6 = new TCanvas("c6","testing",100,100,1500,500);
-  //c6->cd();
-  //h_data_asym_raw_early->Draw();
+  TCanvas *c6 = new TCanvas("c6","testingYields",100,100,1500,500);
+  c6->cd();
+  hAsym_yield->Draw();
 
   delete T_data;
   delete T_sim;
