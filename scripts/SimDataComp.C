@@ -570,7 +570,7 @@ void SimDataComp(int kin)
     double c_dil     = scaled_hN2dilution->GetBinContent(bin); //Backgrounds with no asymmetry contribution
     double c_dil_err = scaled_hN2dilution->GetBinError(bin);
 
-    double P_tot = c_p + c_n + c_bg + c_dil;
+    double P_tot = c_p + c_n + c_bg; // + c_dil;
 
     //For asymmetry fit, we only care about if background contributes to asymmetry, so there is no need to track the probability of being a dilution particle. The total on the denominator should include dilution considerations.
 
@@ -588,9 +588,14 @@ void SimDataComp(int kin)
       P_n  = c_n / P_tot;
       P_bg = c_bg / P_tot;
 
-      P_p_err  = TMath::Sqrt( (c_n+c_bg+c_dil)*(c_n+c_bg+c_dil)*c_p_err*c_p_err + c_p*c_p*c_n_err*c_n_err + c_p*c_p*c_bg_err*c_bg_err + c_p*c_p*c_dil_err*c_dil_err ) / ( (c_p+c_n+c_bg+c_dil)*(c_p+c_n+c_bg+c_dil) );
-      P_n_err  = TMath::Sqrt( (c_bg+c_p+c_dil)*(c_bg+c_p+c_dil)*c_n_err*c_n_err + c_n*c_n*c_p_err*c_p_err + c_n*c_n*c_bg_err*c_bg_err + c_n*c_n*c_dil_err*c_dil_err ) / ( (c_p+c_n+c_bg+c_dil)*(c_p+c_n+c_bg+c_dil) );
-      P_bg_err = TMath::Sqrt( (c_n+c_p+c_dil)*(c_n+c_p+c_dil)*c_bg_err*c_bg_err + c_bg*c_bg*c_p_err*c_p_err + c_bg*c_bg*c_p_err*c_p_err + c_bg*c_bg*c_dil_err*c_dil_err ) / ( (c_p+c_n+c_bg+c_dil)*(c_p+c_n+c_bg+c_dil) );
+      P_p_err  = TMath::Sqrt( (c_n+c_bg)*(c_n+c_bg)*c_p_err*c_p_err + c_p*c_p*c_n_err*c_n_err + c_p*c_p*c_bg_err*c_bg_err + c_p*c_p ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
+      P_n_err  = TMath::Sqrt( (c_bg+c_p)*(c_bg+c_p)*c_n_err*c_n_err + c_n*c_n*c_p_err*c_p_err + c_n*c_n*c_bg_err*c_bg_err + c_n*c_n ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
+      P_bg_err = TMath::Sqrt( (c_n+c_p)*(c_n+c_p)*c_bg_err*c_bg_err + c_bg*c_bg*c_p_err*c_p_err + c_bg*c_bg*c_p_err*c_p_err + c_bg*c_bg ) / ( (c_p+c_n+c_bg)*(c_p+c_n+c_bg) );
+
+      //P_p_err  = TMath::Sqrt( (c_n+c_bg+c_dil)*(c_n+c_bg+c_dil)*c_p_err*c_p_err + c_p*c_p*c_n_err*c_n_err + c_p*c_p*c_bg_err*c_bg_err + c_p*c_p*c_dil_err*c_dil_err ) / ( (c_p+c_n+c_bg+c_dil)*(c_p+c_n+c_bg+c_dil) );
+      //P_n_err  = TMath::Sqrt( (c_bg+c_p+c_dil)*(c_bg+c_p+c_dil)*c_n_err*c_n_err + c_n*c_n*c_p_err*c_p_err + c_n*c_n*c_bg_err*c_bg_err + c_n*c_n*c_dil_err*c_dil_err ) / ( (c_p+c_n+c_bg+c_dil)*(c_p+c_n+c_bg+c_dil) );
+      //P_bg_err = TMath::Sqrt( (c_n+c_p+c_dil)*(c_n+c_p+c_dil)*c_bg_err*c_bg_err + c_bg*c_bg*c_p_err*c_p_err + c_bg*c_bg*c_p_err*c_p_err + c_bg*c_bg*c_dil_err*c_dil_err ) / ( (c_p+c_n+c_bg+c_dil)*(c_p+c_n+c_bg+c_dil) );
+
 
     }//end if total probability is nonzero
 
@@ -612,7 +617,7 @@ void SimDataComp(int kin)
   h_fullProb        -> SetEntries(totalentries);
 
   double pol_combo = pol_beam * pol_targ;
-  h_fullProb->Add(hN2dilution_p,-1.0);
+  //h_fullProb->Add(hN2dilution_p,-1.0);
   h_fullProb->Add(h_prob_bckgrnd_dx,-1.0);
 
   TCanvas *step3 = new TCanvas("step3","1 - (N2 Dilution) - (Inel Prob)",100,100,1500,500);
