@@ -178,7 +178,7 @@ void BackgroundAsym(int kin)
       }
     }
 
-    if(abs(W2-1.0)<0.5 && abs(coin+0.47385)<3.6 && grinch_track==0.0 && (grinch_clusSize<3.0 || ps_e<0.2) && abs(((ps_e+sh_e)/tr_p)-0.97)<0.2 && abs(dy)<0.99)
+    if(abs(W2-1.0)<0.5 && abs(coin+0.47385)<3.6 && grinch_track==0.0 && (grinch_clusSize<3.0 || ps_e<0.2) && ((ps_e+sh_e)/tr_p)<0.7 && abs(dy)<0.99)
     {
       if(helicity==-1)
       {
