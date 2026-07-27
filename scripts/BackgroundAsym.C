@@ -132,11 +132,27 @@ void BackgroundAsym(int kin)
   h_pos_hel_dx_inel->GetXaxis()->SetTitle("dx [m]");
   h_pos_hel_dx_inel->Sumw2();
 
+  TH1D* h_neg_hel_dx_acc = new TH1D("h_neg_hel_dx_acc",";-hel", numberBins, dx_min_d, dx_max_d);
+  h_neg_hel_dx_acc->GetXaxis()->SetTitle("dx [m]");
+  h_neg_hel_dx_acc->Sumw2();
+
+  TH1D* h_pos_hel_dx_acc = new TH1D("h_pos_hel_dx_acc",";+hel", numberBins, dx_min_d, dx_max_d);
+  h_pos_hel_dx_acc->GetXaxis()->SetTitle("dx [m]");
+  h_pos_hel_dx_acc->Sumw2();
+
+  TH1D* h_neg_hel_dx_pi = new TH1D("h_neg_hel_dx_pi",";-hel", numberBins, dx_min_d, dx_max_d);
+  h_neg_hel_dx_pi->GetXaxis()->SetTitle("dx [m]");
+  h_neg_hel_dx_pi->Sumw2();
+
+  TH1D* h_pos_hel_dx_pi = new TH1D("h_pos_hel_dx_pi",";+hel", numberBins, dx_min_d, dx_max_d);
+  h_pos_hel_dx_pi->GetXaxis()->SetTitle("dx [m]");
+  h_pos_hel_dx_pi->Sumw2();
+
   for (size_t iev = 0; iev < Tout->GetEntries(); iev++)
   {
     Tout->GetEntry(iev);
 
-    if(W2>2.0 && abs(coin+0.47385)<3.6 && grinch_track==0.0 && grinch_clusSize>=3.0 && abs(((ps_e+sh_e)/tr_p)-0.97)<0.2 && abs(dy)<0.99)
+    if(W2>2.0 && abs(coin+0.47385)<3.6 && grinch_track==0.0 && grinch_clusSize>=3.0 && ps_e>0.2 && abs(((ps_e+sh_e)/tr_p)-0.97)<0.2 && abs(dy)<0.99)
     {
       if(helicity==-1)
       {
@@ -149,22 +165,73 @@ void BackgroundAsym(int kin)
       }
     }
 
+    if(abs(W2-1.0)<0.5 && abs(coin+0.47385)>6.0 && grinch_track==0.0 && grinch_clusSize>=3.0 && ps_e>0.2 && abs(((ps_e+sh_e)/tr_p)-0.97)<0.2 && abs(dy)<0.99)
+    {
+      if(helicity==-1)
+      {
+        h_neg_hel_dx_acc->Fill(dx);
+      }
+
+      if(helicity==1)
+      {
+        h_pos_hel_dx_acc->Fill(dx);
+      }
+    }
+
+    if(abs(W2-1.0)<0.5 && abs(coin+0.47385)<3.6 && grinch_track==0.0 && (grinch_clusSize<3.0 || ps_e<0.2) && abs(((ps_e+sh_e)/tr_p)-0.97)<0.2 && abs(dy)<0.99)
+    {
+      if(helicity==-1)
+      {
+        h_neg_hel_dx_pi->Fill(dx);
+      }
+
+      if(helicity==1)
+      {
+        h_pos_hel_dx_pi->Fill(dx);
+      }
+    }
+
   }//end loop over events
 
   TH1D* hAsymDiff_inel = (TH1D*) h_pos_hel_dx_inel->Clone("hAsymDiff_inel");
-  hAsymDiff_inel->Sumw2();
   hAsymDiff_inel->Add(h_neg_hel_dx_inel, -1.0);
 
   TH1D* hAsymSum_inel = (TH1D*) h_pos_hel_dx_inel->Clone("hAsymSum_inel");
-  hAsymSum_inel->Sumw2();
   hAsymSum_inel->Add(h_neg_hel_dx_inel);
 
   TH1D* hAsym_inel = (TH1D*) hAsymDiff_inel->Clone("hAsym_inel");
   hAsym_inel->Divide(hAsymSum_inel);
-  hAsym_inel->Sumw2();
 
-  TCanvas *c1 = new TCanvas("c1","Inelastic Asymmetry",100,100,1500,500);
+  TH1D* hAsymDiff_acc = (TH1D*) h_pos_hel_dx_acc->Clone("hAsymDiff_acc");
+  hAsymDiff_acc->Add(h_neg_hel_dx_acc, -1.0);
+
+  TH1D* hAsymSum_acc = (TH1D*) h_pos_hel_dx_acc->Clone("hAsymSum_acc");
+  hAsymSum_acc->Add(h_neg_hel_dx_acc);
+
+  TH1D* hAsym_acc = (TH1D*) hAsymDiff_acc->Clone("hAsym_acc");
+  hAsym_acc->Divide(hAsymSum_acc);
+
+  TH1D* hAsymDiff_pi = (TH1D*) h_pos_hel_dx_pi->Clone("hAsymDiff_pi");
+  hAsymDiff_pi->Add(h_neg_hel_dx_pi, -1.0);
+
+  TH1D* hAsymSum_pi = (TH1D*) h_pos_hel_dx_pi->Clone("hAsymSum_pi");
+  hAsymSum_pi->Add(h_neg_hel_dx_pi);
+
+  TH1D* hAsym_pi = (TH1D*) hAsymDiff_pi->Clone("hAsym_pi");
+  hAsym_pi->Divide(hAsymSum_pi);
+
+
+
+  TCanvas *c1 = new TCanvas("c1","Inelastic Asymmetry",100,100,1000,500);
   c1->cd();
   hAsym_inel->Draw();
+
+  TCanvas *c2 = new TCanvas("c2","Accidental Asymmetry",100,100,1000,500);
+  c2->cd();
+  hAsym_acc->Draw();
+
+  TCanvas *c3 = new TCanvas("c3","Pion Asymmetry",100,100,1000,500);
+  c3->cd();
+  hAsym_pi->Draw();
 
 }//end main
