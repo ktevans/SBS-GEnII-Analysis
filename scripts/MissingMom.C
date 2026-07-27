@@ -70,6 +70,7 @@ void MissingMom(const char *kinematic, int kin)
   double n_max;
   double dx_p_cut;
   double dx_n_cut;
+  double dx_n_lim1, dx_n_lim2, dx_p_lim1;
 
   if (kin == 2)
   {
@@ -80,6 +81,9 @@ void MissingMom(const char *kinematic, int kin)
     n_max = 0.95;
     dx_p_cut = -0.9;
     dx_n_cut = -1.2;
+    dx_n_lim1 = -2.0;
+    dx_n_lim2 = 2.0;
+    dx_p_lim1 = 0.2;
   }
 
   if (kin == 3)
@@ -91,6 +95,9 @@ void MissingMom(const char *kinematic, int kin)
     n_max = 0.5;
     dx_p_cut = 0.0;
     dx_n_cut = -1.0;
+    dx_n_lim1 = -1.0;
+    dx_n_lim2 = 1.4;
+    dx_p_lim1 = 0.0;
   }
 
   if (kin == 4)
@@ -102,6 +109,9 @@ void MissingMom(const char *kinematic, int kin)
     n_max = 0.3;
     dx_p_cut = 0.0;
     dx_n_cut = -1.0;
+    dx_n_lim1 = -1.0;
+    dx_n_lim2 = 1.4;
+    dx_p_lim1 = 0.0;
   }
 
   //Scan through all the entries in the TChain T
@@ -337,7 +347,7 @@ void MissingMom(const char *kinematic, int kin)
   c3->cd();
 
   h_prof_pol_n->Draw();
-  TF1 *fitn = new TF1("fitn", "(x>-2.0 && x<=2.0)*([0]*x*x + [1]*x + [2] + [5]*x*x*x + [6]*x*x*x*x) + (x<=-2.0)*([3]) + (x>2.0)*([4])", -4.0, 3.0);
+  TF1 *fitn = new TF1("fitn", "(x>dx_n_lim1 && x<=dx_n_lim2)*([0]*x*x + [1]*x + [2] + [5]*x*x*x + [6]*x*x*x*x) + (x<=dx_n_lim1)*([3]) + (x>dx_n_lim2)*([4])", -4.0, 3.0);
   fitn->SetParameters(1.0,2.0,3.0,1.0,1.0,6.0,7.0);
   h_prof_pol_n->Fit("fitn");
   fitn->Draw("SAMES");
@@ -346,7 +356,7 @@ void MissingMom(const char *kinematic, int kin)
   c4->cd();
 
   h_prof_pol_p->Draw();
-  TF1 *fitp = new TF1("fitp", "(x<0.2)*([0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x)) + (x>=0.2)*([7])", -4.0, 3.0);
+  TF1 *fitp = new TF1("fitp", "(x<dx_p_lim1)*([0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x)) + (x>=dx_p_lim1)*([7])", -4.0, 3.0);
   fitp->SetParameters(1.0,2.0,3.0,4.0,5.0,6.0,7.0,1.0);
   h_prof_pol_p->Fit("fitp");
   fitp->Draw("SAMES");
