@@ -85,7 +85,7 @@ void QE_comp(const char *kinematic, int kin)
     optics_valid_max = 0.33;
     coin_mean = -0.0115;
     coin_sigma = 1.298;
-    IHWP_flip = 1;
+    IHWP_flip = -1;
     std::cout << "\nYou are replaying GEN3!\n";
   }
   else if(kin==4)
