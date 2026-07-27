@@ -96,6 +96,8 @@ void QE_INsim(const char *kinematic)
 
   }//end event loop
 
+  h_dx->Smooth();
+
   TCanvas *c1 = new TCanvas("c1","1D dx and dy Plots",100,100,700,700);
   c1->Divide(1,2);
   c1->cd(1);
