@@ -103,7 +103,7 @@ void SimDataComp(int kin)
     N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN2_He3_dxdy.root";
     output_file = "outfiles/AnalysisResults_GEN2.root";
     title_words = "GEN2";
-    dx_min_d = -2.5;
+    dx_min_d = -2.9;
     dx_min_i = -3;
     dx_max_d = 2.0;
     dx_max_i = 2;
@@ -620,7 +620,7 @@ void SimDataComp(int kin)
   //h_fullProb->Add(hN2dilution_p,-1.0);
   h_fullProb->Add(h_prob_bckgrnd_dx,-1.0);
 
-  TCanvas *step3 = new TCanvas("step3","1 - (N2 Dilution) - (Inel Prob)",100,100,1500,500);
+  TCanvas *step3 = new TCanvas("step3","1 - (Background Prob)",100,100,1500,500);
   step3->cd();
   h_fullProb->Draw("HIST");
 
