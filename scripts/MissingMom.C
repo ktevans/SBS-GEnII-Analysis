@@ -73,6 +73,7 @@ void MissingMom(const char *kinematic, int kin)
   double dx_n_lim1;
   double dx_n_lim2;
   double dx_p_lim1;
+  double dx_min;
 
   if (kin == 2)
   {
@@ -86,6 +87,7 @@ void MissingMom(const char *kinematic, int kin)
     dx_n_lim1 = -2.0;
     dx_n_lim2 = 2.0;
     dx_p_lim1 = 0.2;
+    dx_min = -4.0;
   }
 
   if (kin == 3)
@@ -99,7 +101,8 @@ void MissingMom(const char *kinematic, int kin)
     dx_n_cut = -1.0;
     dx_n_lim1 = -1.0;
     dx_n_lim2 = 1.4;
-    dx_p_lim1 = 0.0;
+    dx_p_lim1 = -0.2;
+    dx_min = -3.0;
   }
 
   if (kin == 4)
@@ -114,6 +117,7 @@ void MissingMom(const char *kinematic, int kin)
     dx_n_lim1 = -1.0;
     dx_n_lim2 = 1.4;
     dx_p_lim1 = 0.0;
+    dx_min = -3.0;
   }
 
   //Scan through all the entries in the TChain T
@@ -126,25 +130,25 @@ void MissingMom(const char *kinematic, int kin)
   }
   else std::cout << "\nFound " << T->GetEntries() << " events. Starting analysis.. \n";
 
-  TH1D* h_dx_p = new TH1D("h_dx_p", ";dx_p", 140.0, -4.0, 3.0);
+  TH1D* h_dx_p = new TH1D("h_dx_p", ";dx_p", 140.0, dx_min, 3.0);
   h_dx_p->GetXaxis()->SetTitle("dx [m]");
   h_dx_p->SetTitle("dx for Protons");
 
-  TH1D* h_dx_n = new TH1D("h_dx_n", ";dx_n", 140.0, -4.0, 3.0);
+  TH1D* h_dx_n = new TH1D("h_dx_n", ";dx_n", 140.0, dx_min, 3.0);
   h_dx_n->GetXaxis()->SetTitle("dx [m]");
   h_dx_n->SetTitle("dx for Neutrons");
 
-  TH2D* h_dx_missing_mom_p = new TH2D("h_dx_missing_mom_p", ";h_dx_missing_mom_p", 140.0, -4.0, 3.0, 80.0, 0.0, 0.4);
+  TH2D* h_dx_missing_mom_p = new TH2D("h_dx_missing_mom_p", ";h_dx_missing_mom_p", 140.0, dx_min, 3.0, 80.0, 0.0, 0.4);
   h_dx_missing_mom_p->GetXaxis()->SetTitle("dx [m]");
   h_dx_missing_mom_p->GetYaxis()->SetTitle("Missing Momentum [GeV]");
   h_dx_missing_mom_p->SetTitle("dx for Protons");
 
-  TH2D* h_dx_missing_mom_n = new TH2D("h_dx_missing_mom_n", ";h_dx_missing_mom_n", 140.0, -4.0, 3.0, 80.0, 0.0, 0.4);
+  TH2D* h_dx_missing_mom_n = new TH2D("h_dx_missing_mom_n", ";h_dx_missing_mom_n", 140.0, dx_min, 3.0, 80.0, 0.0, 0.4);
   h_dx_missing_mom_n->GetXaxis()->SetTitle("dx [m]");
   h_dx_missing_mom_n->GetYaxis()->SetTitle("Missing Momentum [GeV]");
   h_dx_missing_mom_n->SetTitle("dx for Neutrons");
 
-  TH2D* h_dx_pol_p = new TH2D("h_dx_pol_p", ";h_dx_pol_p", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
+  TH2D* h_dx_pol_p = new TH2D("h_dx_pol_p", ";h_dx_pol_p", 140.0, dx_min, 3.0, 80.0, -0.5, 1.5);
   h_dx_pol_p->GetXaxis()->SetTitle("dx [m]");
   h_dx_pol_p->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_p->SetTitle("dx for Protons");
@@ -159,17 +163,17 @@ void MissingMom(const char *kinematic, int kin)
   h_dx_pol_n->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_n->SetTitle("dx for Neutrons");
 
-  TH2D* h_dx_pol_n_low = new TH2D("h_dx_pol_n_low", ";h_dx_pol_n_low", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
-  TH2D* h_dx_pol_n_high = new TH2D("h_dx_pol_n_high", ";h_dx_pol_n_high", 140.0, -4.0, 3.0, 80.0, -0.5, 1.5);
-  TProfile* h_prof_pol_n_low = new TProfile("h_prof_pol_n_low", "pol_prof_n_low", 70.0, -4.0, 3.0, -0.5, 1.5);
+  TH2D* h_dx_pol_n_low = new TH2D("h_dx_pol_n_low", ";h_dx_pol_n_low", 140.0, dx_min, 3.0, 80.0, -0.5, 1.5);
+  TH2D* h_dx_pol_n_high = new TH2D("h_dx_pol_n_high", ";h_dx_pol_n_high", 140.0, dx_min, 3.0, 80.0, -0.5, 1.5);
+  TProfile* h_prof_pol_n_low = new TProfile("h_prof_pol_n_low", "pol_prof_n_low", 70.0, dx_min, 3.0, -0.5, 1.5);
   h_prof_pol_n_low->Approximate(kTRUE);
   //"I" Errors are as in default case (standard errors of the bin contents) The only difference is for the case when the spread in Y is zero. In this case for N > 0 the error is 1./SQRT(12.*N)
-  TProfile* h_prof_pol_n_high = new TProfile("h_prof_pol_n_high", "pol_prof_n_high", 70.0, -4.0, 3.0, -0.5, 1.5);
+  TProfile* h_prof_pol_n_high = new TProfile("h_prof_pol_n_high", "pol_prof_n_high", 70.0, dx_min, 3.0, -0.5, 1.5);
 
-  TProfile* h_prof_pol_p = new TProfile("h_prof_pol_p", "pol_prof_p", 70.0, -4.0, 3.0, -0.5, 1.5);
+  TProfile* h_prof_pol_p = new TProfile("h_prof_pol_p", "pol_prof_p", 70.0, dx_min, 3.0, -0.5, 1.5);
   h_prof_pol_p->SetMarkerColor(kRed);
   h_prof_pol_p->SetMarkerStyle(20);
-  TProfile* h_prof_pol_n = new TProfile("h_prof_pol_n", "pol_prof_n", 70.0, -4.0, 3.0, -0.5, 1.5);
+  TProfile* h_prof_pol_n = new TProfile("h_prof_pol_n", "pol_prof_n", 70.0, dx_min, 3.0, -0.5, 1.5);
   h_prof_pol_n->SetMarkerColor(kRed);
   h_prof_pol_n->SetMarkerStyle(20);
 
@@ -353,7 +357,7 @@ void MissingMom(const char *kinematic, int kin)
   double limp = 0.0;//dx_p_lim1;
 
   h_prof_pol_n->Draw();
-  TF1 *fitn = new TF1("fitn", "(x>-1.0 && x<=1.4)*([0]*x*x + [1]*x + [2] + [5]*x*x*x + [6]*x*x*x*x) + (x<=-1.0)*([3]) + (x>1.4)*([4])", -4.0, 3.0);
+  TF1 *fitn = new TF1("fitn", "(x>-1.0 && x<=1.4)*([0]*x*x + [1]*x + [2] + [5]*x*x*x + [6]*x*x*x*x) + (x<=-1.0)*([3]) + (x>1.4)*([4])", dx_min, 3.0);
   fitn->SetParameters(1.0,2.0,3.0,1.0,1.0,6.0,7.0);
   h_prof_pol_n->Fit("fitn");
   fitn->Draw("SAMES");
@@ -362,7 +366,7 @@ void MissingMom(const char *kinematic, int kin)
   c4->cd();
 
   h_prof_pol_p->Draw();
-  TF1 *fitp = new TF1("fitp", "(x<0.0)*([0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x)) + (x>=0.0)*([7])", -4.0, 3.0);
+  TF1 *fitp = new TF1("fitp", "(x<0.0)*([0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x)) + (x>=0.0)*([7])", dx_min, 3.0);
   fitp->SetParameters(1.0,2.0,3.0,4.0,5.0,6.0,7.0,1.0);
   h_prof_pol_p->Fit("fitp");
   fitp->Draw("SAMES");
