@@ -122,7 +122,7 @@ void SimDataComp(int kin)
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN3_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN3_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN3_simulation.root";
-    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN3_He3_dxdy.root";
+    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN2_He3_dxdy.root";
     output_file = "outfiles/AnalysisResults_GEN3.root";
     title_words = "GEN3";
     dx_min_d = -2.5;
