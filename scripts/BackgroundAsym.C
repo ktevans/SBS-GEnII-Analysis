@@ -100,7 +100,7 @@ void BackgroundAsym(int kin)
 
   //gErrorIgnoreLevel = kError;
 
-  int numberBins = 200;
+  int numberBins = 96;
 
   TChain* Tout = new TChain("Tout");
   Tout->Add(data_file);
