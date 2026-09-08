@@ -262,7 +262,8 @@ void SimDataComp(int kin)
     {
       h_pos_hel_dx->Fill(dx);
 
-      if(dxEllipse<=1.0)
+      //if(dxEllipse<=1.0)
+      if(dx<1.0&&dx>-1.0)
       {
         Npos++;
         h_pos_hel_dx_nwin->Fill(dx);
@@ -273,7 +274,8 @@ void SimDataComp(int kin)
     {
       h_neg_hel_dx->Fill(dx);
 
-      if(dxEllipse<=1.0)
+      //if(dxEllipse<=1.0)
+      if(dx<1.0&&dx>-1.0)
       {
         Nneg++;
         h_neg_hel_dx_nwin->Fill(dx);
