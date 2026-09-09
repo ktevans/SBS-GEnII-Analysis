@@ -810,7 +810,7 @@ void SimDataComp(int kin)
   TCanvas *c6 = new TCanvas("c6","EffectiveAsym",100,100,800,800);
   c6->Divide(1,2);
   c6->cd(1);
-  hAsym_nwin->Fit("pol 0", "L");
+  hAsym_nwin->Fit("pol 0", "Q");
   gStyle->SetOptFit(11);
   gPad->Update();
   hAsym_nwin->Draw();
