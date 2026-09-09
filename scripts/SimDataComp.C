@@ -811,6 +811,9 @@ void SimDataComp(int kin)
   c6->Divide(1,2);
   c6->cd(1);
   hAsym_nwin->Draw();
+  hAsym_nwin->Fit("pol 0");
+  gStyle->SetOptFit(11);
+  gPad->Update();
   c6->cd(2);
   hAsym_nwin_Eff->Draw();
 
