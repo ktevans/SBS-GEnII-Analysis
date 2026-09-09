@@ -479,7 +479,7 @@ void SimDataComp(int kin)
   TCanvas *step1 = new TCanvas("step1","testing",100,100,1500,500);
   step1->cd();
   scaled_h_sim_nucleons->Draw("HIST");
-  scaled_h_sim_nucleons->Write();
+  //scaled_h_sim_nucleons->Write();
 
   //TH1D* scaled_hN2dilution = (TH1D*)hN2dilution_p->Clone("scaled_hN2dilution");
   //scaled_hN2dilution->SetLineColor(kRed); //line, marker, fill
@@ -690,8 +690,8 @@ void SimDataComp(int kin)
 
   //h_total_dx->Write();
   //shifted_h_simIN_dx->Write();
-  shifted_h_sim_proton_dx->Write();
-  shifted_h_sim_neutron_dx->Write();
+  //shifted_h_sim_proton_dx->Write();
+  //shifted_h_sim_neutron_dx->Write();
   h_data_dx->Write();
 
   auto legend = new TLegend(0.55,0.70,0.99,0.99);
