@@ -479,6 +479,8 @@ void SimDataComp(int kin)
   TCanvas *step1 = new TCanvas("step1","testing",100,100,1500,500);
   step1->cd();
   scaled_h_sim_nucleons->Draw("HIST");
+
+  fout->WriteObject(&scaled_h_sim_nucleons, "scaled_h_sim_nucleons");
   //scaled_h_sim_nucleons->Write();
 
   //TH1D* scaled_hN2dilution = (TH1D*)hN2dilution_p->Clone("scaled_hN2dilution");
