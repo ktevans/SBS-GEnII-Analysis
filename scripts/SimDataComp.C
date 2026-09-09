@@ -84,7 +84,7 @@ void SimDataComp(int kin)
   TString nucleon_sim_file;
   TString inel_sim_file;
   TString pol_func_file;
-  TString N2_dilution_file;
+  //TString N2_dilution_file;
   TString title_words;
   TString output_file;
 
@@ -100,7 +100,7 @@ void SimDataComp(int kin)
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN2_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN2_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN2_simulation.root";
-    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN2_He3_dxdy.root";
+    //N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN2_He3_dxdy.root";
     output_file = "outfiles/AnalysisResults_GEN2.root";
     title_words = "GEN2";
     dx_min_d = -3.0;
@@ -122,7 +122,7 @@ void SimDataComp(int kin)
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN3_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN3_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN3_simulation.root";
-    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN2_He3_dxdy.root";
+    //N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN2_He3_dxdy.root";
     output_file = "outfiles/AnalysisResults_GEN3.root";
     title_words = "GEN3";
     dx_min_d = -2.5;
@@ -144,7 +144,7 @@ void SimDataComp(int kin)
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN4_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN4a_simulation.root";
-    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN4_He3_dxdy.root";
+    //N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN4_He3_dxdy.root";
     output_file = "outfiles/AnalysisResults_GEN4a.root";
     title_words = "GEN4a";
     dx_min_d = -3.0;
@@ -166,7 +166,7 @@ void SimDataComp(int kin)
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN4_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
     pol_func_file = "outfiles/parsed_GEn_pass2_GEN4b_simulation.root";
-    N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN4_He3_dxdy.root";
+    //N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN4_He3_dxdy.root";
     output_file = "outfiles/AnalysisResults_GEN4b.root";
     title_words = "GEN4b";
     dx_min_d = -3.0;
@@ -198,7 +198,7 @@ void SimDataComp(int kin)
   TFile *fout = new TFile(output_file,"RECREATE");
   TTree *T_out = new TTree("T_out", "Analyzed Data");
 
-  double dx_data_out; 
+  double dx_data_out;
   int helicity_out;
   T_out->Branch("dx_data",    &dx_data_out,    "dx_data/D");
   T_out->Branch("helicity",   &helicity_out,   "helicity/I");
@@ -362,9 +362,9 @@ void SimDataComp(int kin)
   polFile->GetObject("fitp", fitp);
   polFile->GetObject("fitn", fitn);
 
-  TFile *N2File = TFile::Open(N2_dilution_file);
-  TH1D *hN2dilution_p = nullptr;
-  N2File->GetObject("hN2dilution_p", hN2dilution_p);
+  //TFile *N2File = TFile::Open(N2_dilution_file);
+  //TH1D *hN2dilution_p = nullptr;
+  //N2File->GetObject("hN2dilution_p", hN2dilution_p);
 
   //std::cout << "sqrt(n) error " << h_simIN_dx->GetBinError(250) << std::endl;
   //std::cout << "Get Sumw2 Error: " << h_simIN_dx->GetSumw2() << std::endl;
@@ -481,11 +481,11 @@ void SimDataComp(int kin)
   scaled_h_sim_nucleons->Draw("HIST");
   scaled_h_sim_nucleons->Write();
 
-  TH1D* scaled_hN2dilution = (TH1D*)hN2dilution_p->Clone("scaled_hN2dilution");
-  scaled_hN2dilution->SetLineColor(kRed); //line, marker, fill
-  scaled_hN2dilution->Reset("ICESM");
+  //TH1D* scaled_hN2dilution = (TH1D*)hN2dilution_p->Clone("scaled_hN2dilution");
+  //scaled_hN2dilution->SetLineColor(kRed); //line, marker, fill
+  //scaled_hN2dilution->Reset("ICESM");
 
-  scaled_hN2dilution->Multiply(scaled_h_sim_nucleons);
+  //scaled_hN2dilution->Multiply(scaled_h_sim_nucleons);
 
   //Create residual and probability plots
 
@@ -570,8 +570,8 @@ void SimDataComp(int kin)
     double c_n_err   = shifted_h_sim_neutron_dx->GetBinError(bin);
     double c_bg      = shifted_h_simIN_dx->GetBinContent(bin); //Backgrounds with asymmetry contributions
     double c_bg_err  = shifted_h_simIN_dx->GetBinError(bin);
-    double c_dil     = scaled_hN2dilution->GetBinContent(bin); //Backgrounds with no asymmetry contribution
-    double c_dil_err = scaled_hN2dilution->GetBinError(bin);
+    //double c_dil     = scaled_hN2dilution->GetBinContent(bin); //Backgrounds with no asymmetry contribution
+    //double c_dil_err = scaled_hN2dilution->GetBinError(bin);
 
     double P_tot = c_p + c_n + c_bg; // + c_dil;
 
