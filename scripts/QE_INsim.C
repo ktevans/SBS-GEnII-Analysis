@@ -80,7 +80,7 @@ void QE_INsim(const char *kinematic)
   {
     T->GetEntry(iev);
 
-    if (abs(e_kine_W2-1.0)<0.5 && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.2 && abs(bb_tr_vz)<0.27 && sbs_hcal_e>0.025 && abs(dy_hcal)<0.99)
+    if (e_kine_W2>0.4 && e_kine_W2<1.6 && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.3 && abs(bb_tr_vz)<0.27 && sbs_hcal_e>0.025 && abs(dy_hcal)<0.88)
     {
       h_dx->Fill(dx_hcal);
       h_dy->Fill(dy_hcal);
