@@ -690,8 +690,8 @@ void SimDataComp(int kin)
 
   //h_total_dx->Write();
   //shifted_h_simIN_dx->Write();
-  //shifted_h_sim_proton_dx->Write();
-  //shifted_h_sim_neutron_dx->Write();
+  shifted_h_sim_proton_dx->Write();
+  shifted_h_sim_neutron_dx->Write();
   h_data_dx->Write();
 
   auto legend = new TLegend(0.55,0.70,0.99,0.99);
