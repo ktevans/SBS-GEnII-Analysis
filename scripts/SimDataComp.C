@@ -474,14 +474,15 @@ void SimDataComp(int kin)
   //Account for diluitions
 
   TH1D* scaled_h_sim_nucleons = (TH1D*)shifted_h_sim_proton_dx->Clone("scaled_h_sim_nucleons");
+  scaled_h_sim_nucleons->SetDirectory(nullptr);
   scaled_h_sim_nucleons->Add(shifted_h_sim_neutron_dx);
 
   TCanvas *step1 = new TCanvas("step1","testing",100,100,1500,500);
   step1->cd();
   scaled_h_sim_nucleons->Draw("HIST");
 
-  fout->WriteObject(&scaled_h_sim_nucleons, "scaled_h_sim_nucleons");
-  //scaled_h_sim_nucleons->Write();
+  //fout->WriteObject(&scaled_h_sim_nucleons, "scaled_h_sim_nucleons");
+  scaled_h_sim_nucleons->Write();
 
   //TH1D* scaled_hN2dilution = (TH1D*)hN2dilution_p->Clone("scaled_hN2dilution");
   //scaled_hN2dilution->SetLineColor(kRed); //line, marker, fill
