@@ -90,4 +90,12 @@ void BkgComp()
   h_dx->Draw("HIST SAMES");
   h_dx_acc->Draw("HIST SAMES");
 
+  TH1D *h_combo = (TH1D*)h_N2_scaled->Clone("h_combo");
+  h_combo->Add(h_dx);
+  h_combo->Add(h_dx_acc);
+
+  TCanvas *c2 = new TCanvas("c12", "Background Shapes Combined", 100,100,800,800);
+  c2->cd();
+  h_combo->Draw();
+
 }
