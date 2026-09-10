@@ -41,13 +41,13 @@ void BkgComp()
 
   TH1D *h_N2_scaled = (TH1D*)hN2dilution_p->Clone("h_N2_scaled");
   h_N2_scaled->Multiply(scaled_h_sim_nucleons);
-  //h_N2_scaled->Scale(1.0/h_N2_scaled->Integral());
+  h_N2_scaled->Scale(1.0/h_N2_scaled->Integral());
   h_N2_scaled->SetLineColor(kBlue);
 
   TFile *T_InelFile = TFile::Open(InelFile);
   TH1D *h_dx = nullptr;
   T_InelFile->GetObject("h_dx", h_dx);
-  //h_dx->Scale(1.0/h_dx->Integral());
+  h_dx->Scale(1.0/h_dx->Integral());
   h_dx->SetLineColor(kGreen);
 
   TChain* Tout = new TChain("Tout");
@@ -80,7 +80,7 @@ void BkgComp()
 
   }
 
-  h_dx_acc->Scale(0.017);
+  h_dx_acc->Scale(1.0/h_dx_acc->Integral());
 
 
   TCanvas *c1 = new TCanvas("c1", "Background Shapes", 100,100,800,800);
