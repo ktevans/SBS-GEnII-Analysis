@@ -80,6 +80,8 @@ void BkgComp()
 
   }
 
+  h_dx_acc->Scale(0.017);
+
 
   TCanvas *c1 = new TCanvas("c1", "Background Shapes", 100,100,800,800);
   c1->cd();
