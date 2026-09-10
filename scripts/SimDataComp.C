@@ -474,7 +474,7 @@ void SimDataComp(int kin)
   //Account for diluitions
 
   TH1D* scaled_h_sim_nucleons = (TH1D*)shifted_h_sim_proton_dx->Clone("scaled_h_sim_nucleons");
-  scaled_h_sim_nucleons->SetDirectory(nullptr);
+  scaled_h_sim_nucleons->SetDirectory(fout);
   scaled_h_sim_nucleons->Add(shifted_h_sim_neutron_dx);
 
   TCanvas *step1 = new TCanvas("step1","testing",100,100,1500,500);
