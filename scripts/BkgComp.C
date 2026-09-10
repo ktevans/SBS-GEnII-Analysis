@@ -53,7 +53,8 @@ void BkgComp()
 
   TCanvas *c1 = new TCanvas("c1", "Background Shapes", 100,100,800,800);
   c1->cd();
-  h_N2_scaled->Draw("HIST");
+  scaled_h_sim_nucleons->Draw("HIST");
+  h_N2_scaled->Draw("HIST SAMES");
   h_dx->Draw("HIST SAMES");
 
 }
