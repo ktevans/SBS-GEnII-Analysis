@@ -369,7 +369,7 @@ void SimDataCompN2(int kin)
 
   TFile *ScalingFile = TFile::Open("outfiles/AnalysisResults_GEN2_g4sbs.root");
   TH1D *hScaling = nullptr;
-  ScalingFile->GetObject("hScaling", scaled_h_sim_nucleons);
+  ScalingFile->GetObject("scaled_h_sim_nucleons", hScaling);
 
   hN2dilution_p->Multiply(hScaling);
 
