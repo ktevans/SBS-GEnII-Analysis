@@ -41,13 +41,11 @@ void BkgComp()
 
   TH1D *h_N2_scaled = (TH1D*)hN2dilution_p->Clone("h_N2_scaled");
   h_N2_scaled->Multiply(scaled_h_sim_nucleons);
-  h_N2_scaled->Scale(1.0/h_N2_scaled->Integral());
   h_N2_scaled->SetLineColor(kBlue);
 
   TFile *T_InelFile = TFile::Open(InelFile);
   TH1D *h_dx = nullptr;
   T_InelFile->GetObject("h_dx", h_dx);
-  h_dx->Scale(1.0/h_dx->Integral());
   h_dx->SetLineColor(kGreen);
 
   TChain* Tout = new TChain("Tout");
@@ -96,8 +94,18 @@ void BkgComp()
 
   gPad->Update();
 
+  TCanvas *cData_comp = new TCanvas("cData_comp", "Data Backgrounds Compared to Scaled Inel", 100,100,800,800);
+  cData_comp->cd();
+  h_dx->Draw("HIST");
+  h_dx_pion->Draw("HIST SAMES");
+  h_dx_acc->Draw("HIST SAMES");
+
+  gPad->Update();
+
   h_dx_acc->Scale(1.0/h_dx_acc->Integral());
   h_dx_pion->Scale(1.0/h_dx_pion->Integral());
+  h_dx->Scale(1.0/h_dx->Integral());
+  h_N2_scaled->Scale(1.0/h_N2_scaled->Integral());
 
   TCanvas *c1 = new TCanvas("c1", "Background Shapes", 100,100,800,800);
   c1->cd();
@@ -110,8 +118,8 @@ void BkgComp()
   TCanvas *c2 = new TCanvas("c2", "Fit Inelastics", 100,100,800,800);
   c2->cd();
   h_dx->Draw();
-  TF1 *fit_inel = new TF1("fit_inel", "(x>-1.0)*([0] + [1]*x + [2]*x*x) + (x<-1.0)*([3] + [4]*x + [5]*x*x + [6]*x*x*x)", -3.0, 2.0);
-  fit_inel->SetParameters(1.0,2.0,3.0,4.0,5.0,6.0,7.0);
+  TF1 *fit_inel = new TF1("fit_inel", "(x>-1.0)*([0] + [1]*x + [2]*x*x + [7]*x*x*x + [8]*x*x*x*x) + (x<-1.0)*([3] + [4]*x + [5]*x*x + [6]*x*x*x)", -3.0, 2.0);
+  fit_inel->SetParameters(1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0);
   h_dx->Fit("fit_inel");
   fit_inel->Draw("SAMES");
 
