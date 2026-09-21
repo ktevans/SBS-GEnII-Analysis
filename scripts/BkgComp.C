@@ -31,6 +31,9 @@ void BkgComp()
   TString DataFile = "/volatile/halla/sbs/ktevans/pass3/QE_data_GEN2_sbs100p_nucleon_np_model2.root"; //Only global cuts
   TString FittedFile = "outfiles/AnalysisResults_GEN2.root"; //scaled and shifted histograms live here
 
+  TString outfile = "outfiles/BckgdFit.root";
+  TFile *fout = new TFile(outfile,"RECREATE");
+
   TFile *T_N2File = TFile::Open(N2File);
   TH1D *hN2dilution_p = nullptr;
   T_N2File->GetObject("hN2dilution_p", hN2dilution_p);
@@ -92,8 +95,6 @@ void BkgComp()
   h_dx_pion->Draw("HIST");
   h_dx_acc->Draw("HIST SAMES");
 
-  gPad->Update();
-
   TCanvas *cData_comp = new TCanvas("cData_comp", "Data Backgrounds Compared to Scaled Inel", 100,100,800,800);
   cData_comp->cd();
   h_dx->Draw("HIST");
@@ -122,5 +123,8 @@ void BkgComp()
   fit_inel->SetParameters(1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0);
   h_dx->Fit("fit_inel");
   fit_inel->Draw("SAMES");
+
+  fit_inel->Write();
+  fout->Write();
 
 }
