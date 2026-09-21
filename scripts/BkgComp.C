@@ -69,6 +69,10 @@ void BkgComp()
   h_dx_acc->GetXaxis()->SetTitle("dx [m]");
   h_dx_acc->SetLineColor(kRed);
 
+  TH1D* h_dx_pion = new TH1D("h_dx_pion","Pions", 100, -3.0, 2.0);
+  h_dx_pion->GetXaxis()->SetTitle("dx [m]");
+  //h_dx_pion->SetLineColor(kRed);
+
   for (size_t iev = 0; iev < Tout->GetEntries(); iev++)
   {
     Tout->GetEntry(iev);
@@ -78,9 +82,15 @@ void BkgComp()
       h_dx_acc->Fill(dx);
     }
 
+    if(W2>0.4 && W2<1.6 && abs(coin+0.47385)<(3*1.18) && grinch_track==0.0 && grinch_clusSize<3.0 && ps_e<0.2 && abs(((ps_e+sh_e)/tr_p)-0.97)<0.2 && abs(dy)<0.88)
+    {
+      h_dx_pion->Fill(dx);
+    }
+
   }
 
   h_dx_acc->Scale(1.0/h_dx_acc->Integral());
+  h_dx_pion->Scale(1.0/h_dx_pion->Integral());
 
 
   TCanvas *c1 = new TCanvas("c1", "Background Shapes", 100,100,800,800);
@@ -89,13 +99,14 @@ void BkgComp()
   h_N2_scaled->Draw("SAMES");
   h_dx->Draw("HIST SAMES");
   h_dx_acc->Draw("HIST SAMES");
+  h_dx_pion->Draw("HIST SAMES");
 
-  TH1D *h_combo = (TH1D*)h_N2_scaled->Clone("h_combo");
-  h_combo->Add(h_dx);
-  h_combo->Add(h_dx_acc);
-
-  TCanvas *c2 = new TCanvas("c12", "Background Shapes Combined", 100,100,800,800);
+  TCanvas *c2 = new TCanvas("c2", "Fit Inelastics", 100,100,800,800);
   c2->cd();
-  h_combo->Draw();
+  h_dx->Draw();
+  TF1 *fit_inel = new TF1("fit_inel", "[0] + [1]*x + [2]*x*x + [3]*x*x*x", -3.0, 2.0);
+  fit_inel->SetParameters(1.0,2.0,3.0,4.0);
+  h_dx->Fit("fit_inel");
+  fit_inel->Draw("SAMES");
 
 }
