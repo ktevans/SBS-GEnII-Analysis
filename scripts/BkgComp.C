@@ -125,6 +125,7 @@ void BkgComp()
   fit_inel->Draw("SAMES");
 
   h_dx->SetDirectory(fout);
+  fit_inel->SetDirectory(fout);
 
   fit_inel->Write();
   fout->Write();
