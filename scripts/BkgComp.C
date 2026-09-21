@@ -91,8 +91,8 @@ void BkgComp()
 
   TCanvas *cData = new TCanvas("cData", "Data Backgrounds", 100,100,800,800);
   cData->cd();
-  h_dx_acc->Draw("HIST");
-  h_dx_pion->Draw("HIST SAMES");
+  h_dx_pion->Draw("HIST");
+  h_dx_acc->Draw("HIST SAMES");
 
   gPad->Update();
 
@@ -110,8 +110,8 @@ void BkgComp()
   TCanvas *c2 = new TCanvas("c2", "Fit Inelastics", 100,100,800,800);
   c2->cd();
   h_dx->Draw();
-  TF1 *fit_inel = new TF1("fit_inel", "[0] + [1]*x + [2]*x*x + [3]*x*x*x + [4]*x*x*x*x", -3.0, 2.0);
-  fit_inel->SetParameters(1.0,2.0,3.0,4.0,5.0);
+  TF1 *fit_inel = new TF1("fit_inel", "(x>-1.0)*([0] + [1]*x + [2]*x*x) + (x<-1.0)*([3] + [4]*x + [5]*x*x + [6]*x*x*x)", -3.0, 2.0);
+  fit_inel->SetParameters(1.0,2.0,3.0,4.0,5.0,6.0,7.0);
   h_dx->Fit("fit_inel");
   fit_inel->Draw("SAMES");
 
