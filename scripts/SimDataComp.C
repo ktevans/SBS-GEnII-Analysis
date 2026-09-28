@@ -125,10 +125,10 @@ void SimDataComp(int kin)
     //N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN2_He3_dxdy.root";
     output_file = "outfiles/AnalysisResults_GEN3.root";
     title_words = "GEN3";
-    dx_min_d = -2.5;
-    dx_min_i = -3;
-    dx_max_d = 1.5;
-    dx_max_i = 2;
+    dx_min_d = -2.0;
+    dx_min_i = -2;
+    dx_max_d = 1.0;
+    dx_max_i = 1;
     pol_beam = 0.8649;
     pol_beam_err = 0.0008;
     pol_targ = 0.4212;
@@ -406,7 +406,7 @@ void SimDataComp(int kin)
   FitFunc->SetParLimits(1,-1.0,1.0);  // proton shift
   FitFunc->SetParLimits(2,0.08,5.0);   // neutron scale
   FitFunc->SetParLimits(3,-1.0,0.0);  // neutron shift
-  FitFunc->SetParLimits(4,0.0,0.5);   // background scale
+  FitFunc->SetParLimits(4,0.1,5.0);   // background scale
   FitFunc->SetParLimits(5,-0.3,2.0);   // background shift
 
   h_data_dx->Fit(FitFunc,"0","",xmin,xmax);
