@@ -404,9 +404,9 @@ void SimDataComp(int kin)
   FitFunc->SetParameters(startpar);
   FitFunc->SetParLimits(0,0.1,5.0);   // proton scale
   FitFunc->SetParLimits(1,-1.0,1.0);  // proton shift
-  FitFunc->SetParLimits(2,0.08,5.0);   // neutron scale
-  FitFunc->SetParLimits(3,-0.1,1.0);  // neutron shift
-  FitFunc->SetParLimits(4,0.1,5.0);   // background scale
+  FitFunc->SetParLimits(2,0.1,5.0);   // neutron scale
+  FitFunc->SetParLimits(3,-1.0,1.0);  // neutron shift
+  FitFunc->SetParLimits(4,0.05,5.0);   // background scale
   FitFunc->SetParLimits(5,-0.3,2.0);   // background shift
 
   h_data_dx->Fit(FitFunc,"0","",xmin,xmax);
