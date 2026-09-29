@@ -356,8 +356,6 @@ void SimDataComp(int kin)
 
   }//end loop over events
 
-  h_simIN_dx->Smooth();
-
   TFile *polFile = TFile::Open(pol_func_file);
   TF1 *fitp = nullptr;
   TF1 *fitn = nullptr;
