@@ -103,10 +103,10 @@ void BkgComp()
 
   gPad->Update();
 
-  h_dx_acc->Scale(1.0/h_dx_acc->Integral());
-  h_dx_pion->Scale(1.0/h_dx_pion->Integral());
-  h_dx->Scale(1.0/h_dx->Integral());
-  h_N2_scaled->Scale(1.0/h_N2_scaled->Integral());
+  //h_dx_acc->Scale(1.0/h_dx_acc->Integral());
+  //h_dx_pion->Scale(1.0/h_dx_pion->Integral());
+  //h_dx->Scale(1.0/h_dx->Integral());
+  //h_N2_scaled->Scale(1.0/h_N2_scaled->Integral());
 
   TCanvas *c1 = new TCanvas("c1", "Background Shapes", 100,100,800,800);
   c1->cd();
@@ -122,12 +122,12 @@ void BkgComp()
   TF1 *fit_inel = new TF1("fit_inel", "(x>-1.0)*([0] + [1]*x + [2]*x*x + [7]*x*x*x + [8]*x*x*x*x) + (x<-1.0)*([3] + [4]*x + [5]*x*x + [6]*x*x*x)", -3.0, 2.0);
   fit_inel->SetParameters(1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0);
   h_dx->Fit("fit_inel");
-  fit_inel->Draw("SAMES");
+  fit_inel->Draw("SAME");
 
   //h_dx->SetDirectory(fout);
   //fit_inel->SetDirectory(fout);
 
-  fit_inel->Write();
+  //fit_inel->Write();
   fout->Write();
 
 }
