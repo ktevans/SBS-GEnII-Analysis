@@ -416,10 +416,10 @@ void SimDataComp(int kin)
   double xmin = h_data_dx->GetXaxis()->GetBinLowEdge(1);
   double xmax = h_data_dx->GetXaxis()->GetBinUpEdge(nbins);
 
-  //TF1 *FitFunc = new TF1("FitFunc",&fitsim,dx_min_i,dx_max_i,6); //-6,4,6
+  TF1 *FitFunc = new TF1("FitFunc",&fitsim,dx_min_i,dx_max_i,6); //-6,4,6
 
   //smooth inelastics
-  TF1 *FitFunc = new TF1("FitFunc",&fitsim_smooth,dx_min_i,dx_max_i,6); //-6,4,6
+  //TF1 *FitFunc = new TF1("FitFunc",&fitsim_smooth,dx_min_i,dx_max_i,6); //-6,4,6
 
   FitFunc->SetNpx(numberBins);
 
@@ -458,8 +458,8 @@ void SimDataComp(int kin)
   //shifted_h_sim_neutron_dx->Sumw2();
 
   //*****************************************
-  //TH1D* shifted_h_simIN_dx = (TH1D*)h_simIN_dx->Clone("shifted_h_simIN_dx");
-  TH1D* shifted_h_simIN_dx = (TH1D*)h_fit_inel->Clone("shifted_h_simIN_dx");
+  TH1D* shifted_h_simIN_dx = (TH1D*)h_simIN_dx->Clone("shifted_h_simIN_dx");
+  //TH1D* shifted_h_simIN_dx = (TH1D*)h_fit_inel->Clone("shifted_h_simIN_dx");
   shifted_h_simIN_dx->Reset("ICESM");
   //shifted_h_simIN_dx->Sumw2();
 
