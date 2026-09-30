@@ -384,7 +384,7 @@ void SimDataComp(int kin)
   //h_fit_inel = dynamic_cast<TH1F*>(fit_inel->GetHistogram());
   h_fit_inel = fit_inel->GetHistogram();
 
-  h_fit_inel->Draw();
+  //h_fit_inel->Draw();
 
   TFile *polFile = TFile::Open(pol_func_file);
   TF1 *fitp = nullptr;
@@ -410,6 +410,7 @@ void SimDataComp(int kin)
   h_sim_proton_dx->Scale(1.0/h_sim_proton_dx->Integral());
   h_sim_neutron_dx->Scale(1.0/h_sim_neutron_dx->Integral());
   h_simIN_dx->Scale(1.0/h_simIN_dx->Integral());
+  h_fit_inel->Scale(1.0/h_fit_inel->Integral());
 
   int nbins = h_data_dx->GetNbinsX();
   double xmin = h_data_dx->GetXaxis()->GetBinLowEdge(1);
@@ -456,7 +457,9 @@ void SimDataComp(int kin)
   shifted_h_sim_neutron_dx->Reset("ICESM");
   //shifted_h_sim_neutron_dx->Sumw2();
 
-  TH1D* shifted_h_simIN_dx = (TH1D*)h_simIN_dx->Clone("shifted_h_simIN_dx");
+  //*****************************************
+  //TH1D* shifted_h_simIN_dx = (TH1D*)h_simIN_dx->Clone("shifted_h_simIN_dx");
+  TH1D* shifted_h_simIN_dx = (TH1D*)h_fit_inel->Clone("shifted_h_simIN_dx");
   shifted_h_simIN_dx->Reset("ICESM");
   //shifted_h_simIN_dx->Sumw2();
 
