@@ -379,7 +379,7 @@ void SimDataComp(int kin)
 
   h_simIN_dx->Smooth();
   TFile *inelFile = TFile::Open(inel_sim_file);
-  //TF1 *fit_inel = nullptr;
+  TF1 *fit_inel = nullptr;
   inelFile->GetObject("fit_inel", fit_inel);
   h_fit_inel = fit_inel->GetHistogram();
 
