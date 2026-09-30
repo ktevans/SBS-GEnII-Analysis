@@ -83,7 +83,8 @@ void QE_INsim(const char *kinematic)
     //GEN2
     //if (e_kine_W2>0.4 && e_kine_W2<1.6 && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.3 && abs(bb_tr_vz)<0.27 && sbs_hcal_e>0.025 && abs(dy_hcal)<0.88)
     //GEN3
-    if (e_kine_W2>-1.0 && e_kine_W2<2.0 && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.3 && abs(bb_tr_vz)<0.27 && sbs_hcal_e>0.025 && abs(dy_hcal)<1.2)
+    //if (e_kine_W2>-1.0 && e_kine_W2<2.0 && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.3 && abs(bb_tr_vz)<0.27 && sbs_hcal_e>0.025 && abs(dy_hcal)<1.2)
+    if (e_kine_W2>0.2 && e_kine_W2<1.8 && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1)<0.3 && abs(bb_tr_vz)<0.27 && sbs_hcal_e>0.025 && abs(dy_hcal)<0.88)
     {
       h_dx->Fill(dx_hcal);
       h_dy->Fill(dy_hcal);
@@ -105,6 +106,10 @@ void QE_INsim(const char *kinematic)
   c1->Divide(1,2);
   c1->cd(1);
   h_dx->Draw();
+  TF1 *fit_inel = new TF1("fit_inel", "(x>-1.0)*([0] + [1]*x + [2]*x*x + [7]*x*x*x + [8]*x*x*x*x) + (x<-1.0)*([3] + [4]*x + [5]*x*x + [6]*x*x*x)", -3.0, 2.0);
+  fit_inel->SetParameters(1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0);
+  h_dx->Fit("fit_inel");
+  fit_inel->Draw("SAME");
   c1->cd(2);
   h_dy->Draw();
 
@@ -113,5 +118,6 @@ void QE_INsim(const char *kinematic)
   //Save the canvas to a pdf
   c1->Print(outputfile);
 
+  fit_inel->Write();
   fout->Write();
 }
