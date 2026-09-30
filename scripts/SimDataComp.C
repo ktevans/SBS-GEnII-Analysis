@@ -35,6 +35,7 @@ TH1D *h_prob_neutron_dx;
 TH1D *h_prob_bckgrnd_dx;
 TH1D *h_prob_proton_dx_polW;
 TH1D *h_prob_neutron_dx_polW;
+TF1 *fit_inel;
 //TF1 *fitn_low_in;
 //TF1 *fitn_high_in;
 //TF1 *fitp_low_in;
@@ -59,6 +60,26 @@ double fitsim( double *x, double *par)
   return Rp * p + Rn * n + Rbg * bg;
 
 }//end fitsim
+
+double fitsim_smooth( double *x, double *par)
+{
+
+  const double dx_smooth   = x[0];
+  const double Rp_smooth   = par[0];
+  const double shp_smooth  = par[1];
+  const double Rn_smooth   = par[2];
+  const double shn_smooth  = par[3];
+  const double Rbg_smooth  = par[4];
+  const double shbg_smooth = par[5];
+
+  //condition ? expression_if_true : expression_if_false
+  const double p_smooth  = (h_sim_proton_dx  ? h_sim_proton_dx->Interpolate(dx_smooth - shp_smooth)  :0.0);
+  const double n_smooth  = (h_sim_neutron_dx ? h_sim_neutron_dx->Interpolate(dx_smooth - shn_smooth) :0.0);
+  const double bg_smooth = (fit_inel         ? fit_inel->Interpolate(dx_smooth - shbg_smooth)        :0.0);
+
+  return Rp_smooth * p_smooth + Rn_smooth * n_smooth + Rbg_smooth * bg_smooth;
+
+}//end fitsim_smooth
 
 double fitAsym(double *xA, double *parA)
 {
@@ -356,6 +377,11 @@ void SimDataComp(int kin)
 
   }//end loop over events
 
+  h_simIN_dx->Smooth();
+  TFile *inelFile = TFile::Open(inel_sim_file);
+  //TF1 *fit_inel = nullptr;
+  inelFile->GetObject("fit_inel", fit_inel);
+
   TFile *polFile = TFile::Open(pol_func_file);
   TF1 *fitp = nullptr;
   TF1 *fitn = nullptr;
@@ -410,6 +436,25 @@ void SimDataComp(int kin)
   //FitFunc->SetParLimits(5,-0.3,2.0);   // background shift
 
   h_data_dx->Fit(FitFunc,"0","",xmin,xmax);
+
+  //Smooth inelastics
+
+  TF1 *FitFunc_smooth = new TF1("FitFunc_smooth",&fitsim_smooth,dx_min_i,dx_max_i,6); //-6,4,6
+
+  FitFunc_smooth->SetNpx(numberBins);
+
+  double startpar_smooth[] = {1.0,-0.5,0.5,-0.7,0.1,-1.0};
+  FitFunc_smooth->SetParameters(startpar_smooth);
+  FitFunc_smooth->SetParLimits(0,0.0,100);   // proton scale
+  FitFunc_smooth->SetParLimits(1,-4.0,4.0);  // proton shift
+  FitFunc_smooth->SetParLimits(2,0.0,100);   // neutron scale
+  FitFunc_smooth->SetParLimits(3,-4.0,4.0);  // neutron shift
+  FitFunc_smooth->SetParLimits(4,0.0,100);   // background scale
+  FitFunc_smooth->SetParLimits(5,-4.0,4.0);  // background shift
+
+  h_data_dx->Fit(FitFunc_smooth,"0","",xmin,xmax);
+
+  //---------
 
   std::cout << "Proton Shift: " << FitFunc->GetParameter(0)*FitFunc->GetParameter(1) << std::endl;
   std::cout << "Neutron Shift: " << FitFunc->GetParameter(2)*FitFunc->GetParameter(3) << std::endl;
