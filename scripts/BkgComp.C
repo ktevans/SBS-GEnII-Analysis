@@ -120,18 +120,21 @@ void BkgComp()
 
   gPad->Update();
 
-  h_dx_acc->Scale(1.0/h_dx_acc->Integral());
-  h_dx_pion->Scale(1.0/h_dx_pion->Integral());
-  h_dx->Scale(1.0/h_dx->Integral());
-  h_N2_scaled->Scale(1.0/h_N2_scaled->Integral());
-
-  TCanvas *c1 = new TCanvas("c1", "Background Shapes", 100,100,800,800);
-  c1->cd();
-  //scaled_h_sim_nucleons->Draw("HIST");
+  TCanvas *cN2 = new TCanvas("cN2", "N2 Background", 100,100,800,800);
+  cN2->cd();
   h_N2_scaled->Draw("HIST");
-  h_dx->Draw("HIST SAMES");
-  h_dx_acc->Draw("HIST SAMES");
-  h_dx_pion->Draw("HIST SAMES");
+
+  //h_dx_acc->Scale(1.0/h_dx_acc->Integral());
+  //h_dx_pion->Scale(1.0/h_dx_pion->Integral());
+  //h_dx->Scale(1.0/h_dx->Integral());
+  //h_N2_scaled->Scale(1.0/h_N2_scaled->Integral());
+
+  //TCanvas *c1 = new TCanvas("c1", "Background Shapes", 100,100,800,800);
+  //c1->cd();
+  //h_N2_scaled->Draw("HIST");
+  //h_dx->Draw("HIST SAMES");
+  //h_dx_acc->Draw("HIST SAMES");
+  //h_dx_pion->Draw("HIST SAMES");
 
   TCanvas *c2 = new TCanvas("c2", "Coin Time", 100,100,800,800);
   c2->Divide(1,2);
