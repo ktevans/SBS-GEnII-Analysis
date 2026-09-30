@@ -35,7 +35,7 @@ TH1D *h_prob_neutron_dx;
 TH1D *h_prob_bckgrnd_dx;
 TH1D *h_prob_proton_dx_polW;
 TH1D *h_prob_neutron_dx_polW;
-TF1 *fit_inel;
+TH1D *h_fit_inel;
 //TF1 *fitn_low_in;
 //TF1 *fitn_high_in;
 //TF1 *fitp_low_in;
@@ -75,7 +75,7 @@ double fitsim_smooth( double *x, double *par)
   //condition ? expression_if_true : expression_if_false
   const double p_smooth  = (h_sim_proton_dx  ? h_sim_proton_dx->Interpolate(dx_smooth - shp_smooth)  :0.0);
   const double n_smooth  = (h_sim_neutron_dx ? h_sim_neutron_dx->Interpolate(dx_smooth - shn_smooth) :0.0);
-  const double bg_smooth = (fit_inel         ? fit_inel->Interpolate(dx_smooth - shbg_smooth)        :0.0);
+  const double bg_smooth = (h_fit_inel       ? h_fit_inel->Interpolate(dx_smooth - shbg_smooth)      :0.0);
 
   return Rp_smooth * p_smooth + Rn_smooth * n_smooth + Rbg_smooth * bg_smooth;
 
@@ -381,6 +381,7 @@ void SimDataComp(int kin)
   TFile *inelFile = TFile::Open(inel_sim_file);
   //TF1 *fit_inel = nullptr;
   inelFile->GetObject("fit_inel", fit_inel);
+  h_fit_inel = fit_inel->GetHistogram();
 
   TFile *polFile = TFile::Open(pol_func_file);
   TF1 *fitp = nullptr;
