@@ -41,26 +41,6 @@ TH1 *h_fit_inel;
 //TF1 *fitp_low_in;
 //TF1 *fitp_high_in;
 
-double fitsim( double *x, double *par)
-{
-
-  const double dx   = x[0];
-  const double Rp   = par[0];
-  const double shp  = par[1];
-  const double Rn   = par[2];
-  const double shn  = par[3];
-  const double Rbg  = par[4];
-  const double shbg = par[5];
-
-  //condition ? expression_if_true : expression_if_false
-  const double p  = (h_sim_proton_dx  ? h_sim_proton_dx->Interpolate(dx - shp)  :0.0);
-  const double n  = (h_sim_neutron_dx ? h_sim_neutron_dx->Interpolate(dx - shn) :0.0);
-  const double bg = (h_simIN_dx       ? h_simIN_dx->Interpolate(dx - shbg)      :0.0);
-
-  return Rp * p + Rn * n + Rbg * bg;
-
-}//end fitsim
-
 double fitsim_smooth( double *x, double *par)
 {
 
@@ -430,7 +410,7 @@ void SimDataComp(int kin)
   FitFunc->SetParLimits(1,-4.0,4.0);  // proton shift
   FitFunc->SetParLimits(2,0.0,100);   // neutron scale
   FitFunc->SetParLimits(3,-4.0,4.0);  // neutron shift
-  FitFunc->SetParLimits(4,0.06,100);   // background scale
+  FitFunc->SetParLimits(4,0.0,100);   // background scale
   FitFunc->SetParLimits(5,-4.0,4.0);  // background shift
 
   //----- GEN3 -----
@@ -663,24 +643,9 @@ void SimDataComp(int kin)
   //h_fullProb->Add(hN2dilution_p,-1.0);
   h_fullProb->Add(h_prob_bckgrnd_dx,-1.0);
 
-  TCanvas *step3 = new TCanvas("step3","1 - (Background Prob)",100,100,1500,500);
-  step3->cd();
-  h_fullProb->Draw("HIST");
-
   //Apply effective nucleon polarization and beam+target polarization
   h_prob_proton_dx  -> Multiply(fitp, pol_combo);
   h_prob_neutron_dx -> Multiply(fitn, pol_combo);
-
-  //Subtract off dilution
-  //h_prob_proton_dx  -> Divide(h_fullProb);
-  //h_prob_neutron_dx -> Divide(h_fullProb);
-
-  TCanvas *step5 = new TCanvas("step5","Nucleon Probability Scaled by Polarization and Dilution",100,100,1500,500);
-  step5->Divide(1,2);
-  step5->cd(1);
-  h_prob_proton_dx->Draw("E");
-  step5->cd(2);
-  h_prob_neutron_dx->Draw("E");
 
   TF1 *AsymFitFunc = new TF1("AsymFitFunc",&fitAsym,dx_min_i,dx_max_i,3); //-6,3,3
 
