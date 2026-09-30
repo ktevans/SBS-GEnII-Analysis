@@ -104,18 +104,18 @@ void BkgComp()
 
   gPad->Update();
 
-  //h_dx_acc->Scale(1.0/h_dx_acc->Integral());
-  //h_dx_pion->Scale(1.0/h_dx_pion->Integral());
-  //h_dx->Scale(1.0/h_dx->Integral());
-  //h_N2_scaled->Scale(1.0/h_N2_scaled->Integral());
+  h_dx_acc->Scale(1.0/h_dx_acc->Integral());
+  h_dx_pion->Scale(1.0/h_dx_pion->Integral());
+  h_dx->Scale(1.0/h_dx->Integral());
+  h_N2_scaled->Scale(1.0/h_N2_scaled->Integral());
 
-  //TCanvas *c1 = new TCanvas("c1", "Background Shapes", 100,100,800,800);
-  //c1->cd();
+  TCanvas *c1 = new TCanvas("c1", "Background Shapes", 100,100,800,800);
+  c1->cd();
   //scaled_h_sim_nucleons->Draw("HIST");
-  //h_N2_scaled->Draw("HIST");
-  //h_dx->Draw("HIST SAMES");
-  //h_dx_acc->Draw("HIST SAMES");
-  //h_dx_pion->Draw("HIST SAMES");
+  h_N2_scaled->Draw("HIST");
+  h_dx->Draw("HIST SAMES");
+  h_dx_acc->Draw("HIST SAMES");
+  h_dx_pion->Draw("HIST SAMES");
 
   fout->Write();
 
