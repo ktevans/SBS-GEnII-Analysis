@@ -413,7 +413,10 @@ void SimDataComp(int kin)
   double xmin = h_data_dx->GetXaxis()->GetBinLowEdge(1);
   double xmax = h_data_dx->GetXaxis()->GetBinUpEdge(nbins);
 
-  TF1 *FitFunc = new TF1("FitFunc",&fitsim,dx_min_i,dx_max_i,6); //-6,4,6
+  //TF1 *FitFunc = new TF1("FitFunc",&fitsim,dx_min_i,dx_max_i,6); //-6,4,6
+
+  //smooth inelastics
+  TF1 *FitFunc = new TF1("FitFunc",&fitsim_smooth,dx_min_i,dx_max_i,6); //-6,4,6
 
   FitFunc->SetNpx(numberBins);
 
@@ -438,25 +441,6 @@ void SimDataComp(int kin)
   //FitFunc->SetParLimits(5,-0.3,2.0);   // background shift
 
   h_data_dx->Fit(FitFunc,"0","",xmin,xmax);
-
-  //Smooth inelastics
-
-  TF1 *FitFunc_smooth = new TF1("FitFunc_smooth",&fitsim_smooth,dx_min_i,dx_max_i,6); //-6,4,6
-
-  FitFunc_smooth->SetNpx(numberBins);
-
-  double startpar_smooth[] = {1.0,-0.5,0.5,-0.7,0.1,-1.0};
-  FitFunc_smooth->SetParameters(startpar_smooth);
-  FitFunc_smooth->SetParLimits(0,0.0,100);   // proton scale
-  FitFunc_smooth->SetParLimits(1,-4.0,4.0);  // proton shift
-  FitFunc_smooth->SetParLimits(2,0.0,100);   // neutron scale
-  FitFunc_smooth->SetParLimits(3,-4.0,4.0);  // neutron shift
-  FitFunc_smooth->SetParLimits(4,0.0,100);   // background scale
-  FitFunc_smooth->SetParLimits(5,-4.0,4.0);  // background shift
-
-  h_data_dx->Fit(FitFunc_smooth,"0","",xmin,xmax);
-
-  //---------
 
   std::cout << "Proton Shift: " << FitFunc->GetParameter(0)*FitFunc->GetParameter(1) << std::endl;
   std::cout << "Neutron Shift: " << FitFunc->GetParameter(2)*FitFunc->GetParameter(3) << std::endl;
