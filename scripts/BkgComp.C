@@ -78,12 +78,12 @@ void BkgComp()
   {
     Tout->GetEntry(iev);
 
-    if(W2>0.4 && W2<1.6 && abs(coin+0.47385)>6.0 && grinch_track==0.0 && grinch_clusSize>=3.0 && ps_e>0.2 && abs(((ps_e+sh_e)/tr_p)-0.97)<0.2 && abs(dy)<0.88)
+    if(W2>0.2 && W2<1.8 && abs(coin+0.47385)>6.0 && abs(coin+0.47385)<(6.0+(3*1.18)) && grinch_track==0.0 && grinch_clusSize>=3.0 && ps_e>0.2 && abs(((ps_e+sh_e)/tr_p)-0.97)<0.2 && abs(dy)<0.88)
     {
       h_dx_acc->Fill(dx);
     }
 
-    if(W2>0.4 && W2<1.6 && abs(coin+0.47385)<(3*1.18) && grinch_track==0.0 && grinch_clusSize<3.0 && ps_e<0.2 && abs(((ps_e+sh_e)/tr_p)-0.97)<0.2 && abs(dy)<0.88)
+    if(W2>0.2 && W2<1.8 && abs(coin+0.47385)<(3*1.18) && grinch_track==0.0 && grinch_clusSize<3.0 && ps_e<0.2 && abs(((ps_e+sh_e)/tr_p)-0.97)<0.2 && abs(dy)<0.88)
     {
       h_dx_pion->Fill(dx);
     }
