@@ -74,18 +74,30 @@ void BkgComp()
   h_dx_pion->GetXaxis()->SetTitle("dx [m]");
   //h_dx_pion->SetLineColor(kRed);
 
+  TH1D* h_coin = new TH1D("h_coin","Coincidence Time QE", 100, -10, 10);
+  h_coin->GetXaxis()->SetTitle("BBCal - HCal Coin [ns]");
+
+  TH1D* h_W2 = new TH1D("h_W2","W2 QE", 80, 0.2, 1.8);
+  h_W2->GetXaxis()->SetTitle("W2");
+
   for (size_t iev = 0; iev < Tout->GetEntries(); iev++)
   {
     Tout->GetEntry(iev);
 
-    if(W2>0.2 && W2<1.8 && abs(coin+0.47385)>6.0 && abs(coin+0.47385)<(6.0+(3*1.18)) && grinch_track==0.0 && grinch_clusSize>=3.0 && ps_e>0.2 && abs(((ps_e+sh_e)/tr_p)-0.97)<0.2 && abs(dy)<0.88)
+    if(W2>0.2 && W2<1.8 && abs(coin+0.47385)>6.0 && abs(coin+0.47385)<(6.0+(3*1.18)) && grinch_track==0.0 && grinch_clusSize>=3.0 && ps_e>0.3 && abs(((ps_e+sh_e)/tr_p)-0.97)<0.2 && abs(dy)<0.88)
     {
       h_dx_acc->Fill(dx);
     }
 
-    if(W2>0.2 && W2<1.8 && abs(coin+0.47385)<(3*1.18) && grinch_track==0.0 && grinch_clusSize<3.0 && ps_e<0.2 && abs(((ps_e+sh_e)/tr_p)-0.97)<0.2 && abs(dy)<0.88)
+    if(W2>0.2 && W2<1.8 && abs(coin+0.47385)<(3*1.18) && grinch_track==0.0 && grinch_clusSize<3.0 && ps_e<0.2 && abs(((ps_e+sh_e)/tr_p)-0.97)<0.3 && abs(dy)<0.88)
     {
       h_dx_pion->Fill(dx);
+    }
+
+    if(W2>0.2 && W2<1.8 && abs(coin+0.47385)<(3*1.18) && grinch_track==0.0 && grinch_clusSize>=3.0 && ps_e>0.2 && abs(((ps_e+sh_e)/tr_p)-0.97)<0.3 && abs(dy)<0.88)
+    {
+      h_coin->Fill(coin);
+      h_W2->Fill(W2);
     }
 
   }
@@ -116,6 +128,15 @@ void BkgComp()
   h_dx->Draw("HIST SAMES");
   h_dx_acc->Draw("HIST SAMES");
   h_dx_pion->Draw("HIST SAMES");
+
+  TCanvas *c2 = new TCanvas("c2", "Coin Time", 100,100,800,800);
+  c2->Divide(1,2);
+  c2->cd(1);
+  h_coin->Draw("HIST");
+  h_coin->Write();
+  cd->cd(2);
+  h_W2->Draw("HIST");
+  h_W2->Write();
 
   fout->Write();
 
