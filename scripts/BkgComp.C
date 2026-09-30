@@ -72,7 +72,7 @@ void BkgComp()
 
   TH1D* h_dx_pion = new TH1D("h_dx_pion","Pions", 100, -3.0, 2.0);
   h_dx_pion->GetXaxis()->SetTitle("dx [m]");
-  //h_dx_pion->SetLineColor(kRed);
+  h_dx_pion->SetLineColor(kMagenta);
 
   TH1D* h_coin = new TH1D("h_coin","Coincidence Time QE", 100, -10, 10);
   h_coin->GetXaxis()->SetTitle("BBCal - HCal Coin [ns]");
