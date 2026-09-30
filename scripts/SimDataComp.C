@@ -427,7 +427,7 @@ void SimDataComp(int kin)
   FitFunc->SetParLimits(1,-4.0,4.0);  // proton shift
   FitFunc->SetParLimits(2,0.0,100);   // neutron scale
   FitFunc->SetParLimits(3,-4.0,4.0);  // neutron shift
-  FitFunc->SetParLimits(4,0.0,100);   // background scale
+  FitFunc->SetParLimits(4,0.06,100);   // background scale
   FitFunc->SetParLimits(5,-4.0,4.0);  // background shift
 
   //----- GEN3 -----
