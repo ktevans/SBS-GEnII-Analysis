@@ -381,7 +381,7 @@ void SimDataComp(int kin)
   TFile *inelFile = TFile::Open(inel_sim_file);
   TF1 *fit_inel = nullptr;
   inelFile->GetObject("fit_inel", fit_inel);
-  h_fit_inel = <TH1F*>fit_inel->GetHistogram();
+  h_fit_inel = <TH1F*>(fit_inel->GetHistogram());
 
   TFile *polFile = TFile::Open(pol_func_file);
   TF1 *fitp = nullptr;
