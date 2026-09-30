@@ -134,7 +134,7 @@ void BkgComp()
   c2->cd(1);
   h_coin->Draw("HIST");
   h_coin->Write();
-  cd->cd(2);
+  c2->cd(2);
   h_W2->Draw("HIST");
   h_W2->Write();
 
