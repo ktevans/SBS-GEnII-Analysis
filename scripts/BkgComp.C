@@ -122,13 +122,13 @@ void BkgComp()
 
   TCanvas *cN2 = new TCanvas("cN2", "N2 Background", 100,100,800,800);
   cN2->cd();
-  h_N2_scaled->Smooth(3);
+  //h_N2_scaled->Smooth(3);
   h_N2_scaled->Draw("HIST");
 
-  //h_dx_acc->Scale(1.0/h_dx_acc->Integral());
-  //h_dx_pion->Scale(1.0/h_dx_pion->Integral());
-  //h_dx->Scale(1.0/h_dx->Integral());
-  //h_N2_scaled->Scale(1.0/h_N2_scaled->Integral());
+  h_dx_acc->Scale(1.0/h_dx_acc->Integral());
+  h_dx_pion->Scale(1.0/h_dx_pion->Integral());
+  h_dx->Scale(1.0/h_dx->Integral());
+  h_N2_scaled->Scale(1.0/h_N2_scaled->Integral());
 
   TCanvas *c1 = new TCanvas("c1", "Background Shapes", 100,100,800,800);
   c1->cd();
