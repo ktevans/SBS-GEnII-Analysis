@@ -106,10 +106,10 @@ void BkgComp()
 
   }
 
-  h_dx_acc->Scale(1.0/h_dx_acc->Integral());
-  h_dx_pion->Scale(1.0/h_dx_pion->Integral());
-  h_dx->Scale(1.0/h_dx->Integral());
-  h_N2_scaled->Scale(1.0/h_N2_scaled->Integral());
+  //h_dx_acc->Scale(1.0/h_dx_acc->Integral());
+  //h_dx_pion->Scale(1.0/h_dx_pion->Integral());
+  //h_dx->Scale(1.0/h_dx->Integral());
+  //h_N2_scaled->Scale(1.0/h_N2_scaled->Integral());
 
   TCanvas *cData = new TCanvas("cData", "Data Backgrounds", 100,100,800,800);
   cData->cd();
