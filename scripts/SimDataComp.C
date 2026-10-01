@@ -61,26 +61,6 @@ double fitsim( double *x, double *par)
 
 }//end fitsim
 
-double fitsim_smooth( double *x, double *par)
-{
-
-  const double dx_smooth   = x[0];
-  const double Rp_smooth   = par[0];
-  const double shp_smooth  = par[1];
-  const double Rn_smooth   = par[2];
-  const double shn_smooth  = par[3];
-  const double Rbg_smooth  = par[4];
-  const double shbg_smooth = par[5];
-
-  //condition ? expression_if_true : expression_if_false
-  const double p_smooth  = (h_sim_proton_dx  ? h_sim_proton_dx->Interpolate(dx_smooth - shp_smooth)  :0.0);
-  const double n_smooth  = (h_sim_neutron_dx ? h_sim_neutron_dx->Interpolate(dx_smooth - shn_smooth) :0.0);
-  const double bg_smooth = (h_fit_inel       ? h_fit_inel->Interpolate(dx_smooth - shbg_smooth)      :0.0);
-
-  return Rp_smooth * p_smooth + Rn_smooth * n_smooth + Rbg_smooth * bg_smooth;
-
-}//end fitsim_smooth
-
 double fitAsym(double *xA, double *parA)
 {
 
@@ -377,7 +357,6 @@ void SimDataComp(int kin)
 
   }//end loop over events
 
-  //h_simIN_dx->Smooth();
   TFile *inelFile = TFile::Open(inel_sim_file);
   TF1 *fit_inel = nullptr;
   inelFile->GetObject("fit_inel", fit_inel);
@@ -417,9 +396,6 @@ void SimDataComp(int kin)
   double xmax = h_data_dx->GetXaxis()->GetBinUpEdge(nbins);
 
   TF1 *FitFunc = new TF1("FitFunc",&fitsim,dx_min_i,dx_max_i,6); //-6,4,6
-
-  //smooth inelastics
-  //TF1 *FitFunc = new TF1("FitFunc",&fitsim_smooth,dx_min_i,dx_max_i,6); //-6,4,6
 
   FitFunc->SetNpx(numberBins);
 
