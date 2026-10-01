@@ -49,7 +49,7 @@ void BkgComp()
   TFile *T_InelFile = TFile::Open(InelFile);
   TH1D *h_dx = nullptr;
   T_InelFile->GetObject("h_dx", h_dx);
-  h_dx->SetLineColor(kGreen);
+  h_dx->SetLineColor(kGreen+3);
 
   TChain* Tout = new TChain("Tout");
   Tout->Add(DataFile);
@@ -130,12 +130,12 @@ void BkgComp()
   //h_dx->Scale(1.0/h_dx->Integral());
   //h_N2_scaled->Scale(1.0/h_N2_scaled->Integral());
 
-  //TCanvas *c1 = new TCanvas("c1", "Background Shapes", 100,100,800,800);
-  //c1->cd();
+  TCanvas *c1 = new TCanvas("c1", "Background Shapes", 100,100,800,800);
+  c1->cd();
   //h_N2_scaled->Draw("HIST");
   //h_dx->Draw("HIST SAMES");
-  //h_dx_acc->Draw("HIST SAMES");
-  //h_dx_pion->Draw("HIST SAMES");
+  h_dx_pion->Draw("HIST");
+  h_dx_acc->Draw("HIST SAMES");
 
   TCanvas *c2 = new TCanvas("c2", "Coin Time", 100,100,800,800);
   c2->Divide(1,2);
