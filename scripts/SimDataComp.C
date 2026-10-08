@@ -702,10 +702,12 @@ void SimDataComp(int kin)
 
   shifted_h_sim_proton_dx->SetFillStyle(3354);
   shifted_h_sim_proton_dx->SetFillColorAlpha(kGreen, 0.35);
+  shifted_h_sim_neutron_dx->SetFillStyle(3345);
   shifted_h_sim_neutron_dx->SetFillColorAlpha(kRed, 0.35);
+  shifted_h_simIN_dx->SetFillStyle(3209);
   shifted_h_simIN_dx->SetFillColorAlpha(kBlue, 0.35);
 
-  h_total_dx->SetLineWidth(4);
+  h_total_dx->SetLineWidth(3);
   h_total_dx->SetLineColor(1); // 1 = black
 
   h_data_dx->SetMarkerStyle(7); // medium dot
