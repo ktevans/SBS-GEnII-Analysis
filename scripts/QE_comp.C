@@ -170,7 +170,7 @@ void QE_comp(const char *kinematic, int kin)
   c1->cd(2);
   h_dy->Draw();
 
-  TCanvas *c2 = new TCanvas("c2", "2D dx vs dy". 100, 100, 700, 700);
+  TCanvas *c2 = new TCanvas("c2", "2D dx vs dy", 100, 100, 700, 700);
   c2->cd();
   h2_dxdy->SetStats(0);
   h2_dxdy->Draw("colz");
