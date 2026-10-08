@@ -150,7 +150,7 @@ void QE_comp(const char *kinematic, int kin)
 	    h_dx->Fill(dx_hcal);
         h_dy->Fill(dy_hcal);
 
-        h2_dxdy->Fill(dy_hcal,dx_hcal);
+        h2_dxdy->Fill(dy_hcal,-dx_hcal);
 
         dx_out = dx_hcal;
         dy_out = dy_hcal;
