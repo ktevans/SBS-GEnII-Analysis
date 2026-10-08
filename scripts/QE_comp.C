@@ -134,6 +134,11 @@ void QE_comp(const char *kinematic, int kin)
   h_dy->GetXaxis()->SetTitle("dy [m]");
   h_dy->SetTitle("dy with Global Cuts and QE Cuts");
 
+  TH2D* h2_dxdy = new TH2D("h2_dxdy", "dy vs dx", 88.0, -0.88, 0.88, 60.0, -1.5, 4.5);
+  h2_dxdy->GetXaxis()->SetTitle("dy [m]");
+  h2_dxdy->GetYaxis()->SetTitle("dx [m]");
+  h2_dxdy->SetTitle("dx vs dy with Quasi-Elastic Cuts");
+
   //Loop over all events to fill the histogram
   for (size_t iev = 0; iev < T->GetEntries(); iev++)
   {
@@ -144,6 +149,8 @@ void QE_comp(const char *kinematic, int kin)
     {
 	    h_dx->Fill(dx_hcal);
         h_dy->Fill(dy_hcal);
+
+        h2_dxdy->Fill(dy_hcal,dx_hcal);
 
         dx_out = dx_hcal;
         dy_out = dy_hcal;
@@ -162,6 +169,11 @@ void QE_comp(const char *kinematic, int kin)
   h_dx->Draw();
   c1->cd(2);
   h_dy->Draw();
+
+  TCanvas *c2 = new TCanvas("c2", "2D dx vs dy". 100, 100, 700, 700);
+  c2->cd();
+  h2_dxdy->SetStats(0);
+  h2_dxdy->Draw("colz");
 
   printf("You've completed the script!\n");
 
