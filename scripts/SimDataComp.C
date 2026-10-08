@@ -694,12 +694,28 @@ void SimDataComp(int kin)
   pad2->SetTopMargin(0);
   pad2->SetBottomMargin(0.2);
 
+  h_total_dx->SetStats(0);
+  shifted_h_sim_proton_dx->SetStats(0);
+  shifted_h_sim_neutron_dx->SetStats(0);
+  shifted_h_simIN_dx->SetStats(0);
+  h_data_dx->SetStats(0);
+
+  shifted_h_sim_proton_dx->SetFillColorAlpha(kGreen, 0.35);
+  shifted_h_sim_neutron_dx->SetFillColorAlpha(kRed, 0.35);
+  shifted_h_simIN_dx->SetFillColorAlpha(kBlue, 0.35);
+
+  h_total_dx->SetLineWidth(4);
+  h_total_dx->SetLineColor(1); // 1 = black
+
+  h_data_dx->SetMarkerStyle(7); // medium dot
+  h_data_dx->SetMarkerColor(1);
+
   pad1->cd();
   pad1->SetTitle(title_words);
   h_total_dx->Draw("HIST");
-  shifted_h_simIN_dx->Draw("HIST SAMES");
   shifted_h_sim_proton_dx->Draw("HIST SAMES");
   shifted_h_sim_neutron_dx->Draw("HIST SAMES");
+  shifted_h_simIN_dx->Draw("HIST SAMES");
   h_data_dx->Draw("E SAMES");
   h_data_dx->GetXaxis()->SetTitle("dx [m]");
 
