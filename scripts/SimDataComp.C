@@ -700,6 +700,7 @@ void SimDataComp(int kin)
   shifted_h_simIN_dx->SetStats(0);
   h_data_dx->SetStats(0);
 
+  shifted_h_sim_proton_dx->SetFillStyle(3354);
   shifted_h_sim_proton_dx->SetFillColorAlpha(kGreen, 0.35);
   shifted_h_sim_neutron_dx->SetFillColorAlpha(kRed, 0.35);
   shifted_h_simIN_dx->SetFillColorAlpha(kBlue, 0.35);
