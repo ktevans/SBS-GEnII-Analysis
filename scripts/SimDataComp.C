@@ -204,8 +204,13 @@ void SimDataComp(int kin)
   T_out->Branch("dx_data",    &dx_data_out,    "dx_data/D");
   T_out->Branch("helicity",   &helicity_out,   "helicity/I");
 
-  int numberBins = 185;
-  int asymBinning = 96;
+  //*************GEN2*************
+  //int numberBins = 185;
+  //int asymBinning = 96;
+
+  //*************GEN3*************
+  int numberBins = 140;
+  int asymBinning = 70;
 
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
