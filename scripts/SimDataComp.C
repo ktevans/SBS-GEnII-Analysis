@@ -128,8 +128,8 @@ void SimDataComp(int kin)
     title_words = "GEN3";
     dx_min_d = -3.0;
     dx_min_i = -3;
-    dx_max_d = 3.0;
-    dx_max_i = 3;
+    dx_max_d = 2.0;
+    dx_max_i = 2;
     pol_beam = 0.8649;
     pol_beam_err = 0.0008;
     pol_targ = 0.4212;
