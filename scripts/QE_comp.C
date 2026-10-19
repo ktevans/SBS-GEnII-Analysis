@@ -147,9 +147,9 @@ void QE_comp(const char *kinematic, int kin)
     //GEN2
     //if(he3pol>=15.0 && abs(helicity)==1 && abs(dy_hcal)<0.88 && bb_gr_clus_track==0 && e_kine_W2<1.8 && e_kine_W2>0.2 && bb_gr_clus_size>=3.0 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<(3*coin_sigma) && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1.0)<0.3 && abs(bb_tr_vz)<0.27)
     //GEN3
-    //if(he3pol>=15.0 && abs(helicity)==1 && abs(dy_hcal)<1.2 && bb_gr_clus_track==0 && e_kine_W2<2.0 && e_kine_W2>-1.0 && bb_gr_clus_size>=3.0 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<(3*coin_sigma) && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1.0)<0.3 && abs(bb_tr_vz)<0.27)
+    //if(he3pol>=15.0 && abs(helicity)==1 && abs(dy_hcal)<0.7 && bb_gr_clus_track==0 && e_kine_W2<1.6 && e_kine_W2>-1.0 && bb_gr_clus_size>=3.0 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<(3*coin_sigma) && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1.0)<0.3 && abs(bb_tr_vz)<0.27)
 
-    if(he3pol>=15.0 && abs(helicity)==1 && abs(dy_hcal)<1.2 && bb_gr_clus_track==0 && e_kine_W2<2.0 && e_kine_W2>-1.0 && bb_gr_clus_size>=3.0 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<(3*coin_sigma) && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1.0)<0.3 && abs(bb_tr_vz)<0.27)
+    if(he3pol>=15.0 && abs(helicity)==1 && abs(dy_hcal)<0.7 && bb_gr_clus_track==0 && e_kine_W2<1.6 && e_kine_W2>-1.0 && bb_gr_clus_size>=3.0 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<(3*coin_sigma) && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1.0)<0.3 && abs(bb_tr_vz)<0.27)
     {
 	    h_dx->Fill(dx_hcal);
         h_dy->Fill(dy_hcal);
