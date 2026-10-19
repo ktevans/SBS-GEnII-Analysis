@@ -210,7 +210,7 @@ void SimDataComp(int kin)
 
   //*************GEN3*************
   int numberBins = 210;
-  int asymBinning = 140;
+  int asymBinning = 105;
 
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
