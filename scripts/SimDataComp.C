@@ -126,8 +126,8 @@ void SimDataComp(int kin)
     //N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN2_He3_dxdy.root";
     output_file = "outfiles/AnalysisResults_GEN3.root";
     title_words = "GEN3";
-    dx_min_d = -4.0;
-    dx_min_i = -4;
+    dx_min_d = -3.0;
+    dx_min_i = -3;
     dx_max_d = 3.0;
     dx_max_i = 3;
     pol_beam = 0.8649;
