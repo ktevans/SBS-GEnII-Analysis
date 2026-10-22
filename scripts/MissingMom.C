@@ -353,7 +353,24 @@ void MissingMom(const char *kinematic, int kin)
   c3->cd();
 
   h_prof_pol_n->Draw();
-  TF1 *fitn = new TF1("fitn", "(x>-1.0 && x<=1.4)*([0]*x*x + [1]*x + [2] + [5]*x*x*x + [6]*x*x*x*x) + (x<=-1.0)*([3]) + (x>1.4)*([4])", dx_min, 3.0);
+
+  if (kin == 2)
+  {
+    TF1 *fitn = new TF1("fitn", "(x>-1.0 && x<=1.4)*([0]*x*x + [1]*x + [2] + [5]*x*x*x + [6]*x*x*x*x) + (x<=-1.0)*([3]) + (x>1.4)*([4])", dx_min, 3.0);
+  }
+  if (kin == 3)
+  {
+    TF1 *fitn = new TF1("fitn", "(x>-1.5 && x<=1.2)*([0]*x*x + [1]*x + [2] + [5]*x*x*x + [6]*x*x*x*x) + (x<=-1.5)*([3]) + (x>1.2)*([4])", dx_min, 3.0);
+  }
+  if (kin == 4)
+  {
+    TF1 *fitn = new TF1("fitn", "(x>-1.0 && x<=1.4)*([0]*x*x + [1]*x + [2] + [5]*x*x*x + [6]*x*x*x*x) + (x<=-1.0)*([3]) + (x>1.4)*([4])", dx_min, 3.0);
+  }
+  if (kin == 5)
+  {
+    TF1 *fitn = new TF1("fitn", "(x>-1.0 && x<=1.4)*([0]*x*x + [1]*x + [2] + [5]*x*x*x + [6]*x*x*x*x) + (x<=-1.0)*([3]) + (x>1.4)*([4])", dx_min, 3.0);
+  }
+
   fitn->SetParameters(1.0,2.0,3.0,1.0,1.0,6.0,7.0);
   h_prof_pol_n->Fit("fitn");
   fitn->Draw("SAMES");
@@ -362,7 +379,24 @@ void MissingMom(const char *kinematic, int kin)
   c4->cd();
 
   h_prof_pol_p->Draw();
-  TF1 *fitp = new TF1("fitp", "(x<-0.2)*([0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x)) + (x>=-0.2)*([7])", dx_min, 3.0);
+  
+  if (kin == 2)
+  {
+    TF1 *fitp = new TF1("fitp", "(x<-0.2)*([0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x)) + (x>=-0.2)*([7])", dx_min, 3.0);
+  }
+  if (kin == 3)
+  {
+    TF1 *fitp = new TF1("fitp", "(x<0.6)*([0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x)) + (x>=0.6)*([7])", dx_min, 3.0);
+  }
+  if (kin == 4)
+  {
+    TF1 *fitp = new TF1("fitp", "(x<-0.2)*([0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x)) + (x>=-0.2)*([7])", dx_min, 3.0);
+  }
+  if (kin == 5)
+  {
+    TF1 *fitp = new TF1("fitp", "(x<-0.2)*([0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x)) + (x>=-0.2)*([7])", dx_min, 3.0);
+  }
+
   fitp->SetParameters(1.0,2.0,3.0,4.0,5.0,6.0,7.0,1.0);
   h_prof_pol_p->Fit("fitp");
   fitp->Draw("SAMES");
