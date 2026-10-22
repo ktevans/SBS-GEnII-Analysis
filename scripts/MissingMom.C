@@ -386,7 +386,7 @@ void MissingMom(const char *kinematic, int kin)
   //}
   //if (kin == 3)
   //{
-    TF1 *fitp = new TF1("fitp", "(x<0.6)*([0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x)) + (x>=0.6)*([7])", dx_min, 3.0);
+    TF1 *fitp = new TF1("fitp", "(x<0.4)*([0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x)) + (x>=0.4)*([7])", dx_min, 3.0);
   //}
   //if (kin == 4)
   //{
