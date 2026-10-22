@@ -29,8 +29,8 @@ void MissingMom(const char *kinematic, int kin)
   gErrorIgnoreLevel = kError; // Ignores all ROOT warnings
 
   TString inputfile = Form("outfiles/parsed_SIM_GEn_%s_He3_dxdy.root",kinematic);
-  TString outputfile = Form("plots/parsed_GEn_pass2_%s_simulation.pdf",kinematic);
-  TString outfile = Form("outfiles/parsed_GEn_pass2_%s_simulation.root",kinematic);
+  TString outputfile = Form("plots/parsed_GEn_pass3_%s_simulation.pdf",kinematic);
+  TString outfile = Form("outfiles/parsed_GEn_pass3_%s_simulation.root",kinematic);
   TFile *fout = new TFile(outfile,"RECREATE");
 
   TTree *T_out = new TTree("Tout", "Simulation Data Tree");
