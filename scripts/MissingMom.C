@@ -102,7 +102,7 @@ void MissingMom(const char *kinematic, int kin)
     dx_n_lim1 = -1.0;
     dx_n_lim2 = 1.4;
     dx_p_lim1 = -0.2;
-    dx_min = -3.0;
+    dx_min = -4.0;
   }
 
   if (kin == 4)
