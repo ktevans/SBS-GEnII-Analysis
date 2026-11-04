@@ -52,7 +52,7 @@ void MissingMom(const char *kinematic, int kin)
 
   double dx;         T->SetBranchAddress("dx", &dx);
   double dy;         T->SetBranchAddress("dy", &dy);
-  //double W2;         T->SetBranchAddress("W2", &W2);
+  double W2;         T->SetBranchAddress("W2", &W2);
   //double ePS;        T->SetBranchAddress("ePS", &ePS);
   double epx;        T->SetBranchAddress("epx", &epx);
   double epy;        T->SetBranchAddress("epy", &epy);
@@ -187,6 +187,16 @@ void MissingMom(const char *kinematic, int kin)
   h_dx_pol_n_inWindow->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_dx_pol_n_inWindow->SetTitle("Neutron Effective Polarization in the Neutron Window");
 
+  TH2D* h_W2_pol_p = new TH2D("h_W2_pol_p", ";h_W2_pol_p", 70.0, -0.5, 3.0, 80.0, -0.5, 1.5);
+  h_W2_pol_p->GetXaxis()->SetTitle("W^2 [GeV^2]");
+  h_W2_pol_p->GetYaxis()->SetTitle("Nucleon Effective Polarization");
+  h_W2_pol_p->SetTitle("Effective Proton Polarization vs Invariant Mass Squared");
+
+  TH2D* h_W2_pol_n = new TH2D("h_W2_pol_n", ";h_W2_pol_n", 70.0, -0.5, 3.0, 80.0, -0.5, 1.5);
+  h_W2_pol_n->GetXaxis()->SetTitle("W^2 [GeV^2]");
+  h_W2_pol_n->GetYaxis()->SetTitle("Nucleon Effective Polarization");
+  h_W2_pol_n->SetTitle("Effective Neutron Polarization vs Invariant Mass Squared");
+
   double a, a_err, b, b_err, c, c_err, d, d_err, e, e_err, sigma;
 
   //Loop over all events to fill the histogram
@@ -234,6 +244,7 @@ void MissingMom(const char *kinematic, int kin)
         // ^^ This weight is wrong. I need to incorperate the cross terms. However, the fit is good enough that the fit error is much smaller than the error simply due to the simulation, so I am going to ignore the fit error and just use the simulation weight.
 
         h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
+        h_W2_pol_p->Fill(W2,pol_p,weight);
         h_prof_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
         if (dx-dx_p_shift<n_max&&dx-dx_p_shift>n_min)
         {
@@ -286,6 +297,7 @@ void MissingMom(const char *kinematic, int kin)
         pol_n_w = 1.0/((TMath::Power(missing_mom,8)*a_err) + (TMath::Power(missing_mom,6)*b_err) + (TMath::Power(missing_mom,4)*c_err) + (TMath::Power(missing_mom,2)*d_err) + e_err + (16*a*a*TMath::Power(missing_mom,6)*sigma) + (24*a*b*TMath::Power(missing_mom,5)*sigma) + ((16*a*c + 9*b*b)*TMath::Power(missing_mom,4)*sigma) + ((8*a*d + 12*b*c)*TMath::Power(missing_mom,3)*sigma) + ((6*b*d + 4*c*c)*TMath::Power(missing_mom,2)*sigma) + (4*c*d*missing_mom*sigma) + (d*d*sigma));
 
         h_dx_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
+        h_W2_pol_n->Fill(W2,pol_n,weight);
         h_prof_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
         if (dx-dx_n_shift<n_max&&dx-dx_n_shift>n_min)
         {
@@ -342,6 +354,15 @@ void MissingMom(const char *kinematic, int kin)
   c2->cd(2);
   h_dx_pol_n->Draw();
   h_prof_pol_n->Draw("SAMES");
+
+  TCanvas *c3 = new TCanvas("c3","Effective Polarization vs W2",100,100,700,700);
+  c3->Divide(1,2);
+  c3->cd(1);
+  gStyle->SetOptStat(0);
+  h_W2_pol_p->Draw();
+  c3->cd(2);
+  gStyle->SetOptStat(0);
+  h_W2_pol_n->Draw();
 
   printf("Mean Proton Effective Polarization in Neutron Window = %f \n", mean_p);
   printf("Mean Neutron Effective Polarization in Neutron Window = %f \n", mean_n);
