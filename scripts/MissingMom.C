@@ -197,6 +197,13 @@ void MissingMom(const char *kinematic, int kin)
   h_W2_pol_n->GetYaxis()->SetTitle("Nucleon Effective Polarization");
   h_W2_pol_n->SetTitle("Effective Neutron Polarization vs Invariant Mass Squared");
 
+  TProfile* h_prof_W2_pol_p = new TProfile("h_prof_W2_pol_p", "h_prof_W2_pol_p", 70.0, -0.5, 3.0, -0.5, 1.5);
+  h_prof_W2_pol_p->SetMarkerColor(kRed);
+  h_prof_W2_pol_p->SetMarkerStyle(20);
+  TProfile* h_prof_W2_pol_n = new TProfile("h_prof_W2_pol_n", "h_prof_W2_pol_n", 70.0, -0.5, 3.0, -0.5, 1.5);
+  h_prof_W2_pol_n->SetMarkerColor(kRed);
+  h_prof_W2_pol_n->SetMarkerStyle(20);
+
   double a, a_err, b, b_err, c, c_err, d, d_err, e, e_err, sigma;
 
   //Loop over all events to fill the histogram
@@ -246,6 +253,7 @@ void MissingMom(const char *kinematic, int kin)
         h_dx_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
         h_W2_pol_p->Fill(W2,pol_p,weight);
         h_prof_pol_p->Fill(dx-dx_p_shift,pol_p,weight);
+        h_prof_W2_pol_p->Fill(W2,pol_p,weight);
         if (dx-dx_p_shift<n_max&&dx-dx_p_shift>n_min)
         {
           h_dx_pol_p_inWindow->Fill(dx-dx_p_shift,pol_p,weight);
@@ -299,6 +307,7 @@ void MissingMom(const char *kinematic, int kin)
         h_dx_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
         h_W2_pol_n->Fill(W2,pol_n,weight);
         h_prof_pol_n->Fill(dx-dx_n_shift,pol_n,weight);
+        h_prof_W2_pol_n->Fill(W2,pol_n,weight);
         if (dx-dx_n_shift<n_max&&dx-dx_n_shift>n_min)
         {
           h_dx_pol_n_inWindow->Fill(dx-dx_n_shift,pol_n,weight);
@@ -360,9 +369,11 @@ void MissingMom(const char *kinematic, int kin)
   cW2->cd(1);
   gStyle->SetOptStat(0);
   h_W2_pol_p->Draw();
+  h_prof_W2_pol_p->Draw("SAMES");
   cW2->cd(2);
   gStyle->SetOptStat(0);
   h_W2_pol_n->Draw();
+  h_prof_W2_pol_n->Draw("SAMES");
 
   printf("Mean Proton Effective Polarization in Neutron Window = %f \n", mean_p);
   printf("Mean Neutron Effective Polarization in Neutron Window = %f \n", mean_n);
