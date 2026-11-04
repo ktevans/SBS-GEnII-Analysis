@@ -355,12 +355,12 @@ void MissingMom(const char *kinematic, int kin)
   h_dx_pol_n->Draw();
   h_prof_pol_n->Draw("SAMES");
 
-  TCanvas *c3 = new TCanvas("c3","Effective Polarization vs W2",100,100,700,700);
-  c3->Divide(1,2);
-  c3->cd(1);
+  TCanvas *cW2 = new TCanvas("cW2","Effective Polarization vs W2",100,100,700,700);
+  cW2->Divide(1,2);
+  cW2->cd(1);
   gStyle->SetOptStat(0);
   h_W2_pol_p->Draw();
-  c3->cd(2);
+  cW2->cd(2);
   gStyle->SetOptStat(0);
   h_W2_pol_n->Draw();
 
