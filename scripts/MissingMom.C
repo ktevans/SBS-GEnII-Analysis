@@ -130,6 +130,14 @@ void MissingMom(const char *kinematic, int kin)
   }
   else std::cout << "\nFound " << T->GetEntries() << " events. Starting analysis.. \n";
 
+  TH1D* h_missMom_p = new TH1D("h_missMom_p", ";h_missMom_p", 85, 0.0, 0.85);
+  h_missMom_p->GetXaxis()->SetTitle("Proton Initial Momentum [GeV]");
+  h_missMom_p->SetTitle("Proton Initial Momentum");
+
+  TH1D* h_missMom_n = new TH1D("h_missMom_n", ";h_missMom_n", 85, 0.0, 0.85);
+  h_missMom_n->GetXaxis()->SetTitle("Neutron Initial Momentum [GeV]");
+  h_missMom_n->SetTitle("Neutron Initial Momentum");
+  
   TH1D* h_dx_p = new TH1D("h_dx_p", ";dx_p", 140.0, dx_min, 3.0);
   h_dx_p->GetXaxis()->SetTitle("dx [m]");
   h_dx_p->SetTitle("dx for Protons");
@@ -217,6 +225,7 @@ void MissingMom(const char *kinematic, int kin)
       if (fnucl==1.0)
       {
         h_dx_p->Fill(dx-dx_p_shift,weight);
+        h_missMom_p->Fill(missing_mom,weight);
         h_dx_missing_mom_p->Fill(dx-dx_p_shift,missing_mom,weight);
         if (missing_mom<0.2)
         {
@@ -273,6 +282,7 @@ void MissingMom(const char *kinematic, int kin)
       if (fnucl==0.0)
       {
         h_dx_n->Fill(dx-dx_n_shift,weight);
+        h_missMom_n->Fill(missing_mom,weight);
         h_dx_missing_mom_n->Fill(dx-dx_n_shift,missing_mom,weight);
         if (missing_mom<0.2)
         {
@@ -440,4 +450,17 @@ void MissingMom(const char *kinematic, int kin)
   fitn->Write();
   fitp->Write();
   fout->Write();
+
+  TCanvas *cRes = new TCanvas("cRes", "Results", 100,100,700,700);
+  cRes->cd();
+  h_dx_pol_n->Draw();
+  cRes->SaveAs("outfiles/ToddResults_n_dx.pdf");
+
+  TCanvas *cRes_p = new TCanvas("cRes_p", "Momentum", 100,100,700,700);
+  cRes_p->Divide(1,2);
+  cRes_p->cd(1);
+  h_missMom_p->Draw();
+  cRes_p->cd(2);
+  h_missMom_n->Draw();
+  cRes_p->SaveAs("outfiles/ToddResults_mom.pdf");
 }
