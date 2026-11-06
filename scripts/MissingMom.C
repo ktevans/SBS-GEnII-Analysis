@@ -451,7 +451,7 @@ void MissingMom(const char *kinematic, int kin)
   fitp->Write();
   fout->Write();
 
-  TCanvas *cRes = new TCanvas("cRes", "Results", 100,100,700,700);
+  TCanvas *cRes = new TCanvas("cRes", "Results", 100,100,900,700);
   cRes->cd();
   h_dx_pol_n->Draw();
   cRes->SaveAs("outfiles/ToddResults_n_dx.pdf");
@@ -459,8 +459,8 @@ void MissingMom(const char *kinematic, int kin)
   TCanvas *cRes_p = new TCanvas("cRes_p", "Momentum", 100,100,700,700);
   cRes_p->Divide(1,2);
   cRes_p->cd(1);
-  h_missMom_p->Draw();
+  h_missMom_p->Draw("HIST");
   cRes_p->cd(2);
-  h_missMom_n->Draw();
+  h_missMom_n->Draw("HIST");
   cRes_p->SaveAs("outfiles/ToddResults_mom.pdf");
 }
