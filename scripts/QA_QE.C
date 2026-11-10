@@ -628,10 +628,11 @@ void QA_QE(const char *kinematic)
       runTrack++;
     }
 
+    h_tr_vz->Fill(bb_tr_vz);
+
     if((IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0) // && bb_ps_e>0.0 && gem_tr_ngoodhits>=3 && gem_tr_chi2ndf<=15)
     {
 
-      h_tr_vz->Fill(bb_tr_vz);
       h_W2_raw->Fill(e_kine_W2);
 
       if (abs(bb_tr_vz)<0.27)
