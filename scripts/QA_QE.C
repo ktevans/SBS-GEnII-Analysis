@@ -1119,7 +1119,7 @@ void QA_QE(const char *kinematic)
   cThesisPlots->cd(2);
   h_tr_vz->Draw();
 
-  cThesisPlots->(outputfile);
+  cThesisPlots->Print(outputfile);
 
   TCanvas *summary = new TCanvas("summary", "summary", 1200, 1000);
   summary->cd();
