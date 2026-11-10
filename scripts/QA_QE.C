@@ -239,7 +239,7 @@ void QA_QE(const char *kinematic)
   h_tr_vz->GetXaxis()->SetTitle("bb.tr.vz [m]");
   h_tr_vz->SetTitle("Track z Vertex without Global Cuts");
 
-  TH1D* h_hcal_raw_e = new TH1D("h_hcal_raw_e", "HCal Raw Energy", 100.0, 0.0, 1.0);
+  TH1D* h_hcal_raw_e = new TH1D("h_hcal_raw_e", "HCal Raw Energy", 200.0, 0.0, 0.2);
   h_hcal_raw_e->GetXaxis()->SetTitle("sbs.hcal.e [GeV]");
   h_hcal_raw_e->SetTitle("Track z Vertex without Global Cuts");
 
