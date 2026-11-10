@@ -237,7 +237,11 @@ void QA_QE(const char *kinematic)
 
   TH1D* h_tr_vz = new TH1D("h_tr_vz", "Track z Vertex", 140.0, -0.8, 0.6);
   h_tr_vz->GetXaxis()->SetTitle("bb.tr.vz [m]");
-  h_tr_vz->SetTitle("Track z Vertex with Global Cuts");
+  h_tr_vz->SetTitle("Track z Vertex without Global Cuts");
+
+  TH1D* h_hcal_raw_e = new TH1D("h_hcal_raw_e", "HCal Raw Energy", 100.0, 0.0, 1.0);
+  h_hcal_raw_e->GetXaxis()->SetTitle("sbs.hcal.e [GeV]");
+  h_hcal_raw_e->SetTitle("Track z Vertex without Global Cuts");
 
   TH1D* h_ps_e_raw = new TH1D("h_ps_e_raw", "PreShower Energy", 100.0, 0.0, 2.0);
   h_ps_e_raw->GetXaxis()->SetTitle("bb.ps.e [GeV]");
@@ -629,8 +633,9 @@ void QA_QE(const char *kinematic)
     }
 
     h_tr_vz->Fill(bb_tr_vz);
+    h_hcal_raw_e->Fill(sbs_hcal_e);
 
-    if((IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0) // && bb_ps_e>0.0 && gem_tr_ngoodhits>=3 && gem_tr_chi2ndf<=15)
+    if((IHWP==-1 || IHWP==1) && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && bb_gr_clus_track==0 && sbs_hcal_e>0.025) // && bb_ps_e>0.0 && gem_tr_ngoodhits>=3 && gem_tr_chi2ndf<=15)
     {
 
       h_W2_raw->Fill(e_kine_W2);
@@ -1106,6 +1111,15 @@ void QA_QE(const char *kinematic)
   h2_hcalTH_atime_y->Draw("colz");
 
   c10->Print(outputfile);
+
+  TCanvas *cThesisPlots = new TCanvas("cThesisPlots", 1200, 1000);
+  cThesisResults->Divide(1,2);
+  cThesisResults->cd(1);
+  h_hcal_raw_e->Draw();
+  cThesisResults->cd(2);
+  h_tr_vz->Draw();
+
+  cThesisResults->(outputfile);
 
   TCanvas *summary = new TCanvas("summary", "summary", 1200, 1000);
   summary->cd();
