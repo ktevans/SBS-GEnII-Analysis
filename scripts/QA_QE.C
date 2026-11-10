@@ -1112,7 +1112,7 @@ void QA_QE(const char *kinematic)
 
   c10->Print(outputfile);
 
-  TCanvas *cThesisPlots = new TCanvas("cThesisPlots", 1200, 1000);
+  TCanvas *cThesisPlots = new TCanvas("cThesisPlots", "ThesisCutPlots", 1200, 1000);
   cThesisPlots->Divide(1,2);
   cThesisPlots->cd(1);
   h_hcal_raw_e->Draw();
