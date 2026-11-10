@@ -241,7 +241,7 @@ void QA_QE(const char *kinematic)
 
   TH1D* h_hcal_raw_e = new TH1D("h_hcal_raw_e", "HCal Raw Energy", 200.0, 0.0, 0.2);
   h_hcal_raw_e->GetXaxis()->SetTitle("sbs.hcal.e [GeV]");
-  h_hcal_raw_e->SetTitle("Track z Vertex without Global Cuts");
+  h_hcal_raw_e->SetTitle("HCal Energy without Global Cuts");
 
   TH1D* h_ps_e_raw = new TH1D("h_ps_e_raw", "PreShower Energy", 100.0, 0.0, 2.0);
   h_ps_e_raw->GetXaxis()->SetTitle("bb.ps.e [GeV]");
