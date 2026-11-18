@@ -144,7 +144,7 @@ void SimDataComp(int kin)
     data_file = "outfiles/parsed_GEn_pass2_GEN4a_He3_dxdy.root";
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN4_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
-    pol_func_file = "outfiles/parsed_GEn_pass2_GEN4a_simulation.root";
+    pol_func_file = "outfiles/parsed_GEn_pass2_GEN4_simulation.root";
     //N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN4_He3_dxdy.root";
     output_file = "outfiles/AnalysisResults_GEN4a.root";
     title_words = "GEN4a";
@@ -166,7 +166,7 @@ void SimDataComp(int kin)
     data_file = "outfiles/parsed_GEn_pass2_GEN4b_He3_dxdy.root";
     nucleon_sim_file = "outfiles/parsed_SIM_GEn_GEN4_He3_dxdy.root";
     inel_sim_file = "outfiles/parsed_SIM_IN_GEn_GEN4_He3_dxdy.root";
-    pol_func_file = "outfiles/parsed_GEn_pass2_GEN4b_simulation.root";
+    pol_func_file = "outfiles/parsed_GEn_pass2_GEN4_simulation.root";
     //N2_dilution_file = "outfiles/N2_Corr_SIM_GEn_GEN4_He3_dxdy.root";
     output_file = "outfiles/AnalysisResults_GEN4b.root";
     title_words = "GEN4b";
