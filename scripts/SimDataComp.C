@@ -209,8 +209,12 @@ void SimDataComp(int kin)
   //int asymBinning = 96;
 
   //*************GEN3*************
-  int numberBins = 210;
-  int asymBinning = 50;
+  //int numberBins = 210;
+  //int asymBinning = 50;
+
+  //*************GEN4a************
+  int numberBins = 200;
+  int asymBinning = 100;
 
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
@@ -411,18 +415,28 @@ void SimDataComp(int kin)
   //FitFunc->SetParLimits(1,-4.0,4.0);  // proton shift
   //FitFunc->SetParLimits(2,0.0,100);   // neutron scale
   //FitFunc->SetParLimits(3,-4.0,4.0);  // neutron shift
-  //FitFunc->SetParLimits(4,0.06,100);   // background scale
+  //FitFunc->SetParLimits(4,0.06,100);  // background scale
   //FitFunc->SetParLimits(5,-4.0,4.0);  // background shift
 
   //----- GEN3 -----
+  //double startpar[] = {0.2,-0.5,0.1,-0.7,0.4,-1.0};
+  //FitFunc->SetParameters(startpar);
+  //FitFunc->SetParLimits(0,0.1,5.0);   // proton scale
+  //FitFunc->SetParLimits(1,-1.0,1.0);  // proton shift
+  //FitFunc->SetParLimits(2,0.07,5.0);  // neutron scale
+  //FitFunc->SetParLimits(3,-0.1,0.1);  // neutron shift
+  //FitFunc->SetParLimits(4,0.05,5.0);  // background scale
+  //FitFunc->SetParLimits(5,-0.3,2.0);  // background shift
+
+  //----- GEN4a -----
   double startpar[] = {0.2,-0.5,0.1,-0.7,0.4,-1.0};
   FitFunc->SetParameters(startpar);
-  FitFunc->SetParLimits(0,0.1,5.0);   // proton scale
+  FitFunc->SetParLimits(0,0.001,5.0);   // proton scale
   FitFunc->SetParLimits(1,-1.0,1.0);  // proton shift
-  FitFunc->SetParLimits(2,0.07,5.0);   // neutron scale
-  FitFunc->SetParLimits(3,-0.1,0.1);  // neutron shift
-  FitFunc->SetParLimits(4,0.05,5.0);   // background scale
-  FitFunc->SetParLimits(5,-0.3,2.0);   // background shift
+  FitFunc->SetParLimits(2,0.001,5.0);   // neutron scale
+  FitFunc->SetParLimits(3,-0.9,0.9);  // neutron shift
+  FitFunc->SetParLimits(4,0.001,5.0);   // background scale
+  FitFunc->SetParLimits(5,-2.0,2.0);   // background shift
 
   h_data_dx->Fit(FitFunc,"0","",xmin,xmax);
 
