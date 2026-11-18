@@ -402,11 +402,11 @@ void MissingMom(const char *kinematic, int kin)
   //}
   //if (kin == 3)
   //{
-    TF1 *fitn = new TF1("fitn", "(x>-1.5 && x<=1.2)*([0]*x*x + [1]*x + [2] + [5]*x*x*x + [6]*x*x*x*x) + (x<=-1.5)*([3]) + (x>1.2)*([4])", dx_min, 3.0);
+    //TF1 *fitn = new TF1("fitn", "(x>-1.5 && x<=1.2)*([0]*x*x + [1]*x + [2] + [5]*x*x*x + [6]*x*x*x*x) + (x<=-1.5)*([3]) + (x>1.2)*([4])", dx_min, 3.0);
   //}
   //if (kin == 4)
   //{
-    //TF1 *fitn = new TF1("fitn", "(x>-1.0 && x<=1.4)*([0]*x*x + [1]*x + [2] + [5]*x*x*x + [6]*x*x*x*x) + (x<=-1.0)*([3]) + (x>1.4)*([4])", dx_min, 3.0);
+    TF1 *fitn = new TF1("fitn", "(x>-1.2 && x<=1.0)*([0]*x*x + [1]*x + [2] + [5]*x*x*x + [6]*x*x*x*x) + (x<=-1.2)*([3]) + (x>1.0)*([4])", dx_min, 3.0);
   //
   //if (kin == 5)
   //{
@@ -429,13 +429,13 @@ void MissingMom(const char *kinematic, int kin)
   //}
   //if (kin == 3)
   //{
-    TF1 *fitp = new TF1("fitp", "(x<0.5)*([0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x) + [8]*cos(4*x) + [9]*sin(4*x)) + (x>=0.5)*([7])", dx_min, 3.0);
-    fitp->SetParameters(1.0,2.0,3.0,4.0,5.0,6.0,7.0,1.0,8.0,9.0);
+    //TF1 *fitp = new TF1("fitp", "(x<0.5)*([0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x) + [8]*cos(4*x) + [9]*sin(4*x)) + (x>=0.5)*([7])", dx_min, 3.0);
+    //fitp->SetParameters(1.0,2.0,3.0,4.0,5.0,6.0,7.0,1.0,8.0,9.0);
   //}
   //if (kin == 4)
   //{
-    //TF1 *fitp = new TF1("fitp", "(x<-0.2)*([0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x)) + (x>=-0.2)*([7])", dx_min, 3.0);
-    //fitp->SetParameters(1.0,2.0,3.0,4.0,5.0,6.0,7.0,1.0);
+    TF1 *fitp = new TF1("fitp", "(x<0.7)*([0] + [1]*cos(x) + [2]*sin(x) + [3]*cos(2*x) + [4]*sin(2*x)+ [5]*cos(3*x) + [6]*sin(3*x)) + (x>=0.7)*([7])", dx_min, 3.0);
+    fitp->SetParameters(1.0,2.0,3.0,4.0,5.0,6.0,7.0,1.0);
   //}
   //if (kin == 5)
   //{
