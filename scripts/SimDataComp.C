@@ -214,7 +214,7 @@ void SimDataComp(int kin)
 
   //*************GEN4a************
   int numberBins = 200;
-  int asymBinning = 75;
+  int asymBinning = 38;
 
   TChain* T_data = new TChain("T_data");
   T_data->Add(data_file);
