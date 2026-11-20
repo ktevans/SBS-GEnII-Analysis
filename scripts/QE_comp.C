@@ -53,6 +53,7 @@ void QE_comp(const char *kinematic, int kin)
   int helicity;             T->SetBranchAddress("helicity", &helicity);
   double bb_ps_e;           T->SetBranchAddress("bb.ps.e", &bb_ps_e);
   double bb_sh_e;           T->SetBranchAddress("bb.sh.e", &bb_sh_e);
+  double sbs_hcal_e;        T->SetBranchAddress("sbs.hcal.e", &sbs_hcal_e);
   double bb_tr_p;           T->SetBranchAddress("bb.tr.p", &bb_tr_p);
   double bb_tr_vz;          T->SetBranchAddress("bb.tr.vz", &bb_tr_vz);
   double bb_gr_clus_track;  T->SetBranchAddress("bb.grinch_tdc.clus.trackindex", &bb_gr_clus_track);
@@ -149,9 +150,9 @@ void QE_comp(const char *kinematic, int kin)
     //GEN3
     //if(he3pol>=15.0 && abs(helicity)==1 && dy_hcal>-0.8 && dy_hcal<1.8 && bb_gr_clus_track==0 && e_kine_W2>-0.2 && e_kine_W2<1.3 && bb_gr_clus_size>=3.0 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<(3*coin_sigma) && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1.0)<0.3)
 
-    if(he3pol>=15.0 && abs(helicity)==1 && dy_hcal>-1.0 && dy_hcal<1.0 && bb_gr_clus_track==0 && e_kine_W2>-1.0 && e_kine_W2<2.0 && bb_gr_clus_size>=3.0 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<(3*coin_sigma) && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1.0)<0.3)
+    if(he3pol>=25.0 && abs(helicity)==1 && dy_hcal>-0.4 && dy_hcal<0.4 && bb_gr_clus_track==0 && e_kine_W2>-2.0 && e_kine_W2<1.5 && bb_gr_clus_size>=3.0 && (bb_tr_r_x-0.9*bb_tr_r_th)>optics_valid_min && (bb_tr_r_x-0.9*bb_tr_r_th)<optics_valid_max && abs(adc_coin-coin_mean)<(3*coin_sigma) && bb_ps_e>0.2 && abs(((bb_ps_e+bb_sh_e)/bb_tr_p)-1.0)<0.2)
     {
-	    h_dx->Fill(dx_hcal);
+	h_dx->Fill(dx_hcal);
         h_dy->Fill(dy_hcal);
 
         h2_dxdy->Fill(dy_hcal,-dx_hcal);
