@@ -90,7 +90,7 @@ void SimDataComp(int kin)
   TString output_file;
 
   int npar = 6;
-  double dx_min_d, dx_max_d;
+  double dx_min_d, dx_max_d, nwin_min, nwin_max;
   int dx_min_i, dx_max_i;
   double pol_beam, pol_beam_err, pol_targ, pol_targ_err;
 
@@ -112,6 +112,8 @@ void SimDataComp(int kin)
     pol_beam_err = 0.0018;
     pol_targ = 0.3557;
     pol_targ_err = 0.0179;
+    nwin_min = -1.0;
+    nwin_max = 1.0;
     cout<<"\nHi! You are analyzing GEN2!\n";
 
   }
@@ -134,6 +136,8 @@ void SimDataComp(int kin)
     pol_beam_err = 0.0008;
     pol_targ = 0.4212;
     pol_targ_err = 0.011;
+    nwin_min = -0.5;
+    nwin_max = 0.5;
     cout<<"\nHi! You are analyzing GEN3!\n";
 
   }
@@ -156,6 +160,8 @@ void SimDataComp(int kin)
     pol_beam_err = 0.0010;
     pol_targ = 0.4908;
     pol_targ_err = 0.0202;
+    nwin_min = -0.4;
+    nwin_max = 0.4;
     cout<<"\nHi! You are analyzing GEN4a!\n";
 
   }
@@ -178,6 +184,8 @@ void SimDataComp(int kin)
     pol_beam_err = 0.0010;
     pol_targ = 0.4908;
     pol_targ_err = 0.0202;
+    nwin_min = -0.4;
+    nwin_max = 0.4;
     cout<<"\nHi! You are analyzing GEN4b!\n";
 
   }
@@ -244,12 +252,12 @@ void SimDataComp(int kin)
   h_pos_hel_dx->SetLineColor(kBlue);
   h_pos_hel_dx->Sumw2();
 
-  TH1D* h_neg_hel_dx_nwin = new TH1D("h_neg_hel_dx_nwin",";-hel", 20, -1.0, 1.0);
+  TH1D* h_neg_hel_dx_nwin = new TH1D("h_neg_hel_dx_nwin",";-hel", 20, nwin_min, nwin_max);
   h_neg_hel_dx_nwin->GetXaxis()->SetTitle("dx [m]");
   h_neg_hel_dx_nwin->SetLineColor(kRed);
   h_neg_hel_dx_nwin->Sumw2();
 
-  TH1D* h_pos_hel_dx_nwin = new TH1D("h_pos_hel_dx_nwin",";+hel", 20, -1.0, 1.0);
+  TH1D* h_pos_hel_dx_nwin = new TH1D("h_pos_hel_dx_nwin",";+hel", 20, nwin_min, nwin_max);
   h_pos_hel_dx_nwin->GetXaxis()->SetTitle("dx [m]");
   h_pos_hel_dx_nwin->SetLineColor(kBlue);
   h_pos_hel_dx_nwin->Sumw2();
@@ -264,7 +272,7 @@ void SimDataComp(int kin)
     T_data->GetEntry(iev);
 
     h_data_dx->Fill(dx);
-    dxEllipse = (((dx-0.0)*(dx-0.0))/(0.99*0.99)) + (((dy-0.0)*(dy-0.0))/(0.99*0.99));
+    dxEllipse = (((dx-0.0)*(dx-0.0))/(nwin_max*nwin_max)) + (((dy-0.0)*(dy-0.0))/(nwin_max*nwin_max));
     dx_data_out = dx;
     helicity_out = helicity;
 
@@ -272,8 +280,8 @@ void SimDataComp(int kin)
     {
       h_pos_hel_dx->Fill(dx);
 
-      //if(dxEllipse<=1.0)
-      if(dx<1.0&&dx>-1.0)
+      //if(dxEllipse<=nwin_max)
+      if(dx<nwin_max&&dx>nwin_min)
       {
         Npos++;
         h_pos_hel_dx_nwin->Fill(dx);
@@ -284,8 +292,8 @@ void SimDataComp(int kin)
     {
       h_neg_hel_dx->Fill(dx);
 
-      //if(dxEllipse<=1.0)
-      if(dx<1.0&&dx>-1.0)
+      //if(dxEllipse<=nwin_max)
+      if(dx<nwin_max&&dx>nwin_min)
       {
         Nneg++;
         h_neg_hel_dx_nwin->Fill(dx);
