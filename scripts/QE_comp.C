@@ -92,8 +92,8 @@ void QE_comp(const char *kinematic, int kin)
   {
     optics_valid_min = -0.36;
     optics_valid_max = 0.30;
-    coin_mean = -0.589;
-    coin_sigma = 2.3;
+    coin_mean = -0.3645;
+    coin_sigma = 1.218;
     IHWP_flip = 1;
     std::cout << "\nYou are replaying GEN4a!\n";
   }
